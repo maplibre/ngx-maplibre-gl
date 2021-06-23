@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Layer } from 'mapbox-gl';
+import { Layer } from 'maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [style]="'mapbox://styles/mapbox/dark-v9'"
+      [style]="
+        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+      "
       [zoom]="[3]"
       [center]="[-103.59179687498357, 40.66995747013945]"
     >
@@ -24,7 +26,6 @@ import { Layer } from 'mapbox-gl';
           source="earthquakes"
           [filter]="layer.filter"
           [paint]="layer.paint"
-          before="waterway-label"
         ></mgl-layer>
         <mgl-layer
           id="unclustered-point"
@@ -36,7 +37,6 @@ import { Layer } from 'mapbox-gl';
             'circle-radius': 20,
             'circle-blur': 1
           }"
-          before="waterway-label"
         ></mgl-layer>
       </ng-container>
     </mgl-map>

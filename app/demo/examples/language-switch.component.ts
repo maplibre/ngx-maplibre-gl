@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { Map } from 'mapbox-gl';
+import { Map } from 'maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [style]="'mapbox://styles/mapbox/light-v9'"
+      [style]="
+        'https://api.maptiler.com/maps/basic/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+      "
       [zoom]="[2.9]"
       [center]="[16.05, 48]"
       (mapLoad)="map = $event"
@@ -50,7 +52,7 @@ export class LanguageSwitchComponent {
 
   changeLangTo(language: string) {
     this.map.setLayoutProperty(
-      'country-label-lg',
+      'label_country',
       'text-field',
       '{name_' + language + '}'
     );

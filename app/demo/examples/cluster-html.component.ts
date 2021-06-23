@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CirclePaint, SymbolLayout, SymbolPaint } from 'mapbox-gl';
+import { CirclePaint, SymbolLayout, SymbolPaint } from 'maplibre-gl';
 
 /**
  * Remember: mgl-layer are way faster than html markers
@@ -16,7 +16,9 @@ const COLORS = ['#fed976', '#feb24c', '#fd8d3c', '#fc4e2a', '#e31a1c'];
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [style]="'mapbox://styles/mapbox/light-v10'"
+      [style]="
+        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+      "
       [zoom]="[0.3]"
       [center]="[0, 20]"
     >

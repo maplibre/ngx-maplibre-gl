@@ -1,17 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { AnyLayout } from 'mapbox-gl';
+import { AnyLayout } from 'maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [style]="'mapbox://styles/mapbox/streets-v9'"
+      [style]="
+        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+      "
       [zoom]="[15]"
       [center]="[-71.97722138410576, -13.517379300798098]"
     >
-      <mgl-vector-source id="museums" url="mapbox://mapbox.2opop9hr">
+      <mgl-vector-source
+        id="museums"
+        url="https://api.maptiler.com/tiles/v3/tiles.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL"
+      >
       </mgl-vector-source>
-      <mgl-vector-source id="contours" url="mapbox://mapbox.mapbox-terrain-v2">
+      <mgl-vector-source
+        id="contours"
+        url="https://api.maptiler.com/tiles/v3/tiles.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL"
+      >
       </mgl-vector-source>
       <mgl-layer
         id="museums"
@@ -75,5 +83,6 @@ export class ToggleLayersComponent implements OnInit {
       visibility:
         this.layouts[evt.value].visibility === 'visible' ? 'none' : 'visible',
     };
+    // HM TODO: this needs a fix...
   }
 }

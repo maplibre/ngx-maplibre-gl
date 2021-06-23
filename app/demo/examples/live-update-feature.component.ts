@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { LngLatLike } from 'mapbox-gl';
+import { LngLatLike } from 'maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [style]="'mapbox://styles/mapbox/satellite-v9'"
+      [style]="
+        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+      "
       [zoom]="zoom"
       [center]="center"
       [centerWithPanTo]="true"

@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
-import { Position } from 'ngx-mapbox-gl'
+import { Position } from 'projects/ngx-maplibre-gl/src/public_api';
 
 @Component({
   selector: 'showcase-demo',
   template: `
-    <mgl-map [style]="'mapbox://styles/mapbox/streets-v9'">
+    <mgl-map
+      [style]="
+        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+      "
+    >
       <mgl-control>
         <button
           mat-fab
@@ -18,7 +22,6 @@ import { Position } from 'ngx-mapbox-gl'
 
       <mgl-control mglAttribution position="top-right"></mgl-control>
       <mgl-control mglFullscreen position="top-right"></mgl-control>
-      <mgl-control mglGeocoder position="top-right"></mgl-control>
       <mgl-control
         mglGeolocate
         position="top-right"

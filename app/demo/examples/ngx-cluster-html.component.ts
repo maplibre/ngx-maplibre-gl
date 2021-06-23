@@ -7,7 +7,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { GeoJSONSourceComponent } from 'ngx-mapbox-gl';
+import { GeoJSONSourceComponent } from 'projects/ngx-maplibre-gl/src/public_api';
 
 /**
  * Remember: mgl-layer are way faster than html markers
@@ -20,7 +20,9 @@ import { GeoJSONSourceComponent } from 'ngx-mapbox-gl';
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [style]="'mapbox://styles/mapbox/dark-v9'"
+      [style]="
+        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+      "
       [zoom]="[3]"
       [center]="[-103.59179687498357, 40.66995747013945]"
     >

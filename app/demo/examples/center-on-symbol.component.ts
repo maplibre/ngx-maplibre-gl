@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { MapMouseEvent, Map } from 'mapbox-gl';
+import { MapMouseEvent, Map } from 'maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [style]="'mapbox://styles/mapbox/light-v9'"
+      [style]="
+        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+      "
       [zoom]="[8]"
       [center]="center"
       [cursorStyle]="cursorStyle"
@@ -22,7 +24,7 @@ import { MapMouseEvent, Map } from 'mapbox-gl';
         type="symbol"
         source="symbols-source"
         [layout]="{
-          'icon-image': 'rocket-15'
+          'icon-image': 'oneway'
         }"
         (layerClick)="centerMapTo($event)"
         (layerMouseEnter)="cursorStyle = 'pointer'"

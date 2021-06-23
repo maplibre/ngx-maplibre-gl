@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { MapImageData } from 'ngx-mapbox-gl';
+import { MapImageData } from 'projects/ngx-maplibre-gl/src/public_api';
 
 @Component({
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [style]="'mapbox://styles/mapbox/streets-v9'"
+      [style]="
+        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+      "
       (styleImageMissing)="generateImage($event)"
     >
       <mgl-image
