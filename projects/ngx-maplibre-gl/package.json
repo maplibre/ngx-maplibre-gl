@@ -1,6 +1,6 @@
 {
   "name": "@codezen/ngx-maplibre-gl",
-  "version": "13.2.0",
+  "version": "13.1.0",
   "description": "A Angular binding of maplibre-gl",
   "license": "MIT",
   "repository": {
