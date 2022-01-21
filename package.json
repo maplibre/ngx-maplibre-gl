@@ -1,6 +1,6 @@
 {
   "name": "ngx-maplibre-gl-srcs",
-  "version": "13.1.0",
+  "version": "13.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve showcase",
