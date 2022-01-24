@@ -27,7 +27,6 @@ import {
   MapWheelEvent,
   PointLike,
 } from 'maplibre-gl';
-import { deprecationWarning } from '../utils';
 import { MapService, MovingOptions } from './map.service';
 import { MapEvent, EventData } from './map.types';
 
@@ -194,93 +193,6 @@ export class MapComponent
   >();
   @Output() styleImageMissing = new EventEmitter<{ id: string } & EventData>();
 
-  /**
-   * @deprecated Use mapResize instead
-   */
-  @Output() resize = new EventEmitter<MapLibreEvent & EventData>();
-  /**
-   * @deprecated Use mapRemove instead
-   */
-  @Output() remove = new EventEmitter<MapLibreEvent & EventData>();
-  /**
-   * @deprecated Use mapMouseDown instead
-   */
-  @Output() mouseDown = new EventEmitter<MapMouseEvent & EventData>();
-  /**
-   * @deprecated Use mapMouseUp instead
-   */
-  @Output() mouseUp = new EventEmitter<MapMouseEvent & EventData>();
-  /**
-   * @deprecated Use mapMouseMove instead
-   */
-  @Output() mouseMove = new EventEmitter<MapMouseEvent & EventData>();
-  /**
-   * @deprecated Use mapClick instead
-   */
-  @Output() click = new EventEmitter<MapMouseEvent & EventData>();
-  /**
-   * @deprecated Use mapDblClick instead
-   */
-  @Output() dblClick = new EventEmitter<MapMouseEvent & EventData>();
-  /**
-   * @deprecated Use mapMouseOver instead
-   */
-  @Output() mouseOver = new EventEmitter<MapMouseEvent & EventData>();
-  /**
-   * @deprecated Use mapMouseOut instead
-   */
-  @Output() mouseOut = new EventEmitter<MapMouseEvent & EventData>();
-  /**
-   * @deprecated Use mapContextMenu instead
-   */
-  @Output() contextMenu = new EventEmitter<MapMouseEvent & EventData>();
-  /**
-   * @deprecated Use mapTouchStart instead
-   */
-  @Output() touchStart = new EventEmitter<MapTouchEvent & EventData>();
-  /**
-   * @deprecated Use mapTouchEnd instead
-   */
-  @Output() touchEnd = new EventEmitter<MapTouchEvent & EventData>();
-  /**
-   * @deprecated Use mapTouchMove instead
-   */
-  @Output() touchMove = new EventEmitter<MapTouchEvent & EventData>();
-  /**
-   * @deprecated Use mapTouchCancel instead
-   */
-  @Output() touchCancel = new EventEmitter<MapTouchEvent & EventData>();
-  /**
-   * @deprecated Use mapWheel instead
-   */
-  @Output() wheel = new EventEmitter<MapWheelEvent & EventData>();
-  /**
-   * @deprecated Use mapDragStart instead
-   */
-  @Output() dragStart = new EventEmitter<
-    MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
-  >();
-  /**
-   * @deprecated Use mapDrag instead
-   */
-  @Output() drag = new EventEmitter<
-    MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
-  >();
-  /**
-   * @deprecated Use mapDragEnd instead
-   */
-  @Output() dragEnd = new EventEmitter<
-    MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
-  >();
-  /**
-   * @deprecated Use mapLoad instead
-   */
-  @Output() load = new EventEmitter<Map>();
-  /**
-   * @deprecated Use mapError instead
-   */
-  @Output() error = new EventEmitter<ErrorEvent & EventData>();
-
   get mapInstance(): Map {
     return this.MapService.mapInstance;
   }
@@ -290,7 +202,6 @@ export class MapComponent
   constructor(private MapService: MapService) {}
 
   ngAfterViewInit() {
-    this.warnDeprecatedOutputs();
     this.MapService.setup({
       mapOptions: {
         collectResourceTiming: this.collectResourceTiming,
@@ -458,70 +369,6 @@ export class MapComponent
         changes.bearing && this.bearing ? this.bearing[0] : undefined,
         changes.pitch && this.pitch ? this.pitch[0] : undefined
       );
-    }
-  }
-
-  private warnDeprecatedOutputs() {
-    const dw = deprecationWarning.bind(undefined, MapComponent.name);
-    if (this.resize.observers.length) {
-      dw('resize', 'mapResize');
-    }
-    if (this.remove.observers.length) {
-      dw('remove', 'mapRemove');
-    }
-    if (this.mouseDown.observers.length) {
-      dw('mouseDown', 'mapMouseDown');
-    }
-    if (this.mouseUp.observers.length) {
-      dw('mouseUp', 'mapMouseUp');
-    }
-    if (this.mouseMove.observers.length) {
-      dw('mouseMove', 'mapMouseMove');
-    }
-    if (this.click.observers.length) {
-      dw('click', 'mapClick');
-    }
-    if (this.dblClick.observers.length) {
-      dw('dblClick', 'mapDblClick');
-    }
-    if (this.mouseOver.observers.length) {
-      dw('mouseOver', 'mapMouseOver');
-    }
-    if (this.mouseOut.observers.length) {
-      dw('mouseOut', 'mapMouseOut');
-    }
-    if (this.contextMenu.observers.length) {
-      dw('contextMenu', 'mapContextMenu');
-    }
-    if (this.touchStart.observers.length) {
-      dw('touchStart', 'mapTouchStart');
-    }
-    if (this.touchEnd.observers.length) {
-      dw('touchEnd', 'mapTouchEnd');
-    }
-    if (this.touchMove.observers.length) {
-      dw('touchMove', 'mapTouchMove');
-    }
-    if (this.touchCancel.observers.length) {
-      dw('touchCancel', 'mapTouchCancel');
-    }
-    if (this.wheel.observers.length) {
-      dw('wheel', 'mapWheel');
-    }
-    if (this.dragStart.observers.length) {
-      dw('dragStart', 'mapDragStart');
-    }
-    if (this.drag.observers.length) {
-      dw('drag', 'mapDrag');
-    }
-    if (this.dragEnd.observers.length) {
-      dw('dragEnd', 'mapDragEnd');
-    }
-    if (this.load.observers.length) {
-      dw('load', 'mapLoad');
-    }
-    if (this.error.observers.length) {
-      dw('error', 'mapError');
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { PointLike } from 'maplibre-gl';
 import { of } from 'rxjs';
@@ -12,12 +12,10 @@ import { MarkerComponent } from './marker.component';
     </mgl-marker>
   `,
 })
-class MarkerTestComponent implements OnDestroy {
+class MarkerTestComponent {
   offset: PointLike;
   lngLat: [number, number];
   className: string;
-
-  ngOnDestroy() {}
 }
 
 describe('MarkerComponent', () => {

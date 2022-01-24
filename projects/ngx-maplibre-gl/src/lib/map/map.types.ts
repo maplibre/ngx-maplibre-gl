@@ -16,7 +16,9 @@ import {
   MapWheelEvent,
 } from 'maplibre-gl';
 
-export interface EventData { [key: string]: any }
+export interface EventData {
+  [key: string]: any;
+}
 
 export interface MapEvent {
   mapResize: EventEmitter<MapLibreEvent & EventData>;
@@ -38,13 +40,13 @@ export interface MapEvent {
     MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
   >;
   move: EventEmitter<
-  MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
+    MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
   >;
   moveEnd: EventEmitter<
-  MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
+    MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
   >;
   mapDragStart: EventEmitter<
-  MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
+    MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >;
   mapDrag: EventEmitter<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
@@ -95,33 +97,6 @@ export interface MapEvent {
   sourceDataLoading: EventEmitter<MapSourceDataEvent & EventData>;
   styleImageMissing: EventEmitter<{ id: string } & EventData>;
   idle: EventEmitter<MapLibreEvent & EventData>;
-
-  resize: EventEmitter<MapLibreEvent & EventData>;
-  remove: EventEmitter<MapLibreEvent & EventData>;
-  mouseDown: EventEmitter<MapMouseEvent & EventData>;
-  mouseUp: EventEmitter<MapMouseEvent & EventData>;
-  mouseMove: EventEmitter<MapMouseEvent & EventData>;
-  click: EventEmitter<MapMouseEvent & EventData>;
-  dblClick: EventEmitter<MapMouseEvent & EventData>;
-  mouseOver: EventEmitter<MapMouseEvent & EventData>;
-  mouseOut: EventEmitter<MapMouseEvent & EventData>;
-  contextMenu: EventEmitter<MapMouseEvent & EventData>;
-  touchStart: EventEmitter<MapTouchEvent & EventData>;
-  touchEnd: EventEmitter<MapTouchEvent & EventData>;
-  touchMove: EventEmitter<MapTouchEvent & EventData>;
-  touchCancel: EventEmitter<MapTouchEvent & EventData>;
-  wheel: EventEmitter<MapWheelEvent & EventData>;
-  dragStart: EventEmitter<
-    MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
-  >;
-  drag: EventEmitter<
-    MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
-  >;
-  dragEnd: EventEmitter<
-    MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
-  >;
-  load: EventEmitter<Map>; // Consider emitting MapLibreEvent for consistency (breaking change).
-  error: EventEmitter<ErrorEvent & EventData>;
 }
 
 export interface LayerEvents {
@@ -138,19 +113,6 @@ export interface LayerEvents {
   layerTouchStart: EventEmitter<MapLayerTouchEvent & EventData>;
   layerTouchEnd: EventEmitter<MapLayerTouchEvent & EventData>;
   layerTouchCancel: EventEmitter<MapLayerTouchEvent & EventData>;
-  click: EventEmitter<MapLayerMouseEvent & EventData>;
-  dblClick: EventEmitter<MapLayerMouseEvent & EventData>;
-  mouseDown: EventEmitter<MapLayerMouseEvent & EventData>;
-  mouseUp: EventEmitter<MapLayerMouseEvent & EventData>;
-  mouseEnter: EventEmitter<MapLayerMouseEvent & EventData>;
-  mouseLeave: EventEmitter<MapLayerMouseEvent & EventData>;
-  mouseMove: EventEmitter<MapLayerMouseEvent & EventData>;
-  mouseOver: EventEmitter<MapLayerMouseEvent & EventData>;
-  mouseOut: EventEmitter<MapLayerMouseEvent & EventData>;
-  contextMenu: EventEmitter<MapLayerMouseEvent & EventData>;
-  touchStart: EventEmitter<MapLayerTouchEvent & EventData>;
-  touchEnd: EventEmitter<MapLayerTouchEvent & EventData>;
-  touchCancel: EventEmitter<MapLayerTouchEvent & EventData>;
 }
 
 /**

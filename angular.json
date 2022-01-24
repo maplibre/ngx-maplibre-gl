@@ -29,6 +29,15 @@
             "tsConfig": "projects/ngx-maplibre-gl/tsconfig.spec.json",
             "karmaConfig": "projects/ngx-maplibre-gl/karma.conf.js"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/ngx-maplibre-gl/**/*.ts",
+              "projects/ngx-maplibre-gl/**/*.html"
+            ]
+          }
         }
       }
     },
@@ -148,6 +157,7 @@
   },
   "defaultProject": "ngx-maplibre-gl",
   "cli": {
-    "analytics": "2b945751-c795-4db1-b8ac-172907057b11"
+    "analytics": "2b945751-c795-4db1-b8ac-172907057b11",
+    "defaultCollection": "@angular-eslint/schematics"
   }
 }

@@ -143,33 +143,6 @@ describe('MapService', () => {
       sourceDataLoading: new EventEmitter<MapSourceDataEvent & EventData>(),
       styleImageMissing: new EventEmitter<{ id: string } & EventData>(),
       idle: new EventEmitter<MapLibreEvent & EventData>(),
-
-      resize: new EventEmitter<MapLibreEvent & EventData>(),
-      remove: new EventEmitter<MapLibreEvent & EventData>(),
-      mouseDown: new EventEmitter<MapMouseEvent & EventData>(),
-      mouseUp: new EventEmitter<MapMouseEvent & EventData>(),
-      mouseMove: new EventEmitter<MapMouseEvent & EventData>(),
-      click: new EventEmitter<MapMouseEvent & EventData>(),
-      dblClick: new EventEmitter<MapMouseEvent & EventData>(),
-      mouseOver: new EventEmitter<MapMouseEvent & EventData>(),
-      mouseOut: new EventEmitter<MapMouseEvent & EventData>(),
-      contextMenu: new EventEmitter<MapMouseEvent & EventData>(),
-      touchStart: new EventEmitter<MapTouchEvent & EventData>(),
-      touchEnd: new EventEmitter<MapTouchEvent & EventData>(),
-      touchMove: new EventEmitter<MapTouchEvent & EventData>(),
-      touchCancel: new EventEmitter<MapTouchEvent & EventData>(),
-      wheel: new EventEmitter<MapWheelEvent & EventData>(),
-      dragStart: new EventEmitter<
-        MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
-      >(),
-      drag: new EventEmitter<
-        MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
-      >(),
-      dragEnd: new EventEmitter<
-        MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
-      >(),
-      load: new EventEmitter<Map>(),
-      error: new EventEmitter<ErrorEvent & EventData>(),
     };
   });
 

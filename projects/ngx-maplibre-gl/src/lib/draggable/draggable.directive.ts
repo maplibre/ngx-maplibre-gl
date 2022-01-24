@@ -15,30 +15,17 @@ import { filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { LayerComponent } from '../layer/layer.component';
 import { MapService } from '../map/map.service';
 import { FeatureComponent } from '../source/geojson/feature.component';
-import { deprecationWarning } from '../utils';
 
 @Directive({
   selector: '[mglDraggable]',
 })
 export class DraggableDirective implements OnInit, OnDestroy {
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('mglDraggable') layer?: LayerComponent;
 
   @Output() featureDragStart = new EventEmitter<MapMouseEvent>();
   @Output() featureDragEnd = new EventEmitter<MapMouseEvent>();
   @Output() featureDrag = new EventEmitter<MapMouseEvent>();
-  /**
-   * @deprecated Use featureDragStart instead
-   */
-  @Output() dragStart = new EventEmitter<MapMouseEvent>();
-  /**
-   * @deprecated Use featureDragEnd instead
-   */
-  @Output() dragEnd = new EventEmitter<MapMouseEvent>();
-  /**
-   * @deprecated Use featureDrag instead
-   */
-  @Output() drag = new EventEmitter<MapMouseEvent>();
 
   private sub = new Subscription();
 
@@ -49,7 +36,6 @@ export class DraggableDirective implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.warnDeprecatedOutputs();
     let enter$;
     let leave$;
     let updateCoords;
@@ -114,13 +100,9 @@ export class DraggableDirective implements OnInit, OnDestroy {
       this.sub.add(
         dragStart$.subscribe((evt) => {
           moving = true;
-          if (
-            this.featureDragStart.observers.length ||
-            this.dragStart.observers.length
-          ) {
+          if (this.featureDragStart.observers.length) {
             this.NgZone.run(() => {
               this.featureDragStart.emit(evt);
-              this.dragStart.emit(evt);
             });
           }
         })
@@ -128,10 +110,9 @@ export class DraggableDirective implements OnInit, OnDestroy {
       this.sub.add(
         dragging$.subscribe((evt) => {
           updateCoords([evt.lngLat.lng, evt.lngLat.lat]);
-          if (this.featureDrag.observers.length || this.drag.observers.length) {
+          if (this.featureDrag.observers.length) {
             this.NgZone.run(() => {
               this.featureDrag.emit(evt);
-              this.drag.emit(evt);
             });
           }
         })
@@ -139,13 +120,9 @@ export class DraggableDirective implements OnInit, OnDestroy {
       this.sub.add(
         dragEnd$.subscribe((evt) => {
           moving = false;
-          if (
-            this.featureDragEnd.observers.length ||
-            this.dragEnd.observers.length
-          ) {
+          if (this.featureDragEnd.observers.length) {
             this.NgZone.run(() => {
               this.featureDragEnd.emit(evt);
-              this.dragEnd.emit(evt);
             });
           }
           if (!inside) {
@@ -187,18 +164,5 @@ export class DraggableDirective implements OnInit, OnDestroy {
       }
     }
     return true;
-  }
-
-  private warnDeprecatedOutputs() {
-    const dw = deprecationWarning.bind(undefined, DraggableDirective.name);
-    if (this.dragStart.observers.length) {
-      dw('dragStart', 'featureDragStart');
-    }
-    if (this.dragEnd.observers.length) {
-      dw('dragEnd', 'featureDragEnd');
-    }
-    if (this.drag.observers.length) {
-      dw('drag', 'featureDrag');
-    }
   }
 }
