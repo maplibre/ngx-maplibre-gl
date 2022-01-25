@@ -70,8 +70,7 @@
             "scripts": [
               "node_modules/marked/lib/marked.js",
               "node_modules/prismjs/prism.js"
-            ],
-            "showCircularDependencies": false
+            ]
           },
           "configurations": {
             "production": {
@@ -94,8 +93,7 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true,
-              "showCircularDependencies": false
+              "buildOptimizer": true
             }
           }
         },

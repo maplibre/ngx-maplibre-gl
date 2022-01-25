@@ -23,7 +23,7 @@ jobs:
           architecture: x64
       
       - name: Prepare
-        run: npm install
+        run: npm ci
 
       - name: Build
         run: npm run build

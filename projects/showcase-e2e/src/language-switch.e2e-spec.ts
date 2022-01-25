@@ -7,6 +7,7 @@ describe('Language switch', () => {
 
   beforeEach(() => {
     logs = browserLogs(browser);
+    logs.ignore(logs.WARNING);
   });
 
   afterEach(() => {
