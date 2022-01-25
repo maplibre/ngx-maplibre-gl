@@ -8,7 +8,7 @@ import { Map } from 'maplibre-gl';
       [style]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
       "
-      [zoom]="[2.9]"
+      [zoom]="[10]"
       [center]="[16.05, 48]"
       (mapLoad)="map = $event"
     >
