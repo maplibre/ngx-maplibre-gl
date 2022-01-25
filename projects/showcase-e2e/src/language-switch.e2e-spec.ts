@@ -1,19 +1,20 @@
 import { browser, element, by, ExpectedConditions as EC } from 'protractor';
 const PixelDiff = require('pixel-diff');
-//const browserLogs = require('protractor-browser-logs');
+const browserLogs = require('protractor-browser-logs');
 
 describe('Language switch', () => {
-  //let logs: any;
+  let logs: any;
 
-  //beforeEach(() => {
-  //  logs = browserLogs(browser);
-  //});
+  beforeEach(() => {
+    logs = browserLogs(browser);
+    // On first run there's a
+    // GPU warning we would like to ignore
+    logs.ignore(logs.WARN);
+  });
 
-  //afterEach(() => {
-  // Ignore logs verification as this is the first test
-  // and the CI needs to warm up apparently
-  //return logs.verify();
-  //});
+  afterEach(() => {
+    return logs.verify();
+  });
 
   it('should change language', async () => {
     await browser.get('/demo/language-switch');
