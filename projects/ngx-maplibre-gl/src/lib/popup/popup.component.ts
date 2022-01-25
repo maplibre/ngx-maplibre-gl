@@ -15,7 +15,6 @@ import {
 import { LngLatLike, Offset, Popup, PopupOptions } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { MarkerComponent } from '../marker/marker.component';
-import { deprecationWarning } from '../utils';
 
 @Component({
   selector: 'mgl-popup',
@@ -41,14 +40,6 @@ export class PopupComponent
 
   @Output() popupClose = new EventEmitter<void>();
   @Output() popupOpen = new EventEmitter<void>();
-  /**
-   * @deprecated Use popupClose instead
-   */
-  @Output() close = new EventEmitter<void>();
-  /**
-   * @deprecated Use popupOpen instead
-   */
-  @Output() open = new EventEmitter<void>();
 
   @ViewChild('content', { static: true }) content: ElementRef;
 
@@ -57,7 +48,6 @@ export class PopupComponent
   constructor(private MapService: MapService) {}
 
   ngOnInit() {
-    this.warnDeprecatedOutputs();
     if (
       (this.lngLat && this.marker) ||
       (this.feature && this.lngLat) ||
@@ -135,8 +125,6 @@ export class PopupComponent
           maxWidth: this.maxWidth,
         },
         popupEvents: {
-          open: this.open,
-          close: this.close,
           popupOpen: this.popupOpen,
           popupClose: this.popupClose,
         },
@@ -162,15 +150,5 @@ export class PopupComponent
         );
       }
     });
-  }
-
-  private warnDeprecatedOutputs() {
-    const dw = deprecationWarning.bind(undefined, PopupComponent.name);
-    if (this.close.observers.length) {
-      dw('close', 'popupClose');
-    }
-    if (this.open.observers.length) {
-      dw('open', 'popupOpen');
-    }
   }
 }
