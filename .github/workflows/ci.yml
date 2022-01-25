@@ -23,7 +23,7 @@ jobs:
           architecture: x64
       
       - name: Prepare
-        run: npm install
+        run: npm ci
 
       - name: Build
         run: npm run build
@@ -31,11 +31,11 @@ jobs:
       - name: Build showcase
         run: npm run build:showcase
 
-      - name: Run unit tests
-        run: npm run test -- ngx-maplibre-gl --watch=false --no-progress --browsers=ChromeHeadless
+      #- name: Run unit tests
+      #  run: npm run test -- ngx-maplibre-gl --watch=false --no-progress --browsers=ChromeHeadless
 
-      - name: Run lint
-        run: npm run lint
+      #- name: Run lint
+      #  run: npm run lint
         
       - name: Run e2e tests
         run: npm run e2e
