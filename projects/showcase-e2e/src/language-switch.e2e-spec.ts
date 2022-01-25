@@ -9,7 +9,7 @@ describe('Language switch', () => {
     logs = browserLogs(browser);
     // On first run there's a
     // GPU warning we would like to ignore
-    logs.ignore(logs.WARN);
+    logs.ignore(logs.WARNING);
   });
 
   afterEach(() => {
