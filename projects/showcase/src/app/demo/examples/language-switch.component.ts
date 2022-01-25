@@ -1,7 +1,18 @@
 import { Component } from '@angular/core';
 import { Map } from 'maplibre-gl';
-/*
-<mgl-control>
+
+@Component({
+  selector: 'showcase-demo',
+  template: `
+    <mgl-map
+      [style]="
+        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+      "
+      [zoom]="[2.9]"
+      [center]="[16.05, 48]"
+      (mapLoad)="map = $event"
+    >
+      <mgl-control>
         <button
           mat-raised-button
           class="lang-button"
@@ -31,19 +42,6 @@ import { Map } from 'maplibre-gl';
           Spanish
         </button>
       </mgl-control>
-
-  */
-@Component({
-  selector: 'showcase-demo',
-  template: `
-    <mgl-map
-      [style]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
-      "
-      [zoom]="[3]"
-      [center]="[-96, 37.8]"
-      (mapLoad)="map = $event"
-    >
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
