@@ -7,9 +7,7 @@ describe('Language switch', () => {
 
   beforeEach(() => {
     logs = browserLogs(browser);
-    // On first run there's a
-    // GPU warning we would like to ignore
-    logs.ignore(logs.WARNING);
+    logs.ignore('GPU stall due to ReadPixels');
   });
 
   afterEach(() => {
