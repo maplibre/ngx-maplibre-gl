@@ -1,5 +1,5 @@
 import { browser, element, by, ExpectedConditions as EC } from 'protractor';
-const PixelDiff = require('pixel-diff');
+//const PixelDiff = require('pixel-diff');
 const browserLogs = require('protractor-browser-logs');
 
 describe('Language switch', () => {
