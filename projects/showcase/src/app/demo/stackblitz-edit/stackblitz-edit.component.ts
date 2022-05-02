@@ -12,7 +12,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import StackBlitzSDK from '@stackblitz/sdk';
 import { VM } from '@stackblitz/sdk/typings/VM';
-import { forkJoin, from, Subscription } from 'rxjs';
+import { forkJoin, from, of, Subscription } from 'rxjs';
 import { finalize, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { createStackblitzProject } from './create-stackblitz-project';
 import { DemoFileLoaderService } from './demo-file-loader.service';
@@ -88,10 +88,11 @@ export class StackblitzEditComponent implements AfterViewInit, OnDestroy {
           forkJoin([
             this.projectbase$,
             this.demoFileLoaderService.getDemoFiles(params.demoUrl),
+            of(params.demoUrl as string),
           ])
         ),
-        switchMap(([projectbase, demoFiles]) =>
-          from(this.openExample(projectbase, demoFiles)).pipe(
+        switchMap(([projectbase, demoFiles, exampleName]) =>
+          from(this.openExample(projectbase, demoFiles, exampleName)).pipe(
             finalize(() => {
               this.loading = false;
               this.ChangeDetectorRef.markForCheck();
@@ -104,7 +105,8 @@ export class StackblitzEditComponent implements AfterViewInit, OnDestroy {
 
   private async openExample(
     projectbase: string[],
-    demoFiles: Record<string, string>
+    demoFiles: Record<string, string>,
+    exampleName: string
   ) {
     if (this.vm) {
       await this.vm.applyFsDiff({
@@ -113,7 +115,11 @@ export class StackblitzEditComponent implements AfterViewInit, OnDestroy {
       });
       return;
     }
-    const project = createStackblitzProject(projectbase, demoFiles);
+    const project = createStackblitzProject(
+      projectbase,
+      demoFiles,
+      exampleName
+    );
     await this.zone.runOutsideAngular(async () => {
       this.vm = await StackBlitzSDK.embedProject(
         this.stackblitzContainer.nativeElement,
