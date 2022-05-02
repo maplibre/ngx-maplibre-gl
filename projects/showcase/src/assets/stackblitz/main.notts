@@ -14,10 +14,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { NgxMapLibreGLModule } from 'ngx-maplibre-gl';
-import * as demo from './demo';
-
-const demoArray = Object.values(demo);
+import { NgxMapLibreGLModule } from '@maplibre/ngx-maplibre-gl';
+import { ### } from './demo';
 
 @NgModule({
   imports: [
@@ -35,8 +33,8 @@ const demoArray = Object.values(demo);
     MatPaginatorModule,
     NgxMapLibreGLModule
   ],
-  declarations: [...demoArray],
-  bootstrap: [demoArray[demoArray.length - 1]]
+  declarations: [###],
+  bootstrap: [###]
 })
 export class AppModule { }
 

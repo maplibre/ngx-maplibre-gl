@@ -65,7 +65,7 @@ Add this in your polyfill.ts file (https://github.com/Wykks/ngx-mapbox-gl/issues
 (window as any).global = window;
 ```
 
-Then, in your app's main module (or in any other module), import the `NgxMapboxGLModule`:
+Then, in your app's main module (or in any other module), import the `NgxMapLibreGLModule`:
 
 ```ts
 ...
