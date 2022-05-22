@@ -7,7 +7,7 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { ImageSourceSpecification, Source } from 'maplibre-gl';
+import { ImageSourceSpecification, ImageSource } from 'maplibre-gl';
 import { Subscription } from 'rxjs';
 import { MapService } from '../map/map.service';
 
@@ -40,15 +40,12 @@ export class ImageSourceComponent
     if (this.sourceId === undefined) {
       return;
     }
-    // HM TODO: expose image source implementation?
-    const source = this.mapService.getSource<
-      Source & { updateImage: Function }
-    >(this.sourceId);
+    const source = this.mapService.getSource<ImageSource>(this.sourceId);
     if (source === undefined) {
       return;
     }
     source.updateImage({
-      url: changes.url === undefined ? undefined : this.url,
+      url: changes.url === undefined ? (undefined as any) : this.url,
       coordinates:
         changes.coordinates === undefined ? undefined : this.coordinates,
     });

@@ -7,7 +7,7 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { Source, VideoSourceSpecification } from 'maplibre-gl';
+import { VideoSource, VideoSourceSpecification } from 'maplibre-gl';
 import { fromEvent, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { MapService } from '../map/map.service';
@@ -55,9 +55,7 @@ export class VideoSourceComponent
       this.ngOnDestroy();
       this.ngOnInit();
     } else if (changes.coordinates && !changes.coordinates.isFirstChange()) {
-      const source = this.mapService.getSource<
-        Source & { setCoordinates: Function }
-      >(this.id);
+      const source = this.mapService.getSource<VideoSource>(this.id);
       if (source === undefined) {
         return;
       }

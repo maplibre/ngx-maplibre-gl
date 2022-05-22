@@ -7,7 +7,7 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { VectorSourceSpecification, Source } from 'maplibre-gl';
+import { VectorSourceSpecification, VectorTileSource } from 'maplibre-gl';
 import { fromEvent, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { MapService } from '../map/map.service';
@@ -71,10 +71,7 @@ export class VectorSourceComponent
       (changes.url && !changes.url.isFirstChange()) ||
       (changes.tiles && !changes.tiles.isFirstChange())
     ) {
-      // HM TODO export vector source implementation?
-      const source = this.mapService.getSource<
-        Source & { setUrl: Function; setTiles: Function }
-      >(this.id);
+      const source = this.mapService.getSource<VectorTileSource>(this.id);
       if (source === undefined) {
         return;
       }
