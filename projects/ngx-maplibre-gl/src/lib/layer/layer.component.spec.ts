@@ -9,6 +9,8 @@ describe('LayerComponent', () => {
   class MapServiceSpy {
     addLayer = jasmine.createSpy('addLayer');
     removeLayer = jasmine.createSpy('removeLayer');
+    removeSource = jasmine.createSpy('removeSource');
+    getSource = jasmine.createSpy('getSource');
     setAllLayerPaintProperty = jasmine.createSpy('setAllPaintProperty');
     mapLoaded$ = of(undefined);
     mapInstance = new (class {
@@ -64,6 +66,16 @@ describe('LayerComponent', () => {
       fixture.detectChanges();
       component.ngOnDestroy();
       expect(msSpy.removeLayer).toHaveBeenCalledWith(component.id);
+    });
+
+    it('should remove layer and source on destroy', () => {
+      component.paint = { 'background-color': 'green' };
+      component.removeSource = true;
+      msSpy.getSource.and.returnValues(undefined, component.id, {});
+      fixture.detectChanges();
+      component.ngOnDestroy();
+      expect(msSpy.removeLayer).toHaveBeenCalledWith(component.id);
+      expect(msSpy.removeSource).toHaveBeenCalledWith(component.id);
     });
 
     it('should not remove layer on destroy if not added', () => {
