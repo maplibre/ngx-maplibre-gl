@@ -37,13 +37,13 @@ export class VectorSourceComponent
   private sourceAdded = false;
   private sub = new Subscription();
 
-  constructor(private MapService: MapService) {}
+  constructor(private mapService: MapService) {}
 
   ngOnInit() {
-    const sub1 = this.MapService.mapLoaded$.subscribe(() => {
+    const sub1 = this.mapService.mapLoaded$.subscribe(() => {
       this.init();
-      const sub = fromEvent(<any>this.MapService.mapInstance, 'styledata')
-        .pipe(filter(() => !this.MapService.mapInstance.getSource(this.id)))
+      const sub = fromEvent(this.mapService.mapInstance, 'styledata')
+        .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id)))
         .subscribe(() => {
           this.init();
         });
@@ -72,7 +72,7 @@ export class VectorSourceComponent
       (changes.tiles && !changes.tiles.isFirstChange())
     ) {
       // HM TODO export vector source implementation?
-      const source = this.MapService.getSource<
+      const source = this.mapService.getSource<
         Source & { setUrl: Function; setTiles: Function }
       >(this.id);
       if (source === undefined) {
@@ -91,7 +91,7 @@ export class VectorSourceComponent
   ngOnDestroy() {
     this.sub.unsubscribe();
     if (this.sourceAdded) {
-      this.MapService.removeSource(this.id);
+      this.mapService.removeSource(this.id);
       this.sourceAdded = false;
     }
   }
@@ -108,7 +108,7 @@ export class VectorSourceComponent
       attribution: this.attribution,
       promoteId: this.promoteId,
     };
-    this.MapService.addSource(this.id, source);
+    this.mapService.addSource(this.id, source);
     this.sourceAdded = true;
   }
 }

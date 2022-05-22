@@ -25,13 +25,13 @@ export class GeolocateControlDirective implements AfterContentInit {
   geolocate: EventEmitter<Position> = new EventEmitter<Position>();
 
   constructor(
-    private MapService: MapService,
-    @Host() private ControlComponent: ControlComponent<GeolocateControl>
+    private mapService: MapService,
+    @Host() private controlComponent: ControlComponent<GeolocateControl>
   ) {}
 
   ngAfterContentInit() {
-    this.MapService.mapCreated$.subscribe(() => {
-      if (this.ControlComponent.control) {
+    this.mapService.mapCreated$.subscribe(() => {
+      if (this.controlComponent.control) {
         throw new Error('Another control is already set for this control');
       }
       const options = {
@@ -47,13 +47,13 @@ export class GeolocateControlDirective implements AfterContentInit {
           delete options[tkey];
         }
       });
-      this.ControlComponent.control = new GeolocateControl(options);
-      this.ControlComponent.control.on('geolocate', (data: Position) => {
+      this.controlComponent.control = new GeolocateControl(options);
+      this.controlComponent.control.on('geolocate', (data: Position) => {
         this.geolocate.emit(data);
       });
-      this.MapService.addControl(
-        this.ControlComponent.control,
-        this.ControlComponent.position
+      this.mapService.addControl(
+        this.controlComponent.control,
+        this.controlComponent.position
       );
     });
   }

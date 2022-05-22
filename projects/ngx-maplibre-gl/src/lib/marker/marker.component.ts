@@ -46,7 +46,7 @@ export class MarkerComponent
 
   markerInstance?: Marker;
 
-  constructor(private MapService: MapService) {}
+  constructor(private mapService: MapService) {}
 
   ngOnInit() {
     if (this.feature && this.lngLat) {
@@ -68,7 +68,7 @@ export class MarkerComponent
     }
     if (changes.popupShown && !changes.popupShown.isFirstChange()) {
       changes.popupShown.currentValue
-        ? this.markerInstance!.getPopup().addTo(this.MapService.mapInstance)
+        ? this.markerInstance!.getPopup().addTo(this.mapService.mapInstance)
         : this.markerInstance!.getPopup().remove();
     }
     if (changes.pitchAlignment && !changes.pitchAlignment.isFirstChange()) {
@@ -87,8 +87,8 @@ export class MarkerComponent
   }
 
   ngAfterViewInit() {
-    this.MapService.mapCreated$.subscribe(() => {
-      this.markerInstance = this.MapService.addMarker({
+    this.mapService.mapCreated$.subscribe(() => {
+      this.markerInstance = this.mapService.addMarker({
         markersOptions: {
           offset: this.offset,
           anchor: this.anchor,
@@ -110,7 +110,7 @@ export class MarkerComponent
   }
 
   ngOnDestroy() {
-    this.MapService.removeMarker(this.markerInstance!);
+    this.mapService.removeMarker(this.markerInstance!);
     this.markerInstance = undefined;
   }
 

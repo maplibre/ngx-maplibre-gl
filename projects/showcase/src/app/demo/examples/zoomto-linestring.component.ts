@@ -72,7 +72,7 @@ export class ZoomtoLinestringComponent {
     const coordinates = this.source.data.features[0].geometry.coordinates;
 
     this.bounds = coordinates.reduce((bounds, coord) => {
-      return bounds.extend(<any>coord);
+      return bounds.extend(coord);
     }, new LngLatBounds(coordinates[0], coordinates[0]));
   }
 }

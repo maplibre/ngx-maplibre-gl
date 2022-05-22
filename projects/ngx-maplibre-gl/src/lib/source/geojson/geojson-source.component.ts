@@ -47,7 +47,7 @@ export class GeoJSONSourceComponent
   private sourceAdded = false;
   private featureIdCounter = 0;
 
-  constructor(private MapService: MapService, private zone: NgZone) {}
+  constructor(private mapService: MapService, private zone: NgZone) {}
 
   ngOnInit() {
     if (!this.data) {
@@ -56,10 +56,10 @@ export class GeoJSONSourceComponent
         features: [],
       };
     }
-    const sub1 = this.MapService.mapLoaded$.subscribe(() => {
+    const sub1 = this.mapService.mapLoaded$.subscribe(() => {
       this.init();
-      const sub = fromEvent(<any>this.MapService.mapInstance, 'styledata')
-        .pipe(filter(() => !this.MapService.mapInstance.getSource(this.id)))
+      const sub = fromEvent(this.mapService.mapInstance, 'styledata')
+        .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id)))
         .subscribe(() => {
           this.init();
         });
@@ -93,7 +93,7 @@ export class GeoJSONSourceComponent
     }
     if (changes.data && !changes.data.isFirstChange()) {
       // HM TODO: decide what to do with this
-      const source = this.MapService.getSource<Source & { setData: Function }>(
+      const source = this.mapService.getSource<Source & { setData: Function }>(
         this.id
       );
       if (source === undefined) {
@@ -106,7 +106,7 @@ export class GeoJSONSourceComponent
   ngOnDestroy() {
     this.sub.unsubscribe();
     if (this.sourceAdded) {
-      this.MapService.removeSource(this.id);
+      this.mapService.removeSource(this.id);
       this.sourceAdded = false;
     }
   }
@@ -116,7 +116,7 @@ export class GeoJSONSourceComponent
    * @param clusterId The value of the cluster's cluster_id property.
    */
   async getClusterExpansionZoom(clusterId: number) {
-    const source = this.MapService.getSource<
+    const source = this.mapService.getSource<
       Source & { getClusterExpansionZoom: Function }
     >(this.id);
     return this.zone.run(async () => {
@@ -140,7 +140,7 @@ export class GeoJSONSourceComponent
    * @param clusterId The value of the cluster's cluster_id property.
    */
   async getClusterChildren(clusterId: number) {
-    const source = this.MapService.getSource<
+    const source = this.mapService.getSource<
       Source & { getClusterChildren: Function }
     >(this.id);
     return this.zone.run(async () => {
@@ -168,7 +168,7 @@ export class GeoJSONSourceComponent
    * @param offset The number of features to skip (e.g. for pagination).
    */
   async getClusterLeaves(clusterId: number, limit: number, offset: number) {
-    const source = this.MapService.getSource<
+    const source = this.mapService.getSource<
       Source & { getClusterLeaves: Function }
     >(this.id);
     return this.zone.run(async () => {
@@ -232,10 +232,10 @@ export class GeoJSONSourceComponent
       promoteId: this.promoteId,
       filter: this.filter,
     };
-    this.MapService.addSource(this.id, source);
+    this.mapService.addSource(this.id, source);
     const sub = this.updateFeatureData.pipe(debounceTime(0)).subscribe(() => {
       // HM TODO: fix source defintions in this file
-      const source = this.MapService.getSource<Source & { setData: Function }>(
+      const source = this.mapService.getSource<Source & { setData: Function }>(
         this.id
       );
       if (source === undefined) {

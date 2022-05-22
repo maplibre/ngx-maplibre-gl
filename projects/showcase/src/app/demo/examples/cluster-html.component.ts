@@ -98,7 +98,7 @@ export class ClusterHtmlComponent {
     };
     this.labelLayout = {
       // typings issue
-      'text-field': <any>[
+      'text-field': [
         'number-format',
         ['get', 'mag'],
         { 'min-fraction-digits': 1, 'max-fraction-digits': 1 },

@@ -252,7 +252,7 @@ export class MapService {
     pitch?: number
   ) {
     return this.zone.runOutsideAngular(() => {
-      (<any>this.mapInstance[movingMethod])({
+      (this.mapInstance[movingMethod] as any)({
         ...movingOptions,
         zoom: zoom != null ? zoom : this.mapInstance.getZoom(),
         center: center != null ? center : this.mapInstance.getCenter(),
@@ -442,8 +442,8 @@ export class MapService {
     return this.zone.runOutsideAngular(() => {
       Object.keys(popup.popupOptions).forEach(
         (key) =>
-          (<any>popup.popupOptions)[key] === undefined &&
-          delete (<any>popup.popupOptions)[key]
+          (popup.popupOptions as any)[key] === undefined &&
+          delete (popup.popupOptions as any)[key]
       );
       const popupInstance = new Popup(popup.popupOptions);
       popupInstance.setDOMContent(element);
@@ -467,8 +467,8 @@ export class MapService {
 
   addPopupToMap(popup: Popup, lngLat: LngLatLike, skipOpenEvent = false) {
     return this.zone.runOutsideAngular(() => {
-      if (skipOpenEvent && (<any>popup)._listeners) {
-        delete (<any>popup)._listeners['open'];
+      if (skipOpenEvent && popup._listeners) {
+        delete popup._listeners['open'];
       }
       popup.setLngLat(lngLat);
       popup.addTo(this.mapInstance);
@@ -482,8 +482,8 @@ export class MapService {
   }
 
   removePopupFromMap(popup: Popup, skipCloseEvent = false) {
-    if (skipCloseEvent && (<any>popup)._listeners) {
-      delete (<any>popup)._listeners['close'];
+    if (skipCloseEvent && popup._listeners) {
+      delete popup._listeners['close'];
     }
     this.popupsToRemove.push(popup);
   }
@@ -499,13 +499,13 @@ export class MapService {
     position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
   ) {
     return this.zone.runOutsideAngular(() => {
-      this.mapInstance.addControl(<any>control, position);
+      this.mapInstance.addControl(control, position);
     });
   }
 
   removeControl(control: IControl) {
     return this.zone.runOutsideAngular(() => {
-      this.mapInstance.removeControl(<any>control);
+      this.mapInstance.removeControl(control);
     });
   }
 
@@ -530,7 +530,7 @@ export class MapService {
 
   addImage(imageId: string, data: MapImageData, options?: MapImageOptions) {
     return this.zone.runOutsideAngular(() => {
-      this.mapInstance.addImage(imageId, <any>data, options);
+      this.mapInstance.addImage(imageId, data as any, options);
     });
   }
 
@@ -541,7 +541,8 @@ export class MapService {
   addSource(sourceId: string, source: SourceSpecification) {
     return this.zone.runOutsideAngular(() => {
       Object.keys(source).forEach(
-        (key) => (<any>source)[key] === undefined && delete (<any>source)[key]
+        (key) =>
+          (source as any)[key] === undefined && delete (source as any)[key]
       );
       this.mapInstance.addSource(sourceId, source);
     });
@@ -574,7 +575,7 @@ export class MapService {
     return this.zone.runOutsideAngular(() => {
       Object.keys(paint as any).forEach((key) => {
         // TODO Check for perf, setPaintProperty only on changed paint props maybe
-        this.mapInstance.setPaintProperty(layerId, key, (<any>paint)[key]);
+        this.mapInstance.setPaintProperty(layerId, key, (paint as any)[key]);
       });
     });
   }
@@ -593,7 +594,7 @@ export class MapService {
     return this.zone.runOutsideAngular(() => {
       Object.keys(layout as any).forEach((key) => {
         // TODO Check for perf, setPaintProperty only on changed paint props maybe
-        this.mapInstance.setLayoutProperty(layerId, key, (<any>layout)[key]);
+        this.mapInstance.setLayoutProperty(layerId, key, (layout as any)[key]);
       });
     });
   }
