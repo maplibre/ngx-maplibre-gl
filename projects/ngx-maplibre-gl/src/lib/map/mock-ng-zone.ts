@@ -8,7 +8,7 @@ import { EventEmitter, Injectable, NgZone } from '@angular/core';
  */
 @Injectable()
 export class MockNgZone extends NgZone {
-  onStable: EventEmitter<any> = new EventEmitter(false);
+  onStable: EventEmitter<null> = new EventEmitter(false);
 
   constructor() {
     super({ enableLongStackTrace: false });

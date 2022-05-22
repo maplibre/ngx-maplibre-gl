@@ -67,15 +67,15 @@ export class LayerComponent
   private layerAdded = false;
   private sub: Subscription;
 
-  constructor(private MapService: MapService) {}
+  constructor(private mapService: MapService) {}
 
   ngOnInit() {
-    this.sub = this.MapService.mapLoaded$
+    this.sub = this.mapService.mapLoaded$
       .pipe(
         switchMap(() =>
-          fromEvent(<any>this.MapService.mapInstance, 'styledata').pipe(
+          fromEvent(this.mapService.mapInstance, 'styledata').pipe(
             mapTo(false),
-            filter(() => !this.MapService.mapInstance.getLayer(this.id)),
+            filter(() => !this.mapService.mapInstance.getLayer(this.id)),
             startWith(true)
           )
         )
@@ -88,34 +88,34 @@ export class LayerComponent
       return;
     }
     if (changes.paint && !changes.paint.isFirstChange()) {
-      this.MapService.setAllLayerPaintProperty(
+      this.mapService.setAllLayerPaintProperty(
         this.id,
         changes.paint.currentValue!
       );
     }
     if (changes.layout && !changes.layout.isFirstChange()) {
-      this.MapService.setAllLayerLayoutProperty(
+      this.mapService.setAllLayerLayoutProperty(
         this.id,
         changes.layout.currentValue!
       );
     }
     if (changes.filter && !changes.filter.isFirstChange()) {
-      this.MapService.setLayerFilter(this.id, changes.filter.currentValue!);
+      this.mapService.setLayerFilter(this.id, changes.filter.currentValue!);
     }
     if (changes.before && !changes.before.isFirstChange()) {
-      this.MapService.setLayerBefore(this.id, changes.before.currentValue!);
+      this.mapService.setLayerBefore(this.id, changes.before.currentValue!);
     }
     if (
       (changes.minzoom && !changes.minzoom.isFirstChange()) ||
       (changes.maxzoom && !changes.maxzoom.isFirstChange())
     ) {
-      this.MapService.setLayerZoomRange(this.id, this.minzoom, this.maxzoom);
+      this.mapService.setLayerZoomRange(this.id, this.minzoom, this.maxzoom);
     }
   }
 
   ngOnDestroy() {
     if (this.layerAdded) {
-      this.MapService.removeLayer(this.id);
+      this.mapService.removeLayer(this.id);
     }
     if (this.sub) {
       this.sub.unsubscribe();
@@ -126,7 +126,7 @@ export class LayerComponent
     const layer: SetupLayer = {
       layerOptions: {
         id: this.id,
-        type: <any>this.type,
+        type: this.type,
         source: this.source as string,
         metadata: this.metadata,
         'source-layer': this.sourceLayer,
@@ -152,7 +152,7 @@ export class LayerComponent
         layerTouchCancel: this.layerTouchCancel,
       },
     };
-    this.MapService.addLayer(layer, bindEvents, this.before);
+    this.mapService.addLayer(layer, bindEvents, this.before);
     this.layerAdded = true;
   }
 }

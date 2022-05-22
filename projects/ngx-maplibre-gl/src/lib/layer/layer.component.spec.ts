@@ -39,7 +39,7 @@ describe('LayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LayerComponent);
     component = fixture.componentInstance;
-    msSpy = <any>fixture.debugElement.injector.get<MapService>(MapService);
+    msSpy = fixture.debugElement.injector.get<MapService>(MapService) as any;
     component.id = 'layerId';
   });
 

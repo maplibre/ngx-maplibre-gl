@@ -43,13 +43,13 @@ export class ControlComponent<T extends IControl>
 
   control: T | CustomControl;
 
-  constructor(private MapService: MapService) {}
+  constructor(private mapService: MapService) {}
 
   ngAfterContentInit() {
     if (this.content.nativeElement.childNodes.length) {
       this.control = new CustomControl(this.content.nativeElement);
-      this.MapService.mapCreated$.subscribe(() => {
-        this.MapService.addControl(this.control!, this.position);
+      this.mapService.mapCreated$.subscribe(() => {
+        this.mapService.addControl(this.control!, this.position);
         this.controlAdded = true;
       });
     }
@@ -57,7 +57,7 @@ export class ControlComponent<T extends IControl>
 
   ngOnDestroy() {
     if (this.controlAdded) {
-      this.MapService.removeControl(this.control);
+      this.mapService.removeControl(this.control);
     }
   }
 }

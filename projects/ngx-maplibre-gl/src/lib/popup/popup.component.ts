@@ -45,7 +45,7 @@ export class PopupComponent
 
   popupInstance?: maplibregl.Popup;
 
-  constructor(private MapService: MapService) {}
+  constructor(private mapService: MapService) {}
 
   ngOnInit() {
     if (
@@ -65,9 +65,9 @@ export class PopupComponent
       const newlngLat = changes.lngLat
         ? this.lngLat!
         : <[number, number]>this.feature!.geometry!.coordinates!;
-      this.MapService.removePopupFromMap(this.popupInstance!, true);
+      this.mapService.removePopupFromMap(this.popupInstance!, true);
       const popupInstanceTmp = this.createPopup();
-      this.MapService.addPopupToMap(
+      this.mapService.addPopupToMap(
         popupInstanceTmp,
         newlngLat,
         this.popupInstance!.isOpen()
@@ -77,10 +77,10 @@ export class PopupComponent
     if (changes.marker && !changes.marker.isFirstChange()) {
       const previousMarker: MarkerComponent = changes.marker.previousValue;
       if (previousMarker.markerInstance) {
-        this.MapService.removePopupFromMarker(previousMarker.markerInstance);
+        this.mapService.removePopupFromMarker(previousMarker.markerInstance);
       }
       if (this.marker && this.marker.markerInstance && this.popupInstance) {
-        this.MapService.addPopupToMarker(
+        this.mapService.addPopupToMarker(
           this.marker.markerInstance,
           this.popupInstance
         );
@@ -103,16 +103,16 @@ export class PopupComponent
   ngOnDestroy() {
     if (this.popupInstance) {
       if (this.lngLat || this.feature) {
-        this.MapService.removePopupFromMap(this.popupInstance);
+        this.mapService.removePopupFromMap(this.popupInstance);
       } else if (this.marker && this.marker.markerInstance) {
-        this.MapService.removePopupFromMarker(this.marker.markerInstance);
+        this.mapService.removePopupFromMarker(this.marker.markerInstance);
       }
     }
     this.popupInstance = undefined;
   }
 
   private createPopup() {
-    return this.MapService.createPopup(
+    return this.mapService.createPopup(
       {
         popupOptions: {
           closeButton: this.closeButton,
@@ -134,16 +134,16 @@ export class PopupComponent
   }
 
   private addPopup(popup: Popup) {
-    this.MapService.mapCreated$.subscribe(() => {
+    this.mapService.mapCreated$.subscribe(() => {
       if (this.lngLat || this.feature) {
-        this.MapService.addPopupToMap(
+        this.mapService.addPopupToMap(
           popup,
           this.lngLat
             ? this.lngLat
             : <[number, number]>this.feature!.geometry!.coordinates!
         );
       } else if (this.marker && this.marker.markerInstance) {
-        this.MapService.addPopupToMarker(this.marker.markerInstance, popup);
+        this.mapService.addPopupToMarker(this.marker.markerInstance, popup);
       } else {
         throw new Error(
           'mgl-popup need either lngLat/marker/feature to be set'

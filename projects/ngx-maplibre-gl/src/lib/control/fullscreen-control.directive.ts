@@ -17,25 +17,25 @@ export class FullscreenControlDirective implements AfterContentInit {
   @Input() container?: HTMLElement;
   @HostListener('window:webkitfullscreenchange', ['$event.target'])
   onFullscreen() {
-    this.MapService.mapInstance.resize();
+    this.mapService.mapInstance.resize();
   }
 
   constructor(
-    private MapService: MapService,
-    @Host() private ControlComponent: ControlComponent<FullscreenControl>
+    private mapService: MapService,
+    @Host() private controlComponent: ControlComponent<FullscreenControl>
   ) {}
 
   ngAfterContentInit() {
-    this.MapService.mapCreated$.subscribe(() => {
-      if (this.ControlComponent.control) {
+    this.mapService.mapCreated$.subscribe(() => {
+      if (this.controlComponent.control) {
         throw new Error('Another control is already set for this control');
       }
-      this.ControlComponent.control = new FullscreenControl({
+      this.controlComponent.control = new FullscreenControl({
         container: this.container,
       });
-      this.MapService.addControl(
-        this.ControlComponent.control,
-        this.ControlComponent.position
+      this.mapService.addControl(
+        this.controlComponent.control,
+        this.controlComponent.position
       );
     });
   }

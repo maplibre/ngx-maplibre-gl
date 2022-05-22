@@ -194,15 +194,15 @@ export class MapComponent
   @Output() styleImageMissing = new EventEmitter<{ id: string } & EventData>();
 
   get mapInstance(): Map {
-    return this.MapService.mapInstance;
+    return this.mapService.mapInstance;
   }
 
   @ViewChild('container', { static: true }) mapContainer: ElementRef;
 
-  constructor(private MapService: MapService) {}
+  constructor(private mapService: MapService) {}
 
   ngAfterViewInit() {
-    this.MapService.setup({
+    this.mapService.setup({
       mapOptions: {
         collectResourceTiming: this.collectResourceTiming,
         container: this.mapContainer.nativeElement,
@@ -249,79 +249,79 @@ export class MapComponent
       mapEvents: this,
     });
     if (this.cursorStyle) {
-      this.MapService.changeCanvasCursor(this.cursorStyle);
+      this.mapService.changeCanvasCursor(this.cursorStyle);
     }
   }
 
   ngOnDestroy() {
-    this.MapService.destroyMap();
+    this.mapService.destroyMap();
   }
 
   async ngOnChanges(changes: SimpleChanges) {
-    await this.MapService.mapCreated$.toPromise();
+    await this.mapService.mapCreated$.toPromise();
     if (changes.cursorStyle && !changes.cursorStyle.isFirstChange()) {
-      this.MapService.changeCanvasCursor(changes.cursorStyle.currentValue);
+      this.mapService.changeCanvasCursor(changes.cursorStyle.currentValue);
     }
     if (changes.minZoom && !changes.minZoom.isFirstChange()) {
-      this.MapService.updateMinZoom(changes.minZoom.currentValue);
+      this.mapService.updateMinZoom(changes.minZoom.currentValue);
     }
     if (changes.maxZoom && !changes.maxZoom.isFirstChange()) {
-      this.MapService.updateMaxZoom(changes.maxZoom.currentValue);
+      this.mapService.updateMaxZoom(changes.maxZoom.currentValue);
     }
     if (changes.minPitch && !changes.minPitch.isFirstChange()) {
-      this.MapService.updateMinPitch(changes.minPitch.currentValue);
+      this.mapService.updateMinPitch(changes.minPitch.currentValue);
     }
     if (changes.maxPitch && !changes.maxPitch.isFirstChange()) {
-      this.MapService.updateMaxPitch(changes.maxPitch.currentValue);
+      this.mapService.updateMaxPitch(changes.maxPitch.currentValue);
     }
     if (
       changes.renderWorldCopies &&
       !changes.renderWorldCopies.isFirstChange()
     ) {
-      this.MapService.updateRenderWorldCopies(
+      this.mapService.updateRenderWorldCopies(
         changes.renderWorldCopies.currentValue
       );
     }
     if (changes.scrollZoom && !changes.scrollZoom.isFirstChange()) {
-      this.MapService.updateScrollZoom(changes.scrollZoom.currentValue);
+      this.mapService.updateScrollZoom(changes.scrollZoom.currentValue);
     }
     if (changes.dragRotate && !changes.dragRotate.isFirstChange()) {
-      this.MapService.updateDragRotate(changes.dragRotate.currentValue);
+      this.mapService.updateDragRotate(changes.dragRotate.currentValue);
     }
     if (changes.touchPitch && !changes.touchPitch.isFirstChange()) {
-      this.MapService.updateTouchPitch(changes.touchPitch.currentValue);
+      this.mapService.updateTouchPitch(changes.touchPitch.currentValue);
     }
     if (changes.touchZoomRotate && !changes.touchZoomRotate.isFirstChange()) {
-      this.MapService.updateTouchZoomRotate(
+      this.mapService.updateTouchZoomRotate(
         changes.touchZoomRotate.currentValue
       );
     }
     if (changes.doubleClickZoom && !changes.doubleClickZoom.isFirstChange()) {
-      this.MapService.updateDoubleClickZoom(
+      this.mapService.updateDoubleClickZoom(
         changes.doubleClickZoom.currentValue
       );
     }
     if (changes.keyboard && !changes.keyboard.isFirstChange()) {
-      this.MapService.updateKeyboard(changes.keyboard.currentValue);
+      this.mapService.updateKeyboard(changes.keyboard.currentValue);
     }
     if (changes.dragPan && !changes.dragPan.isFirstChange()) {
-      this.MapService.updateDragPan(changes.dragPan.currentValue);
+      this.mapService.updateDragPan(changes.dragPan.currentValue);
     }
     if (changes.boxZoom && !changes.boxZoom.isFirstChange()) {
-      this.MapService.updateBoxZoom(changes.boxZoom.currentValue);
+      this.mapService.updateBoxZoom(changes.boxZoom.currentValue);
     }
     if (changes.style && !changes.style.isFirstChange()) {
-      this.MapService.updateStyle(changes.style.currentValue);
+      this.mapService.updateStyle(changes.style.currentValue);
     }
     if (changes.maxBounds && !changes.maxBounds.isFirstChange()) {
-      this.MapService.updateMaxBounds(changes.maxBounds.currentValue);
+      this.mapService.updateMaxBounds(changes.maxBounds.currentValue);
     }
     if (
       changes.fitBounds &&
       changes.fitBounds.currentValue &&
       !changes.fitBounds.isFirstChange()
     ) {
-      this.MapService.fitBounds(
+      this.mapService.fitBounds(
         changes.fitBounds.currentValue,
         this.fitBoundsOptions
       );
@@ -338,7 +338,7 @@ export class MapComponent
           '[ngx-mapbox-gl] center / zoom / pitch / fitBounds inputs are being overridden by fitScreenCoordinates input'
         );
       }
-      this.MapService.fitScreenCoordinates(
+      this.mapService.fitScreenCoordinates(
         changes.fitScreenCoordinates.currentValue,
         this.bearing ? this.bearing[0] : 0,
         this.movingOptions
@@ -352,7 +352,7 @@ export class MapComponent
       !changes.bearing &&
       !changes.pitch
     ) {
-      this.MapService.panTo(this.center!, this.panToOptions);
+      this.mapService.panTo(this.center!, this.panToOptions);
     } else if (
       (changes.center && !changes.center.isFirstChange()) ||
       (changes.zoom && !changes.zoom.isFirstChange()) ||
@@ -361,7 +361,7 @@ export class MapComponent
         !changes.fitScreenCoordinates) ||
       (changes.pitch && !changes.pitch.isFirstChange())
     ) {
-      this.MapService.move(
+      this.mapService.move(
         this.movingMethod,
         this.movingOptions,
         changes.zoom && this.zoom ? this.zoom[0] : undefined,

@@ -28,7 +28,7 @@ const geoJSONStyle: StyleSpecification = {
     },
   },
   version: 8,
-  layers: <any>[
+  layers: [
     {
       id: 'countries',
       type: 'fill',

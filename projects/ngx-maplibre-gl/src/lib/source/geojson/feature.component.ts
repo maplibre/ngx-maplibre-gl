@@ -26,12 +26,12 @@ export class FeatureComponent
 
   constructor(
     @Inject(forwardRef(() => GeoJSONSourceComponent))
-    private GeoJSONSourceComponent: GeoJSONSourceComponent
+    private geoJSONSourceComponent: GeoJSONSourceComponent
   ) {}
 
   ngOnInit() {
     if (!this.id) {
-      this.id = this.GeoJSONSourceComponent._getNewFeatureId();
+      this.id = this.geoJSONSourceComponent._getNewFeatureId();
     }
     this.feature = {
       type: this.type,
@@ -39,15 +39,15 @@ export class FeatureComponent
       properties: this.properties ? this.properties : {},
     };
     this.feature.id = this.id;
-    this.GeoJSONSourceComponent._addFeature(this.feature);
+    this.geoJSONSourceComponent._addFeature(this.feature);
   }
 
   ngOnDestroy() {
-    this.GeoJSONSourceComponent._removeFeature(this.feature);
+    this.geoJSONSourceComponent._removeFeature(this.feature);
   }
 
   updateCoordinates(coordinates: number[]) {
     (<GeoJSON.Point>this.feature.geometry).coordinates = coordinates;
-    this.GeoJSONSourceComponent.updateFeatureData.next(undefined);
+    this.geoJSONSourceComponent.updateFeatureData.next(undefined);
   }
 }
