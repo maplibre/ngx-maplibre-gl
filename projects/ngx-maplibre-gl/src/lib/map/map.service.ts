@@ -25,6 +25,7 @@ import {
   SymbolLayerSpecification,
   RasterLayerSpecification,
   CircleLayerSpecification,
+  FilterSpecification,
 } from 'maplibre-gl';
 import { AsyncSubject, Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -599,7 +600,10 @@ export class MapService {
     });
   }
 
-  setLayerFilter(layerId: string, filter: any[]) {
+  setLayerFilter(
+    layerId: string,
+    filter: FilterSpecification | null | undefined
+  ) {
     return this.zone.runOutsideAngular(() => {
       this.mapInstance.setFilter(layerId, filter);
     });
