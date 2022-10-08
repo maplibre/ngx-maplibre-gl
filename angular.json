@@ -153,9 +153,8 @@
       }
     }
   },
-  "defaultProject": "ngx-maplibre-gl",
   "cli": {
     "analytics": "2b945751-c795-4db1-b8ac-172907057b11",
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": ["@angular-eslint/schematics"]
   }
 }
