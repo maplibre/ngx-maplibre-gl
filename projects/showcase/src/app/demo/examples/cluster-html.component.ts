@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import {
   CircleLayerSpecification,
   SymbolLayerSpecification,
+  ExpressionSpecification,
 } from 'maplibre-gl';
 
 /**
@@ -66,10 +67,22 @@ export class ClusterHtmlComponent {
 
   constructor() {
     // filters for classifying earthquakes into five categories based on magnitude
-    const mag1 = ['<', ['get', 'mag'], 2];
-    const mag2 = ['all', ['>=', ['get', 'mag'], 2], ['<', ['get', 'mag'], 3]];
-    const mag3 = ['all', ['>=', ['get', 'mag'], 3], ['<', ['get', 'mag'], 4]];
-    const mag4 = ['all', ['>=', ['get', 'mag'], 4], ['<', ['get', 'mag'], 5]];
+    const mag1 = ['<', ['get', 'mag'], 2] as ExpressionSpecification;
+    const mag2 = [
+      'all',
+      ['>=', ['get', 'mag'], 2],
+      ['<', ['get', 'mag'], 3],
+    ] as ExpressionSpecification;
+    const mag3 = [
+      'all',
+      ['>=', ['get', 'mag'], 3],
+      ['<', ['get', 'mag'], 4],
+    ] as ExpressionSpecification;
+    const mag4 = [
+      'all',
+      ['>=', ['get', 'mag'], 4],
+      ['<', ['get', 'mag'], 5],
+    ] as ExpressionSpecification;
     const mag5 = ['>=', ['get', 'mag'], 5];
 
     this.clusterProperties = {
