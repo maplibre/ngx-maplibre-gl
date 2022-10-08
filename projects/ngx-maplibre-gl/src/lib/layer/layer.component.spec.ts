@@ -1,6 +1,5 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { BackgroundLayerSpecification } from 'maplibre-gl';
 import { of } from 'rxjs';
 import { MapService, SetupLayer } from '../map/map.service';
 import { LayerComponent } from './layer.component';
@@ -47,21 +46,21 @@ describe('LayerComponent', () => {
 
   describe('Init/Destroy tests', () => {
     it('should init with custom inputs', (done: DoneFn) => {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       component.paint = { 'background-color': 'green' };
       component.type = 'background';
       msSpy.addLayer.and.callFake((options: SetupLayer) => {
         expect(options.layerOptions.id).toEqual(component.id);
-        expect(
-          (<BackgroundLayerSpecification>options.layerOptions).paint![
-            'background-color'
-          ]
-        ).toEqual('green');
+        expect((options.layerOptions as any).paint['background-color']).toEqual(
+          'green'
+        );
         done();
       });
       fixture.detectChanges();
     });
 
     it('should remove layer on destroy', () => {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       component.paint = { 'background-color': 'green' };
       fixture.detectChanges();
       component.ngOnDestroy();
@@ -69,6 +68,7 @@ describe('LayerComponent', () => {
     });
 
     it('should remove layer and source on destroy', () => {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       component.paint = { 'background-color': 'green' };
       component.removeSource = true;
       msSpy.getSource.and.returnValues(undefined, component.id, {});
@@ -88,7 +88,9 @@ describe('LayerComponent', () => {
     it('should update paint', () => {
       component.id = 'layerId';
       component.paint = {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         'background-color': 'green',
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         'background-opacity': 0.5,
       };
       fixture.detectChanges();

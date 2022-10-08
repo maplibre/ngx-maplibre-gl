@@ -24,7 +24,7 @@ export class GeoJSONSourceComponent
   @Input() id: string;
 
   /* Dynamic inputs */
-  @Input() data?: GeoJSONSourceSpecification['data'];
+  @Input() data: GeoJSONSourceSpecification['data'];
   @Input() maxzoom?: GeoJSONSourceSpecification['maxzoom'];
   @Input() attribution?: GeoJSONSourceSpecification['attribution'];
   @Input() buffer?: GeoJSONSourceSpecification['buffer'];

@@ -68,7 +68,7 @@
             ],
             "styles": ["projects/showcase/src/styles.css"],
             "scripts": [
-              "node_modules/marked/lib/marked.js",
+              "node_modules/marked/marked.min.js",
               "node_modules/prismjs/prism.js"
             ]
           },
@@ -153,9 +153,8 @@
       }
     }
   },
-  "defaultProject": "ngx-maplibre-gl",
   "cli": {
     "analytics": "2b945751-c795-4db1-b8ac-172907057b11",
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": ["@angular-eslint/schematics"]
   }
 }
