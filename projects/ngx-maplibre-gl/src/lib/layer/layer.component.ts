@@ -15,7 +15,7 @@ import {
   MapLayerTouchEvent,
 } from 'maplibre-gl';
 import { fromEvent, Subscription } from 'rxjs';
-import { filter, mapTo, startWith, switchMap } from 'rxjs/operators';
+import { filter, map, startWith, switchMap } from 'rxjs/operators';
 import { MapService, SetupLayer } from '../map/map.service';
 import { EventData, LayerEvents } from '../map/map.types';
 
@@ -79,7 +79,7 @@ export class LayerComponent
       .pipe(
         switchMap(() =>
           fromEvent(this.mapService.mapInstance, 'styledata').pipe(
-            mapTo(false),
+            map(() => false),
             filter(() => !this.mapService.mapInstance.getLayer(this.id)),
             startWith(true)
           )
@@ -140,6 +140,7 @@ export class LayerComponent
         type: this.type,
         source: this.source as string,
         metadata: this.metadata,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         'source-layer': this.sourceLayer,
         minzoom: this.minzoom,
         maxzoom: this.maxzoom,

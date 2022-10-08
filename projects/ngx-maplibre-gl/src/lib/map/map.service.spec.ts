@@ -35,6 +35,7 @@ const geoJSONStyle: StyleSpecification = {
       source: 'world',
       layout: {},
       paint: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         'fill-color': '#6F788A',
       },
     },
