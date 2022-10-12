@@ -37,5 +37,5 @@ jobs:
       - name: Run lint
         run: npm run lint
         
-      #- name: Run e2e tests
-      #  run: npm run e2e
+      - name: Run e2e tests
+        run: npm run e2e
