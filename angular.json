@@ -131,18 +131,33 @@
               "projects/showcase/src/assets"
             ]
           }
-        }
-      }
-    },
-    "showcase-e2e": {
-      "root": "projects/showcase-e2e/",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
+        },
+        "cypress-run": {
+          "builder": "@cypress/schematic:cypress",
           "options": {
-            "protractorConfig": "projects/showcase-e2e/protractor.conf.js",
-            "devServerTarget": "showcase:serve"
+            "devServerTarget": "showcase:serve",
+            "configFile": "projects/showcase/cypress.config.ts"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "showcase:serve:production"
+            }
+          }
+        },
+        "cypress-open": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "watch": true,
+            "headless": false,
+            "configFile": "projects/showcase/cypress.config.ts"
+          }
+        },
+        "e2e": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "showcase:serve",
+            "watch": true,
+            "headless": false
           },
           "configurations": {
             "production": {

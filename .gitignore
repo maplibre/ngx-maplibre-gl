@@ -33,6 +33,7 @@ node_modules
 npm-debug.log
 testem.log
 /typings
+/cypress
 
 # System Files
 .DS_Store

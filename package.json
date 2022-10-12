@@ -10,11 +10,13 @@
     "publish:showcase": "ngh -d dist/showcase/",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
+    "e2e": "ng run showcase:cypress-run",
     "release": "standard-version -a",
     "update-version": "./update_version.sh",
     "prettier": "prettier --config ./.prettierrc --write \"projects/**/*{.ts,.js,.json,.css,.scss}\"",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "lint-staged": {
     "*.{js,ts,md,html,css,json}": "prettier --config ./.prettierrc --write"
@@ -62,6 +64,7 @@
     "@angular-eslint/template-parser": "14.1.2",
     "@angular/cli": "^14.2.5",
     "@angular/compiler-cli": "^14.2.5",
+    "@cypress/schematic": "^2.1.1",
     "@ngrx/schematics": "^14.3.2",
     "@types/jasmine": "~3.6.0",
     "@types/jasminewd2": "^2.0.6",
@@ -70,6 +73,7 @@
     "@typescript-eslint/parser": "^5.36.2",
     "angular-cli-ghpages": "^0.6.0",
     "commitizen": "^4.0.3",
+    "cypress": "latest",
     "cz-conventional-changelog": "^3.1.0",
     "eslint": "^8.23.0",
     "husky": "^4.2.1",
