@@ -53,7 +53,8 @@
           "options": {
             "allowedCommonJsDependencies": [
               "@mapbox/mapbox-sdk",
-              "suggestions"
+              "suggestions",
+              "maplibre-gl"
             ],
             "aot": true,
             "outputPath": "dist/showcase",

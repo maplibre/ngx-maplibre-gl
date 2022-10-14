@@ -12,8 +12,7 @@
     "e2e": "ng run showcase:cypress-run",
     "prettier": "prettier --config ./.prettierrc --write \"projects/**/*{.ts,.js,.json,.css,.scss}\"",
     "commit": "git-cz",
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:open": "ng run showcase:cypress-open"
   },
   "lint-staged": {
     "*.{js,ts,md,html,css,json}": "prettier --config ./.prettierrc --write"
@@ -66,6 +65,8 @@
     "@types/jasmine": "~3.6.0",
     "@types/jasminewd2": "^2.0.6",
     "@types/lodash-es": "^4.17.3",
+    "@types/pixelmatch": "^5.2.4",
+    "@types/pngjs": "^6.0.1",
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@typescript-eslint/parser": "^5.36.2",
     "angular-cli-ghpages": "^0.6.0",
@@ -84,7 +85,8 @@
     "karma-mocha-reporter": "^2.2.5",
     "lint-staged": "^10.0.7",
     "ng-packagr": "^14.2.1",
-    "pixel-diff": "^1.0.1",
+    "pixelmatch": "^5.3.0",
+    "pngjs": "^6.0.0",
     "prettier": "2.2.1",
     "standard-version": "^9.1.0",
     "ts-node": "^9.1.1",
