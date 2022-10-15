@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   RasterLayerSpecification,
   RasterSourceSpecification,
@@ -22,12 +22,17 @@ import {
   `,
   styleUrls: ['./examples.css', './set-style.component.css'],
 })
-export class SetStyleComponent implements OnInit {
+export class SetStyleComponent implements OnInit, OnDestroy {
   layerId = 'streets';
   style: string | StyleSpecification;
+  origConsoleWarn = console.warn;
 
   ngOnInit() {
     this.changeStyle(this.layerId);
+    console.warn = () => {}; // supress setStyle warn
+  }
+  ngOnDestroy(): void {
+    console.warn = this.origConsoleWarn;
   }
 
   changeStyle(layerId: string) {
