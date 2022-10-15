@@ -13,6 +13,7 @@ import { LngLatLike } from 'maplibre-gl';
       [centerWithPanTo]="true"
       [pitch]="pitch"
       movingMethod="jumpTo"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-geojson-source *ngIf="data" id="trace" [data]="data">
       </mgl-geojson-source>
