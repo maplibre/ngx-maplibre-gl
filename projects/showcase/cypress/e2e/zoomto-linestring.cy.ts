@@ -8,21 +8,9 @@ describe('Zoomto Linestring', () => {
     cy.visit('/demo/zoomto-linestring');
     cy.get('canvas');
     cy.wait(2000);
-    driver.storeCanvasHeight();
-    driver.storeCanvasWidth();
-    driver.addImage();
+    driver.initReferenceImage();
     cy.get('.zoom-button').click();
     cy.wait(4000);
-    cy.get('canvas')
-      .then((c) => {
-        return pixelmatch(
-          driver.getImageBitmapBuffer(),
-          driver.toImageBitmapBuffer(c[0]),
-          null,
-          driver.width,
-          driver.height
-        );
-      })
-      .should('be.greaterThan', 0);
+    driver.compareToReference().should('be.greaterThan', 0);
   });
 });
