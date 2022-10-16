@@ -1,17 +1,4 @@
-import { browser, element, by, ExpectedConditions as EC } from 'protractor';
-const browserLogs = require('protractor-browser-logs');
-
 describe('Generic runtime error check', () => {
-  let logs: any;
-
-  beforeEach(() => {
-    logs = browserLogs(browser);
-  });
-
-  afterEach(() => {
-    return logs.verify();
-  });
-
   [
     'display-map',
     'custom-style-id',
@@ -41,11 +28,10 @@ describe('Generic runtime error check', () => {
     'polygon-popup-on-click',
     'add-image-missing-generated',
   ].forEach((route: string) => {
-    it(`should display a map without errors for /${route}`, async () => {
-      await browser.get(`/demo/${route}`);
-      const elm = element(by.tagName('canvas'));
-      await browser.wait(EC.presenceOf(elm), 2000);
-      await browser.sleep(2000);
+    it(`should display a map without errors for /${route}`, () => {
+      cy.visit(`/demo/${route}`);
+      cy.get('canvas').should('exist');
+      cy.wait(2000);
     });
   });
 });
