@@ -14,10 +14,10 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Use Node.js 16 x64
-        uses: actions/setup-node@v2-beta
+        uses: actions/setup-node@v3
         with:
           node-version: 16
           architecture: x64
@@ -40,8 +40,8 @@ jobs:
       - name: Run e2e tests
         run: npm run e2e
 
-      - name: Upload Cypress Screenshots and Videos
-        uses: actions/upload-artifact@v2
+      - name: Upload Cypress Videos
+        uses: actions/upload-artifact@v3
         with:
           name: cypress-artifacts
           path: cypress/videos
