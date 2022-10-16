@@ -41,8 +41,8 @@ jobs:
         run: npm run e2e
 
       - name: Upload Cypress Screenshots and Videos
-          uses: actions/upload-artifact@v2
-          with:
-            name: cypress-artifacts
-            path: cypress/videos
-          if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: cypress-artifacts
+          path: cypress/videos
+        if: ${{ failure() }}
