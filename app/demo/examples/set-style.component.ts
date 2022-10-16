@@ -8,7 +8,12 @@ import {
 @Component({
   selector: 'showcase-demo',
   template: `
-    <mgl-map [style]="style" [zoom]="[13]" [center]="[4.899, 52.372]">
+    <mgl-map
+      [style]="style"
+      [zoom]="[13]"
+      [center]="[4.899, 52.372]"
+      [preserveDrawingBuffer]="true"
+    >
     </mgl-map>
     <mat-radio-group [ngModel]="layerId" (ngModelChange)="changeStyle($event)">
       <mat-radio-button value="streets">streets</mat-radio-button>
@@ -18,7 +23,7 @@ import {
   styleUrls: ['./examples.css', './set-style.component.css'],
 })
 export class SetStyleComponent implements OnInit {
-  layerId = 'basic';
+  layerId = 'streets';
   style: string | StyleSpecification;
 
   ngOnInit() {
