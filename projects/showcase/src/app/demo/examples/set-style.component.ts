@@ -28,7 +28,6 @@ export class SetStyleComponent implements OnInit {
 
   ngOnInit() {
     this.changeStyle(this.layerId);
-    console.warn = () => {}; // supress setStyle warn
   }
 
   changeStyle(layerId: string) {
