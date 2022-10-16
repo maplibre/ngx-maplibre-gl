@@ -22,17 +22,13 @@ import {
   `,
   styleUrls: ['./examples.css', './set-style.component.css'],
 })
-export class SetStyleComponent implements OnInit, OnDestroy {
+export class SetStyleComponent implements OnInit {
   layerId = 'streets';
   style: string | StyleSpecification;
-  origConsoleWarn = console.warn;
 
   ngOnInit() {
     this.changeStyle(this.layerId);
     console.warn = () => {}; // supress setStyle warn
-  }
-  ngOnDestroy(): void {
-    console.warn = this.origConsoleWarn;
   }
 
   changeStyle(layerId: string) {

@@ -1,4 +1,6 @@
 /// <reference types="cypress" />
+// Make this test first to allow chrome to load things into memory...?
+
 describe('Custom control', () => {
   it('should show custom control and pop up an alert box', () => {
     cy.visit('/demo/ngx-custom-control');
