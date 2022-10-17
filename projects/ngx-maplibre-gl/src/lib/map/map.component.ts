@@ -77,6 +77,7 @@ export class MapComponent
   @Input() bounds?: MapOptions['bounds']; // Use fitBounds for dynamic input
   @Input() antialias?: MapOptions['antialias'];
   @Input() locale: MapOptions['locale'];
+  @Input() cooperativeGestures?: MapOptions['cooperativeGestures'];
 
   /* Dynamic inputs */
   @Input() minZoom?: MapOptions['minZoom'];
@@ -245,6 +246,7 @@ export class MapComponent
         fitBoundsOptions: this.fitBoundsOptions,
         antialias: this.antialias,
         locale: this.locale,
+        cooperativeGestures: this.cooperativeGestures,
       },
       mapEvents: this,
     });
