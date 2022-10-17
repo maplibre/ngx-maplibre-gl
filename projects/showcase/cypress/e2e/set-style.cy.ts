@@ -13,10 +13,10 @@ describe('Set style', () => {
     driver.compareToReference().should('be.greaterThan', 0);
     cy.get('mat-radio-button').contains('streets').click();
     cy.wait(5000);
-    driver.compareToReference().should('equal', 0);
     cy.window().then((win) => {
       (win.console.warn as any).restore();
       cy.spy(win.console, 'warn');
     });
+    driver.compareToReference().should('equal', 0);
   });
 });
