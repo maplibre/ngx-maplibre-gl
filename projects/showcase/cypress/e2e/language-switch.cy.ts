@@ -1,20 +1,23 @@
-import { E2eDriver } from './driver';
+import { E2eDriver } from '../support/e2e-driver';
 
 describe('Language switch', () => {
   let driver = new E2eDriver();
+
+  beforeEach(() => {
+    driver.when
+      .visit('/demo/language-switch')
+      .when.wait(2000)
+      .when.clickLanguageButton('French')
+      .when.waitForLanguageToChange()
+      .when.takeImageSnapshot()
+      .when.clickLanguageButton('Russian')
+      .when.waitForLanguageToChange();
+  });
+
   it('should change language', () => {
-    cy.visit('/demo/language-switch');
-    cy.wait(2000);
-    cy.get('.lang-button').contains('French').click();
-    cy.wait(5000);
-    cy.get('.lang-button').contains('French').click();
-    cy.wait(7000);
-    driver.initReferenceImage();
-    cy.get('.lang-button').contains('Russian').click();
-    cy.wait(7000); // wait for language to change
-    driver.compareToReference().should('be.greaterThan', 0);
-    cy.get('.lang-button').contains('French').click();
-    cy.wait(7000); // wait for language to change
-    driver.compareToReference().should('equal', 0);
+    expect(driver.get.isCurrentImageEqualToSnapshot());
+
+    driver.when.clickLanguageButton('French').when.waitForLanguageToChange();
+    expect(driver.get.isCurrentImageEqualToSnapshot());
   });
 });
