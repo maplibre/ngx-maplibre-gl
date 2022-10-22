@@ -9,8 +9,6 @@ describe('Language switch', () => {
       .when.wait(2000)
       .when.clickLanguageButton('French')
       .when.waitForLanguageToChange()
-      .when.clickLanguageButton('French')
-      .when.waitForLanguageToChange()
       .when.takeImageSnapshot()
       .when.clickLanguageButton('Russian')
       .when.waitForLanguageToChange();
