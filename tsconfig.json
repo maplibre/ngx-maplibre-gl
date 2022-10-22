@@ -28,5 +28,6 @@
         "name": "typescript-tslint-plugin"
       }
     ]
-  }
+  },
+  "exclude": ["**/cypress*.config.ts", "**/cypress"]
 }
