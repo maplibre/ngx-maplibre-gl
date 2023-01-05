@@ -65,6 +65,7 @@ import { ZoomtoLinestringComponent } from './examples/zoomto-linestring.componen
 import { MglMapResizeDirective } from './mgl-map-resize.directive';
 import { StackblitzEditGuard } from './stackblitz-edit/stackblitz-edit-guard.service';
 import { StackblitzEditComponent } from './stackblitz-edit/stackblitz-edit.component';
+import { TerrainComponent } from './examples/terrain.component';
 
 @NgModule({
   imports: [
@@ -135,6 +136,7 @@ import { StackblitzEditComponent } from './stackblitz-edit/stackblitz-edit.compo
     CustomAttributionComponent,
     CustomLocaleComponent,
     MarkerAlignmentComponent,
+    TerrainComponent,
   ],
   exports: [DemoIndexComponent],
 })

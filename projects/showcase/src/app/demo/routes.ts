@@ -37,6 +37,7 @@ import { PopupComponent } from './examples/popup.component';
 import { SatelliteMapComponent } from './examples/satellite-map.component';
 import { SetPopupComponent } from './examples/set-popup.component';
 import { SetStyleComponent } from './examples/set-style.component';
+import { TerrainComponent } from './examples/terrain.component';
 import { ToggleLayersComponent } from './examples/toggle-layers.component';
 import { ZoomtoLinestringComponent } from './examples/zoomto-linestring.component';
 import { StackblitzEditGuard } from './stackblitz-edit/stackblitz-edit-guard.service';
@@ -83,6 +84,11 @@ export const DEMO_ROUTES: Routes = [
         path: 'satellite-map',
         component: SatelliteMapComponent,
         data: { label: 'Display a satellite map', cat: Category.STYLES },
+      },
+      {
+        path: 'terrain',
+        component: TerrainComponent,
+        data: { label: 'Display 3D Terrain', cat: Category.STYLES },
       },
       {
         path: 'add-image-generated',
