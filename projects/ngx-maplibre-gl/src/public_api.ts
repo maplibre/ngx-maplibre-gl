@@ -24,6 +24,7 @@ export * from './lib/control/navigation-control.directive';
 export * from './lib/control/attribution-control.directive';
 export * from './lib/control/scale-control.directive';
 export * from './lib/markers-for-clusters/markers-for-clusters.component';
+export * from './lib/control/terrain-control.directive';
 
 // Expose MapService for ngx-maplibre-gl extensions
 export * from './lib/map/map.service';
