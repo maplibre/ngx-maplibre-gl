@@ -8,14 +8,14 @@ import { Component } from '@angular/core';
       [style]="
         'https://api.maptiler.com/maps/hybrid/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
       "
-      [zoom]="[12.67]"
-      [center]="[-111.39819145202637, 45.262744821527804]"
-      [pitch]="60"
-      [bearing]="-102"
+      [zoom]="[12]"
+      [center]="[11.39085, 47.27574]"
+      [pitch]="52"
     >
       <mgl-raster-dem-source
         id="terrainSource"
-        url="https://api.maptiler.com/tiles/terrain-rgb-v2/tiles.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL"
+        url="https://demotiles.maplibre.org/terrain-tiles/tiles.json"
+        tileSize="256"
       ></mgl-raster-dem-source>
       <mgl-control
         mglTerrain
