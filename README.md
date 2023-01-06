@@ -31,6 +31,7 @@ This is a fork of [ngx-mapbox-gl](https://github.com/Wykks/ngx-mapbox-gl) and I 
   - mglAttribution
   - mglGeolocate
   - mglNavigation
+  - mglTerrain
 - [mgl-marker](docs/API.md#mgl-marker-mapbox-gl-api)
 - [mgl-popup](docs/API.md#mgl-popup-mapbox-gl-api)
 - [mgl-marker-cluster](docs/API.md#ngx-mgl-marker-cluster-supercluster-api)

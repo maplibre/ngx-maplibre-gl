@@ -65,7 +65,9 @@ import { ZoomtoLinestringComponent } from './examples/zoomto-linestring.componen
 import { MglMapResizeDirective } from './mgl-map-resize.directive';
 import { StackblitzEditGuard } from './stackblitz-edit/stackblitz-edit-guard.service';
 import { StackblitzEditComponent } from './stackblitz-edit/stackblitz-edit.component';
-import { TerrainComponent } from './examples/terrain.component';
+import { TerrainMapStyleComponent } from './examples/terrain-map-style.component';
+import { TerrainMapComponent } from './examples/terrain-map.component';
+import { NgxTerrainSourceComponent } from './examples/ngx-terrain-control.component';
 
 @NgModule({
   imports: [
@@ -136,7 +138,9 @@ import { TerrainComponent } from './examples/terrain.component';
     CustomAttributionComponent,
     CustomLocaleComponent,
     MarkerAlignmentComponent,
-    TerrainComponent,
+    TerrainMapStyleComponent,
+    TerrainMapComponent,
+    NgxTerrainSourceComponent,
   ],
   exports: [DemoIndexComponent],
 })

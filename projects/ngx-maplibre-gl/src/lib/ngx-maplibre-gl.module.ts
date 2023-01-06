@@ -6,6 +6,7 @@ import { FullscreenControlDirective } from './control/fullscreen-control.directi
 import { GeolocateControlDirective } from './control/geolocate-control.directive';
 import { NavigationControlDirective } from './control/navigation-control.directive';
 import { ScaleControlDirective } from './control/scale-control.directive';
+import { TerrainControlDirective } from './control/terrain-control.directive';
 import { DraggableDirective } from './draggable/draggable.directive';
 import { ImageComponent } from './image/image.component';
 import { LayerComponent } from './layer/layer.component';
@@ -52,6 +53,7 @@ import { VideoSourceComponent } from './source/video-source.component';
     PointDirective,
     ClusterPointDirective,
     MarkersForClustersComponent,
+    TerrainControlDirective,
   ],
   exports: [
     MapComponent,
@@ -77,6 +79,7 @@ import { VideoSourceComponent } from './source/video-source.component';
     PointDirective,
     ClusterPointDirective,
     MarkersForClustersComponent,
+    TerrainControlDirective,
   ],
 })
 export class NgxMapLibreGLModule {}
