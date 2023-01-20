@@ -68,6 +68,7 @@ import { StackblitzEditComponent } from './stackblitz-edit/stackblitz-edit.compo
 import { TerrainMapStyleComponent } from './examples/terrain-map-style.component';
 import { TerrainMapComponent } from './examples/terrain-map.component';
 import { NgxTerrainSourceComponent } from './examples/ngx-terrain-control.component';
+import { MapTestingHelperDirective } from '../helper/map-testing-helper.directive';
 
 @NgModule({
   imports: [
@@ -141,6 +142,7 @@ import { NgxTerrainSourceComponent } from './examples/ngx-terrain-control.compon
     TerrainMapStyleComponent,
     TerrainMapComponent,
     NgxTerrainSourceComponent,
+    MapTestingHelperDirective,
   ],
   exports: [DemoIndexComponent],
 })

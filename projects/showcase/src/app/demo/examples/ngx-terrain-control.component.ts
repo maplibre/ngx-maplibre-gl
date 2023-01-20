@@ -4,7 +4,6 @@ import { Component } from '@angular/core';
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      #map
       [style]="
         'https://api.maptiler.com/maps/hybrid/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
       "
@@ -17,6 +16,12 @@ import { Component } from '@angular/core';
         url="https://demotiles.maplibre.org/terrain-tiles/tiles.json"
         tileSize="256"
       ></mgl-raster-dem-source>
+      <mgl-control
+        mglNavigation
+        showCompass="true"
+        showZoom="true"
+        visualizePitch="true"
+      ></mgl-control>
       <mgl-control
         mglTerrain
         source="terrainSource"

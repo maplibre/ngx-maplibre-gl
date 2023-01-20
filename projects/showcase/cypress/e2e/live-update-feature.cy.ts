@@ -1,13 +1,26 @@
-import { E2eDriver } from './driver';
+import { E2eDriver } from '../support/e2e-driver';
 
-describe('Live update feature', () => {
-  const driver = new E2eDriver();
-  it('should move the map', () => {
-    cy.visit('/demo/live-update-feature');
-    cy.get('canvas').should('exist');
-    cy.wait(6000);
-    driver.initReferenceImage();
-    cy.wait(700);
-    driver.compareToReference().should('be.greaterThan', 0);
+describe('Live Update', () => {
+  context('Given I am on the Live Update Feature showcase', () => {
+    let driver = new E2eDriver();
+
+    beforeEach(() => {
+      driver
+        .visitMapPage('/demo/live-update-feature')
+
+        // Note: do not wait for map to idle because this demo is constantly panning
+
+        .takeImageSnapshot();
+    });
+
+    context('When I wait two seconds', () => {
+      beforeEach(() => {
+        driver.when.wait(2000);
+      });
+
+      it('Then I should see the map image change and the map center coordinates are different', () => {
+        driver.assert.isNotSameAsSnapshot().assert.mapHasPanned();
+      });
+    });
   });
 });

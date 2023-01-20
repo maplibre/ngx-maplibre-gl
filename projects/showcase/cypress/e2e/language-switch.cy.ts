@@ -1,23 +1,52 @@
 import { E2eDriver } from '../support/e2e-driver';
 
 describe('Language switch', () => {
-  let driver = new E2eDriver();
+  context(
+    'Given I am on the Language Switch showcase and French is selected',
+    () => {
+      let driver = new E2eDriver();
 
-  beforeEach(() => {
-    driver.when
-      .visit('/demo/language-switch')
-      .when.wait(2000)
-      .when.clickLanguageButton('French')
-      .when.waitForLanguageToChange()
-      .when.takeImageSnapshot()
-      .when.clickLanguageButton('Russian')
-      .when.waitForLanguageToChange();
-  });
+      beforeEach(() => {
+        driver
+          .visitMapPage('/demo/language-switch')
+          .waitForMapToIdle()
 
-  it('should change language', () => {
-    expect(driver.get.isCurrentImageEqualToSnapshot());
+          // Start in French for the baseline
+          .when.clickLanguageButton('French')
+          .waitForMapToIdle()
+          .takeImageSnapshot();
+      });
 
-    driver.when.clickLanguageButton('French').when.waitForLanguageToChange();
-    expect(driver.get.isCurrentImageEqualToSnapshot());
-  });
+      context('When I click on the Russian button', () => {
+        beforeEach(() => {
+          // Switch to Russian
+          driver.when.clickLanguageButton('Russian').waitForMapToIdle();
+        });
+
+        it('Then I should see the map image change', () => {
+          driver.assert.isNotSameAsSnapshot();
+        });
+      });
+
+      context(
+        'When I click the Russian button and then click the French button',
+        () => {
+          beforeEach(() => {
+            // Switch to Russian
+            driver.when
+              .clickLanguageButton('Russian')
+              .waitForMapToIdle()
+
+              // Switch back to French
+              .when.clickLanguageButton('French')
+              .waitForMapToIdle();
+          });
+
+          it('Then I should see the original image', () => {
+            driver.assert.isSameAsSnapshot();
+          });
+        }
+      );
+    }
+  );
 });
