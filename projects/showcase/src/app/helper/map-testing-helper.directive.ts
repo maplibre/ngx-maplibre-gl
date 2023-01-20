@@ -7,7 +7,7 @@ import { MapComponent } from 'ngx-maplibre-gl';
 })
 export class MapTestingHelperDirective implements OnInit, OnDestroy {
   // Since the Angular environment is production by default, our e2e tests don't
-  // have a good way to reference the map component or underlying MapLibra-GL instance
+  // have a good way to reference the map component or underlying MapLibre-GL instance
   // in order to check the state of things beyond the DOM. This directive adds some
   // behavior to expose information as a global object that tests can access.
 
