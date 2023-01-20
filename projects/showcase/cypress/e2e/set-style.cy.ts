@@ -22,7 +22,7 @@ describe('Set style', () => {
     });
 
     context(
-      'When I click  the "from code" radio button and then click the "streets" radio button',
+      'When I click the "from code" radio button and then click the "streets" radio button',
       () => {
         beforeEach(() => {
           driver.when
@@ -32,6 +32,8 @@ describe('Set style', () => {
         });
 
         it('Then I should see the original map image', () => {
+          // .waitForMapToIdle(timeoutMs) was not working consistently here, maybe due to
+          // maptiler requests timing out. Reverting back to .wait(ms) while I look into it.
           driver.when.wait(5000).assert.isSameAsSnapshot();
         });
       }
