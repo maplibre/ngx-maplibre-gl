@@ -12,7 +12,10 @@ export class MapTestingHelperDirective implements OnInit, OnDestroy {
   // behavior to expose information as a global object that tests can access.
 
   constructor(private map: MapComponent) {
-    this.map.preserveDrawingBuffer = true;
+    if ((window as any).Cypress != null) {
+      console.info('Cypress detected. Setting preserveDrawingBuffer=true');
+      this.map.preserveDrawingBuffer = true;
+    }
   }
 
   @HostListener('idle', ['$event']) onMapIdle(data: any) {
