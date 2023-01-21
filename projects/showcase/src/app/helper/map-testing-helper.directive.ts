@@ -12,34 +12,41 @@ export class MapTestingHelperDirective implements OnInit, OnDestroy {
   // behavior to expose information as a global object that tests can access.
 
   constructor(private map: MapComponent) {
-    if ((window as any).Cypress != null) {
+    if (window.Cypress != null) {
       console.info('Cypress detected. Setting preserveDrawingBuffer=true');
       this.map.preserveDrawingBuffer = true;
     }
   }
 
   @HostListener('idle', ['$event']) onMapIdle(data: any) {
-    (window as any).mglMapTestHelper.map = data.target;
-    (window as any).mglMapTestHelper.idle = true;
+    window.mglMapTestHelper.map = data.target;
+    window.mglMapTestHelper.idle = true;
   }
 
   @HostListener('render', ['$event']) onMapRender(data: any) {
-    (window as any).mglMapTestHelper.map = data.target;
-    (window as any).mglMapTestHelper.idle = false;
+    window.mglMapTestHelper.map = data.target;
+    window.mglMapTestHelper.idle = false;
   }
 
   @HostListener('mapLoad', ['$event']) onMapLoad(data: any) {
-    (window as any).mglMapTestHelper.map = data.target;
-    (window as any).mglMapTestHelper.loaded = true;
+    window.mglMapTestHelper.map = data.target;
+    window.mglMapTestHelper.loaded = true;
   }
 
   ngOnInit() {
-    (window as any).mglMapTestHelper = {
+    window.mglMapTestHelper = {
       mapComponent: this.map,
     };
   }
 
   ngOnDestroy(): void {
-    (window as any).mglMapTestHelper = undefined;
+    window.mglMapTestHelper = undefined;
+  }
+}
+
+declare global {
+  interface Window {
+    mglMapTestHelper: any;
+    Cypress: any;
   }
 }
