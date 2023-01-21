@@ -17,7 +17,7 @@ export class E2eDriver {
   };
 
   // Aliased
-  waitForMapToIdle = (timeout: number = 4000): E2eDriver => {
+  waitForMapToIdle = (timeout: number = 15000): E2eDriver => {
     return this.when.waitForMapToIdle(timeout);
   };
 

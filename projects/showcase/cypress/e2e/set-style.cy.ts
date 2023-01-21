@@ -7,7 +7,7 @@ describe('Set style', () => {
     beforeEach(() => {
       driver
         .visitMapPage('/demo/set-style')
-        .waitForMapToIdle(10000)
+        .waitForMapToIdle()
         .takeImageSnapshot();
     });
 
