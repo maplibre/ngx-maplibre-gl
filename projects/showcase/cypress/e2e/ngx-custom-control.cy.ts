@@ -1,15 +1,21 @@
-/// <reference types="cypress" />
-// Make this test first to allow chrome to load things into memory...?
+import { E2eDriver } from '../support/e2e-driver';
 
 describe('Custom control', () => {
-  it('should show custom control and pop up an alert box', () => {
-    cy.visit('/demo/ngx-custom-control');
-    cy.get('canvas').should('not.be.null');
-    const button = cy.get('.custom-control');
-    button.should('have.text', ' Hello ');
-    button.click();
-    cy.on('window:alert', (text) => {
-      expect(text).to.contains('Hello');
+  context('Given I am on the Custom Control showcase', () => {
+    let driver = new E2eDriver();
+
+    beforeEach(() => {
+      driver.visitMapPage('/demo/ngx-custom-control').waitForMapToIdle();
+    });
+
+    context('When I click on the "Hello" button', () => {
+      beforeEach(() => {
+        driver.assert.customHelloButtonExists().when.clickHelloCustomButton();
+      });
+
+      it('Then I should see an alert', () => {
+        driver.assert.customPopupContainsHello();
+      });
     });
   });
 });

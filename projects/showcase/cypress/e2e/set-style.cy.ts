@@ -1,22 +1,42 @@
-import { E2eDriver } from './driver';
+import { E2eDriver } from '../support/e2e-driver';
 
 describe('Set style', () => {
-  const driver = new E2eDriver();
-  it('should change the style', () => {
-    console.warn = () => {};
-    cy.visit('/demo/set-style');
-    cy.wait(20000);
-    cy.get('canvas').should('exist');
-    driver.initReferenceImage();
-    cy.get('mat-radio-button').contains('from code').click();
-    cy.wait(10000);
-    driver.compareToReference().should('be.greaterThan', 0);
-    cy.get('mat-radio-button').contains('streets').click();
-    cy.wait(20000);
-    cy.window().then((win) => {
-      (win.console.warn as any).restore();
-      cy.spy(win.console, 'warn');
+  context('Given I am on the Set Style showcase', () => {
+    let driver = new E2eDriver();
+
+    beforeEach(() => {
+      driver
+        .visitMapPage('/demo/set-style')
+        .waitForMapToIdle(10000)
+        .takeImageSnapshot();
     });
-    driver.compareToReference().should('equal', 0);
+
+    context('When I click on the "from code" radio button', () => {
+      beforeEach(() => {
+        driver.when.clickFromCodeRadioButton();
+      });
+
+      it('Then I should see the map image change', () => {
+        driver.waitForMapToIdle().assert.isNotSameAsSnapshot();
+      });
+    });
+
+    context(
+      'When I click the "from code" radio button and then click the "streets" radio button',
+      () => {
+        beforeEach(() => {
+          driver.when
+            .clickFromCodeRadioButton()
+            .waitForMapToIdle()
+            .when.clickStreetsRadioButton();
+        });
+
+        it('Then I should see the original map image', () => {
+          // .waitForMapToIdle(timeoutMs) was not working consistently here, maybe due to
+          // maptiler requests timing out. Reverting back to .wait(ms) while I look into it.
+          driver.when.wait(5000).assert.isSameAsSnapshot();
+        });
+      }
+    );
   });
 });
