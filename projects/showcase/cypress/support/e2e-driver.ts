@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+import Sinon from 'cypress/types/sinon';
 import pixelmatch from 'pixelmatch';
 import { PNG } from 'pngjs';
 
@@ -8,7 +9,7 @@ export class E2eDriver {
   private width: number;
   private height: number;
   private referenceImageBuffer: Buffer;
-  private alertShown: any;
+  private alertShown: Cypress.Agent<Sinon.SinonStub<any[], any>>;
 
   visitMapPage = (url: string): E2eDriver => {
     cy.visit(url);
