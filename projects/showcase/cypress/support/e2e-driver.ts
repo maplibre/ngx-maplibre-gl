@@ -9,11 +9,11 @@ export class E2eDriver {
   private width: number;
   private height: number;
   private referenceImageBuffer: Buffer;
-  private alertShown: Cypress.Agent<Sinon.SinonStub<any[], any>>;
+  private alertStub: Cypress.Agent<Sinon.SinonStub<any[], any>>;
 
   visitMapPage = (url: string): E2eDriver => {
     cy.visit(url);
-    this.alertShown = cy.stub().as('alertShown');
+    this.alertStub = cy.stub().as('alertStub');
     return this;
   };
 
@@ -57,14 +57,6 @@ export class E2eDriver {
       cy.get('.lang-button').contains(language).click();
       return this;
     },
-    clickEnableTerrainControlButton: (): E2eDriver => {
-      cy.get('.maplibregl-ctrl-terrain').click();
-      return this;
-    },
-    clickDisableTerrainControlButton: (): E2eDriver => {
-      cy.get('.maplibregl-ctrl-terrain-enabled').click();
-      return this;
-    },
     clickPopupCloseButton: (): E2eDriver => {
       cy.get('.maplibregl-popup-close-button').click();
       return this;
@@ -86,7 +78,7 @@ export class E2eDriver {
       return this;
     },
     clickHelloCustomButton: (): E2eDriver => {
-      cy.on('window:alert', this.alertShown);
+      cy.on('window:alert', this.alertStub);
       cy.get('.custom-control').click();
       return this;
     },
@@ -109,14 +101,6 @@ export class E2eDriver {
       cy.window()
         .its('mglMapTestHelper.loaded', { timeout: 10000 })
         .should('equal', true);
-      return this;
-    },
-    mapTerrainPropertyDoesNotExists: (): E2eDriver => {
-      cy.window().its('mglMapTestHelper.map.terrain').should('be.null');
-      return this;
-    },
-    mapTerrainPropertyExists: (): E2eDriver => {
-      cy.window().its('mglMapTestHelper.map.terrain').should('not.be.null');
       return this;
     },
     mapHasPanned: (): E2eDriver => {
@@ -158,7 +142,7 @@ export class E2eDriver {
       return this;
     },
     customPopupContainsHello: (): E2eDriver => {
-      cy.get('@alertShown').should('have.been.calledOnceWith', 'Hello');
+      cy.get('@alertStub').should('have.been.calledOnceWith', 'Hello');
       return this;
     },
   };
