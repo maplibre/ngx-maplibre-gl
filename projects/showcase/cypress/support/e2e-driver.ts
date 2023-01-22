@@ -41,7 +41,12 @@ export class E2eDriver {
       cy.wait(ms);
       return this;
     },
-    waitForMapToIdle: (timeout: number = 4000): E2eDriver => {
+    waitForFetch: (url: string, method: string = 'GET'): E2eDriver => {
+      cy.intercept(method, url).as('awaitFetch');
+      cy.wait('@awaitFetch', { timeout: 30000 });
+      return this;
+    },
+    waitForMapToIdle: (timeout: number = 30000): E2eDriver => {
       cy.window()
         .its('mglMapTestHelper.idle', { timeout: timeout })
         .should('equal', true);

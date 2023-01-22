@@ -28,13 +28,16 @@ describe('Set style', () => {
           driver.when
             .clickFromCodeRadioButton()
             .waitForMapToIdle()
-            .when.clickStreetsRadioButton();
+            .when.clickStreetsRadioButton()
+
+            // The switch back to the streets style fetches a sprite sheet - we can use this
+            // as a reliable await target just before the map is fully rendered and idle (and
+            // only then should we compare to the snapshot)
+            .when.waitForFetch('**/streets/sprite.png');
         });
 
         it('Then I should see the original map image', () => {
-          // .waitForMapToIdle(timeoutMs) was not working consistently here, maybe due to
-          // maptiler requests timing out. Reverting back to .wait(ms) while I look into it.
-          driver.when.wait(5000).assert.isSameAsSnapshot();
+          driver.when.waitForMapToIdle().assert.isSameAsSnapshot();
         });
       }
     );
