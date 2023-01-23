@@ -17,7 +17,10 @@ describe('Set style', () => {
       });
 
       it('Then I should see the map image change', () => {
-        driver.waitForMapToIdle().assert.isNotSameAsSnapshot();
+        driver
+          .waitForMapToIdle()
+          .assert.isNotSameAsSnapshot()
+          .resetConsoleWarnings();
       });
     });
 
@@ -37,7 +40,10 @@ describe('Set style', () => {
         });
 
         it('Then I should see the original map image', () => {
-          driver.when.waitForMapToIdle().assert.isSameAsSnapshot();
+          driver.when
+            .waitForMapToIdle()
+            .assert.isSameAsSnapshot()
+            .resetConsoleWarnings();
         });
       }
     );

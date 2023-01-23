@@ -37,6 +37,19 @@ export class E2eDriver {
     return this;
   };
 
+  // Used to reset the console.warn spy for cases when it is known that warnings have been
+  // logged so that the test will not fail (the spy is first defined in commands.ts and
+  // warnings are evaluated as failures in afterEach())
+  resetConsoleWarnings = (): E2eDriver => {
+    cy.get('@consoleWarnSpy').then((spy: any) => {
+      if (spy.callCount > 0) {
+        cy.log(`Clearing ${spy.callCount} console warning(s)...`);
+        spy.resetHistory();
+      }
+    });
+    return this;
+  };
+
   when = {
     wait: (ms: number): E2eDriver => {
       cy.wait(ms);

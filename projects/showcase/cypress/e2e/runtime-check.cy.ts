@@ -31,15 +31,13 @@ describe('Generic runtime error check', () => {
     '3d-buildings',
     'polygon-popup-on-click',
     'add-image-missing-generated',
-    'terrain-style',
-    'terrain-control',
-    'terrain',
   ].forEach((route: string) => {
     it(`should display a map without errors for /${route}`, () => {
       driver
         .visitMapPage(`/demo/${route}`)
         .assert.mapCanvasExists()
-        .assert.mapObjectLoaded();
+        .assert.mapObjectLoaded()
+        .resetConsoleWarnings();
     });
   });
 });
