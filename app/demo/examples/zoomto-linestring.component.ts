@@ -12,7 +12,6 @@ import { LngLatBounds } from 'maplibre-gl';
       [fitBoundsOptions]="{
         padding: 20
       }"
-      [preserveDrawingBuffer]="true"
     >
       <mgl-control>
         <button mat-raised-button class="zoom-button" (click)="zoomToBounds()">
