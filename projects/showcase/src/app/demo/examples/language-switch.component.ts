@@ -11,7 +11,6 @@ import { Map } from 'maplibre-gl';
       [zoom]="[2.9]"
       [center]="[16.05, 48]"
       (mapLoad)="map = $event"
-      [preserveDrawingBuffer]="true"
     >
       <mgl-control>
         <button

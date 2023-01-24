@@ -1,4 +1,8 @@
+import { E2eDriver } from '../support/e2e-driver';
+
 describe('Generic runtime error check', () => {
+  let driver = new E2eDriver();
+
   [
     'display-map',
     'custom-style-id',
@@ -29,9 +33,11 @@ describe('Generic runtime error check', () => {
     'add-image-missing-generated',
   ].forEach((route: string) => {
     it(`should display a map without errors for /${route}`, () => {
-      cy.visit(`/demo/${route}`);
-      cy.get('canvas').should('exist');
-      cy.wait(2000);
+      driver
+        .visitMapPage(`/demo/${route}`)
+        .assert.mapCanvasExists()
+        .assert.mapObjectLoaded()
+        .resetConsoleWarnings();
     });
   });
 });

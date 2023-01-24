@@ -43,8 +43,8 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 Cypress.on('window:before:load', (win) => {
-  cy.spy(win.console, 'error');
-  cy.spy(win.console, 'warn');
+  cy.spy(win.console, 'error').as('consoleErrorSpy');
+  cy.spy(win.console, 'warn').as('consoleWarnSpy');
 });
 
 afterEach(() => {

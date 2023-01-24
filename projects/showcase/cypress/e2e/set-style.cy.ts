@@ -1,22 +1,51 @@
-import { E2eDriver } from './driver';
+import { E2eDriver } from '../support/e2e-driver';
 
 describe('Set style', () => {
-  const driver = new E2eDriver();
-  it('should change the style', () => {
-    console.warn = () => {};
-    cy.visit('/demo/set-style');
-    cy.wait(20000);
-    cy.get('canvas').should('exist');
-    driver.initReferenceImage();
-    cy.get('mat-radio-button').contains('from code').click();
-    cy.wait(10000);
-    driver.compareToReference().should('be.greaterThan', 0);
-    cy.get('mat-radio-button').contains('streets').click();
-    cy.wait(20000);
-    cy.window().then((win) => {
-      (win.console.warn as any).restore();
-      cy.spy(win.console, 'warn');
+  context('Given I am on the Set Style showcase', () => {
+    let driver = new E2eDriver();
+
+    beforeEach(() => {
+      driver
+        .visitMapPage('/demo/set-style')
+        .waitForMapToIdle()
+        .takeImageSnapshot();
     });
-    driver.compareToReference().should('equal', 0);
+
+    context('When I click on the "from code" radio button', () => {
+      beforeEach(() => {
+        driver.when.clickFromCodeRadioButton();
+      });
+
+      it('Then I should see the map image change', () => {
+        driver
+          .waitForMapToIdle()
+          .assert.isNotSameAsSnapshot()
+          .resetConsoleWarnings();
+      });
+    });
+
+    context(
+      'When I click the "from code" radio button and then click the "streets" radio button',
+      () => {
+        beforeEach(() => {
+          driver.when
+            .clickFromCodeRadioButton()
+            .waitForMapToIdle()
+            .when.clickStreetsRadioButton()
+
+            // The switch back to the streets style fetches a sprite sheet - we can use this
+            // as a reliable await target just before the map is fully rendered and idle (and
+            // only then should we compare to the snapshot)
+            .when.waitForFetch('**/streets/sprite.png');
+        });
+
+        it('Then I should see the original map image', () => {
+          driver.when
+            .waitForMapToIdle()
+            .assert.isSameAsSnapshot()
+            .resetConsoleWarnings();
+        });
+      }
+    );
   });
 });

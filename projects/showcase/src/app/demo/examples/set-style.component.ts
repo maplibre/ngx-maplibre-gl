@@ -8,12 +8,7 @@ import {
 @Component({
   selector: 'showcase-demo',
   template: `
-    <mgl-map
-      [style]="style"
-      [zoom]="[13]"
-      [center]="[4.899, 52.372]"
-      [preserveDrawingBuffer]="true"
-    >
+    <mgl-map [style]="style" [zoom]="[13]" [center]="[4.899, 52.372]">
     </mgl-map>
     <mat-radio-group [ngModel]="layerId" (ngModelChange)="changeStyle($event)">
       <mat-radio-button value="streets">streets</mat-radio-button>

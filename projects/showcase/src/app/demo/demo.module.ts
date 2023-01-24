@@ -15,6 +15,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RouterModule } from '@angular/router';
 import { NgxMapLibreGLModule } from 'projects/ngx-maplibre-gl/src/public_api';
+import { MapTestingHelperDirective } from '../helper/map-testing-helper.directive';
 import { LayoutModule } from '../shared/layout/layout.module';
 import { DemoIndexComponent } from './demo-index.component';
 import { Display3dBuildingsComponent } from './examples/3d-buildings.component';
@@ -135,6 +136,7 @@ import { StackblitzEditComponent } from './stackblitz-edit/stackblitz-edit.compo
     CustomAttributionComponent,
     CustomLocaleComponent,
     MarkerAlignmentComponent,
+    MapTestingHelperDirective,
   ],
   exports: [DemoIndexComponent],
 })

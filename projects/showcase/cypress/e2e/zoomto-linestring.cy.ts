@@ -1,16 +1,27 @@
-import pixelmatch from 'pixelmatch';
-import { E2eDriver } from './driver';
+import { E2eDriver } from '../support/e2e-driver';
 
 describe('Zoomto Linestring', () => {
-  const driver = new E2eDriver();
+  context('Given I am on the Zoomto Linestring showcase', () => {
+    let driver = new E2eDriver();
 
-  it('should zoom to linestring', () => {
-    cy.visit('/demo/zoomto-linestring');
-    cy.get('canvas');
-    cy.wait(2000);
-    driver.initReferenceImage();
-    cy.get('.zoom-button').click();
-    cy.wait(4000);
-    driver.compareToReference().should('be.greaterThan', 0);
+    beforeEach(() => {
+      driver
+        .visitMapPage('/demo/zoomto-linestring')
+        .waitForMapToIdle()
+        .takeImageSnapshot();
+    });
+
+    context('When I click the "Zoom to bounds" button', () => {
+      beforeEach(() => {
+        driver.when.clickZoomToBoundsButton();
+      });
+
+      it('Then I should see the map zoom in', () => {
+        driver
+          .waitForMapToIdle()
+          .assert.isNotSameAsSnapshot()
+          .assert.mapHasZoomedIn();
+      });
+    });
   });
 });
