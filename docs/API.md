@@ -84,7 +84,7 @@ Dynamic:
 - **mapMouseOver**: [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
 - **mapMouseOut**: [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
 - **mapContextMenu**: [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
-- **mapTouchStart**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **mapTouchStart**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent)
 - **mapTouchEnd**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent)
 - **mapTouchMove**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent)
 - **mapTouchCancel**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent)
