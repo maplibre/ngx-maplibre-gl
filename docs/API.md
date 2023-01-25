@@ -68,6 +68,7 @@ Dynamic:
 - [ngx] **panToOptions** Options passed to panTo (https://maplibre.org/maplibre-gl-js-docs/api/map/#map#panto)
 - [ngx] **centerWithPanTo**: `boolean` If set to true, then [panTo](https://maplibre.org/maplibre-gl-js-docs/api/map/#map#panto) is used instead of the specified method in **movingMethod** (if only **center** is changed, see live-update-feature example)
 - [ngx] **cursorStyle**: `string` change the cursor of the map canvas (`canvas.style.cursor`).
+- [ngx] **terrain**: `TerrainSpecification` (requires a raster DEM source, defined either via the `style` or a `mgl-raster-dem-source`).
 
 ### Outputs
 
@@ -265,6 +266,25 @@ Dynamic:
 - [**maxzoom**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-raster-maxzoom): `number`
 - [**tileSize**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-raster-tileSize): `number`
 
+## mgl-raster-dem-source [Mapbox GL style spec](https://docs.mapbox.com/mapbox-gl-js/style-spec/sources/#raster-dem)
+
+### Inputs
+
+Init only:
+
+- **id**: `string` _(Required)_
+
+Dynamic:
+
+- [**url**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-dem-url): `string`
+- [**tiles**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-dem-tiles): `string[]`
+- [**bounds**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-dem-bounds): `number[]`
+- [**minzoom**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-dem-minzoom): `number`
+- [**maxzoom**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-dem-maxzoom): `number`
+- [**tileSize**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-dem-tileSize): `number`
+- [**attribution**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-dem-attribution): `string`
+- [**encoding**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-dem-encoding): `'mapbox' | 'terrarium'` _(Default: `'mapbox'`)_
+
 ## mgl-vector-source [Mapbox GL style spec](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-vector)
 
 ### Inputs
@@ -351,6 +371,12 @@ Dynamic:
   <mgl-control mglNavigation></mgl-control>
   ...
   <mgl-control mglScale unit="imperial" position="top-right"></mgl-control>
+  ...
+  <mgl-control
+    mglTerrain
+    source="rasterDemSource"
+    exaggeration="3.1"
+  ></mgl-control>
 </mgl-map>
 ```
 
@@ -359,19 +385,24 @@ Dynamic:
 Init only:
 
 - **position**: `'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'`
-- [**mglAttribution**](https://www.mapbox.com/mapbox-gl-js/api#attributioncontrol) \* **compact**: `boolean`
-- [**mglFullscreen**](https://www.mapbox.com/mapbox-gl-js/api/#fullscreencontrol)
-- [**mglGeolocate**](https://www.mapbox.com/mapbox-gl-js/api/#geolocatecontrol)
-  _ **positionOptions**: [`PositionOptions`](https://developer.mozilla.org/en-US/docs/Web/API/PositionOptions)
-  _ **fitBoundsOptions**: [`FitBoundsOptions`](https://www.mapbox.com/mapbox-gl-js/api/#map#fitbounds)
-  _ **trackUserLocation**: `boolean`
-  _ **showUserLocation**: `boolean`
-- [**mglNavigation**](https://www.mapbox.com/mapbox-gl-js/api/#navigationcontrol)
-  _ **showCompass**: `boolean`
-  _ **showZoom**: `boolean`
-- [**mglScale**](https://www.mapbox.com/mapbox-gl-js/api/#scalecontrol)
-  _ **maxWidth**: `number`
-  _ **unit**: `'imperial' | 'metric' | 'nautical'` (dynamic input)
+- [**mglAttribution**](https://maplibre.org/maplibre-gl-js-docs/api/markers/#attributioncontrol)
+  - **compact**: `boolean`
+- [**mglFullscreen**](https://maplibre.org/maplibre-gl-js-docs/api/markers/#fullscreencontrol)
+- [**mglGeolocate**](https://maplibre.org/maplibre-gl-js-docs/api/markers/#geolocatecontrol)
+  - **positionOptions**: [`PositionOptions`](https://developer.mozilla.org/en-US/docs/Web/API/PositionOptions)
+  - **fitBoundsOptions**: [`FitBoundsOptions`](https://maplibre.org/maplibre-gl-js-docs/api/map/#map#fitbounds)
+  - **trackUserLocation**: `boolean`
+  - **showUserLocation**: `boolean`
+- [**mglNavigation**](https://maplibre.org/maplibre-gl-js-docs/api/markers/#navigationcontrol)
+  - **showCompass**: `boolean`
+  - **showZoom**: `boolean`
+  - **visualizePitch**: `boolean`
+- [**mglScale**](https://maplibre.org/maplibre-gl-js-docs/api/markers/#scalecontrol)
+  - **maxWidth**: `number`
+  - **unit**: `'imperial' | 'metric' | 'nautical'` (dynamic input)
+- **mglTerrain**
+  - **source**: `string |`[`Source`](https://maplibre.org/maplibre-gl-js-docs/api/sources/) _(Note: a raster DEM Source)_
+  - **exaggeration**: `number` (1-100)
 
 ## mgl-marker [Mapbox GL API](https://www.mapbox.com/mapbox-gl-js/api/#marker)
 

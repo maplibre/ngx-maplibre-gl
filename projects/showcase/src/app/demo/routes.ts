@@ -31,12 +31,15 @@ import { NgxCustomMarkerIconsComponent } from './examples/ngx-custom-marker-icon
 import { NgxDragAPointComponent } from './examples/ngx-drag-a-point.component';
 import { NgxGeoJSONLineComponent } from './examples/ngx-geojson-line.component';
 import { NgxScaleControlComponent } from './examples/ngx-scale-control.component';
+import { NgxTerrainSourceComponent } from './examples/ngx-terrain-control.component';
 import { PolygonPopupOnClickComponent } from './examples/polygon-popup-on-click.component';
 import { PopupOnClickComponent } from './examples/popup-on-click.component';
 import { PopupComponent } from './examples/popup.component';
 import { SatelliteMapComponent } from './examples/satellite-map.component';
 import { SetPopupComponent } from './examples/set-popup.component';
 import { SetStyleComponent } from './examples/set-style.component';
+import { TerrainMapStyleComponent } from './examples/terrain-map-style.component';
+import { TerrainMapComponent } from './examples/terrain-map.component';
 import { ToggleLayersComponent } from './examples/toggle-layers.component';
 import { ZoomtoLinestringComponent } from './examples/zoomto-linestring.component';
 import { StackblitzEditGuard } from './stackblitz-edit/stackblitz-edit-guard.service';
@@ -49,6 +52,7 @@ export enum Category {
   USER_INTERACTION = 'User interaction',
   CAMERA = 'Camera',
   CONTROLS_AND_OVERLAYS = 'Controls and overlays',
+  TERRAIN = '3D Terrain',
 }
 
 export const DEMO_ROUTES: Routes = [
@@ -330,6 +334,30 @@ export const DEMO_ROUTES: Routes = [
         path: 'marker-alignment',
         component: MarkerAlignmentComponent,
         data: { label: 'Marker alignment options', cat: Category.CAMERA },
+      },
+      {
+        path: 'terrain-style',
+        component: TerrainMapStyleComponent,
+        data: {
+          label: 'Initialize 3D Terrain using style',
+          cat: Category.TERRAIN,
+        },
+      },
+      {
+        path: 'terrain-control',
+        component: NgxTerrainSourceComponent,
+        data: {
+          label: 'Terrain Control',
+          cat: Category.TERRAIN,
+        },
+      },
+      {
+        path: 'terrain',
+        component: TerrainMapComponent,
+        data: {
+          label: '[NGX] Initialize 3D Terrain declaratively',
+          cat: Category.TERRAIN,
+        },
       },
       { path: '**', redirectTo: 'display-map' },
     ],

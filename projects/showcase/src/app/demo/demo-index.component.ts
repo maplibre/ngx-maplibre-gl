@@ -52,6 +52,7 @@ export class DemoIndexComponent implements OnInit, AfterViewInit {
       Category.USER_INTERACTION,
       Category.CAMERA,
       Category.CONTROLS_AND_OVERLAYS,
+      Category.TERRAIN,
     ];
   }
 

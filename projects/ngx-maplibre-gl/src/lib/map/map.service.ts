@@ -26,6 +26,7 @@ import {
   RasterLayerSpecification,
   CircleLayerSpecification,
   FilterSpecification,
+  TerrainSpecification,
 } from 'maplibre-gl';
 import { AsyncSubject, Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -41,6 +42,7 @@ export interface SetupMap {
     bearing?: [number];
     pitch?: [number];
     zoom?: [number];
+    terrain?: TerrainSpecification;
   };
   mapEvents: MapEvent;
 }
@@ -110,6 +112,12 @@ export class MapService {
       this.mapEvents = options.mapEvents;
       this.mapCreated.next(undefined);
       this.mapCreated.complete();
+
+      if (options.mapOptions.terrain) {
+        this.mapInstance.on('load', () => {
+          this.updateTerrain(options.mapOptions.terrain!);
+        });
+      }
     });
   }
 
@@ -223,6 +231,18 @@ export class MapService {
   updateMaxBounds(maxBounds: LngLatBoundsLike) {
     return this.zone.runOutsideAngular(() => {
       this.mapInstance.setMaxBounds(maxBounds);
+    });
+  }
+
+  updateTerrain(options: TerrainSpecification) {
+    return this.zone.runOutsideAngular(() => {
+      this.mapInstance.setTerrain(options);
+    });
+  }
+
+  getTerrain(): TerrainSpecification {
+    return this.zone.runOutsideAngular(() => {
+      return this.mapInstance.getTerrain();
     });
   }
 

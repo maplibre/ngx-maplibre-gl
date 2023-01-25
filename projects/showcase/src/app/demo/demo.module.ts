@@ -15,7 +15,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RouterModule } from '@angular/router';
 import { NgxMapLibreGLModule } from 'projects/ngx-maplibre-gl/src/public_api';
-import { MapTestingHelperDirective } from '../helper/map-testing-helper.directive';
 import { LayoutModule } from '../shared/layout/layout.module';
 import { DemoIndexComponent } from './demo-index.component';
 import { Display3dBuildingsComponent } from './examples/3d-buildings.component';
@@ -66,6 +65,10 @@ import { ZoomtoLinestringComponent } from './examples/zoomto-linestring.componen
 import { MglMapResizeDirective } from './mgl-map-resize.directive';
 import { StackblitzEditGuard } from './stackblitz-edit/stackblitz-edit-guard.service';
 import { StackblitzEditComponent } from './stackblitz-edit/stackblitz-edit.component';
+import { TerrainMapStyleComponent } from './examples/terrain-map-style.component';
+import { TerrainMapComponent } from './examples/terrain-map.component';
+import { NgxTerrainSourceComponent } from './examples/ngx-terrain-control.component';
+import { MapTestingHelperDirective } from '../helper/map-testing-helper.directive';
 
 @NgModule({
   imports: [
@@ -73,11 +76,8 @@ import { StackblitzEditComponent } from './stackblitz-edit/stackblitz-edit.compo
     HttpClientModule,
     CommonModule,
     FormsModule,
-
     NgxMapLibreGLModule,
-
     LayoutModule,
-
     MatRadioModule,
     MatButtonToggleModule,
     MatButtonModule,
@@ -136,6 +136,9 @@ import { StackblitzEditComponent } from './stackblitz-edit/stackblitz-edit.compo
     CustomAttributionComponent,
     CustomLocaleComponent,
     MarkerAlignmentComponent,
+    TerrainMapStyleComponent,
+    TerrainMapComponent,
+    NgxTerrainSourceComponent,
     MapTestingHelperDirective,
   ],
   exports: [DemoIndexComponent],

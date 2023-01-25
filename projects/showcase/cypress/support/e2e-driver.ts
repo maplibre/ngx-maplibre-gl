@@ -95,6 +95,14 @@ export class E2eDriver {
       cy.get('.custom-control').click();
       return this;
     },
+    clickEnableTerrainControlButton: (): E2eDriver => {
+      cy.get('.maplibregl-ctrl-terrain').click();
+      return this;
+    },
+    clickDisableTerrainControlButton: (): E2eDriver => {
+      cy.get('.maplibregl-ctrl-terrain-enabled').click();
+      return this;
+    },
   };
 
   assert = {
@@ -135,6 +143,14 @@ export class E2eDriver {
         const zoom = win.mglMapTestHelper.map.getZoom();
         cy.wrap(zoom).should('be.lt', this.zoom);
       });
+      return this;
+    },
+    mapTerrainPropertyDoesNotExists: (): E2eDriver => {
+      cy.window().its('mglMapTestHelper.map.terrain').should('be.null');
+      return this;
+    },
+    mapTerrainPropertyExists: (): E2eDriver => {
+      cy.window().its('mglMapTestHelper.map.terrain').should('not.be.null');
       return this;
     },
     helloWorldPopupExists: (): E2eDriver => {
