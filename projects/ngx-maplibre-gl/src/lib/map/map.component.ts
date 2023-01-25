@@ -341,7 +341,7 @@ export class MapComponent
         changes.fitScreenCoordinates.isFirstChange()
       ) {
         console.warn(
-          '[ngx-mapbox-gl] center / zoom / pitch / fitBounds inputs are being overridden by fitScreenCoordinates input'
+          '[ngx-maplibre-gl] center / zoom / pitch / fitBounds inputs are being overridden by fitScreenCoordinates input'
         );
       }
       this.mapService.fitScreenCoordinates(

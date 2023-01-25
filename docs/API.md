@@ -1,4 +1,4 @@
-## mgl-map [Maplibre GL API](https://maplibre.org/maplibre-gl-js-docs/api/map/)
+## mgl-map [MapLibre GL API](https://maplibre.org/maplibre-gl-js-docs/api/map/)
 
 ### Example
 
@@ -16,7 +16,7 @@
 ...
 })
 export class DisplayMapComponent {
-  map: Map; // Mapbox GL Map object (Mapbox is ran outside angular zone, keep that in mind when binding events from this object)
+  map: Map; // MapLibre GL Map object (MapLibre is ran outside angular zone, keep that in mind when binding events from this object)
 ...
 }
 ```
@@ -55,16 +55,16 @@ Dynamic:
 - **dragPan**: `boolean`
 - **boxZoom**: `boolean`
 - **style**: `Style | string`
-- **center**: `LngLatLike`
+- **center**: [`LngLatLike`](https://maplibre.org/maplibre-gl-js-docs/api/geography/#lnglatlike)
 - **maxBounds**: [`LngLatBoundsLike`](https://maplibre.org/maplibre-gl-js-docs/api/geography/#lnglatboundslike)
-- **zoom**: `[number]` The initial zoom level of the map. If zoom is not specified in the constructor options, Mapbox GL JS will look for it in the map's style object. If it is not specified in the style, either, it will default to 0. [ngx] It's an array in order to be able to force changes (by changing the array ref) because this input can be desync after user manipulation on map.
-- **bearing**: `[number]` The initial bearing (rotation) of the map, measured in degrees counter-clockwise from north. If bearing is not specified in the constructor options, Mapbox GL JS will look for it in the map's style object. If it is not specified in the style, either, it will default to 0. [ngx] It's an array in order to be able to force changes (by changing the array ref) because this input can be desync after user manipulation on map.
-- **pitch**: `[number]` The initial pitch (tilt) of the map, measured in degrees away from the plane of the screen (0-60). If pitch is not specified in the constructor options, Mapbox GL JS will look for it in the map's style object. If it is not specified in the style, either, it will default to 0. [ngx] It's an array in order to be able to force changes (by changing the array ref) because this input can be desync after user manipulation on map.
+- **zoom**: `[number]` The initial zoom level of the map. If zoom is not specified in the constructor options, MapLibre GL JS will look for it in the map's style object. If it is not specified in the style, either, it will default to 0. [ngx] It's an array in order to be able to force changes (by changing the array ref) because this input can be desync after user manipulation on map.
+- **bearing**: `[number]` The initial bearing (rotation) of the map, measured in degrees counter-clockwise from north. If bearing is not specified in the constructor options, MapLibre GL JS will look for it in the map's style object. If it is not specified in the style, either, it will default to 0. [ngx] It's an array in order to be able to force changes (by changing the array ref) because this input can be desync after user manipulation on map.
+- **pitch**: `[number]` The initial pitch (tilt) of the map, measured in degrees away from the plane of the screen (0-60). If pitch is not specified in the constructor options, MapLibre GL JS will look for it in the map's style object. If it is not specified in the style, either, it will default to 0. [ngx] It's an array in order to be able to force changes (by changing the array ref) because this input can be desync after user manipulation on map.
 - **fitBoundsOptions** https://maplibre.org/maplibre-gl-js-docs/api/map/#map#fitbounds
 - [ngx] **fitBounds**: [`LngLatBoundsLike`](https://maplibre.org/maplibre-gl-js-docs/api/geography/#lnglatboundslike) If set, the map will center on the given coordinates. Dynamic version of **bounds**.
 - [ngx] **fitScreenCoordinates**: `[PointLike, PointLike]` https://maplibre.org/maplibre-gl-js-docs/api/map/#map#fitscreencoordinates (use movingOptions as options)
 - [ngx] **movingMethod**: `'jumpTo' | 'easeTo' | 'flyTo'` _(Default: `'flyTo'`)_ Define the method used when changing the center or zoom position.
-- [ngx] **movingOptions** Options passed to the moving method (https://maplibre.org/maplibre-gl-js-docs/api/map/#map#flyto https://maplibre.org/maplibre-gl-js-docs/api/map/#map#easeto)
+- [ngx] **movingOptions** Options passed to the moving method (https://maplibre.org/maplibre-gl-js-docs/api/map/#map#flyto, https://maplibre.org/maplibre-gl-js-docs/api/map/#map#easeto)
 - [ngx] **panToOptions** Options passed to panTo (https://maplibre.org/maplibre-gl-js-docs/api/map/#map#panto)
 - [ngx] **centerWithPanTo**: `boolean` If set to true, then [panTo](https://maplibre.org/maplibre-gl-js-docs/api/map/#map#panto) is used instead of the specified method in **movingMethod** (if only **center** is changed, see live-update-feature example)
 - [ngx] **cursorStyle**: `string` change the cursor of the map canvas (`canvas.style.cursor`).
@@ -74,42 +74,42 @@ Dynamic:
 
 - **mapResize**: `void`
 - **mapRemove**: `void`
-- **mapMouseDown**: [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **mapMouseUp**: [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **mapMouseMove**: [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **mapClick**: [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **mapDblClick**: [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **mapMouseEnter**: [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **mapMouseLeave**: [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **mapMouseOver**: [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **mapMouseOut**: [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **mapContextMenu**: [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **mapTouchStart**: [`MapTouchEvent`](https://www.mapbox.com/mapbox-gl-js/api/#maptouchevent)
-- **mapTouchEnd**: [`MapTouchEvent`](https://www.mapbox.com/mapbox-gl-js/api/#maptouchevent)
-- **mapTouchMove**: [`MapTouchEvent`](https://www.mapbox.com/mapbox-gl-js/api/#maptouchevent)
-- **mapTouchCancel**: [`MapTouchEvent`](https://www.mapbox.com/mapbox-gl-js/api/#maptouchevent)
-- **mapWheel**: [`MapWheelEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapwheelevent)
-- **moveStart**: [`DragEvent`](https://developer.mozilla.org/fr/docs/Web/API/DragEvent)
-- **move**: [`MapTouchEvent`](https://www.mapbox.com/mapbox-gl-js/api/#maptouchevent) `|` [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **moveEnd**: [`DragEvent`](https://developer.mozilla.org/fr/docs/Web/API/DragEvent)
-- **mapDragStart**: [`DragEvent`](https://developer.mozilla.org/fr/docs/Web/API/DragEvent)
-- **mapDrag**: [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#maptouchevent) `|` [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **mapDragEnd**: [`DragEvent`](https://developer.mozilla.org/fr/docs/Web/API/DragEvent)
-- **zoomStart**: [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#maptouchevent) `|` [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **zoomEvt**: [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#maptouchevent) `|` [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **zoomEnd**: [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#maptouchevent) `|` [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **rotateStart**: [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#maptouchevent) `|` [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **rotate**: [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#maptouchevent) `|` [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **rotateEnd**: [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#maptouchevent) `|` [`MapMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
+- **mapMouseDown**: [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **mapMouseUp**: [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **mapMouseMove**: [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **mapClick**: [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **mapDblClick**: [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **mapMouseEnter**: [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **mapMouseLeave**: [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **mapMouseOver**: [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **mapMouseOut**: [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **mapContextMenu**: [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **mapTouchStart**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent)
+- **mapTouchEnd**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent)
+- **mapTouchMove**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent)
+- **mapTouchCancel**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent)
+- **mapWheel**: [`MapWheelEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapwheelevent)
+- **moveStart**: [`DragEvent`](https://developer.mozilla.org/en-US/docs/Web/API/DragEvent)
+- **move**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **moveEnd**: [`DragEvent`](https://developer.mozilla.org/en-US/docs/Web/API/DragEvent)
+- **mapDragStart**: [`DragEvent`](https://developer.mozilla.org/en-US/docs/Web/API/DragEvent)
+- **mapDrag**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **mapDragEnd**: [`DragEvent`](https://developer.mozilla.org/en-US/docs/Web/API/DragEvent)
+- **zoomStart**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **zoomEvt**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **zoomEnd**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **rotateStart**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **rotate**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **rotateEnd**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
 - **pitchStart**
 - **pitchEvt**
 - **pitchEnd**
-- **boxZoomStart**: [`MapBoxZoomEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapboxzoomevent)
-- **boxZoomEnd**: [`MapBoxZoomEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapboxzoomevent)
-- **boxZoomCancel**: [`MapBoxZoomEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapboxzoomevent)
+- **boxZoomStart**: [`MapLibreZoomEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maplibrezoomevent)
+- **boxZoomEnd**: [`MapLibreZoomEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maplibrezoomevent)
+- **boxZoomCancel**: [`MapLibreZoomEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maplibrezoomevent)
 - **webGlContextLost**: `void`
 - **webGlContextRestored**: `void`
-- **mapLoad**: [`Map`](https://www.mapbox.com/mapbox-gl-js/api#map)
+- **mapLoad**: [`Map`](https://maplibre.org/maplibre-gl-js-docs/api/map/)
 - **render**: `void`
 - **mapError**
 - **data**
@@ -119,7 +119,7 @@ Dynamic:
 - **styleDataLoading**
 - **sourceDataLoading**
 
-## mgl-layer [Mapbox GL style spec](https://www.mapbox.com/mapbox-gl-js/style-spec/#layers)
+## mgl-layer [MapLibre GL style spec](https://maplibre.org/maplibre-gl-js-docs/style-spec/layers/)
 
 ### Example
 
@@ -143,7 +143,7 @@ Dynamic:
 Init only:
 
 - **id**: `string` _(Required)_
-- **source**: `string |`[`Source`](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources)
+- **source**: `string |`[`Source`](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/)
 - **type**: `'symbol' | 'fill' | 'line' | 'circle' | 'fill-extrusion' | 'raster' | 'background' | 'heatmap'` _(Required)_
 - **metadata**: `any`
 - **sourceLayer**: `string`
@@ -151,29 +151,29 @@ Init only:
 Dynamic:
 
 - **filter**: `any[]`
-- **layout**: [`Layout`](https://www.mapbox.com/mapbox-gl-js/style-spec/#layout-property)
-- **paint**: [`Paint`](https://www.mapbox.com/mapbox-gl-js/style-spec/#paint-property)
+- **layout**: [`Layout`](https://maplibre.org/maplibre-gl-js-docs/style-spec/layers/#layout)
+- **paint**: [`Paint`](https://maplibre.org/maplibre-gl-js-docs/style-spec/layers/#paint)
 - **minzoom**: `number`
 - **maxzoom**: `number`
-- [ngx] **before**: `string` The ID of an existing layer to insert the new layer before. If this argument is omitted, the layer will be appended to the end of the layers array. https://www.mapbox.com/mapbox-gl-js/api/#map#addlayer
+- [ngx] **before**: `string` The ID of an existing layer to insert the new layer before. If this argument is omitted, the layer will be appended to the end of the layers array. https://maplibre.org/maplibre-gl-js-docs/api/map/#map#addlayer
 
 ### Outputs
 
-- **layerClick**: [`MapLayerMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **layerDblClick**: [`MapLayerMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **layerMouseDown**: [`MapLayerMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **layerMouseUp**: [`MapLayerMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **layerMouseEnter**: [`MapLayerMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **layerMouseLeave**: [`MapLayerMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **layerMouseMove**: [`MapLayerMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **layerMouseOver**: [`MapLayerMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **layerMouseOut**: [`MapLayerMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **layerContextMenu**: [`MapLayerMouseEvent`](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **layerTouchStart**: [`MapLayerTouchEvent`](https://docs.mapbox.com/mapbox-gl-js/api/events/#maptouchevent)
-- **layerTouchEnd**: [`MapLayerTouchEvent`](https://docs.mapbox.com/mapbox-gl-js/api/events/#maptouchevent)
-- **layerTouchCancel**: [`MapLayerTouchEvent`](https://docs.mapbox.com/mapbox-gl-js/api/events/#maptouchevent)
+- **layerClick**: [`MapLayerMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **layerDblClick**: [`MapLayerMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **layerMouseDown**: [`MapLayerMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **layerMouseUp**: [`MapLayerMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **layerMouseEnter**: [`MapLayerMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **layerMouseLeave**: [`MapLayerMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **layerMouseMove**: [`MapLayerMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **layerMouseOver**: [`MapLayerMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **layerMouseOut**: [`MapLayerMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **layerContextMenu**: [`MapLayerMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **layerTouchStart**: [`MapLayerTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent)
+- **layerTouchEnd**: [`MapLayerTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent)
+- **layerTouchCancel**: [`MapLayerTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent)
 
-## mgl-geojson-source [Mapbox GL style spec](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-geojson)
+## mgl-geojson-source [MapLibre GL style spec](https://maplibre.org/maplibre-gl-js-docs/api/sources/#geojsonsource)
 
 ### Example
 
@@ -205,14 +205,14 @@ Init only:
 
 Dynamic:
 
-- [**data**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-geojson-data): `GeoJSON.Feature | GeoJSON.FeatureCollection | string` A URL to a GeoJSON file (fastest, because mapbox-gl will download and parse the geojson in a web worker), or inline GeoJSON.
-- [**maxzoom**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-geojson-maxzoom): `number`
-- [**buffer**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-geojson-buffer): `number`
-- [**tolerance**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-geojson-tolerance): `number`
-- [**generateId**](https://docs.mapbox.com/mapbox-gl-js/style-spec/sources/#geojson-generateId): `boolean`
-- [**cluster**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-geojson-cluster): `boolean`
-- [**clusterRadius**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-geojson-clusterRadius): `number`
-- [**clusterMaxZoom**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-geojson-clusterMaxZoom): `number`
+- [**data**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#geojson-data): `GeoJSON.Feature | GeoJSON.FeatureCollection | string` A URL to a GeoJSON file (fastest, because maplibre-gl will download and parse the geojson in a web worker), or inline GeoJSON.
+- [**maxzoom**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#geojson-maxzoom): `number`
+- [**buffer**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#geojson-buffer): `number`
+- [**tolerance**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#geojson-tolerance): `number`
+- [**generateId**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#geojson-generateId): `boolean`
+- [**cluster**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#geojson-cluster): `boolean`
+- [**clusterRadius**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#geojson-clusterRadius): `number`
+- [**clusterMaxZoom**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#geojson-clusterMaxZoom): `number`
 
 ## [ngx] mgl-feature (inside mgl-geojson-source only)
 
@@ -222,7 +222,7 @@ Init only:
 - **geometry**: `GeoJSON.GeometryObject` _(Required)_
 - **properties**: `any`
 
-## mgl-canvas-source [Mapbox GL style spec](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-canvas)
+## mgl-canvas-source [MapLibre GL style spec](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#canvas)
 
 ### Inputs
 
@@ -232,24 +232,11 @@ Init only:
 
 Dynamic:
 
-- [**coordinates**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-canvas-coordinates): `number[][]`
-- [**canvas**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-canvas-canvas): `string`
-- [**animate**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-canvas-animate): `boolean`
+- [**coordinates**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#canvas-coordinates): `number[][]`
+- [**canvas**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#canvas-canvas): `string`
+- [**animate**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#canvas-animate): `boolean`
 
-## mgl-image-source [Mapbox GL style spec](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-image)
-
-### Inputs
-
-Init only:
-
-- **id**: `string` _(Required)_
-
-Dynamic:
-
-- [**url**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-image-url): `string`
-- [**coordinates**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-image-coordinates): `number[][]`
-
-## mgl-raster-source [Mapbox GL style spec](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-raster)
+## mgl-image-source [MapLibre GL style spec](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#image)
 
 ### Inputs
 
@@ -259,14 +246,27 @@ Init only:
 
 Dynamic:
 
-- [**url**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-raster-url): `string`
-- [**tiles**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-raster-tiles): `string[]`
-- [**bounds**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-raster-bounds): `number[]`
-- [**minzoom**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-raster-minzoom): `number`
-- [**maxzoom**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-raster-maxzoom): `number`
-- [**tileSize**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-raster-tileSize): `number`
+- [**url**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#image-url): `string`
+- [**coordinates**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#image-coordinates): `number[][]`
 
-## mgl-raster-dem-source [Mapbox GL style spec](https://docs.mapbox.com/mapbox-gl-js/style-spec/sources/#raster-dem)
+## mgl-raster-source [MapLibre GL style spec](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster)
+
+### Inputs
+
+Init only:
+
+- **id**: `string` _(Required)_
+
+Dynamic:
+
+- [**url**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-url): `string`
+- [**tiles**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-tiles): `string[]`
+- [**bounds**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-bounds): `number[]`
+- [**minzoom**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-minzoom): `number`
+- [**maxzoom**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-maxzoom): `number`
+- [**tileSize**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-tileSize): `number`
+
+## mgl-raster-dem-source [MapLibre GL style spec](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-dem)
 
 ### Inputs
 
@@ -285,7 +285,7 @@ Dynamic:
 - [**attribution**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-dem-attribution): `string`
 - [**encoding**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-dem-encoding): `'mapbox' | 'terrarium'` _(Default: `'mapbox'`)_
 
-## mgl-vector-source [Mapbox GL style spec](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-vector)
+## mgl-vector-source [MapLibre GL style spec](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#vector)
 
 ### Inputs
 
@@ -295,13 +295,13 @@ Init only:
 
 Dynamic:
 
-- [**url**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-vector-url): `string`
-- [**tiles**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-vector-tiles): `string[][]`
-- [**bounds**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-vector-bounds): `number[]`
-- [**minzoom**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-vector-minzoom): `number`
-- [**maxzoom**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-vector-maxzoom): `number`
+- [**url**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#vector-url): `string`
+- [**tiles**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#vector-tiles): `string[][]`
+- [**bounds**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#vector-bounds): `number[]`
+- [**minzoom**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#vector-minzoom): `number`
+- [**maxzoom**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#vector-maxzoom): `number`
 
-## mgl-video-source [Mapbox GL style spec](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-video)
+## mgl-video-source [MapLibre GL style spec](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#video)
 
 ### Inputs
 
@@ -311,10 +311,10 @@ Init only:
 
 Dynamic:
 
-- [**urls**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-video-urls): `string[]`
-- [**coordinates**](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-video-coordinates): `number[][]`
+- [**urls**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#video-urls): `string[]`
+- [**coordinates**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#video-coordinates): `number[][]`
 
-## mgl-image [Mapbox GL API](https://www.mapbox.com/mapbox-gl-js/api#map#addimage)
+## mgl-image [MapLibre GL API](https://maplibre.org/maplibre-gl-js-docs/api/map/#map#addimage)
 
 ### Example
 
@@ -352,7 +352,7 @@ Dynamic:
 
 - **data**: `HTMLImageElement | ImageData | { width: number, height: number, data: Uint8Array | Uint8ClampedArray }`
 - **options**: `{ pixelRatio: number; sdf: boolean; }`
-- [ngx] **url**: `string` If set, will call [loadImage](https://www.mapbox.com/mapbox-gl-js/api#map#loadimage) and then add the image directly. Don't forget to listen to `loaded`.
+- [ngx] **url**: `string` If set, will call [loadImage](https://maplibre.org/maplibre-gl-js-docs/api/map/#map#loadimage) and then add the image directly. Don't forget to listen to `loaded`.
 
 ### Outputs
 
@@ -404,7 +404,7 @@ Init only:
   - **source**: `string |`[`Source`](https://maplibre.org/maplibre-gl-js-docs/api/sources/) _(Note: a raster DEM Source)_
   - **exaggeration**: `number` (1-100)
 
-## mgl-marker [Mapbox GL API](https://www.mapbox.com/mapbox-gl-js/api/#marker)
+## mgl-marker [MapLibre GL API](https://maplibre.org/maplibre-gl-js-docs/api/markers/#marker)
 
 ### Example
 
@@ -423,14 +423,14 @@ Note: Only use this if you **really** need to use HTML/Angular component to rend
 
 Init only:
 
-- **offset**: [`PointLike`](https://www.mapbox.com/mapbox-gl-js/api/#pointlike)
+- **offset**: [`PointLike`](https://maplibre.org/maplibre-gl-js-docs/api/geography/#pointlike)
 - **anchor**: `'center' | 'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'`
 - **pitchAlignment**: `map` | `viewport` | `auto`
 - **rotationAlignment**: `map` | `viewport` | `auto`
 
 Dynamic:
 
-- **lngLat**: [`LngLatLike`](https://www.mapbox.com/mapbox-gl-js/api/#lnglatlike)
+- **lngLat**: [`LngLatLike`](https://maplibre.org/maplibre-gl-js-docs/api/geography/#lnglatlike)
 - **draggable**: `boolean`
 - [ngx] **feature**: `GeoJSON.Feature<GeoJSON.Point>` Mutually exclusive with lngLat
 - [ngx] **className** `string` Class name to aply to the container
@@ -438,11 +438,11 @@ Dynamic:
 
 ### Outputs
 
-- **markerDragStart**: [`Marker`](https://www.mapbox.com/mapbox-gl-js/api/#marker)
-- **markerDrag**: [`Marker`](https://www.mapbox.com/mapbox-gl-js/api/#marker)
-- **markerDragEnd**: [`Marker`](https://www.mapbox.com/mapbox-gl-js/api/#marker)
+- **markerDragStart**: [`Marker`](https://maplibre.org/maplibre-gl-js-docs/api/markers/#marker)
+- **markerDrag**: [`Marker`](https://maplibre.org/maplibre-gl-js-docs/api/markers/#marker)
+- **markerDragEnd**: [`Marker`](https://maplibre.org/maplibre-gl-js-docs/api/markers/#marker)
 
-## mgl-popup [Mapbox GL API](https://www.mapbox.com/mapbox-gl-js/api/#popup)
+## mgl-popup [MapLibre GL API](https://maplibre.org/maplibre-gl-js-docs/api/markers/#popup)
 
 ### Example
 
@@ -465,12 +465,12 @@ Init only:
 - **closeButton**: `boolean`
 - **closeOnClick**: `boolean`
 - **anchor**: `'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left'`
-- **offset**: [`number |`[`PointLike`](https://www.mapbox.com/mapbox-gl-js/api/#pointlike)`| { [anchor: string]: [number, number] };`
+- **offset**: [`number |`[`PointLike`](https://maplibre.org/maplibre-gl-js-docs/api/geography/#pointlike)`| { [anchor: string]: [number, number] };`
 
 Dynamic:
 
-- **lngLat**: [`LngLatLike`](https://www.mapbox.com/mapbox-gl-js/api/#lnglatlike)
-- [ngx] **marker**: `MarkerComponent` The targeted marker (will use https://www.mapbox.com/mapbox-gl-js/api/#marker#setpopup)
+- **lngLat**: [`LngLatLike`](https://maplibre.org/maplibre-gl-js-docs/api/geography/#lnglatlike)
+- [ngx] **marker**: `MarkerComponent` The targeted marker (will use https://maplibre.org/maplibre-gl-js-docs/api/markers/#marker#setpopup)
 - [ngx] **feature**: `GeoJSON.Feature<GeoJSON.Point>` Mutually exclusive with lngLat
 
 ### Outputs
