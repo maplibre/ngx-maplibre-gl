@@ -26,6 +26,7 @@ import {
   MapTouchEvent,
   MapWheelEvent,
   PointLike,
+  TerrainSpecification,
 } from 'maplibre-gl';
 import { MapService, MovingOptions } from './map.service';
 import { MapEvent, EventData } from './map.types';
@@ -104,6 +105,8 @@ export class MapComponent
   /* Added by ngx-mapbox-gl */
   @Input() movingMethod: 'jumpTo' | 'easeTo' | 'flyTo' = 'flyTo';
   @Input() movingOptions?: MovingOptions;
+  @Input() terrain: TerrainSpecification;
+
   // => First value is a alias to bounds input (since mapbox 0.53.0). Subsequents changes are passed to fitBounds
   @Input() fitBounds?: LngLatBoundsLike;
   @Input() fitScreenCoordinates?: [PointLike, PointLike];
@@ -247,6 +250,7 @@ export class MapComponent
         antialias: this.antialias,
         locale: this.locale,
         cooperativeGestures: this.cooperativeGestures,
+        terrain: this.terrain,
       },
       mapEvents: this,
     });
@@ -371,6 +375,9 @@ export class MapComponent
         changes.bearing && this.bearing ? this.bearing[0] : undefined,
         changes.pitch && this.pitch ? this.pitch[0] : undefined
       );
+    }
+    if (changes.terrain && !changes.terrain.isFirstChange()) {
+      this.mapService.updateTerrain(changes.terrain.currentValue);
     }
   }
 }
