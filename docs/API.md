@@ -64,7 +64,7 @@ Dynamic:
 - [ngx] **fitBounds**: [`LngLatBoundsLike`](https://maplibre.org/maplibre-gl-js-docs/api/geography/#lnglatboundslike) If set, the map will center on the given coordinates. Dynamic version of **bounds**.
 - [ngx] **fitScreenCoordinates**: `[PointLike, PointLike]` https://maplibre.org/maplibre-gl-js-docs/api/map/#map#fitscreencoordinates (use movingOptions as options)
 - [ngx] **movingMethod**: `'jumpTo' | 'easeTo' | 'flyTo'` _(Default: `'flyTo'`)_ Define the method used when changing the center or zoom position.
-- [ngx] **movingOptions** Options passed to the moving method (https://maplibre.org/maplibre-gl-js-docs/api/map/#map#flyto https://maplibre.org/maplibre-gl-js-docs/api/map/#map#easeto)
+- [ngx] **movingOptions** Options passed to the moving method (https://maplibre.org/maplibre-gl-js-docs/api/map/#map#flyto, https://maplibre.org/maplibre-gl-js-docs/api/map/#map#easeto)
 - [ngx] **panToOptions** Options passed to panTo (https://maplibre.org/maplibre-gl-js-docs/api/map/#map#panto)
 - [ngx] **centerWithPanTo**: `boolean` If set to true, then [panTo](https://maplibre.org/maplibre-gl-js-docs/api/map/#map#panto) is used instead of the specified method in **movingMethod** (if only **center** is changed, see live-update-feature example)
 - [ngx] **cursorStyle**: `string` change the cursor of the map canvas (`canvas.style.cursor`).
@@ -89,18 +89,18 @@ Dynamic:
 - **mapTouchMove**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent)
 - **mapTouchCancel**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent)
 - **mapWheel**: [`MapWheelEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapwheelevent)
-- **moveStart**: [`DragEvent`](https://developer.mozilla.org/fr/docs/Web/API/DragEvent)
+- **moveStart**: [`DragEvent`](https://developer.mozilla.org/en-US/docs/Web/API/DragEvent)
 - **move**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
-- **moveEnd**: [`DragEvent`](https://developer.mozilla.org/fr/docs/Web/API/DragEvent)
-- **mapDragStart**: [`DragEvent`](https://developer.mozilla.org/fr/docs/Web/API/DragEvent)
-- **mapDrag**: [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
-- **mapDragEnd**: [`DragEvent`](https://developer.mozilla.org/fr/docs/Web/API/DragEvent)
-- **zoomStart**: [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
-- **zoomEvt**: [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
-- **zoomEnd**: [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
-- **rotateStart**: [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
-- **rotate**: [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
-- **rotateEnd**: [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **moveEnd**: [`DragEvent`](https://developer.mozilla.org/en-US/docs/Web/API/DragEvent)
+- **mapDragStart**: [`DragEvent`](https://developer.mozilla.org/en-US/docs/Web/API/DragEvent)
+- **mapDrag**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **mapDragEnd**: [`DragEvent`](https://developer.mozilla.org/en-US/docs/Web/API/DragEvent)
+- **zoomStart**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **zoomEvt**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **zoomEnd**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **rotateStart**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **rotate**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
+- **rotateEnd**: [`MapTouchEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#maptouchevent) `|` [`MapMouseEvent`](https://maplibre.org/maplibre-gl-js-docs/api/events/#mapmouseevent)
 - **pitchStart**
 - **pitchEvt**
 - **pitchEnd**
@@ -205,14 +205,14 @@ Init only:
 
 Dynamic:
 
-- [**data**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-geojson-data): `GeoJSON.Feature | GeoJSON.FeatureCollection | string` A URL to a GeoJSON file (fastest, because maplibre-gl will download and parse the geojson in a web worker), or inline GeoJSON.
-- [**maxzoom**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-geojson-maxzoom): `number`
-- [**buffer**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-geojson-buffer): `number`
-- [**tolerance**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-geojson-tolerance): `number`
+- [**data**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#geojson-data): `GeoJSON.Feature | GeoJSON.FeatureCollection | string` A URL to a GeoJSON file (fastest, because maplibre-gl will download and parse the geojson in a web worker), or inline GeoJSON.
+- [**maxzoom**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#geojson-maxzoom): `number`
+- [**buffer**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#geojson-buffer): `number`
+- [**tolerance**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#geojson-tolerance): `number`
 - [**generateId**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#geojson-generateId): `boolean`
-- [**cluster**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-geojson-cluster): `boolean`
-- [**clusterRadius**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-geojson-clusterRadius): `number`
-- [**clusterMaxZoom**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-geojson-clusterMaxZoom): `number`
+- [**cluster**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#geojson-cluster): `boolean`
+- [**clusterRadius**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#geojson-clusterRadius): `number`
+- [**clusterMaxZoom**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#geojson-clusterMaxZoom): `number`
 
 ## [ngx] mgl-feature (inside mgl-geojson-source only)
 
@@ -222,7 +222,7 @@ Init only:
 - **geometry**: `GeoJSON.GeometryObject` _(Required)_
 - **properties**: `any`
 
-## mgl-canvas-source [MapLibre GL style spec](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-canvas)
+## mgl-canvas-source [MapLibre GL style spec](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#canvas)
 
 ### Inputs
 
@@ -232,24 +232,11 @@ Init only:
 
 Dynamic:
 
-- [**coordinates**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-canvas-coordinates): `number[][]`
-- [**canvas**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-canvas-canvas): `string`
-- [**animate**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-canvas-animate): `boolean`
+- [**coordinates**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#canvas-coordinates): `number[][]`
+- [**canvas**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#canvas-canvas): `string`
+- [**animate**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#canvas-animate): `boolean`
 
-## mgl-image-source [MapLibre GL style spec](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-image)
-
-### Inputs
-
-Init only:
-
-- **id**: `string` _(Required)_
-
-Dynamic:
-
-- [**url**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-image-url): `string`
-- [**coordinates**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-image-coordinates): `number[][]`
-
-## mgl-raster-source [MapLibre GL style spec](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-raster)
+## mgl-image-source [MapLibre GL style spec](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#image)
 
 ### Inputs
 
@@ -259,14 +246,27 @@ Init only:
 
 Dynamic:
 
-- [**url**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-raster-url): `string`
-- [**tiles**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-raster-tiles): `string[]`
-- [**bounds**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-raster-bounds): `number[]`
-- [**minzoom**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-raster-minzoom): `number`
-- [**maxzoom**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-raster-maxzoom): `number`
-- [**tileSize**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-raster-tileSize): `number`
+- [**url**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#image-url): `string`
+- [**coordinates**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#image-coordinates): `number[][]`
 
-## mgl-raster-dem-source [MapLibre GL style spec](https://maplibre.org/maplibre-gl-js-docs/api/sources/)
+## mgl-raster-source [MapLibre GL style spec](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster)
+
+### Inputs
+
+Init only:
+
+- **id**: `string` _(Required)_
+
+Dynamic:
+
+- [**url**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-url): `string`
+- [**tiles**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-tiles): `string[]`
+- [**bounds**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-bounds): `number[]`
+- [**minzoom**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-minzoom): `number`
+- [**maxzoom**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-maxzoom): `number`
+- [**tileSize**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-tileSize): `number`
+
+## mgl-raster-dem-source [MapLibre GL style spec](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-dem)
 
 ### Inputs
 
@@ -285,7 +285,7 @@ Dynamic:
 - [**attribution**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-dem-attribution): `string`
 - [**encoding**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#raster-dem-encoding): `'mapbox' | 'terrarium'` _(Default: `'mapbox'`)_
 
-## mgl-vector-source [MapLibre GL style spec](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-vector)
+## mgl-vector-source [MapLibre GL style spec](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#vector)
 
 ### Inputs
 
@@ -295,13 +295,13 @@ Init only:
 
 Dynamic:
 
-- [**url**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-vector-url): `string`
-- [**tiles**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-vector-tiles): `string[][]`
-- [**bounds**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-vector-bounds): `number[]`
-- [**minzoom**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-vector-minzoom): `number`
-- [**maxzoom**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-vector-maxzoom): `number`
+- [**url**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#vector-url): `string`
+- [**tiles**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#vector-tiles): `string[][]`
+- [**bounds**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#vector-bounds): `number[]`
+- [**minzoom**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#vector-minzoom): `number`
+- [**maxzoom**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#vector-maxzoom): `number`
 
-## mgl-video-source [MapLibre GL style spec](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-video)
+## mgl-video-source [MapLibre GL style spec](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#video)
 
 ### Inputs
 
@@ -311,10 +311,10 @@ Init only:
 
 Dynamic:
 
-- [**urls**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-video-urls): `string[]`
-- [**coordinates**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/-video-coordinates): `number[][]`
+- [**urls**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#video-urls): `string[]`
+- [**coordinates**](https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#video-coordinates): `number[][]`
 
-## mgl-image [MapLibre GL API](https://maplibre.org/maplibre-gl-js-docs/api/map/#addimage)
+## mgl-image [MapLibre GL API](https://maplibre.org/maplibre-gl-js-docs/api/map/#map#addimage)
 
 ### Example
 
@@ -352,7 +352,7 @@ Dynamic:
 
 - **data**: `HTMLImageElement | ImageData | { width: number, height: number, data: Uint8Array | Uint8ClampedArray }`
 - **options**: `{ pixelRatio: number; sdf: boolean; }`
-- [ngx] **url**: `string` If set, will call [loadImage](https://maplibre.org/maplibre-gl-js-docs/api/map/#loadimage) and then add the image directly. Don't forget to listen to `loaded`.
+- [ngx] **url**: `string` If set, will call [loadImage](https://maplibre.org/maplibre-gl-js-docs/api/map/#map#loadimage) and then add the image directly. Don't forget to listen to `loaded`.
 
 ### Outputs
 
