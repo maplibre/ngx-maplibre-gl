@@ -34,8 +34,6 @@ export class CustomControl implements IControl {
 })
 export class ControlComponent<T extends IControl>
   implements OnDestroy, AfterContentInit {
-  private controlAdded = false;
-
   /* Init inputs */
   @Input() position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 
@@ -50,13 +48,12 @@ export class ControlComponent<T extends IControl>
       this.control = new CustomControl(this.content.nativeElement);
       this.mapService.mapCreated$.subscribe(() => {
         this.mapService.addControl(this.control!, this.position);
-        this.controlAdded = true;
       });
     }
   }
 
   ngOnDestroy() {
-    if (this.controlAdded) {
+    if (this.mapService.mapInstance.hasControl(this.control)) {
       this.mapService.removeControl(this.control);
     }
   }
