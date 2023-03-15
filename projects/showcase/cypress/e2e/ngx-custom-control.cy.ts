@@ -17,5 +17,15 @@ describe('Custom control', () => {
         driver.assert.customPopupContainsHello();
       });
     });
+
+    context('When I click on the "Hide Controls" button', () => {
+      beforeEach(() => {
+        driver.assert.fullscreenControlExists().assert.customHelloButtonExists().when.clickHideControlsButton();
+      });
+
+      it('Then I should not see any controls anymore', () => {
+        driver.assert.fullscreenControlDoesNotExist().assert.customHelloButtonDoesNotExist()
+      });
+    });
   });
 });
