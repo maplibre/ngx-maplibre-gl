@@ -103,6 +103,10 @@ export class E2eDriver {
       cy.get('.maplibregl-ctrl-terrain-enabled').click();
       return this;
     },
+    clickHideControlsButton: (): E2eDriver => {
+      cy.get('button').contains('Hide Controls').click();
+      return this;
+    },
   };
 
   assert = {
@@ -168,6 +172,18 @@ export class E2eDriver {
     },
     customHelloButtonExists: (): E2eDriver => {
       cy.get('.custom-control').should('have.text', ' Hello ');
+      return this;
+    },
+    customHelloButtonDoesNotExist: (): E2eDriver => {
+      cy.get('.custom-control').should('not.exist');
+      return this;
+    },
+    fullscreenControlExists: (): E2eDriver => {
+      cy.get('.maplibregl-ctrl-fullscreen').should('exist');
+      return this;
+    },
+    fullscreenControlDoesNotExist: (): E2eDriver => {
+      cy.get('.maplibregl-ctrl-fullscreen').should('not.exist');
       return this;
     },
     customPopupContainsHello: (): E2eDriver => {
