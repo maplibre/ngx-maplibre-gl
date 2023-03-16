@@ -12,6 +12,7 @@ import { GeoJsonProperties } from 'geojson';
       [zoom]="[3]"
       [center]="[-100.04, 38.907]"
       [cursorStyle]="cursorStyle"
+      (mapClick)="onMapClick()"
     >
       <mgl-layer
         id="states-layer"
@@ -29,7 +30,11 @@ import { GeoJsonProperties } from 'geojson';
         (layerMouseLeave)="cursorStyle = ''"
         (layerClick)="onClick($event)"
       ></mgl-layer>
-      <mgl-popup *ngIf="selectedLngLat" [lngLat]="selectedLngLat">
+      <mgl-popup
+        *ngIf="selectedElement && selectedLngLat"
+        [lngLat]="selectedLngLat"
+        [closeOnClick]="false"
+      >
         <span [innerHTML]="selectedElement?.name"></span>
       </mgl-popup>
     </mgl-map>
@@ -37,12 +42,16 @@ import { GeoJsonProperties } from 'geojson';
   styleUrls: ['./examples.css'],
 })
 export class PolygonPopupOnClickComponent {
-  selectedElement: GeoJsonProperties;
+  selectedElement: GeoJsonProperties | null;
   selectedLngLat: LngLat;
   cursorStyle: string;
 
   onClick(evt: MapLayerMouseEvent) {
     this.selectedLngLat = evt.lngLat;
     this.selectedElement = evt.features![0].properties;
+  }
+
+  onMapClick() {
+    this.selectedElement = null;
   }
 }
