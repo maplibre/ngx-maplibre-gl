@@ -59,8 +59,7 @@ export class PopupComponent
 
   ngOnChanges(changes: SimpleChanges) {
     if (
-      (changes.lngLat && !changes.lngLat.isFirstChange()) ||
-      (changes.feature && !changes.feature.isFirstChange())
+      changes.feature && !changes.feature.isFirstChange()
     ) {
       const newlngLat = changes.lngLat
         ? this.lngLat!
@@ -74,6 +73,13 @@ export class PopupComponent
       );
       this.popupInstance = popupInstanceTmp;
     }
+
+    if (
+      changes.lngLat && !changes.lngLat.isFirstChange()
+    ) {
+      this.popupInstance!.setLngLat(this.lngLat!);
+    }
+
     if (changes.marker && !changes.marker.isFirstChange()) {
       const previousMarker: MarkerComponent = changes.marker.previousValue;
       if (previousMarker.markerInstance) {
