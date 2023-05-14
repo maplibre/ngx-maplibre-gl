@@ -48,6 +48,7 @@ Cypress.on('uncaught:exception', (err) => {
   //if (resizeObserverLoopErrRe.test(err.message)) {
     // returning false here prevents Cypress from
     // failing the test
+    console.log(err.message);
     return false;
   //}
 });
@@ -59,7 +60,7 @@ Cypress.on('window:before:load', (win) => {
 
 afterEach(() => {
   cy.window().then((win) => {
-    //expect(win.console.error).to.have.callCount(0);
-    //expect(win.console.warn).to.have.callCount(0);
+    expect(win.console.error).to.have.callCount(0);
+    expect(win.console.warn).to.have.callCount(0);
   });
 });
