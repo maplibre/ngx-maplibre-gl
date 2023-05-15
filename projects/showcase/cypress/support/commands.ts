@@ -48,7 +48,7 @@ Cypress.on('uncaught:exception', (err) => {
   //if (resizeObserverLoopErrRe.test(err.message)) {
   // returning false here prevents Cypress from
   // failing the test
-  cy.log(err.message);
+  cy.now('log', err.message);
   return false;
   //}
 });
