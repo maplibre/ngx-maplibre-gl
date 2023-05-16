@@ -155,7 +155,7 @@ export class DraggableDirective implements OnInit, OnDestroy {
           filter: [
             'all',
             ['==', '$type', 'Point'],
-            ['==', '$id', this.featureComponent.id],
+            ['==', '$id', this.featureComponent.id as number],
           ],
         }
       )[0];

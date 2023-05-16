@@ -27,6 +27,7 @@ import {
   CircleLayerSpecification,
   FilterSpecification,
   TerrainSpecification,
+  QueryRenderedFeaturesOptions,
 } from 'maplibre-gl';
 import { AsyncSubject, Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -252,8 +253,11 @@ export class MapService {
   }
 
   queryRenderedFeatures(
-    pointOrBox?: PointLike | [PointLike, PointLike],
-    parameters?: { layers?: string[]; filter?: any[] }
+    pointOrBox?:
+      | PointLike
+      | [PointLike, PointLike]
+      | QueryRenderedFeaturesOptions,
+    parameters?: QueryRenderedFeaturesOptions
   ): GeoJSON.Feature<GeoJSON.GeometryObject>[] {
     return this.mapInstance.queryRenderedFeatures(pointOrBox, parameters);
   }
