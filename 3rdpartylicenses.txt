@@ -66,6 +66,8 @@ MIT
 @angular/router
 MIT
 
+@maplibre/distfiles
+
 @maplibre/ngx-maplibre-gl
 MIT
 
@@ -169,8 +171,6 @@ maintained libraries used by this software which have their own
 licenses; we recommend you read them, as their terms may differ from the
 terms above.
 
-
-maplibre-gl
 
 marked
 MIT
