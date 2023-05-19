@@ -1,6 +1,6 @@
 {
   "name": "ngx-maplibre-gl-srcs",
-  "version": "14.0.0-pre.3",
+  "version": "14.0.0-pre.4",
   "scripts": {
     "ng": "ng",
     "start": "ng serve showcase",
@@ -44,7 +44,7 @@
     "@stackblitz/sdk": "^1.6.0",
     "@types/geojson": "^7946.0.7",
     "lodash-es": "^4.17.11",
-    "maplibre-gl": "^3.0.0-pre.6",
+    "maplibre-gl": "^3.0.0-pre.9",
     "ngx-markdown": "^14.0.1",
     "rxjs": "7.5.7",
     "scroll-into-view-if-needed": "^2.2.20",

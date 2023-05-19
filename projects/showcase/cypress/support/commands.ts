@@ -42,10 +42,10 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-Cypress.on(
-  'uncaught:exception',
-  (err) => !err.message.includes('ResizeObserver loop limit exceeded')
-);
+//Cypress.on(
+//  'uncaught:exception',
+//  (err) => !err.message.includes('ResizeObserver loop limit exceeded')
+//);
 
 Cypress.on('window:before:load', (win) => {
   cy.spy(win.console, 'error').as('consoleErrorSpy');
