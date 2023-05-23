@@ -10,7 +10,11 @@ import {
   template: `
     <mgl-map [style]="style" [zoom]="[13]" [center]="[4.899, 52.372]">
     </mgl-map>
-    <mat-radio-group [ngModel]="layerId" (ngModelChange)="changeStyle($event)">
+    <mat-radio-group
+      [ngModel]="layerId"
+      (ngModelChange)="changeStyle($event)"
+      class="radio-group"
+    >
       <mat-radio-button value="streets">streets</mat-radio-button>
       <mat-radio-button value="code">from code</mat-radio-button>
     </mat-radio-group>

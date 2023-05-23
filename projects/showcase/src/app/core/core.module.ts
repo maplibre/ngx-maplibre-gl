@@ -14,7 +14,7 @@ import { APP_ROUTES } from './routes';
 
     MatIconModule,
 
-    RouterModule.forRoot(APP_ROUTES, { relativeLinkResolution: 'legacy' }),
+    RouterModule.forRoot(APP_ROUTES, {}),
     NgxMapLibreGLModule,
     LayoutModule,
   ],
