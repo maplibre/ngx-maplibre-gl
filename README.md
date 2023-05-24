@@ -1,8 +1,10 @@
 # ngx-maplibre-gl
 
-[![npm version](https://img.shields.io/npm/v/@maplibre/ngx-maplibre-gl.svg?style=flat)](https://www.npmjs.com/package/@maplibre/ngx-maplibre-gl)
+<img src="./projects/showcase/src/assets/ngx-maplibre-gl-red.svg" height="128">
 
 Angular wrapper for [maplibre-gl](https://www.maplibre.org/). It exposes a bunch of components meant to be simple to use with Angular.
+
+[![npm version](https://img.shields.io/npm/v/@maplibre/ngx-maplibre-gl.svg?style=flat)](https://www.npmjs.com/package/@maplibre/ngx-maplibre-gl)
 
 ### Demo site
 
@@ -40,6 +42,16 @@ This is a fork of [ngx-mapbox-gl](https://github.com/Wykks/ngx-mapbox-gl) and I 
 ```
 npm install @maplibre/ngx-maplibre-gl maplibre-gl
 yarn add @maplibre/ngx-maplibre-gl maplibre-gl
+```
+
+There might be a beed to add the following configuration to `tsconfig.json` file
+
+```
+"compilerOptions": {
+    ...
+    "strictNullChecks": false,
+    "skipLibCheck": true,
+}
 ```
 
 Load the CSS of `maplibre-gl`
