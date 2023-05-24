@@ -34,7 +34,7 @@ import { MapMouseEvent } from 'maplibre-gl';
         (layerMouseLeave)="changeColor('#3887be')"
       ></mgl-layer>
       <mgl-control position="bottom-left">
-        <mat-card>
+        <mat-card appearance="outlined">
           <div>Longitude:&nbsp;{{ coordinates[0] }}</div>
           <div>Latitude:&nbsp;{{ coordinates[1] }}</div>
         </mat-card>

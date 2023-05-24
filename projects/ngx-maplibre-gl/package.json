@@ -1,6 +1,6 @@
 {
   "name": "@maplibre/ngx-maplibre-gl",
-  "version": "14.0.0-pre.4",
+  "version": "15.0.0",
   "description": "A Angular binding of maplibre-gl",
   "license": "MIT",
   "repository": {
@@ -20,9 +20,9 @@
   },
   "homepage": "https://github.com/maplibre/ngx-maplibre-gl#readme",
   "peerDependencies": {
-    "@angular/common": ">= 14.0.0",
-    "@angular/core": ">= 14.0.0",
-    "maplibre-gl": "^3.0.0-pre.9",
+    "@angular/common": ">= 15.0.0",
+    "@angular/core": ">= 15.0.0",
+    "maplibre-gl": ">= 3.0.0",
     "rxjs": ">= 7.5.7"
   }
 }
