@@ -1,6 +1,10 @@
-# ngx-maplibre-gl
 
-<img src="./projects/showcase/src/assets/ngx-maplibre-gl-red.svg" height="128">
+<div align="center">
+  <img src="./projects/showcase/src/assets/ngx-maplibre-gl-red.svg" height="128">
+</div>
+<div align="center">
+  <h1>ngx-maplibre-gl</h1>
+</div>
 
 Angular wrapper for [maplibre-gl](https://www.maplibre.org/). It exposes a bunch of components meant to be simple to use with Angular.
 
