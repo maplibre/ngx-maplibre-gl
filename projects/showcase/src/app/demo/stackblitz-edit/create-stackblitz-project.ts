@@ -1,4 +1,4 @@
-import { Project } from '@stackblitz/sdk/typings/interfaces';
+import { Project } from '@stackblitz/sdk/types/interfaces';
 
 function toPascalCase(text: string) {
   return text.replace(/(^\w|-\w)/g, clearAndUpper);
