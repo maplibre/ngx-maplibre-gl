@@ -1,4 +1,4 @@
-import { Project } from '@stackblitz/sdk/typings/interfaces';
+import { Project } from '@stackblitz/sdk/types/interfaces';
 
 function toPascalCase(text: string) {
   return text.replace(/(^\w|-\w)/g, clearAndUpper);
@@ -41,17 +41,18 @@ import 'zone.js';
     dependencies: {
       tslib: '*',
       'maplibre-gl': '*',
+      '@maplibre/maplibre-gl-style-spec': '*',
       '@maplibre/ngx-maplibre-gl': '*',
-      '@angular/cdk': '^13',
-      '@angular/material': '^13',
-      '@angular/animations': '^13',
-      '@angular/forms': '^13',
-      '@angular/common': '^13',
-      '@angular/compiler': '^13',
-      '@angular/core': '^13',
-      '@angular/platform-browser': '^13',
-      '@angular/platform-browser-dynamic': '^13',
-      '@angular/router': '^13',
+      '@angular/cdk': '^16',
+      '@angular/material': '^16',
+      '@angular/animations': '^16',
+      '@angular/forms': '^16',
+      '@angular/common': '^16',
+      '@angular/compiler': '^16',
+      '@angular/core': '^16',
+      '@angular/platform-browser': '^16',
+      '@angular/platform-browser-dynamic': '^16',
+      '@angular/router': '^16',
       url: '*',
       querystring: '*',
       events: '*',

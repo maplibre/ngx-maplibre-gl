@@ -48,8 +48,6 @@ Cypress.on('window:before:load', (win) => {
 });
 
 afterEach(() => {
-  cy.window().then((win) => {
-    expect(win.console.error).to.have.callCount(0);
-    expect(win.console.warn).to.have.callCount(0);
-  });
+  cy.get('@consoleErrorSpy').should('not.be.called');
+  cy.get('@consoleWarnSpy').should('not.be.called');
 });
