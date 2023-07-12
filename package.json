@@ -44,7 +44,7 @@
     "@stackblitz/sdk": "^1.9.0",
     "@types/geojson": "^7946.0.7",
     "lodash-es": "^4.17.11",
-    "maplibre-gl": "^3.0.0",
+    "maplibre-gl": "^3.2.0",
     "ngx-markdown": "^16.0.0",
     "rxjs": "7.5.7",
     "scroll-into-view-if-needed": "^2.2.20",

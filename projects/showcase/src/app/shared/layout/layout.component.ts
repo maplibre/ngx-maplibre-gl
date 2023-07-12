@@ -5,18 +5,20 @@ import { Component } from '@angular/core';
     <mat-toolbar color="primary">
       <div>
         <div id="layout-left-custom-items"></div>
-        <a mat-button routerLink="/">
+        <a mat-icon-button routerLink="/">
           <mat-icon svgIcon="ngx-maplibre-gl"></mat-icon>
-          ngx-maplibre-gl
         </a>
+        <a mat-button routerLink="/"> ngx-maplibre-gl </a>
         <a mat-button routerLink="/demo"> Demo </a>
         <a mat-button routerLink="/doc"> Documentation </a>
       </div>
       <div>
         <div id="layout-right-custom-items"></div>
         <a mat-button href="https://github.com/maplibre/ngx-maplibre-gl">
+          Github
+        </a>
+        <a mat-icon-button href="https://github.com/maplibre/ngx-maplibre-gl">
           <mat-icon svgIcon="github"></mat-icon>
-          GitHub
         </a>
       </div>
     </mat-toolbar>
