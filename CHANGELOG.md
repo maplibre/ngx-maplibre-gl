@@ -10,11 +10,11 @@ All notable changes to this project will be documented in this file. See [standa
 
 - Upgrade to Angular 15 (Version 14 of this library was only a pre-release)
 - Upgrade to use maplibre-gl-js version 3
-- Handle removeSource embedded in layer upon cleanup #50
-- Add cooperativeGestures support for the Map object #61
-- Expose MapLIbre-GL 3D Terrain functionality, including `TerrainControl` #78
-- Control removal fix #86
-- Popup moving change #87
+- Handle removeSource embedded in layer upon cleanup ([#50](https://github.com/maplibre/ngx-maplibre-gl/pull/50))
+- Add cooperativeGestures support for the Map object ([#61](https://github.com/maplibre/ngx-maplibre-gl/pull/61))
+- Expose MapLIbre-GL 3D Terrain functionality, including `TerrainControl` ([#78](https://github.com/maplibre/ngx-maplibre-gl/pull/78))
+- Control removal fix ([#86](https://github.com/maplibre/ngx-maplibre-gl/pull/86))
+- Popup moving change ([#87](https://github.com/maplibre/ngx-maplibre-gl/pull/87))
 
 ### [13.0.0](https://github.com/maplibre/ngx-maplibre-gl/compare/v12.2.0...v13.0.0) (2022-01-25)
 
