@@ -28,7 +28,7 @@ const COLORS = ['#fed976', '#feb24c', '#fd8d3c', '#fc4e2a', '#e31a1c'];
     >
       <mgl-geojson-source
         id="earthquakes"
-        data="https://maplibre.org/maplibre-gl-js-docs/assets/earthquakes.geojson"
+        data="https://maplibre.org/maplibre-gl-js/docs/assets/earthquakes.geojson"
         [cluster]="true"
         [clusterRadius]="80"
         [clusterProperties]="clusterProperties"
