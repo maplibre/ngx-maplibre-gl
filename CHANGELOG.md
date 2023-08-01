@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [16.0.0](https://github.com/maplibre/ngx-maplibre-gl/compare/v15.0.0...v16.0.0) (2023-06-08)
+
+- Upgrade to Angular 16
+
+### [15.0.0](https://github.com/maplibre/ngx-maplibre-gl/compare/v13.0.0...v15.0.0) (2023-05-24)
+
+- Upgrade to Angular 15 (Version 14 of this library was only a pre-release)
+- Upgrade to use maplibre-gl-js version 3
+- Handle removeSource embedded in layer upon cleanup #50
+- Add cooperativeGestures support for the Map object #61
+- Expose MapLIbre-GL 3D Terrain functionality, including `TerrainControl` #78
+- Control removal fix #86
+- Popup moving change #87
+
+### [13.0.0](https://github.com/maplibre/ngx-maplibre-gl/compare/v12.2.0...v13.0.0) (2022-01-25)
+
+- Upgrade to Angualr 13
+- Removed deprected events
+
 ### [12.2.0](https://github.com/maplibre/ngx-maplibre-gl/compare/v12.0.0...v12.2.0) (2022-01-15)
 
 - Upgrade to use maplibre 2.0
