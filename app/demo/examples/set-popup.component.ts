@@ -12,7 +12,7 @@ import { Component } from '@angular/core';
         <div
           [ngStyle]="{
             'background-image':
-              'url(https://maplibre.org/maplibre-gl-js-docs/assets/washington-monument.jpg)',
+              'url(https://maplibre.org/maplibre-gl-js/docs/assets/washington-monument.jpg)',
             'background-size': 'cover',
             width: '50px',
             height: '50px',
