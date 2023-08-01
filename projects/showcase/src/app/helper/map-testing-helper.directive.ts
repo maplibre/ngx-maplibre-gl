@@ -2,7 +2,6 @@ import { Directive, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { MapComponent } from 'ngx-maplibre-gl';
 
 @Directive({
-  // tslint:disable-next-line: directive-selector
   selector: 'mgl-map',
 })
 export class MapTestingHelperDirective implements OnInit, OnDestroy {

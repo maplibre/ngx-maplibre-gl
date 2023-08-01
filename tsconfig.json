@@ -23,11 +23,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strictPropertyInitialization": false,
-    "plugins": [
-      {
-        "name": "typescript-tslint-plugin"
-      }
-    ],
     "useDefineForClassFields": false
   }
 }
