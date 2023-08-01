@@ -206,7 +206,6 @@ export class ClusterPointComponent implements OnInit {
       y1 = Math.sin(a1);
     const largeArc = end - start > 0.5 ? 1 : 0;
     return {
-      // tslint:disable-next-line:max-line-length
       d: `M ${this.r + this.r0 * x0} ${this.r + this.r0 * y0} L ${
         this.r + this.r * x0
       } ${this.r + this.r * y0} A ${this.r} ${this.r} 0 ${largeArc} 1 ${
