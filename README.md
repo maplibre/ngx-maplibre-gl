@@ -48,7 +48,7 @@ npm install @maplibre/ngx-maplibre-gl maplibre-gl
 yarn add @maplibre/ngx-maplibre-gl maplibre-gl
 ```
 
-There might be a beed to add the following configuration to `tsconfig.json` file
+There might be a need to add the following configuration to `tsconfig.json` file
 
 ```
 "compilerOptions": {
