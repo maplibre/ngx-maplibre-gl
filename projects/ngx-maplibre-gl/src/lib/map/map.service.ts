@@ -241,7 +241,7 @@ export class MapService {
     });
   }
 
-  getTerrain(): TerrainSpecification {
+  getTerrain(): TerrainSpecification | null {
     return this.zone.runOutsideAngular(() => {
       return this.mapInstance.getTerrain();
     });
