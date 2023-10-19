@@ -9,4 +9,5 @@ export default defineConfig({
     supportFile: 'projects/showcase/cypress/support/e2e.ts',
     specPattern: '**/*.cy.ts',
   },
+  video: true,
 });
