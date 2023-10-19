@@ -13,9 +13,9 @@ describe('Live Update', () => {
         .takeImageSnapshot();
     });
 
-    context('When I wait two seconds', () => {
+    context('When I wait three seconds', () => {
       beforeEach(() => {
-        driver.when.wait(2000);
+        driver.when.wait(3000);
       });
 
       it('Then I should see the map image change and the map center coordinates are different', () => {

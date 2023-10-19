@@ -37,6 +37,7 @@ describe('Set style', () => {
             // as a reliable await target just before the map is fully rendered and idle (and
             // only then should we compare to the snapshot)
             .when.waitForFetch('**/streets/sprite.png');
+          driver.when.wait(3000);
         });
 
         it('Then I should see the original map image', () => {
