@@ -28,6 +28,7 @@ describe('Set style', () => {
       'When I click the "from code" radio button and then click the "streets" radio button',
       () => {
         beforeEach(() => {
+          driver.when.wait(1000);
           driver.when
             .clickFromCodeRadioButton()
             .waitForMapToIdle()
