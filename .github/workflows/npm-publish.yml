@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
-      - run: npm install
+      - run: npm install --force
       - run: npm run build
       - run: |
           cd dist/ngx-maplibre-gl
