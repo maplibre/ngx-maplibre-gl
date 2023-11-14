@@ -54,19 +54,17 @@ jobs:
         uses: martinbeentjes/npm-get-version-action@v1.3.1
 
       - name: Tag commit and push
+        id: tag_version
         uses: mathieudutour/github-tag-action@v6.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           custom_tag: ${{ steps.package-version.outputs.current-version }}
 
-      - name: Create GitHub Release
-        id: create_regular_release
+      - name: Create a GitHub Release
         uses: ncipollo/release-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag: ${{ steps.prepare_release.outputs.version_tag }}
-          name: ${{steps.prepare_release.outputs.version_tag }}
-          allowUpdates: true
-          draft: false
-          prerelease: false
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
