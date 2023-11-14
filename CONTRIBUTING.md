@@ -20,8 +20,7 @@ https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit
 
 ## Release a new version
 
-IMPORTANT: ngx-maplibre-gl follow https://semver.org/.
-`standard-version` should auto increment the version correctly (as long as the commit message are correctly formatted). Make sure everything is correct before publishing a new version.
+IMPORTANT: ngx-maplibre-gl does not follow - It uses the main version of angular as the major and usualy the maplibre-gl version as the minor.
 
 Check if tests are OK (`npm run test` and `npm run e2e` or take a look at ci if your changes are pushed).
 
@@ -31,4 +30,6 @@ Manually edit `CHANGELOG.md` if necessary.
 
 If everything is OK, push the changes
 
-Create a Github release with the same version name, for example `v1.2.3` - this will triger the Github actions to update the npm package and the gh-pages
+Run the create-bump-version-PR workflow to update the version
+
+Once merged to main, a new version should be created automatically.
