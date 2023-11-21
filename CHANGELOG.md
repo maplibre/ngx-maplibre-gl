@@ -2,7 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [16.3.0](https://github.com/maplibre/ngx-maplibre-gl/compare/v15.0.0...v16.0.0) (2023-11-14)
+### [17.0.1](https://github.com/maplibre/ngx-maplibre-gl/compare/v16.3.0...v17.0.1) (2023-11-14)
+
+- Upgrade Angular to version 17
+
+### [16.3.0](https://github.com/maplibre/ngx-maplibre-gl/compare/v16.0.0...v16.3.0) (2023-11-14)
 
 - Upgrade maplibre-gl to version 3.6
 
