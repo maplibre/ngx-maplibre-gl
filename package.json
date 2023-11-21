@@ -2,7 +2,7 @@
   "name": "ngx-maplibre-gl-srcs",
   "version": "17.0.1",
   "scripts": {
-    "ng": "ng ",
+    "ng": "ng",
     "start": "ng serve showcase",
     "build": "ng build --configuration production ngx-maplibre-gl",
     "build:watch": "ng build --watch ngx-maplibre-gl",
