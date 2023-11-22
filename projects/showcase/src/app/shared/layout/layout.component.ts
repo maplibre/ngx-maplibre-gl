@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
-    template: `
+  template: `
     <mat-toolbar color="primary">
       <div>
         <div id="layout-left-custom-items"></div>
@@ -28,8 +28,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     </mat-toolbar>
     <router-outlet></router-outlet>
   `,
-    styles: [
-        `
+  styles: [
+    `
       :host {
         display: flex;
         flex-direction: column;
@@ -53,14 +53,14 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         height: 100%;
       }
     `,
-    ],
-    standalone: true,
-    imports: [
-        MatToolbarModule,
-        MatButtonModule,
-        RouterLink,
-        MatIconModule,
-        RouterOutlet,
-    ],
+  ],
+  standalone: true,
+  imports: [
+    MatToolbarModule,
+    MatButtonModule,
+    RouterLink,
+    MatIconModule,
+    RouterOutlet,
+  ],
 })
 export class LayoutComponent {}

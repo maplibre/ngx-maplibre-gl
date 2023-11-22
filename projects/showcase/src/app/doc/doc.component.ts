@@ -10,7 +10,7 @@ import { LayoutToolbarMenuComponent } from '../shared/layout/layout-toolbar-menu
 export const VERSIONS = ['main'];
 
 @Component({
-    template: `
+  template: `
     <showcase-layout-toolbar-menu position="right">
       <mat-form-field>
         <mat-select
@@ -25,8 +25,8 @@ export const VERSIONS = ['main'];
     </showcase-layout-toolbar-menu>
     <markdown [src]="docUrl"></markdown>
   `,
-    styles: [
-        `
+  styles: [
+    `
       :host {
         display: flex;
         flex: 1;
@@ -39,18 +39,18 @@ export const VERSIONS = ['main'];
         width: 60%;
       }
     `,
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        LayoutToolbarMenuComponent,
-        MatFormFieldModule,
-        MatSelectModule,
-        FormsModule,
-        NgFor,
-        MatOptionModule,
-        MarkdownComponent,
-    ],
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    LayoutToolbarMenuComponent,
+    MatFormFieldModule,
+    MatSelectModule,
+    FormsModule,
+    NgFor,
+    MatOptionModule,
+    MarkdownComponent,
+  ],
 })
 export class DocComponent implements OnInit {
   VERSIONS = VERSIONS;

@@ -4,8 +4,8 @@ import { MapTestingHelperDirective } from '../../helper/map-testing-helper.direc
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
-    selector: 'showcase-demo',
-    template: `
+  selector: 'showcase-demo',
+  template: `
     <mgl-map
       [style]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
@@ -36,14 +36,14 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       </mgl-marker>
     </mgl-map>
   `,
-    styleUrls: ['./examples.css', './custom-marker-icons.component.css'],
-    standalone: true,
-    imports: [
-        MapComponent,
-        MglMapResizeDirective,
-        MapTestingHelperDirective,
-        MarkerComponent,
-    ],
+  styleUrls: ['./examples.css', './custom-marker-icons.component.css'],
+  standalone: true,
+  imports: [
+    MapComponent,
+    MglMapResizeDirective,
+    MapTestingHelperDirective,
+    MarkerComponent,
+  ],
 })
 export class NgxCustomMarkerIconsComponent {
   alert(message: string) {

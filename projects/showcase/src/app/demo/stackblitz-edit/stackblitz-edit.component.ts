@@ -19,15 +19,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgIf } from '@angular/common';
 
 @Component({
-    template: `
+  template: `
     <div #container></div>
     <div *ngIf="loading" class="loader">
       <mat-spinner></mat-spinner>
       <div></div>
     </div>
   `,
-    styles: [
-        `
+  styles: [
+    `
       :host {
         display: flex;
         flex: 1;
@@ -45,10 +45,10 @@ import { NgIf } from '@angular/common';
         transform: translate(-50%, -50%);
       }
     `,
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [NgIf, MatProgressSpinnerModule],
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, MatProgressSpinnerModule],
 })
 export class StackblitzEditComponent implements AfterViewInit, OnDestroy {
   @ViewChild('container') stackblitzContainer: ElementRef;

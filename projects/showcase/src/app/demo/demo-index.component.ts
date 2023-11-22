@@ -7,8 +7,18 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
-import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { ActivatedRoute, Router, Routes, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
+import {
+  MatSlideToggleChange,
+  MatSlideToggleModule,
+} from '@angular/material/slide-toggle';
+import {
+  ActivatedRoute,
+  Router,
+  Routes,
+  RouterLinkActive,
+  RouterLink,
+  RouterOutlet,
+} from '@angular/router';
 import { cloneDeep, groupBy } from 'lodash-es';
 import { first } from 'rxjs/operators';
 import scrollIntoView from 'scroll-into-view-if-needed';
@@ -28,26 +38,26 @@ import { LayoutToolbarMenuComponent } from '../shared/layout/layout-toolbar-menu
 type RoutesByCategory = { [P in Category]: Routes };
 
 @Component({
-    templateUrl: './demo-index.component.html',
-    styleUrls: ['./demo-index.component.scss'],
-    standalone: true,
-    imports: [
-        LayoutToolbarMenuComponent,
-        MatButtonModule,
-        MatIconModule,
-        MatSlideToggleModule,
-        FormsModule,
-        MatSidenavModule,
-        MatFormFieldModule,
-        MatInputModule,
-        NgIf,
-        MatListModule,
-        NgFor,
-        RouterLinkActive,
-        RouterLink,
-        MatDividerModule,
-        RouterOutlet,
-    ],
+  templateUrl: './demo-index.component.html',
+  styleUrls: ['./demo-index.component.scss'],
+  standalone: true,
+  imports: [
+    LayoutToolbarMenuComponent,
+    MatButtonModule,
+    MatIconModule,
+    MatSlideToggleModule,
+    FormsModule,
+    MatSidenavModule,
+    MatFormFieldModule,
+    MatInputModule,
+    NgIf,
+    MatListModule,
+    NgFor,
+    RouterLinkActive,
+    RouterLink,
+    MatDividerModule,
+    RouterOutlet,
+  ],
 })
 export class DemoIndexComponent implements OnInit, AfterViewInit {
   routes: RoutesByCategory;

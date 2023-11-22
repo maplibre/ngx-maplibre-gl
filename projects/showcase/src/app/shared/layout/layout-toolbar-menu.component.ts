@@ -11,14 +11,14 @@ import {
 } from '@angular/core';
 
 @Component({
-    selector: 'showcase-layout-toolbar-menu',
-    template: `
+  selector: 'showcase-layout-toolbar-menu',
+  template: `
     <ng-template cdk-portal>
       <ng-content></ng-content>
     </ng-template>
   `,
-    standalone: true,
-    imports: [PortalModule],
+  standalone: true,
+  imports: [PortalModule],
 })
 export class LayoutToolbarMenuComponent implements AfterViewInit, OnDestroy {
   @Input() position: 'left' | 'right';

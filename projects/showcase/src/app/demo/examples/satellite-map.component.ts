@@ -4,8 +4,8 @@ import { MapTestingHelperDirective } from '../../helper/map-testing-helper.direc
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
-    selector: 'showcase-demo',
-    template: `
+  selector: 'showcase-demo',
+  template: `
     <mgl-map
       [style]="{
         version: 8,
@@ -13,8 +13,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
           satellite: {
             tileSize: 512,
             type: 'raster',
-            url:
-              'https://api.maptiler.com/tiles/satellite-v2/tiles.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+            url: 'https://api.maptiler.com/tiles/satellite-v2/tiles.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
           }
         },
         layers: [
@@ -38,12 +37,8 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
     >
     </mgl-map>
   `,
-    styleUrls: ['./examples.css'],
-    standalone: true,
-    imports: [
-        MapComponent,
-        MglMapResizeDirective,
-        MapTestingHelperDirective,
-    ],
+  styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [MapComponent, MglMapResizeDirective, MapTestingHelperDirective],
 })
 export class SatelliteMapComponent {}

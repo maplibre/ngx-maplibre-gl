@@ -1,13 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { LayerSpecification } from 'maplibre-gl';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MapComponent, LayerComponent, VectorSourceComponent} from '@maplibre/ngx-maplibre-gl';
+import {
+  MapComponent,
+  LayerComponent,
+  VectorSourceComponent,
+} from '@maplibre/ngx-maplibre-gl';
 import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
-    selector: 'showcase-demo',
-    template: `
+  selector: 'showcase-demo',
+  template: `
     <mgl-map
       [style]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
@@ -60,16 +64,16 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       >
     </div>
   `,
-    styleUrls: ['./examples.css', './toggle-layers.component.css'],
-    standalone: true,
-    imports: [
-        MapComponent,
-        MglMapResizeDirective,
-        MapTestingHelperDirective,
-        VectorSourceComponent,
-        LayerComponent,
-        MatButtonToggleModule,
-    ],
+  styleUrls: ['./examples.css', './toggle-layers.component.css'],
+  standalone: true,
+  imports: [
+    MapComponent,
+    MglMapResizeDirective,
+    MapTestingHelperDirective,
+    VectorSourceComponent,
+    LayerComponent,
+    MatButtonToggleModule,
+  ],
 })
 export class ToggleLayersComponent implements OnInit {
   layouts: { [key: string]: LayerSpecification['layout'] } = {

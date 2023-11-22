@@ -1,13 +1,20 @@
 import { Component } from '@angular/core';
 import { MapMouseEvent } from 'maplibre-gl';
 import { MatCardModule } from '@angular/material/card';
-import { MapComponent, ControlComponent, LayerComponent, DraggableDirective, FeatureComponent, GeoJSONSourceComponent } from '@maplibre/ngx-maplibre-gl';
+import {
+  MapComponent,
+  ControlComponent,
+  LayerComponent,
+  DraggableDirective,
+  FeatureComponent,
+  GeoJSONSourceComponent,
+} from '@maplibre/ngx-maplibre-gl';
 import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
-    selector: 'showcase-demo',
-    template: `
+  selector: 'showcase-demo',
+  template: `
     <mgl-map
       [style]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
@@ -45,19 +52,19 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       </mgl-control>
     </mgl-map>
   `,
-    styleUrls: ['./examples.css'],
-    standalone: true,
-    imports: [
-        MapComponent,
-        MglMapResizeDirective,
-        MapTestingHelperDirective,
-        GeoJSONSourceComponent,
-        FeatureComponent,
-        DraggableDirective,
-        LayerComponent,
-        ControlComponent,
-        MatCardModule,
-    ],
+  styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [
+    MapComponent,
+    MglMapResizeDirective,
+    MapTestingHelperDirective,
+    GeoJSONSourceComponent,
+    FeatureComponent,
+    DraggableDirective,
+    LayerComponent,
+    ControlComponent,
+    MatCardModule,
+  ],
 })
 export class NgxDragAPointComponent {
   layerPaint = {

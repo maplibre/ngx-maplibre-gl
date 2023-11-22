@@ -11,8 +11,8 @@ import { MapTestingHelperDirective } from '../../helper/map-testing-helper.direc
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
-    selector: 'showcase-demo',
-    template: `
+  selector: 'showcase-demo',
+  template: `
     <mgl-map [style]="style" [zoom]="[13]" [center]="[4.899, 52.372]">
     </mgl-map>
     <mat-radio-group
@@ -24,15 +24,15 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       <mat-radio-button value="code">from code</mat-radio-button>
     </mat-radio-group>
   `,
-    styleUrls: ['./examples.css', './set-style.component.css'],
-    standalone: true,
-    imports: [
-        MapComponent,
-        MglMapResizeDirective,
-        MapTestingHelperDirective,
-        MatRadioModule,
-        FormsModule,
-    ],
+  styleUrls: ['./examples.css', './set-style.component.css'],
+  standalone: true,
+  imports: [
+    MapComponent,
+    MglMapResizeDirective,
+    MapTestingHelperDirective,
+    MatRadioModule,
+    FormsModule,
+  ],
 })
 export class SetStyleComponent implements OnInit {
   layerId = 'streets';

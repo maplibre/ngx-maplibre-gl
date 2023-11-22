@@ -2,8 +2,8 @@ import { Directive, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { MapComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Directive({
-    selector: 'mgl-map',
-    standalone: true,
+  selector: 'mgl-map',
+  standalone: true,
 })
 export class MapTestingHelperDirective implements OnInit, OnDestroy {
   // Since the Angular environment is production by default, our e2e tests don't

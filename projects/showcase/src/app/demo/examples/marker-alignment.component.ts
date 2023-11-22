@@ -4,8 +4,8 @@ import { MapTestingHelperDirective } from '../../helper/map-testing-helper.direc
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
-    selector: 'showcase-demo',
-    template: `
+  selector: 'showcase-demo',
+  template: `
     <mgl-map
       [interactive]="false"
       movingMethod="jumpTo"
@@ -41,14 +41,14 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       </mgl-marker>
     </mgl-map>
   `,
-    styleUrls: ['./examples.css', './marker-alignment.component.css'],
-    standalone: true,
-    imports: [
-        MapComponent,
-        MglMapResizeDirective,
-        MapTestingHelperDirective,
-        MarkerComponent,
-    ],
+  styleUrls: ['./examples.css', './marker-alignment.component.css'],
+  standalone: true,
+  imports: [
+    MapComponent,
+    MglMapResizeDirective,
+    MapTestingHelperDirective,
+    MarkerComponent,
+  ],
 })
 export class MarkerAlignmentComponent implements OnInit {
   pitch = 50;

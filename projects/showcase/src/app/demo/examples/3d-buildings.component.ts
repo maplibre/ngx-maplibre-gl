@@ -5,8 +5,8 @@ import { MapTestingHelperDirective } from '../../helper/map-testing-helper.direc
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
-    selector: 'showcase-demo',
-    template: `
+  selector: 'showcase-demo',
+  template: `
     <mgl-map
       [style]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
@@ -50,14 +50,14 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       ></mgl-layer>
     </mgl-map>
   `,
-    styleUrls: ['./examples.css'],
-    standalone: true,
-    imports: [
-        MapComponent,
-        MglMapResizeDirective,
-        MapTestingHelperDirective,
-        LayerComponent,
-    ],
+  styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [
+    MapComponent,
+    MglMapResizeDirective,
+    MapTestingHelperDirective,
+    LayerComponent,
+  ],
 })
 export class Display3dBuildingsComponent {
   labelLayerId: string;

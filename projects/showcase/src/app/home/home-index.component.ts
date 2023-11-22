@@ -4,7 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MapComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
-    template: `
+  template: `
     <mgl-map
       [style]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[2]"
@@ -20,9 +20,9 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
       <h1>Angular binding of maplibre-gl-js</h1>
     </div>
   `,
-    styleUrls: ['./home-index.component.scss'],
-    standalone: true,
-    imports: [MapComponent, MatIconModule],
+  styleUrls: ['./home-index.component.scss'],
+  standalone: true,
+  imports: [MapComponent, MatIconModule],
 })
 export class HomeIndexComponent {
   center = [0, 0];
