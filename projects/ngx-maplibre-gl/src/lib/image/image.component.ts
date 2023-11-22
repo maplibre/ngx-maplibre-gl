@@ -15,9 +15,9 @@ import { MapService } from '../map/map.service';
 import { MapImageData, MapImageOptions } from '../map/map.types';
 
 @Component({
-    selector: 'mgl-image',
-    template: '',
-    standalone: true,
+  selector: 'mgl-image',
+  template: '',
+  standalone: true,
 })
 export class ImageComponent implements OnInit, OnDestroy, OnChanges {
   /* Init inputs */

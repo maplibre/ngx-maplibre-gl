@@ -17,8 +17,8 @@ import { MapService } from '../map/map.service';
 import { FeatureComponent } from '../source/geojson/feature.component';
 
 @Directive({
-    selector: '[mglDraggable]',
-    standalone: true,
+  selector: '[mglDraggable]',
+  standalone: true,
 })
 export class DraggableDirective implements OnInit, OnDestroy {
   // eslint-disable-next-line @angular-eslint/no-input-rename

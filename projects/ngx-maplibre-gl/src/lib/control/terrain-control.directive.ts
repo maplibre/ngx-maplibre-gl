@@ -4,8 +4,8 @@ import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
 
 @Directive({
-    selector: '[mglTerrain]',
-    standalone: true,
+  selector: '[mglTerrain]',
+  standalone: true,
 })
 export class TerrainControlDirective implements AfterContentInit {
   /* Init inputs */

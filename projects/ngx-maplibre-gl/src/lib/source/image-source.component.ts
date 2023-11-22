@@ -12,10 +12,10 @@ import { Subscription } from 'rxjs';
 import { MapService } from '../map/map.service';
 
 @Component({
-    selector: 'mgl-image-source',
-    template: '',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
+  selector: 'mgl-image-source',
+  template: '',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class ImageSourceComponent
   implements OnInit, OnDestroy, OnChanges, ImageSourceSpecification {

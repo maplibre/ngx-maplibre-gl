@@ -10,8 +10,8 @@ import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
 
 @Directive({
-    selector: '[mglFullscreen]',
-    standalone: true,
+  selector: '[mglFullscreen]',
+  standalone: true,
 })
 export class FullscreenControlDirective implements AfterContentInit {
   /* Init inputs */

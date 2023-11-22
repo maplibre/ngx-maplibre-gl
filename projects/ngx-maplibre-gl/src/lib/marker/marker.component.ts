@@ -17,11 +17,11 @@ import { LngLatLike, Marker, MarkerOptions } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 
 @Component({
-    selector: 'mgl-marker',
-    template: '<div [class]="className" #content><ng-content></ng-content></div>',
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
+  selector: 'mgl-marker',
+  template: '<div [class]="className" #content><ng-content></ng-content></div>',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class MarkerComponent
   implements OnChanges, OnDestroy, AfterViewInit, OnInit {
