@@ -1,5 +1,5 @@
 import { Directive, OnDestroy, OnInit } from '@angular/core';
-import { MapComponent } from 'projects/ngx-maplibre-gl/src/public_api';
+import { MapComponent } from '@maplibre/ngx-maplibre-gl';
 import { Subscription } from 'rxjs';
 import { MapResizeService } from './map-resize.service';
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Position } from 'projects/ngx-maplibre-gl/src/public_api';
+import { Position } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',

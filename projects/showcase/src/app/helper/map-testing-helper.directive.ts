@@ -1,5 +1,5 @@
 import { Directive, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { MapComponent } from 'ngx-maplibre-gl';
+import { MapComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Directive({
   selector: 'mgl-map',

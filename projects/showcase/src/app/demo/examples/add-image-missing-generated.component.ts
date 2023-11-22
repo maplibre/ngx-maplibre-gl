@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MapImageData } from 'projects/ngx-maplibre-gl/src/public_api';
+import { MapImageData } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
