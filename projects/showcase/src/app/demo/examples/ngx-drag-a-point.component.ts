@@ -1,9 +1,18 @@
 import { Component } from '@angular/core';
 import { MapMouseEvent } from 'maplibre-gl';
+import { MatCardModule } from '@angular/material/card';
+import { ControlComponent } from '../../../../../ngx-maplibre-gl/src/lib/control/control.component';
+import { LayerComponent } from '../../../../../ngx-maplibre-gl/src/lib/layer/layer.component';
+import { DraggableDirective } from '../../../../../ngx-maplibre-gl/src/lib/draggable/draggable.directive';
+import { FeatureComponent } from '../../../../../ngx-maplibre-gl/src/lib/source/geojson/feature.component';
+import { GeoJSONSourceComponent } from '../../../../../ngx-maplibre-gl/src/lib/source/geojson/geojson-source.component';
+import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
+import { MglMapResizeDirective } from '../mgl-map-resize.directive';
+import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
 
 @Component({
-  selector: 'showcase-demo',
-  template: `
+    selector: 'showcase-demo',
+    template: `
     <mgl-map
       [style]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
@@ -41,7 +50,19 @@ import { MapMouseEvent } from 'maplibre-gl';
       </mgl-control>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+    styleUrls: ['./examples.css'],
+    standalone: true,
+    imports: [
+        MapComponent,
+        MglMapResizeDirective,
+        MapTestingHelperDirective,
+        GeoJSONSourceComponent,
+        FeatureComponent,
+        DraggableDirective,
+        LayerComponent,
+        ControlComponent,
+        MatCardModule,
+    ],
 })
 export class NgxDragAPointComponent {
   layerPaint = {

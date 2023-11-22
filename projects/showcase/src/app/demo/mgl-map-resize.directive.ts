@@ -4,7 +4,8 @@ import { Subscription } from 'rxjs';
 import { MapResizeService } from './map-resize.service';
 
 @Directive({
-  selector: 'mgl-map',
+    selector: 'mgl-map',
+    standalone: true,
 })
 export class MglMapResizeDirective implements OnInit, OnDestroy {
   private sub = new Subscription();

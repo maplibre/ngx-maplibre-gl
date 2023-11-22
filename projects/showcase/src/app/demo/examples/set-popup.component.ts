@@ -1,8 +1,14 @@
 import { Component } from '@angular/core';
+import { PopupComponent } from '../../../../../ngx-maplibre-gl/src/lib/popup/popup.component';
+import { NgStyle } from '@angular/common';
+import { MarkerComponent } from '../../../../../ngx-maplibre-gl/src/lib/marker/marker.component';
+import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
+import { MglMapResizeDirective } from '../mgl-map-resize.directive';
+import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
 
 @Component({
-  selector: 'showcase-demo',
-  template: `
+    selector: 'showcase-demo',
+    template: `
     <mgl-map
       [style]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[15]"
@@ -26,6 +32,15 @@ import { Component } from '@angular/core';
       </mgl-popup>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+    styleUrls: ['./examples.css'],
+    standalone: true,
+    imports: [
+        MapComponent,
+        MglMapResizeDirective,
+        MapTestingHelperDirective,
+        MarkerComponent,
+        NgStyle,
+        PopupComponent,
+    ],
 })
 export class SetPopupComponent {}

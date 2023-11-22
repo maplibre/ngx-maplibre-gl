@@ -1,9 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
+import { LayerComponent } from '../../../../../ngx-maplibre-gl/src/lib/layer/layer.component';
+import { ImageSourceComponent } from '../../../../../ngx-maplibre-gl/src/lib/source/image-source.component';
+import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
+import { MglMapResizeDirective } from '../mgl-map-resize.directive';
+import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
 
 @Component({
-  selector: 'showcase-demo',
-  template: `
+    selector: 'showcase-demo',
+    template: `
     <mgl-map
       [style]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
@@ -28,7 +33,15 @@ import { interval, Subscription } from 'rxjs';
       </mgl-layer>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+    styleUrls: ['./examples.css'],
+    standalone: true,
+    imports: [
+        MapComponent,
+        MglMapResizeDirective,
+        MapTestingHelperDirective,
+        ImageSourceComponent,
+        LayerComponent,
+    ],
 })
 export class LiveUpdateImageSourceComponent implements OnInit, OnDestroy {
   private sub: Subscription;

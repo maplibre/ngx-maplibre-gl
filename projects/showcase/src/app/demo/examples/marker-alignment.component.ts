@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { MarkerComponent } from '../../../../../ngx-maplibre-gl/src/lib/marker/marker.component';
+import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
+import { MglMapResizeDirective } from '../mgl-map-resize.directive';
+import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
 
 @Component({
-  selector: 'showcase-demo',
-  template: `
+    selector: 'showcase-demo',
+    template: `
     <mgl-map
       [interactive]="false"
       movingMethod="jumpTo"
@@ -38,7 +42,14 @@ import { Component, OnInit } from '@angular/core';
       </mgl-marker>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css', './marker-alignment.component.css'],
+    styleUrls: ['./examples.css', './marker-alignment.component.css'],
+    standalone: true,
+    imports: [
+        MapComponent,
+        MglMapResizeDirective,
+        MapTestingHelperDirective,
+        MarkerComponent,
+    ],
 })
 export class MarkerAlignmentComponent implements OnInit {
   pitch = 50;

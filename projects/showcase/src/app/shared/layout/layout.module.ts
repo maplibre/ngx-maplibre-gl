@@ -11,16 +11,16 @@ import { LayoutComponent } from './layout.component';
 const PUBLIC_DECLARATIONS = [LayoutComponent, LayoutToolbarMenuComponent];
 
 @NgModule({
-  declarations: PUBLIC_DECLARATIONS,
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    PortalModule,
-  ],
-  exports: PUBLIC_DECLARATIONS,
-  providers: [],
+    imports: [
+        CommonModule,
+        RouterModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatButtonModule,
+        PortalModule,
+        ...PUBLIC_DECLARATIONS,
+    ],
+    exports: PUBLIC_DECLARATIONS,
+    providers: [],
 })
 export class LayoutModule {}

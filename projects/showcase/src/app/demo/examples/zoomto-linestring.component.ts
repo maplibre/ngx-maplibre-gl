@@ -1,9 +1,15 @@
 import { Component } from '@angular/core';
 import { LngLatBounds } from 'maplibre-gl';
+import { LayerComponent } from '../../../../../ngx-maplibre-gl/src/lib/layer/layer.component';
+import { MatButtonModule } from '@angular/material/button';
+import { ControlComponent } from '../../../../../ngx-maplibre-gl/src/lib/control/control.component';
+import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
+import { MglMapResizeDirective } from '../mgl-map-resize.directive';
+import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
 
 @Component({
-  selector: 'showcase-demo',
-  template: `
+    selector: 'showcase-demo',
+    template: `
     <mgl-map
       [style]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[12]"
@@ -33,8 +39,17 @@ import { LngLatBounds } from 'maplibre-gl';
       ></mgl-layer>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
-  preserveWhitespaces: false,
+    styleUrls: ['./examples.css'],
+    preserveWhitespaces: false,
+    standalone: true,
+    imports: [
+        MapComponent,
+        MglMapResizeDirective,
+        MapTestingHelperDirective,
+        ControlComponent,
+        MatButtonModule,
+        LayerComponent,
+    ],
 })
 export class ZoomtoLinestringComponent {
   bounds: LngLatBounds;

@@ -18,17 +18,16 @@ const DOC_ROUTES: Routes = [
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(DOC_ROUTES),
-    FormsModule,
-    HttpClientModule,
-    MarkdownModule.forRoot({ loader: HttpClient }),
-    MatFormFieldModule,
-    MatSelectModule,
-
-    LayoutModule,
-  ],
-  declarations: [DocComponent],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(DOC_ROUTES),
+        FormsModule,
+        HttpClientModule,
+        MarkdownModule.forRoot({ loader: HttpClient }),
+        MatFormFieldModule,
+        MatSelectModule,
+        LayoutModule,
+        DocComponent,
+    ],
 })
 export class DocModule {}

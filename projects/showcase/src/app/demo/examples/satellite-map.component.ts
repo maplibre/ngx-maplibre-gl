@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
+import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
+import { MglMapResizeDirective } from '../mgl-map-resize.directive';
+import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
 
 @Component({
-  selector: 'showcase-demo',
-  template: `
+    selector: 'showcase-demo',
+    template: `
     <mgl-map
       [style]="{
         version: 8,
@@ -35,6 +38,12 @@ import { Component } from '@angular/core';
     >
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+    styleUrls: ['./examples.css'],
+    standalone: true,
+    imports: [
+        MapComponent,
+        MglMapResizeDirective,
+        MapTestingHelperDirective,
+    ],
 })
 export class SatelliteMapComponent {}

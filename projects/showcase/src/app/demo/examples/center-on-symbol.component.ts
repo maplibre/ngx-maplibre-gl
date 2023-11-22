@@ -1,9 +1,16 @@
 import { Component } from '@angular/core';
 import { MapMouseEvent, Map } from 'maplibre-gl';
+import { LayerComponent } from '../../../../../ngx-maplibre-gl/src/lib/layer/layer.component';
+import { FeatureComponent } from '../../../../../ngx-maplibre-gl/src/lib/source/geojson/feature.component';
+import { NgFor } from '@angular/common';
+import { GeoJSONSourceComponent } from '../../../../../ngx-maplibre-gl/src/lib/source/geojson/geojson-source.component';
+import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
+import { MglMapResizeDirective } from '../mgl-map-resize.directive';
+import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
 
 @Component({
-  selector: 'showcase-demo',
-  template: `
+    selector: 'showcase-demo',
+    template: `
     <mgl-map
       [style]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
@@ -33,7 +40,17 @@ import { MapMouseEvent, Map } from 'maplibre-gl';
       </mgl-layer>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+    styleUrls: ['./examples.css'],
+    standalone: true,
+    imports: [
+        MapComponent,
+        MglMapResizeDirective,
+        MapTestingHelperDirective,
+        GeoJSONSourceComponent,
+        NgFor,
+        FeatureComponent,
+        LayerComponent,
+    ],
 })
 export class CenterOnSymbolComponent {
   map: Map;

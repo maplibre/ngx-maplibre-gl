@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
 import { TerrainSpecification } from 'maplibre-gl';
+import { RasterDemSourceComponent } from '../../../../../ngx-maplibre-gl/src/lib/source/raster-dem-source.component';
+import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
+import { MglMapResizeDirective } from '../mgl-map-resize.directive';
+import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
 
 @Component({
-  selector: 'showcase-demo',
-  template: `
+    selector: 'showcase-demo',
+    template: `
     <mgl-map
       [style]="mapLibreExampleSource"
       [zoom]="[12]"
@@ -18,7 +22,14 @@ import { TerrainSpecification } from 'maplibre-gl';
       ></mgl-raster-dem-source>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+    styleUrls: ['./examples.css'],
+    standalone: true,
+    imports: [
+        MapComponent,
+        MglMapResizeDirective,
+        MapTestingHelperDirective,
+        RasterDemSourceComponent,
+    ],
 })
 export class TerrainMapComponent {
   mapLibreExampleSource: string =

@@ -1,8 +1,16 @@
 import { Component } from '@angular/core';
+import { ScaleControlDirective } from '../../../../../ngx-maplibre-gl/src/lib/control/scale-control.directive';
+import { NavigationControlDirective } from '../../../../../ngx-maplibre-gl/src/lib/control/navigation-control.directive';
+import { GeolocateControlDirective } from '../../../../../ngx-maplibre-gl/src/lib/control/geolocate-control.directive';
+import { FullscreenControlDirective } from '../../../../../ngx-maplibre-gl/src/lib/control/fullscreen-control.directive';
+import { ControlComponent } from '../../../../../ngx-maplibre-gl/src/lib/control/control.component';
+import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
+import { MglMapResizeDirective } from '../mgl-map-resize.directive';
+import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
 
 @Component({
-  selector: 'showcase-demo',
-  template: `
+    selector: 'showcase-demo',
+    template: `
     <mgl-map
       [style]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
@@ -17,7 +25,18 @@ import { Component } from '@angular/core';
       <mgl-control mglScale></mgl-control>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+    styleUrls: ['./examples.css'],
+    standalone: true,
+    imports: [
+        MapComponent,
+        MglMapResizeDirective,
+        MapTestingHelperDirective,
+        ControlComponent,
+        FullscreenControlDirective,
+        GeolocateControlDirective,
+        NavigationControlDirective,
+        ScaleControlDirective,
+    ],
 })
 export class CustomLocaleComponent {
   readonly locale = {

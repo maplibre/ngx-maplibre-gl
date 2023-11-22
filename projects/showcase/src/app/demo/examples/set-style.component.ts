@@ -4,10 +4,15 @@ import {
   RasterSourceSpecification,
   StyleSpecification,
 } from 'maplibre-gl';
+import { FormsModule } from '@angular/forms';
+import { MatRadioModule } from '@angular/material/radio';
+import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
+import { MglMapResizeDirective } from '../mgl-map-resize.directive';
+import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
 
 @Component({
-  selector: 'showcase-demo',
-  template: `
+    selector: 'showcase-demo',
+    template: `
     <mgl-map [style]="style" [zoom]="[13]" [center]="[4.899, 52.372]">
     </mgl-map>
     <mat-radio-group
@@ -19,7 +24,15 @@ import {
       <mat-radio-button value="code">from code</mat-radio-button>
     </mat-radio-group>
   `,
-  styleUrls: ['./examples.css', './set-style.component.css'],
+    styleUrls: ['./examples.css', './set-style.component.css'],
+    standalone: true,
+    imports: [
+        MapComponent,
+        MglMapResizeDirective,
+        MapTestingHelperDirective,
+        MatRadioModule,
+        FormsModule,
+    ],
 })
 export class SetStyleComponent implements OnInit {
   layerId = 'streets';

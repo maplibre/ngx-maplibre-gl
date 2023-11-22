@@ -15,17 +15,19 @@ import { Subscription, forkJoin, from, of } from 'rxjs';
 import { finalize, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { createStackblitzProject } from './create-stackblitz-project';
 import { DemoFileLoaderService } from './demo-file-loader.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgIf } from '@angular/common';
 
 @Component({
-  template: `
+    template: `
     <div #container></div>
     <div *ngIf="loading" class="loader">
       <mat-spinner></mat-spinner>
       <div></div>
     </div>
   `,
-  styles: [
-    `
+    styles: [
+        `
       :host {
         display: flex;
         flex: 1;
@@ -43,8 +45,10 @@ import { DemoFileLoaderService } from './demo-file-loader.service';
         transform: translate(-50%, -50%);
       }
     `,
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [NgIf, MatProgressSpinnerModule],
 })
 export class StackblitzEditComponent implements AfterViewInit, OnDestroy {
   @ViewChild('container') stackblitzContainer: ElementRef;

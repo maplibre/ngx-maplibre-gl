@@ -4,8 +4,7 @@ import { NgxMapLibreGLModule } from '@maplibre/ngx-maplibre-gl';
 import { HomeIndexComponent } from './home-index.component';
 
 @NgModule({
-  declarations: [HomeIndexComponent],
-  imports: [NgxMapLibreGLModule, MatIconModule],
-  exports: [HomeIndexComponent],
+    imports: [NgxMapLibreGLModule, MatIconModule, HomeIndexComponent],
+    exports: [HomeIndexComponent],
 })
 export class HomeModule {}
