@@ -1,6 +1,25 @@
-import { Component, Input, OnInit, OnChanges, ViewChild, SimpleChanges, forwardRef } from '@angular/core';
-import { MatPaginator, PageEvent, MatPaginatorModule } from '@angular/material/paginator';
-import { MapComponent, GeoJSONSourceComponent, PopupComponent, MarkersForClustersComponent, PointDirective, ClusterPointDirective  } from '@maplibre/ngx-maplibre-gl';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnChanges,
+  ViewChild,
+  SimpleChanges,
+  forwardRef,
+} from '@angular/core';
+import {
+  MatPaginator,
+  PageEvent,
+  MatPaginatorModule,
+} from '@angular/material/paginator';
+import {
+  MapComponent,
+  GeoJSONSourceComponent,
+  PopupComponent,
+  MarkersForClustersComponent,
+  PointDirective,
+  ClusterPointDirective,
+} from '@maplibre/ngx-maplibre-gl';
 import { MatListModule } from '@angular/material/list';
 import { NgIf, NgFor } from '@angular/common';
 import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
@@ -14,8 +33,8 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
  */
 
 @Component({
-    selector: 'showcase-demo',
-    template: `
+  selector: 'showcase-demo',
+  template: `
     <mgl-map
       [style]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
@@ -56,20 +75,20 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       </ng-container>
     </mgl-map>
   `,
-    styleUrls: ['./examples.css', './ngx-cluster-html.component.css'],
-    standalone: true,
-    imports: [
-        MapComponent,
-        MglMapResizeDirective,
-        MapTestingHelperDirective,
-        NgIf,
-        GeoJSONSourceComponent,
-        MarkersForClustersComponent,
-        PointDirective,
-        ClusterPointDirective,
-        PopupComponent,
-        forwardRef(() => ClusterPopupComponent),
-    ],
+  styleUrls: ['./examples.css', './ngx-cluster-html.component.css'],
+  standalone: true,
+  imports: [
+    MapComponent,
+    MglMapResizeDirective,
+    MapTestingHelperDirective,
+    NgIf,
+    GeoJSONSourceComponent,
+    MarkersForClustersComponent,
+    PointDirective,
+    ClusterPointDirective,
+    PopupComponent,
+    forwardRef(() => ClusterPopupComponent),
+  ],
 })
 export class NgxClusterHtmlComponent implements OnInit {
   earthquakes: GeoJSON.FeatureCollection;
@@ -98,8 +117,8 @@ export class NgxClusterHtmlComponent implements OnInit {
 }
 
 @Component({
-    selector: 'showcase-cluster-popup',
-    template: `
+  selector: 'showcase-cluster-popup',
+  template: `
     <mat-list>
       <mat-list-item *ngFor="let leaf of leaves">
         {{ leaf.properties['Primary ID'] }}
@@ -111,12 +130,8 @@ export class NgxClusterHtmlComponent implements OnInit {
       (page)="changePage($event)"
     ></mat-paginator>
   `,
-    standalone: true,
-    imports: [
-        MatListModule,
-        NgFor,
-        MatPaginatorModule,
-    ],
+  standalone: true,
+  imports: [MatListModule, NgFor, MatPaginatorModule],
 })
 export class ClusterPopupComponent implements OnChanges {
   @Input() selectedCluster: { geometry: GeoJSON.Point; properties: any };

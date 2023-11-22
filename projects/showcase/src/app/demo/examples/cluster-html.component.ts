@@ -5,7 +5,13 @@ import {
   ExpressionSpecification,
 } from 'maplibre-gl';
 import { NgStyle, NgFor } from '@angular/common';
-import { MapComponent, LayerComponent, MarkersForClustersComponent, GeoJSONSourceComponent, ClusterPointDirective } from '@maplibre/ngx-maplibre-gl';
+import {
+  MapComponent,
+  LayerComponent,
+  MarkersForClustersComponent,
+  GeoJSONSourceComponent,
+  ClusterPointDirective,
+} from '@maplibre/ngx-maplibre-gl';
 import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
@@ -21,8 +27,8 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 const COLORS = ['#fed976', '#feb24c', '#fd8d3c', '#fc4e2a', '#e31a1c'];
 
 @Component({
-    selector: 'showcase-demo',
-    template: `
+  selector: 'showcase-demo',
+  template: `
     <mgl-map
       [style]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
@@ -61,18 +67,18 @@ const COLORS = ['#fed976', '#feb24c', '#fd8d3c', '#fc4e2a', '#e31a1c'];
       ></mgl-layer>
     </mgl-map>
   `,
-    styleUrls: ['./examples.css'],
-    standalone: true,
-    imports: [
-        MapComponent,
-        MglMapResizeDirective,
-        MapTestingHelperDirective,
-        GeoJSONSourceComponent,
-        MarkersForClustersComponent,
-        ClusterPointDirective,
-        forwardRef(() => ClusterPointComponent),
-        LayerComponent,
-    ],
+  styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [
+    MapComponent,
+    MglMapResizeDirective,
+    MapTestingHelperDirective,
+    GeoJSONSourceComponent,
+    MarkersForClustersComponent,
+    ClusterPointDirective,
+    forwardRef(() => ClusterPointComponent),
+    LayerComponent,
+  ],
 })
 export class ClusterHtmlComponent {
   clusterProperties: any;
@@ -141,8 +147,8 @@ export class ClusterHtmlComponent {
 }
 
 @Component({
-    selector: 'showcase-cluster-point',
-    template: `
+  selector: 'showcase-cluster-point',
+  template: `
     <svg
       [attr.width]="w"
       [attr.height]="w"
@@ -161,8 +167,8 @@ export class ClusterHtmlComponent {
       </text>
     </svg>
   `,
-    standalone: true,
-    imports: [NgStyle, NgFor],
+  standalone: true,
+  imports: [NgStyle, NgFor],
 })
 export class ClusterPointComponent implements OnInit {
   @Input() properties: any;
