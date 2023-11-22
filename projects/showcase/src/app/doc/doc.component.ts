@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { LayoutToolbarMenuComponent } from '../shared/layout/layout-toolbar-menu.component';
+import 'prismjs/components/prism-typescript.min.js';
 
 export const VERSIONS = ['main'];
 
