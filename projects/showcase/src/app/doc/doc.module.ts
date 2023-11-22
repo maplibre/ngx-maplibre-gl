@@ -5,7 +5,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule, Routes } from '@angular/router';
 import { MarkdownModule } from 'ngx-markdown';
-import { LayoutModule } from '../shared/layout/layout.module';
 import { DocComponent } from './doc.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import 'prismjs/components/prism-typescript.min.js';
@@ -26,7 +25,6 @@ const DOC_ROUTES: Routes = [
         MarkdownModule.forRoot({ loader: HttpClient }),
         MatFormFieldModule,
         MatSelectModule,
-        LayoutModule,
         DocComponent,
     ],
 })

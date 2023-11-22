@@ -3,8 +3,6 @@ import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { NgxMapLibreGLModule } from '@maplibre/ngx-maplibre-gl';
-import { LayoutModule } from '../shared/layout/layout.module';
 import { APP_ROUTES } from './routes';
 
 @NgModule({
@@ -15,8 +13,6 @@ import { APP_ROUTES } from './routes';
     MatIconModule,
 
     RouterModule.forRoot(APP_ROUTES, {}),
-    NgxMapLibreGLModule,
-    LayoutModule,
   ],
   exports: [],
   providers: [],

@@ -14,8 +14,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RouterModule } from '@angular/router';
-import { NgxMapLibreGLModule } from '@maplibre/ngx-maplibre-gl';
-import { LayoutModule } from '../shared/layout/layout.module';
 import { DemoIndexComponent } from './demo-index.component';
 import { Display3dBuildingsComponent } from './examples/3d-buildings.component';
 import { AddImageGeneratedComponent } from './examples/add-image-generated.component';
@@ -76,8 +74,6 @@ import { MapTestingHelperDirective } from '../helper/map-testing-helper.directiv
         HttpClientModule,
         CommonModule,
         FormsModule,
-        NgxMapLibreGLModule,
-        LayoutModule,
         MatRadioModule,
         MatButtonToggleModule,
         MatButtonModule,
