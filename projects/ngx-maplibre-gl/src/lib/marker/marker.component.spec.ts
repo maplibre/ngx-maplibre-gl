@@ -12,6 +12,7 @@ import { MarkerComponent } from './marker.component';
     </mgl-marker>
   `,
   standalone: true,
+  imports: [MarkerComponent]
 })
 class MarkerTestComponent {
   offset: PointLike;
@@ -32,7 +33,7 @@ describe('MarkerComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [MarkerTestComponent, MarkerComponent],
+      imports: [MarkerTestComponent],
     })
       .overrideComponent(MarkerTestComponent, {
         set: {
