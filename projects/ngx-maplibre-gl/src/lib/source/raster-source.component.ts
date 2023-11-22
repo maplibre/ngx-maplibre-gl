@@ -13,9 +13,10 @@ import { filter } from 'rxjs/operators';
 import { MapService } from '../map/map.service';
 
 @Component({
-  selector: 'mgl-raster-source',
-  template: '',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'mgl-raster-source',
+    template: '',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class RasterSourceComponent
   implements OnInit, OnDestroy, OnChanges, RasterSourceSpecification {

@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { AttributionControlDirective } from './control/attribution-control.directive';
 import { ControlComponent } from './control/control.component';
@@ -55,8 +54,7 @@ const componentsAndDirectives = [
 ];
 
 @NgModule({
-  imports: [CommonModule],
-  declarations: [...componentsAndDirectives],
+  imports: [...componentsAndDirectives],
   exports: [...componentsAndDirectives],
 })
 export class NgxMapLibreGLModule {}

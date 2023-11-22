@@ -25,9 +25,10 @@ interface CanvasSourceSpecification {
 }
 
 @Component({
-  selector: 'mgl-canvas-source',
-  template: '',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'mgl-canvas-source',
+    template: '',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class CanvasSourceComponent
   implements OnInit, OnDestroy, OnChanges, CanvasSourceSpecification {

@@ -17,9 +17,10 @@ import { MapService } from '../map/map.service';
 import { MarkerComponent } from '../marker/marker.component';
 
 @Component({
-  selector: 'mgl-popup',
-  template: '<div #content><ng-content></ng-content></div>',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'mgl-popup',
+    template: '<div #content><ng-content></ng-content></div>',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class PopupComponent
   implements OnChanges, OnDestroy, AfterViewInit, OnInit {

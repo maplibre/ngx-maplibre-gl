@@ -32,10 +32,10 @@ import { MapService, MovingOptions } from './map.service';
 import { MapEvent, EventData } from './map.types';
 
 @Component({
-  selector: 'mgl-map',
-  template: '<div #container></div>',
-  styles: [
-    `
+    selector: 'mgl-map',
+    template: '<div #container></div>',
+    styles: [
+        `
       :host {
         display: block;
       }
@@ -44,9 +44,10 @@ import { MapEvent, EventData } from './map.types';
         width: 100%;
       }
     `,
-  ],
-  providers: [MapService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    ],
+    providers: [MapService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class MapComponent
   implements

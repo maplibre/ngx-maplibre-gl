@@ -4,7 +4,8 @@ import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
 
 @Directive({
-  selector: '[mglNavigation]',
+    selector: '[mglNavigation]',
+    standalone: true,
 })
 export class NavigationControlDirective implements AfterContentInit {
   /* Init inputs */
