@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { GeolocateControlDirective } from '../../../../../ngx-maplibre-gl/src/lib/control/geolocate-control.directive';
-import { ControlComponent } from '../../../../../ngx-maplibre-gl/src/lib/control/control.component';
+import { MapComponent, ControlComponent, GeolocateControlDirective} from '@maplibre/ngx-maplibre-gl';
 import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
-import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
 
 @Component({
     selector: 'showcase-demo',

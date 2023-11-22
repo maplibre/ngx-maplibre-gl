@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import { Marker } from 'maplibre-gl';
 import { MatCardModule } from '@angular/material/card';
-import { ControlComponent } from '../../../../../ngx-maplibre-gl/src/lib/control/control.component';
+import { MapComponent, ControlComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
 import { NgIf } from '@angular/common';
-import { MarkerComponent } from '../../../../../ngx-maplibre-gl/src/lib/marker/marker.component';
 import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
-import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
 
 @Component({
     selector: 'showcase-demo',

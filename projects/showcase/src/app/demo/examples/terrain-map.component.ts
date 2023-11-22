@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { TerrainSpecification } from 'maplibre-gl';
-import { RasterDemSourceComponent } from '../../../../../ngx-maplibre-gl/src/lib/source/raster-dem-source.component';
+import { MapComponent, RasterDemSourceComponent } from '@maplibre/ngx-maplibre-gl';
 import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
-import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
 
 @Component({
     selector: 'showcase-demo',

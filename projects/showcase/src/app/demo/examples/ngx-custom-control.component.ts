@@ -1,16 +1,9 @@
 import { Component } from '@angular/core';
-import { Position } from '@maplibre/ngx-maplibre-gl';
-import { ScaleControlDirective } from '../../../../../ngx-maplibre-gl/src/lib/control/scale-control.directive';
-import { NavigationControlDirective } from '../../../../../ngx-maplibre-gl/src/lib/control/navigation-control.directive';
-import { GeolocateControlDirective } from '../../../../../ngx-maplibre-gl/src/lib/control/geolocate-control.directive';
-import { FullscreenControlDirective } from '../../../../../ngx-maplibre-gl/src/lib/control/fullscreen-control.directive';
-import { AttributionControlDirective } from '../../../../../ngx-maplibre-gl/src/lib/control/attribution-control.directive';
+import { MapComponent, ControlComponent, AttributionControlDirective, FullscreenControlDirective, GeolocateControlDirective, NavigationControlDirective, ScaleControlDirective, Position } from '@maplibre/ngx-maplibre-gl';
 import { MatButtonModule } from '@angular/material/button';
-import { ControlComponent } from '../../../../../ngx-maplibre-gl/src/lib/control/control.component';
 import { NgIf } from '@angular/common';
 import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
-import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
 
 @Component({
     selector: 'showcase-demo',

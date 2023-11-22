@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { PopupComponent as PopupComponent_1 } from '../../../../../ngx-maplibre-gl/src/lib/popup/popup.component';
+import { MapComponent, PopupComponent as MglPopupComponent } from '@maplibre/ngx-maplibre-gl';
 import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
-import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
 
 @Component({
     selector: 'showcase-demo',
@@ -29,7 +28,7 @@ import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.com
         MapComponent,
         MglMapResizeDirective,
         MapTestingHelperDirective,
-        PopupComponent_1,
+        MglPopupComponent
     ],
 })
 export class PopupComponent {}

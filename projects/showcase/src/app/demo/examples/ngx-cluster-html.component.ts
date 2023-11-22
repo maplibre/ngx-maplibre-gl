@@ -1,14 +1,10 @@
 import { Component, Input, OnInit, OnChanges, ViewChild, SimpleChanges, forwardRef } from '@angular/core';
 import { MatPaginator, PageEvent, MatPaginatorModule } from '@angular/material/paginator';
-import { GeoJSONSourceComponent } from '@maplibre/ngx-maplibre-gl';
+import { MapComponent, GeoJSONSourceComponent, PopupComponent, MarkersForClustersComponent, PointDirective, ClusterPointDirective  } from '@maplibre/ngx-maplibre-gl';
 import { MatListModule } from '@angular/material/list';
-import { PopupComponent } from '../../../../../ngx-maplibre-gl/src/lib/popup/popup.component';
-import { MarkersForClustersComponent, PointDirective, ClusterPointDirective } from '../../../../../ngx-maplibre-gl/src/lib/markers-for-clusters/markers-for-clusters.component';
-import { GeoJSONSourceComponent as GeoJSONSourceComponent_1 } from '../../../../../ngx-maplibre-gl/src/lib/source/geojson/geojson-source.component';
 import { NgIf, NgFor } from '@angular/common';
 import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
-import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
 
 /**
  * Remember: mgl-layer are way faster than html markers
@@ -67,7 +63,7 @@ import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.com
         MglMapResizeDirective,
         MapTestingHelperDirective,
         NgIf,
-        GeoJSONSourceComponent_1,
+        GeoJSONSourceComponent,
         MarkersForClustersComponent,
         PointDirective,
         ClusterPointDirective,

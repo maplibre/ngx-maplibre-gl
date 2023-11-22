@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
-import { MapImageData } from '@maplibre/ngx-maplibre-gl';
-import { LayerComponent } from '../../../../../ngx-maplibre-gl/src/lib/layer/layer.component';
-import { ImageComponent } from '../../../../../ngx-maplibre-gl/src/lib/image/image.component';
+import { MapComponent, MapImageData, ImageComponent, LayerComponent} from '@maplibre/ngx-maplibre-gl';
 import { NgFor } from '@angular/common';
 import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
-import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
 
 @Component({
     selector: 'showcase-demo',

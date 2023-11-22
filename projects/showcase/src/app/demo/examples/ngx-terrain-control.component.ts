@@ -1,11 +1,7 @@
 import { Component } from '@angular/core';
-import { TerrainControlDirective } from '../../../../../ngx-maplibre-gl/src/lib/control/terrain-control.directive';
-import { NavigationControlDirective } from '../../../../../ngx-maplibre-gl/src/lib/control/navigation-control.directive';
-import { ControlComponent } from '../../../../../ngx-maplibre-gl/src/lib/control/control.component';
-import { RasterDemSourceComponent } from '../../../../../ngx-maplibre-gl/src/lib/source/raster-dem-source.component';
+import { MapComponent, ControlComponent, NavigationControlDirective, TerrainControlDirective, RasterDemSourceComponent } from '@maplibre/ngx-maplibre-gl';
 import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
-import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
 
 @Component({
     selector: 'showcase-demo',

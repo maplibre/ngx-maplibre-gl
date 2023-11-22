@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
-import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
+import { MapComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
     selector: 'showcase-demo',

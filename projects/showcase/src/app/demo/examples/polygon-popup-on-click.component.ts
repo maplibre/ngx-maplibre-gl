@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import { LngLat, MapLayerMouseEvent } from 'maplibre-gl';
 import { GeoJsonProperties } from 'geojson';
-import { PopupComponent } from '../../../../../ngx-maplibre-gl/src/lib/popup/popup.component';
+import { MapComponent, PopupComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
 import { NgIf } from '@angular/common';
-import { LayerComponent } from '../../../../../ngx-maplibre-gl/src/lib/layer/layer.component';
 import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
-import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
 
 @Component({
     selector: 'showcase-demo',

@@ -5,12 +5,9 @@ import {
   ExpressionSpecification,
 } from 'maplibre-gl';
 import { NgStyle, NgFor } from '@angular/common';
-import { LayerComponent } from '../../../../../ngx-maplibre-gl/src/lib/layer/layer.component';
-import { MarkersForClustersComponent, ClusterPointDirective } from '../../../../../ngx-maplibre-gl/src/lib/markers-for-clusters/markers-for-clusters.component';
-import { GeoJSONSourceComponent } from '../../../../../ngx-maplibre-gl/src/lib/source/geojson/geojson-source.component';
+import { MapComponent, LayerComponent, MarkersForClustersComponent, GeoJSONSourceComponent, ClusterPointDirective } from '@maplibre/ngx-maplibre-gl';
 import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
-import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
 
 /**
  * Remember: mgl-layer are way faster than html markers

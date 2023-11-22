@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CircleLayerSpecification, LayerSpecification } from 'maplibre-gl';
-import { LayerComponent } from '../../../../../ngx-maplibre-gl/src/lib/layer/layer.component';
-import { GeoJSONSourceComponent } from '../../../../../ngx-maplibre-gl/src/lib/source/geojson/geojson-source.component';
+import { MapComponent, GeoJSONSourceComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
 import { NgIf, NgFor } from '@angular/common';
 import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
-import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
 
 @Component({
     selector: 'showcase-demo',

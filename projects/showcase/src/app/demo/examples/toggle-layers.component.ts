@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { LayerSpecification } from 'maplibre-gl';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { LayerComponent } from '../../../../../ngx-maplibre-gl/src/lib/layer/layer.component';
-import { VectorSourceComponent } from '../../../../../ngx-maplibre-gl/src/lib/source/vector-source.component';
+import { MapComponent, LayerComponent, VectorSourceComponent} from '@maplibre/ngx-maplibre-gl';
 import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
-import { MapComponent } from '../../../../../ngx-maplibre-gl/src/lib/map/map.component';
 
 @Component({
     selector: 'showcase-demo',
