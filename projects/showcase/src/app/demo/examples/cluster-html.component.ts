@@ -12,7 +12,6 @@ import {
   GeoJSONSourceComponent,
   ClusterPointDirective,
 } from '@maplibre/ngx-maplibre-gl';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
@@ -169,7 +168,6 @@ const COLORS = ['#fed976', '#feb24c', '#fd8d3c', '#fc4e2a', '#e31a1c'];
   imports: [
     MapComponent,
     MglMapResizeDirective,
-    MapTestingHelperDirective,
     GeoJSONSourceComponent,
     MarkersForClustersComponent,
     ClusterPointDirective,

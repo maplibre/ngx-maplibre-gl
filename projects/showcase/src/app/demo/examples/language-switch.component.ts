@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { Map } from 'maplibre-gl';
 import { MatButtonModule } from '@angular/material/button';
 import { MapComponent, ControlComponent } from '@maplibre/ngx-maplibre-gl';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
-import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
   selector: 'showcase-demo',
@@ -53,8 +51,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   standalone: true,
   imports: [
     MapComponent,
-    MglMapResizeDirective,
-    MapTestingHelperDirective,
     ControlComponent,
     MatButtonModule,
   ],

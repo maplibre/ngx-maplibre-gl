@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 import { MapComponent } from '@maplibre/ngx-maplibre-gl';
 
@@ -41,6 +40,6 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
   `,
   styleUrls: ['./examples.css'],
   standalone: true,
-  imports: [MapComponent, MglMapResizeDirective, MapTestingHelperDirective],
+  imports: [MapComponent, MglMapResizeDirective],
 })
 export class TerrainMapStyleComponent {}

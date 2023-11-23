@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { MapComponent } from '@maplibre/ngx-maplibre-gl';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
@@ -18,6 +17,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   `,
   styleUrls: ['./examples.css'],
   standalone: true,
-  imports: [MapComponent, MglMapResizeDirective, MapTestingHelperDirective],
+  imports: [MapComponent, MglMapResizeDirective],
 })
 export class InteractiveFalseComponent {}

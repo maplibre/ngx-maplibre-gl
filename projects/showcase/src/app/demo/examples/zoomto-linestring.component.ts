@@ -6,7 +6,6 @@ import {
   ControlComponent,
 } from '@maplibre/ngx-maplibre-gl';
 import { MatButtonModule } from '@angular/material/button';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
@@ -47,7 +46,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   imports: [
     MapComponent,
     MglMapResizeDirective,
-    MapTestingHelperDirective,
     ControlComponent,
     MatButtonModule,
     LayerComponent,

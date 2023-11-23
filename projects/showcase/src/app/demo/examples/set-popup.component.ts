@@ -5,7 +5,6 @@ import {
   MarkerComponent,
 } from '@maplibre/ngx-maplibre-gl';
 import { NgStyle } from '@angular/common';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
@@ -39,7 +38,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   imports: [
     MapComponent,
     MglMapResizeDirective,
-    MapTestingHelperDirective,
     MarkerComponent,
     NgStyle,
     PopupComponent,
