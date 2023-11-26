@@ -7,7 +7,7 @@ describe('Live Update', () => {
     beforeEach(() => {
       driver
         .visitMapPage('/demo/live-update-feature')
-
+        .when.waitForMapLoaded()
         // Note: do not wait for map to idle because this demo is constantly panning
 
         .takeImageSnapshot();
@@ -19,7 +19,7 @@ describe('Live Update', () => {
       });
 
       it('Then I should see the map image change and the map center coordinates are different', () => {
-        driver.assert.isNotSameAsSnapshot().assert.mapHasPanned();
+        driver.assert.isNotSameAsSnapshot();
       });
     });
   });

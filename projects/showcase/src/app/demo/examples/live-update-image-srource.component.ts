@@ -17,6 +17,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       [center]="center"
       [zoom]="[14]"
       movingMethod="jumpTo"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-image-source
         id="test_source"

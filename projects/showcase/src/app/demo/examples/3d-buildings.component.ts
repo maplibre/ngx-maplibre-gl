@@ -15,6 +15,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       [pitch]="45"
       [bearing]="-17.6"
       (mapLoad)="onLoad($event)"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-layer
         id="3d-buildings"

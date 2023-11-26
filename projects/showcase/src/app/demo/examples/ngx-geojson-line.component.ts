@@ -16,6 +16,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       "
       [zoom]="[15]"
       [center]="[-122.486052, 37.830348]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-geojson-source id="oneline">
         <mgl-feature [geometry]="geometry"> </mgl-feature>

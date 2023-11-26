@@ -19,6 +19,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       [fitBoundsOptions]="{
         padding: 20
       }"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-control>
         <button mat-raised-button class="zoom-button" (click)="zoomToBounds()">

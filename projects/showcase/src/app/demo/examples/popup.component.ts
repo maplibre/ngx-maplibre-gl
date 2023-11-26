@@ -14,6 +14,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       "
       [zoom]="[3]"
       [center]="[-96, 37.8]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-popup
         [lngLat]="[-96, 37.8]"

@@ -20,6 +20,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       [center]="[-100.04, 38.907]"
       [cursorStyle]="cursorStyle"
       (mapClick)="onMapClick()"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-layer
         id="states-layer"

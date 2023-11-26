@@ -15,6 +15,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       "
       [zoom]="[13]"
       [center]="[11.255, 43.77]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-control mglFullscreen></mgl-control>
     </mgl-map>

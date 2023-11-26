@@ -12,7 +12,8 @@ import { MapComponent, ControlComponent } from '@maplibre/ngx-maplibre-gl';
       "
       [zoom]="[2.9]"
       [center]="[16.05, 48]"
-      (mapLoad)="map = $event"
+      (mapLoad)="mapLoaded($event)"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-control>
         <button
@@ -57,6 +58,10 @@ import { MapComponent, ControlComponent } from '@maplibre/ngx-maplibre-gl';
 })
 export class LanguageSwitchComponent {
   map: Map;
+
+  public mapLoaded(map: Map) {
+    this.map = map;
+  } 
 
   changeLangTo(language: string) {
     if (!this.map) return;

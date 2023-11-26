@@ -16,6 +16,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       [center]="[-77.04, 38.907]"
       [zoom]="[11.15]"
       [attributionControl]="false"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-control mglAttribution position="top-left"></mgl-control>
     </mgl-map>

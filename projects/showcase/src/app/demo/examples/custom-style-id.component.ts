@@ -11,6 +11,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       "
       [zoom]="[3]"
       [center]="[-77.38, 39]"
+      [preserveDrawingBuffer]="true"
     >
     </mgl-map>
   `,

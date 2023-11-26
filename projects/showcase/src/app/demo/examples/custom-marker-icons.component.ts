@@ -12,6 +12,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       "
       [zoom]="[5]"
       [center]="[-65.017, -16.457]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-marker *ngFor="let feature of geojson.features" [feature]="feature">
         <div

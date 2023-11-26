@@ -20,6 +20,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       "
       [zoom]="[2]"
       [center]="[0, 0]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-geojson-source id="point">
         <mgl-feature

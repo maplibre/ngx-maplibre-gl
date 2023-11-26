@@ -30,6 +30,7 @@ import {
 } from 'maplibre-gl';
 import { MapService, MovingOptions } from './map.service';
 import { MapEvent, EventData } from './map.types';
+import { Subscription, firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'mgl-map',
@@ -202,11 +203,27 @@ export class MapComponent
     return this.mapService.mapInstance;
   }
 
+  private subscriptions: Subscription[] = [];
+
   @ViewChild('container', { static: true }) mapContainer: ElementRef;
 
-  constructor(private mapService: MapService) {}
+  constructor(private mapService: MapService, private elementRef: ElementRef) {}
 
   ngAfterViewInit() {
+    if (this.preserveDrawingBuffer) { // This is to allow better interaction with the map state
+      const htmlElement: HTMLElement = this.elementRef.nativeElement;
+      htmlElement.setAttribute("data-cy", "map");
+      this.subscriptions.push(this.mapLoad.subscribe(() => {
+        htmlElement.setAttribute("data-loaded", "true");
+      }));
+      this.subscriptions.push(this.idle.subscribe(() => {
+        htmlElement.setAttribute("data-idle", "true");
+      }));
+      this.subscriptions.push(this.render.subscribe(() => {
+        htmlElement.removeAttribute("data-idle");
+      }));
+    }
+    
     this.mapService.setup({
       mapOptions: {
         collectResourceTiming: this.collectResourceTiming,
@@ -262,10 +279,13 @@ export class MapComponent
 
   ngOnDestroy() {
     this.mapService.destroyMap();
+    for (const subscription of this.subscriptions) {
+      subscription.unsubscribe();
+    }
   }
 
   async ngOnChanges(changes: SimpleChanges) {
-    await this.mapService.mapCreated$.toPromise();
+    await firstValueFrom(this.mapService.mapCreated$);
     if (changes.cursorStyle && !changes.cursorStyle.isFirstChange()) {
       this.mapService.changeCanvasCursor(changes.cursorStyle.currentValue);
     }

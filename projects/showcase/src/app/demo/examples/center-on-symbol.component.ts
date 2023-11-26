@@ -20,6 +20,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       [center]="center"
       [cursorStyle]="cursorStyle"
       (mapLoad)="map = $event"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-geojson-source id="symbols-source">
         <mgl-feature

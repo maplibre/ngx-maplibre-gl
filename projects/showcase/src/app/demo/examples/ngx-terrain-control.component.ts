@@ -12,6 +12,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       [zoom]="[12]"
       [center]="[11.39085, 47.27574]"
       [pitch]="52"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-raster-dem-source
         id="terrainSource"

@@ -16,6 +16,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
       "
       (styleImageMissing)="generateImage($event)"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-image
         *ngFor="let imageData of imagesData; trackBy: trackByImage"

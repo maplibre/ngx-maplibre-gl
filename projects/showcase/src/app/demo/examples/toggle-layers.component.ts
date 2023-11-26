@@ -17,6 +17,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       "
       [zoom]="[3]"
       [center]="[-71.97722138410576, -13.517379300798098]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-vector-source
         id="countries"

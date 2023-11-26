@@ -12,7 +12,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 @Component({
   selector: 'showcase-demo',
   template: `
-    <mgl-map [style]="style" [zoom]="[13]" [center]="[4.899, 52.372]">
+    <mgl-map [style]="style" [zoom]="[13]" [center]="[4.899, 52.372]" [preserveDrawingBuffer]="true">
     </mgl-map>
     <mat-radio-group
       [ngModel]="layerId"

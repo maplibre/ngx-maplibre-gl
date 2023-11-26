@@ -10,7 +10,7 @@ describe('Terrain Control', () => {
         driver
           .visitMapPage('/demo/terrain-control')
           .waitForMapToIdle()
-          .assert.mapTerrainPropertyDoesNotExists()
+          .assert.mapTerrainButtonIsOff()
           .takeImageSnapshot();
       });
 
@@ -23,7 +23,7 @@ describe('Terrain Control', () => {
         it('Then I should see the map image change and Terrain is enabled', () => {
           driver
             .waitForMapToIdle()
-            .assert.mapTerrainPropertyExists()
+            .assert.mapTerrainButtonIsOn()
             .assert.isNotSameAsSnapshot();
         });
       });
@@ -42,7 +42,7 @@ describe('Terrain Control', () => {
         it('Then I should see the original map image and Terrain is disabled', () => {
           driver
             .waitForMapToIdle()
-            .assert.mapTerrainPropertyDoesNotExists()
+            .assert.mapTerrainButtonIsOff()
             .assert.isSameAsSnapshot();
         });
       });

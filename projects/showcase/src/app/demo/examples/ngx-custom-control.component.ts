@@ -20,6 +20,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       [style]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
       "
+      [preserveDrawingBuffer]="true"
     >
       <ng-container *ngIf="visible">
         <mgl-control>
