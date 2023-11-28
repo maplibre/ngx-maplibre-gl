@@ -2,7 +2,7 @@ import './polyfills';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { ### } from './demo';
 
-bootstrapApplication(###, appConfig)
+bootstrapApplication(###)
   .then((ref) => {
     if (window['ngRef']) {
       window['ngRef'].destroy();

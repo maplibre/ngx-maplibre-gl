@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [17.1.0](https://github.com/maplibre/ngx-maplibre-gl/compare/v17.0.1...v17.1.0) (2023-11-28)
+
+- Add support for standalone component ([#124](https://github.com/maplibre/ngx-maplibre-gl/pull/124))
+
 ### [17.0.1](https://github.com/maplibre/ngx-maplibre-gl/compare/v16.3.0...v17.0.1) (2023-11-21)
 
 - Upgrade Angular to version 17
