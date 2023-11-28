@@ -60,6 +60,7 @@ describe('MapComponent', () => {
 
   describe('Change tests', () => {
     it('should update minzoom', fakeAsync(() => {
+      msSpy.mapCreated$.next(undefined);
       msSpy.mapCreated$.complete();
       component.minZoom = 6;
       component.ngOnChanges({
@@ -70,6 +71,7 @@ describe('MapComponent', () => {
     }));
 
     it('should update minpitch', fakeAsync(() => {
+      msSpy.mapCreated$.next(undefined);
       msSpy.mapCreated$.complete();
       component.minPitch = 15;
       component.ngOnChanges({
@@ -80,6 +82,7 @@ describe('MapComponent', () => {
     }));
 
     it('should update maxpitch', fakeAsync(() => {
+      msSpy.mapCreated$.next(undefined);
       msSpy.mapCreated$.complete();
       component.maxPitch = 25;
       component.ngOnChanges({
