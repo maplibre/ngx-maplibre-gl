@@ -16,6 +16,7 @@ import { MapService } from '../map/map.service';
   selector: 'mgl-video-source',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class VideoSourceComponent
   implements OnInit, OnDestroy, OnChanges, VideoSourceSpecification {

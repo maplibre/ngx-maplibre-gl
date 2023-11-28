@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
+import { NgFor, NgStyle } from '@angular/common';
 
 @Component({
   selector: 'showcase-demo',
@@ -9,6 +11,7 @@ import { Component } from '@angular/core';
       "
       [zoom]="[5]"
       [center]="[-65.017, -16.457]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-marker *ngFor="let feature of geojson.features" [feature]="feature">
         <div
@@ -27,6 +30,8 @@ import { Component } from '@angular/core';
     </mgl-map>
   `,
   styleUrls: ['./examples.css', './custom-marker-icons.component.css'],
+  standalone: true,
+  imports: [MapComponent, NgFor, MarkerComponent, NgStyle],
 })
 export class CustomMarkerIconsComponent {
   geojson = {

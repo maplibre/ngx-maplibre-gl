@@ -1,4 +1,12 @@
 import { Component } from '@angular/core';
+import {
+  MapComponent,
+  ControlComponent,
+  FullscreenControlDirective,
+  GeolocateControlDirective,
+  NavigationControlDirective,
+  ScaleControlDirective,
+} from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
@@ -10,6 +18,7 @@ import { Component } from '@angular/core';
       [center]="[36.235656, 50.00387]"
       [zoom]="[11.15]"
       [locale]="locale"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-control mglFullscreen position="top-left"></mgl-control>
       <mgl-control mglGeolocate position="top-left"></mgl-control>
@@ -18,6 +27,15 @@ import { Component } from '@angular/core';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [
+    MapComponent,
+    ControlComponent,
+    FullscreenControlDirective,
+    GeolocateControlDirective,
+    NavigationControlDirective,
+    ScaleControlDirective,
+  ],
 })
 export class CustomLocaleComponent {
   readonly locale = {

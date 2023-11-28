@@ -5,6 +5,7 @@ import { ControlComponent } from './control.component';
 
 @Directive({
   selector: '[mglAttribution]',
+  standalone: true,
 })
 export class AttributionControlDirective implements AfterContentInit {
   /* Init inputs */

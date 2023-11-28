@@ -4,11 +4,19 @@ import {
   RasterSourceSpecification,
   StyleSpecification,
 } from 'maplibre-gl';
+import { FormsModule } from '@angular/forms';
+import { MatRadioModule } from '@angular/material/radio';
+import { MapComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
   template: `
-    <mgl-map [style]="style" [zoom]="[13]" [center]="[4.899, 52.372]">
+    <mgl-map
+      [style]="style"
+      [zoom]="[13]"
+      [center]="[4.899, 52.372]"
+      [preserveDrawingBuffer]="true"
+    >
     </mgl-map>
     <mat-radio-group
       [ngModel]="layerId"
@@ -20,6 +28,8 @@ import {
     </mat-radio-group>
   `,
   styleUrls: ['./examples.css', './set-style.component.css'],
+  standalone: true,
+  imports: [MapComponent, MatRadioModule, FormsModule],
 })
 export class SetStyleComponent implements OnInit {
   layerId = 'streets';

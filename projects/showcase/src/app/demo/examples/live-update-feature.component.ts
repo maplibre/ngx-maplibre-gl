@@ -1,5 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LngLatLike } from 'maplibre-gl';
+import {
+  MapComponent,
+  GeoJSONSourceComponent,
+  LayerComponent,
+} from '@maplibre/ngx-maplibre-gl';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'showcase-demo',
@@ -13,6 +19,7 @@ import { LngLatLike } from 'maplibre-gl';
       [centerWithPanTo]="true"
       [pitch]="pitch"
       movingMethod="jumpTo"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-geojson-source *ngIf="data" id="trace" [data]="data">
       </mgl-geojson-source>
@@ -31,6 +38,8 @@ import { LngLatLike } from 'maplibre-gl';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [MapComponent, NgIf, GeoJSONSourceComponent, LayerComponent],
 })
 export class LiveUpdateFeatureComponent implements OnInit, OnDestroy {
   data: GeoJSON.FeatureCollection<GeoJSON.LineString>;

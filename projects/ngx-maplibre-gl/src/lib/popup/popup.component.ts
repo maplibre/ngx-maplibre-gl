@@ -20,6 +20,7 @@ import { MarkerComponent } from '../marker/marker.component';
   selector: 'mgl-popup',
   template: '<div #content><ng-content></ng-content></div>',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class PopupComponent
   implements OnChanges, OnDestroy, AfterViewInit, OnInit {

@@ -4,8 +4,6 @@ import pixelmatch from 'pixelmatch';
 import { PNG } from 'pngjs';
 
 export class E2eDriver {
-  private center: { lng: number; lat: number };
-  private zoom: number;
   private width: number;
   private height: number;
   private referenceImageBuffer: Buffer;
@@ -24,16 +22,6 @@ export class E2eDriver {
 
   takeImageSnapshot = (): E2eDriver => {
     this.initReferenceImage();
-
-    // Snapshot the current map center coordinates
-    cy.window().then((win: any) => {
-      this.center = win.mglMapTestHelper.map.getCenter();
-      this.zoom = win.mglMapTestHelper.map.getZoom();
-      cy.log(
-        `Map snapshot = Center: ${this.center.lng}, ${this.center.lat}, Zoom: ${this.zoom}`
-      );
-    });
-
     return this;
   };
 
@@ -61,9 +49,11 @@ export class E2eDriver {
       return this;
     },
     waitForMapToIdle: (timeout: number = 30000): E2eDriver => {
-      cy.window()
-        .its('mglMapTestHelper.idle', { timeout: timeout })
-        .should('equal', true);
+      cy.get('[data-idle="true"]', { timeout: timeout }).should('exist');
+      return this;
+    },
+    waitForMapLoaded: (timeout: number = 30000): E2eDriver => {
+      cy.get('[data-loaded="true"]', { timeout: timeout }).should('exist');
       return this;
     },
     clickLanguageButton: (language: string): E2eDriver => {
@@ -123,38 +113,15 @@ export class E2eDriver {
       return this;
     },
     mapObjectLoaded: (): E2eDriver => {
-      cy.window()
-        .its('mglMapTestHelper.loaded', { timeout: 10000 })
-        .should('equal', true);
+      cy.get('[data-loaded="true"]').should('exist');
       return this;
     },
-    mapHasPanned: (): E2eDriver => {
-      cy.window().then((win: any) => {
-        const center = win.mglMapTestHelper.map.getCenter();
-        cy.wrap(center).should('not.deep.equal', this.center);
-      });
+    mapTerrainButtonIsOff: (): E2eDriver => {
+      cy.get('.maplibregl-ctrl-terrain').should('exist');
       return this;
     },
-    mapHasZoomedIn: (): E2eDriver => {
-      cy.window().then((win: any) => {
-        const zoom = win.mglMapTestHelper.map.getZoom();
-        cy.wrap(zoom).should('be.gt', this.zoom);
-      });
-      return this;
-    },
-    mapHasZoomedOut: (): E2eDriver => {
-      cy.window().then((win: any) => {
-        const zoom = win.mglMapTestHelper.map.getZoom();
-        cy.wrap(zoom).should('be.lt', this.zoom);
-      });
-      return this;
-    },
-    mapTerrainPropertyDoesNotExists: (): E2eDriver => {
-      cy.window().its('mglMapTestHelper.map.terrain').should('be.null');
-      return this;
-    },
-    mapTerrainPropertyExists: (): E2eDriver => {
-      cy.window().its('mglMapTestHelper.map.terrain').should('not.be.null');
+    mapTerrainButtonIsOn: (): E2eDriver => {
+      cy.get('.maplibregl-ctrl-terrain-enabled').should('exist');
       return this;
     },
     helloWorldPopupExists: (): E2eDriver => {

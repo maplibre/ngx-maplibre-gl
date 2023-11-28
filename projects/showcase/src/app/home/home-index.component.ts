@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { AnimationOptions } from 'maplibre-gl';
+import { MatIconModule } from '@angular/material/icon';
+import { MapComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   template: `
@@ -19,6 +21,8 @@ import { AnimationOptions } from 'maplibre-gl';
     </div>
   `,
   styleUrls: ['./home-index.component.scss'],
+  standalone: true,
+  imports: [MapComponent, MatIconModule],
 })
 export class HomeIndexComponent {
   center = [0, 0];

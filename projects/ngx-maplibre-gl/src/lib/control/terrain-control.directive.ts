@@ -5,6 +5,7 @@ import { ControlComponent } from './control.component';
 
 @Directive({
   selector: '[mglTerrain]',
+  standalone: true,
 })
 export class TerrainControlDirective implements AfterContentInit {
   /* Init inputs */

@@ -15,6 +15,7 @@ import { MapService } from '../map/map.service';
   selector: 'mgl-image-source',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class ImageSourceComponent
   implements OnInit, OnDestroy, OnChanges, ImageSourceSpecification {

@@ -14,11 +14,20 @@ import { GeoJSONFeature, MapSourceDataEvent } from 'maplibre-gl';
 import { fromEvent, merge, Subscription } from 'rxjs';
 import { filter, startWith, switchMap } from 'rxjs/operators';
 import { MapService } from '../map/map.service';
+import { MarkerComponent } from '../marker/marker.component';
+import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { LayerComponent } from '../layer/layer.component';
 
-@Directive({ selector: 'ng-template[mglPoint]' })
+@Directive({
+  selector: 'ng-template[mglPoint]',
+  standalone: true,
+})
 export class PointDirective {}
 
-@Directive({ selector: 'ng-template[mglClusterPoint]' })
+@Directive({
+  selector: 'ng-template[mglClusterPoint]',
+  standalone: true,
+})
 export class ClusterPointDirective {}
 
 let uniqId = 0;
@@ -53,6 +62,8 @@ let uniqId = 0;
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
+  standalone: true,
+  imports: [LayerComponent, NgFor, NgIf, MarkerComponent, NgTemplateOutlet],
 })
 export class MarkersForClustersComponent
   implements OnDestroy, AfterContentInit {

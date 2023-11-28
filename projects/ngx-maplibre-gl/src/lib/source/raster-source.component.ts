@@ -16,6 +16,7 @@ import { MapService } from '../map/map.service';
   selector: 'mgl-raster-source',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class RasterSourceComponent
   implements OnInit, OnDestroy, OnChanges, RasterSourceSpecification {

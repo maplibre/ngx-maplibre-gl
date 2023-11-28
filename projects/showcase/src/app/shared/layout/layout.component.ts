@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   template: `
@@ -49,6 +53,14 @@ import { Component } from '@angular/core';
         height: 100%;
       }
     `,
+  ],
+  standalone: true,
+  imports: [
+    MatToolbarModule,
+    MatButtonModule,
+    RouterLink,
+    MatIconModule,
+    RouterOutlet,
   ],
 })
 export class LayoutComponent {}

@@ -1,4 +1,10 @@
 import { Component } from '@angular/core';
+import {
+  MapComponent,
+  PopupComponent,
+  MarkerComponent,
+} from '@maplibre/ngx-maplibre-gl';
+import { NgStyle } from '@angular/common';
 
 @Component({
   selector: 'showcase-demo',
@@ -7,6 +13,7 @@ import { Component } from '@angular/core';
       [style]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[15]"
       [center]="[-77.0353, 38.8895]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-marker #myMarker [lngLat]="[-77.0353, 38.8895]">
         <div
@@ -27,5 +34,7 @@ import { Component } from '@angular/core';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [MapComponent, MarkerComponent, NgStyle, PopupComponent],
 })
 export class SetPopupComponent {}

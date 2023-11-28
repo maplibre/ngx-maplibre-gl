@@ -1,4 +1,10 @@
 import { Component } from '@angular/core';
+import {
+  MapComponent,
+  LayerComponent,
+  FeatureComponent,
+  GeoJSONSourceComponent,
+} from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
@@ -9,6 +15,7 @@ import { Component } from '@angular/core';
       "
       [zoom]="[15]"
       [center]="[-122.486052, 37.830348]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-geojson-source id="oneline">
         <mgl-feature [geometry]="geometry"> </mgl-feature>
@@ -30,6 +37,13 @@ import { Component } from '@angular/core';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [
+    MapComponent,
+    GeoJSONSourceComponent,
+    FeatureComponent,
+    LayerComponent,
+  ],
 })
 export class NgxGeoJSONLineComponent {
   geometry = {

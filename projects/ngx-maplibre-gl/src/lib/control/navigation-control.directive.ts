@@ -5,6 +5,7 @@ import { ControlComponent } from './control.component';
 
 @Directive({
   selector: '[mglNavigation]',
+  standalone: true,
 })
 export class NavigationControlDirective implements AfterContentInit {
   /* Init inputs */

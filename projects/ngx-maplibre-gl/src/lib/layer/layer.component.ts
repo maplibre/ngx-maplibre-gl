@@ -22,6 +22,7 @@ import { EventData, LayerEvents } from '../map/map.types';
 @Component({
   selector: 'mgl-layer',
   template: '',
+  standalone: true,
 })
 export class LayerComponent
   implements OnInit, OnDestroy, OnChanges, LayerEvents {

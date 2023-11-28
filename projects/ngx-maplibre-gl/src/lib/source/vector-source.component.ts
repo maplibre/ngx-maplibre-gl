@@ -16,6 +16,7 @@ import { MapService } from '../map/map.service';
   selector: 'mgl-vector-source',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class VectorSourceComponent
   implements OnInit, OnDestroy, OnChanges, VectorSourceSpecification {

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MapComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
@@ -10,9 +11,12 @@ import { Component } from '@angular/core';
       [zoom]="[9]"
       [center]="[-74.5, 40]"
       [interactive]="false"
+      [preserveDrawingBuffer]="true"
     >
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [MapComponent],
 })
 export class InteractiveFalseComponent {}

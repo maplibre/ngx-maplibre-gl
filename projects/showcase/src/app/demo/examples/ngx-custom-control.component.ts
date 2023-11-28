@@ -1,5 +1,16 @@
 import { Component } from '@angular/core';
-import { Position } from 'projects/ngx-maplibre-gl/src/public_api';
+import {
+  MapComponent,
+  ControlComponent,
+  AttributionControlDirective,
+  FullscreenControlDirective,
+  GeolocateControlDirective,
+  NavigationControlDirective,
+  ScaleControlDirective,
+  Position,
+} from '@maplibre/ngx-maplibre-gl';
+import { MatButtonModule } from '@angular/material/button';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'showcase-demo',
@@ -8,6 +19,7 @@ import { Position } from 'projects/ngx-maplibre-gl/src/public_api';
       [style]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
       "
+      [preserveDrawingBuffer]="true"
     >
       <ng-container *ngIf="visible">
         <mgl-control>
@@ -32,17 +44,25 @@ import { Position } from 'projects/ngx-maplibre-gl/src/public_api';
       </ng-container>
 
       <mgl-control position="bottom-right">
-        <button
-          mat-flat-button
-          color="accent"
-          (click)="toggleControls()"
-        >
-          {{ visible ? 'Hide Controls' : 'Show Controls'}}
+        <button mat-flat-button color="accent" (click)="toggleControls()">
+          {{ visible ? 'Hide Controls' : 'Show Controls' }}
         </button>
       </mgl-control>
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [
+    MapComponent,
+    NgIf,
+    ControlComponent,
+    MatButtonModule,
+    AttributionControlDirective,
+    FullscreenControlDirective,
+    GeolocateControlDirective,
+    NavigationControlDirective,
+    ScaleControlDirective,
+  ],
 })
 export class NgxCustomControlComponent {
   visible = true;

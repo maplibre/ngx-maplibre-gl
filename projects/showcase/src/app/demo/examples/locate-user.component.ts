@@ -1,4 +1,9 @@
 import { Component } from '@angular/core';
+import {
+  MapComponent,
+  ControlComponent,
+  GeolocateControlDirective,
+} from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
@@ -7,6 +12,7 @@ import { Component } from '@angular/core';
       [style]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
       "
+      [preserveDrawingBuffer]="true"
     >
       <mgl-control
         mglGeolocate
@@ -18,5 +24,7 @@ import { Component } from '@angular/core';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [MapComponent, ControlComponent, GeolocateControlDirective],
 })
 export class LocateUserComponent {}

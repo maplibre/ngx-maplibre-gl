@@ -1,49 +1,5 @@
 import { Routes } from '@angular/router';
-import { DemoIndexComponent } from './demo-index.component';
-import { Display3dBuildingsComponent } from './examples/3d-buildings.component';
-import { AddImageGeneratedComponent } from './examples/add-image-generated.component';
-import { AddImageMissingGeneratedComponent } from './examples/add-image-missing-generated.component';
-import { AddImageComponent } from './examples/add-image.component';
-import { AttributionPositionComponent } from './examples/attribution-position.component';
-import { CenterOnSymbolComponent } from './examples/center-on-symbol.component';
-import { ClusterHtmlComponent } from './examples/cluster-html.component';
-import { ClusterComponent } from './examples/cluster.component';
-import { CustomAttributionComponent } from './examples/custom-attribution.component';
-import { CustomLocaleComponent } from './examples/custom-locale.component';
-import { CustomMarkerIconsComponent } from './examples/custom-marker-icons.component';
-import { CustomStyleIdComponent } from './examples/custom-style-id.component';
-import { DisplayMapComponent } from './examples/display-map.component';
-import { DragAMarkerComponent } from './examples/drag-a-marker.component';
-import { FullscreenComponent } from './examples/fullscreen.component';
-import { GeoJSONLineComponent } from './examples/geojson-line.component';
-import { HeatMapComponent } from './examples/heatmap.component';
-import { HoverStylesComponent } from './examples/hover-styles.component';
-import { InteractiveFalseComponent } from './examples/interactive-false.component';
-import { LanguageSwitchComponent } from './examples/language-switch.component';
-import { LiveUpdateFeatureComponent } from './examples/live-update-feature.component';
-import { LiveUpdateImageSourceComponent } from './examples/live-update-image-srource.component';
-import { LocateUserComponent } from './examples/locate-user.component';
-import { MarkerAlignmentComponent } from './examples/marker-alignment.component';
-import { NavigationComponent } from './examples/navigation.component';
-import { NgxClusterHtmlComponent } from './examples/ngx-cluster-html.component';
-import { NgxCustomControlComponent } from './examples/ngx-custom-control.component';
-import { NgxCustomMarkerIconsComponent } from './examples/ngx-custom-marker-icons.component';
-import { NgxDragAPointComponent } from './examples/ngx-drag-a-point.component';
-import { NgxGeoJSONLineComponent } from './examples/ngx-geojson-line.component';
-import { NgxScaleControlComponent } from './examples/ngx-scale-control.component';
-import { NgxTerrainSourceComponent } from './examples/ngx-terrain-control.component';
-import { PolygonPopupOnClickComponent } from './examples/polygon-popup-on-click.component';
-import { PopupOnClickComponent } from './examples/popup-on-click.component';
-import { PopupComponent } from './examples/popup.component';
-import { SatelliteMapComponent } from './examples/satellite-map.component';
-import { SetPopupComponent } from './examples/set-popup.component';
-import { SetStyleComponent } from './examples/set-style.component';
-import { TerrainMapStyleComponent } from './examples/terrain-map-style.component';
-import { TerrainMapComponent } from './examples/terrain-map.component';
-import { ToggleLayersComponent } from './examples/toggle-layers.component';
-import { ZoomtoLinestringComponent } from './examples/zoomto-linestring.component';
 import { StackblitzEditGuard } from './stackblitz-edit/stackblitz-edit-guard.service';
-import { StackblitzEditComponent } from './stackblitz-edit/stackblitz-edit.component';
 
 export enum Category {
   STYLES = 'Styles',
@@ -58,21 +14,31 @@ export enum Category {
 export const DEMO_ROUTES: Routes = [
   {
     path: '',
-    component: DemoIndexComponent,
+    loadComponent: () =>
+      import('./demo-index.component').then((m) => m.DemoIndexComponent),
     children: [
       {
         path: 'edit/:demoUrl',
-        component: StackblitzEditComponent,
+        loadComponent: () =>
+          import('./stackblitz-edit/stackblitz-edit.component').then(
+            (m) => m.StackblitzEditComponent
+          ),
         canActivate: [StackblitzEditGuard],
       },
       {
         path: 'display-map',
-        component: DisplayMapComponent,
+        loadComponent: () =>
+          import('./examples/display-map.component').then(
+            (m) => m.DisplayMapComponent
+          ),
         data: { label: 'Display a map', cat: Category.STYLES },
       },
       {
         path: 'custom-style-id',
-        component: CustomStyleIdComponent,
+        loadComponent: () =>
+          import('./examples/custom-style-id.component').then(
+            (m) => m.CustomStyleIdComponent
+          ),
         data: {
           label: 'Display a map with a custom style',
           cat: Category.STYLES,
@@ -80,17 +46,26 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'set-style',
-        component: SetStyleComponent,
+        loadComponent: () =>
+          import('./examples/set-style.component').then(
+            (m) => m.SetStyleComponent
+          ),
         data: { label: "Change a map's style", cat: Category.STYLES },
       },
       {
         path: 'satellite-map',
-        component: SatelliteMapComponent,
+        loadComponent: () =>
+          import('./examples/satellite-map.component').then(
+            (m) => m.SatelliteMapComponent
+          ),
         data: { label: 'Display a satellite map', cat: Category.STYLES },
       },
       {
         path: 'add-image-generated',
-        component: AddImageGeneratedComponent,
+        loadComponent: () =>
+          import('./examples/add-image-generated.component').then(
+            (m) => m.AddImageGeneratedComponent
+          ),
         data: {
           label: 'Add a generated icon to the map',
           cat: Category.LAYERS,
@@ -98,42 +73,66 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'add-image',
-        component: AddImageComponent,
+        loadComponent: () =>
+          import('./examples/add-image.component').then(
+            (m) => m.AddImageComponent
+          ),
         data: { label: 'Add an icon to the map', cat: Category.LAYERS },
       },
       {
         path: 'toggle-layers',
-        component: ToggleLayersComponent,
+        loadComponent: () =>
+          import('./examples/toggle-layers.component').then(
+            (m) => m.ToggleLayersComponent
+          ),
         data: { label: 'Show and hide layers', cat: Category.LAYERS },
       },
       {
         path: '3d-buildings',
-        component: Display3dBuildingsComponent,
+        loadComponent: () =>
+          import('./examples/3d-buildings.component').then(
+            (m) => m.Display3dBuildingsComponent
+          ),
         data: { label: 'Display 3d buildings', cat: Category.LAYERS },
       },
       {
         path: 'cluster',
-        component: ClusterComponent,
+        loadComponent: () =>
+          import('./examples/cluster.component').then(
+            (m) => m.ClusterComponent
+          ),
         data: { label: 'Create and style clusters', cat: Category.LAYERS },
       },
       {
         path: 'heatmap',
-        component: HeatMapComponent,
+        loadComponent: () =>
+          import('./examples/heatmap.component').then(
+            (m) => m.HeatMapComponent
+          ),
         data: { label: 'Create a heatmap layer', cat: Category.LAYERS },
       },
       {
         path: 'geojson-line',
-        component: GeoJSONLineComponent,
+        loadComponent: () =>
+          import('./examples/geojson-line.component').then(
+            (m) => m.GeoJSONLineComponent
+          ),
         data: { label: 'Add a GeoJSON line', cat: Category.LAYERS },
       },
       {
         path: 'ngx-geojson-line',
-        component: NgxGeoJSONLineComponent,
+        loadComponent: () =>
+          import('./examples/ngx-geojson-line.component').then(
+            (m) => m.NgxGeoJSONLineComponent
+          ),
         data: { label: '[NGX] Add a GeoJSON line', cat: Category.LAYERS },
       },
       {
         path: 'custom-marker-icons',
-        component: CustomMarkerIconsComponent,
+        loadComponent: () =>
+          import('./examples/custom-marker-icons.component').then(
+            (m) => m.CustomMarkerIconsComponent
+          ),
         data: {
           label: 'Add custom icons with Markers',
           cat: Category.CONTROLS_AND_OVERLAYS,
@@ -141,7 +140,10 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'ngx-custom-marker-icons',
-        component: NgxCustomMarkerIconsComponent,
+        loadComponent: () =>
+          import('./examples/ngx-custom-marker-icons.component').then(
+            (m) => m.NgxCustomMarkerIconsComponent
+          ),
         data: {
           label: '[NGX] Add custom icons with Markers',
           cat: Category.CONTROLS_AND_OVERLAYS,
@@ -149,12 +151,18 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'live-update-feature',
-        component: LiveUpdateFeatureComponent,
+        loadComponent: () =>
+          import('./examples/live-update-feature.component').then(
+            (m) => m.LiveUpdateFeatureComponent
+          ),
         data: { label: 'Update a feature in realtime', cat: Category.SOURCES },
       },
       {
         path: 'live-update-image-source',
-        component: LiveUpdateImageSourceComponent,
+        loadComponent: () =>
+          import('./examples/live-update-image-srource.component').then(
+            (m) => m.LiveUpdateImageSourceComponent
+          ),
         data: {
           label: 'Update an image source in realtime',
           cat: Category.SOURCES,
@@ -162,12 +170,16 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'popup',
-        component: PopupComponent,
+        loadComponent: () =>
+          import('./examples/popup.component').then((m) => m.PopupComponent),
         data: { label: 'Display a popup', cat: Category.CONTROLS_AND_OVERLAYS },
       },
       {
         path: 'set-popup',
-        component: SetPopupComponent,
+        loadComponent: () =>
+          import('./examples/set-popup.component').then(
+            (m) => m.SetPopupComponent
+          ),
         data: {
           label: 'Attach a popup to a marker instance',
           cat: Category.CONTROLS_AND_OVERLAYS,
@@ -175,7 +187,10 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'fullscreen',
-        component: FullscreenComponent,
+        loadComponent: () =>
+          import('./examples/fullscreen.component').then(
+            (m) => m.FullscreenComponent
+          ),
         data: {
           label: 'View a fullscreen map',
           cat: Category.CONTROLS_AND_OVERLAYS,
@@ -183,7 +198,10 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'navigation',
-        component: NavigationComponent,
+        loadComponent: () =>
+          import('./examples/navigation.component').then(
+            (m) => m.NavigationComponent
+          ),
         data: {
           label: 'Display map navigation controls',
           cat: Category.CONTROLS_AND_OVERLAYS,
@@ -191,12 +209,18 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'locate-user',
-        component: LocateUserComponent,
+        loadComponent: () =>
+          import('./examples/locate-user.component').then(
+            (m) => m.LocateUserComponent
+          ),
         data: { label: 'Locate the user', cat: Category.CONTROLS_AND_OVERLAYS },
       },
       {
         path: 'attribution-position',
-        component: AttributionPositionComponent,
+        loadComponent: () =>
+          import('./examples/attribution-position.component').then(
+            (m) => m.AttributionPositionComponent
+          ),
         data: {
           label: 'Change the default position for attribution',
           cat: Category.CONTROLS_AND_OVERLAYS,
@@ -204,7 +228,10 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'ngx-scale-control',
-        component: NgxScaleControlComponent,
+        loadComponent: () =>
+          import('./examples/ngx-scale-control.component').then(
+            (m) => m.NgxScaleControlComponent
+          ),
         data: {
           label: '[NGX] Show scale information',
           cat: Category.CONTROLS_AND_OVERLAYS,
@@ -212,7 +239,10 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'ngx-custom-control',
-        component: NgxCustomControlComponent,
+        loadComponent: () =>
+          import('./examples/ngx-custom-control.component').then(
+            (m) => m.NgxCustomControlComponent
+          ),
         data: {
           label: '[NGX] Add a custom control',
           cat: Category.CONTROLS_AND_OVERLAYS,
@@ -220,7 +250,10 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'interactive-false',
-        component: InteractiveFalseComponent,
+        loadComponent: () =>
+          import('./examples/interactive-false.component').then(
+            (m) => m.InteractiveFalseComponent
+          ),
         data: {
           label: 'Display a non-interactive map',
           cat: Category.USER_INTERACTION,
@@ -228,7 +261,10 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'language-switch',
-        component: LanguageSwitchComponent,
+        loadComponent: () =>
+          import('./examples/language-switch.component').then(
+            (m) => m.LanguageSwitchComponent
+          ),
         data: {
           label: "Change a map's language",
           cat: Category.USER_INTERACTION,
@@ -236,7 +272,10 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'center-on-symbol',
-        component: CenterOnSymbolComponent,
+        loadComponent: () =>
+          import('./examples/center-on-symbol.component').then(
+            (m) => m.CenterOnSymbolComponent
+          ),
         data: {
           label: 'Center the map on a clicked symbol',
           cat: Category.USER_INTERACTION,
@@ -244,7 +283,10 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'ngx-drag-a-point',
-        component: NgxDragAPointComponent,
+        loadComponent: () =>
+          import('./examples/ngx-drag-a-point.component').then(
+            (m) => m.NgxDragAPointComponent
+          ),
         data: {
           label: '[NGX] Create a draggable point',
           cat: Category.USER_INTERACTION,
@@ -252,7 +294,10 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'drag-a-marker',
-        component: DragAMarkerComponent,
+        loadComponent: () =>
+          import('./examples/drag-a-marker.component').then(
+            (m) => m.DragAMarkerComponent
+          ),
         data: {
           label: 'Create a draggable marker',
           cat: Category.USER_INTERACTION,
@@ -260,7 +305,10 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'hover-styles',
-        component: HoverStylesComponent,
+        loadComponent: () =>
+          import('./examples/hover-styles.component').then(
+            (m) => m.HoverStylesComponent
+          ),
         data: {
           label: 'Create a hover effect',
           cat: Category.USER_INTERACTION,
@@ -268,7 +316,10 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'popup-on-click',
-        component: PopupOnClickComponent,
+        loadComponent: () =>
+          import('./examples/popup-on-click.component').then(
+            (m) => m.PopupOnClickComponent
+          ),
         data: {
           label: 'Display a popup on click',
           cat: Category.CONTROLS_AND_OVERLAYS,
@@ -276,7 +327,10 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'zoomto-linestring',
-        component: ZoomtoLinestringComponent,
+        loadComponent: () =>
+          import('./examples/zoomto-linestring.component').then(
+            (m) => m.ZoomtoLinestringComponent
+          ),
         data: {
           label: 'Fit to the bounds of a LineString',
           cat: Category.USER_INTERACTION,
@@ -284,7 +338,10 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'cluster-html',
-        component: ClusterHtmlComponent,
+        loadComponent: () =>
+          import('./examples/cluster-html.component').then(
+            (m) => m.ClusterHtmlComponent
+          ),
         data: {
           label: 'Display HTML clusters with custom properties',
           cat: Category.LAYERS,
@@ -292,7 +349,10 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'ngx-cluster-html',
-        component: NgxClusterHtmlComponent,
+        loadComponent: () =>
+          import('./examples/ngx-cluster-html.component').then(
+            (m) => m.NgxClusterHtmlComponent
+          ),
         data: {
           label: '[NGX] Display HTML clusters with custom properties',
           cat: Category.LAYERS,
@@ -300,7 +360,10 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'polygon-popup-on-click',
-        component: PolygonPopupOnClickComponent,
+        loadComponent: () =>
+          import('./examples/polygon-popup-on-click.component').then(
+            (m) => m.PolygonPopupOnClickComponent
+          ),
         data: {
           label: 'Show polygon information on click',
           cat: Category.CONTROLS_AND_OVERLAYS,
@@ -308,7 +371,10 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'add-image-missing-generated',
-        component: AddImageMissingGeneratedComponent,
+        loadComponent: () =>
+          import('./examples/add-image-missing-generated.component').then(
+            (m) => m.AddImageMissingGeneratedComponent
+          ),
         data: {
           label: 'Generate and add a missing icon to the map',
           cat: Category.STYLES,
@@ -316,7 +382,10 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'custom-attribution',
-        component: CustomAttributionComponent,
+        loadComponent: () =>
+          import('./examples/custom-attribution.component').then(
+            (m) => m.CustomAttributionComponent
+          ),
         data: {
           label: 'Add custom attributions',
           cat: Category.CONTROLS_AND_OVERLAYS,
@@ -324,7 +393,10 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'custom-locale',
-        component: CustomLocaleComponent,
+        loadComponent: () =>
+          import('./examples/custom-locale.component').then(
+            (m) => m.CustomLocaleComponent
+          ),
         data: {
           label: 'Add custom localization for controls',
           cat: Category.CONTROLS_AND_OVERLAYS,
@@ -332,12 +404,18 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'marker-alignment',
-        component: MarkerAlignmentComponent,
+        loadComponent: () =>
+          import('./examples/marker-alignment.component').then(
+            (m) => m.MarkerAlignmentComponent
+          ),
         data: { label: 'Marker alignment options', cat: Category.CAMERA },
       },
       {
         path: 'terrain-style',
-        component: TerrainMapStyleComponent,
+        loadComponent: () =>
+          import('./examples/terrain-map-style.component').then(
+            (m) => m.TerrainMapStyleComponent
+          ),
         data: {
           label: 'Initialize 3D Terrain using style',
           cat: Category.TERRAIN,
@@ -345,7 +423,10 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'terrain-control',
-        component: NgxTerrainSourceComponent,
+        loadComponent: () => 
+          import('./examples/ngx-terrain-control.component').then(
+            (m) => m.NgxTerrainSourceComponent
+          ),
         data: {
           label: 'Terrain Control',
           cat: Category.TERRAIN,
@@ -353,7 +434,10 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'terrain',
-        component: TerrainMapComponent,
+        loadComponent: () =>
+          import('./examples/terrain-map.component').then(
+            (m) => m.TerrainMapComponent
+          ),
         data: {
           label: '[NGX] Initialize 3D Terrain declaratively',
           cat: Category.TERRAIN,

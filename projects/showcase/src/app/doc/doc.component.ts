@@ -1,4 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { MarkdownComponent } from 'ngx-markdown';
+import { MatOptionModule } from '@angular/material/core';
+import { NgFor } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { LayoutToolbarMenuComponent } from '../shared/layout/layout-toolbar-menu.component';
+import 'prismjs/components/prism-typescript.min.js';
 
 export const VERSIONS = ['main'];
 
@@ -34,6 +42,16 @@ export const VERSIONS = ['main'];
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    LayoutToolbarMenuComponent,
+    MatFormFieldModule,
+    MatSelectModule,
+    FormsModule,
+    NgFor,
+    MatOptionModule,
+    MarkdownComponent,
+  ],
 })
 export class DocComponent implements OnInit {
   VERSIONS = VERSIONS;

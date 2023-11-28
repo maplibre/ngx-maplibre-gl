@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { TerrainSpecification } from 'maplibre-gl';
+import {
+  MapComponent,
+  RasterDemSourceComponent,
+} from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
@@ -10,6 +14,7 @@ import { TerrainSpecification } from 'maplibre-gl';
       [center]="[11.39085, 47.27574]"
       [pitch]="52"
       [terrain]="terrainSpec"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-raster-dem-source
         id="terrainSource"
@@ -19,6 +24,8 @@ import { TerrainSpecification } from 'maplibre-gl';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [MapComponent, RasterDemSourceComponent],
 })
 export class TerrainMapComponent {
   mapLibreExampleSource: string =

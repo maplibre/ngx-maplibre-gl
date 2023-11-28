@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
@@ -13,6 +14,7 @@ import { Component, OnInit } from '@angular/core';
       [bearing]="[bearing]"
       [zoom]="[17]"
       [center]="[4.577979, 51.038189]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-marker
         [lngLat]="[4.577979, 51.03816]"
@@ -39,6 +41,8 @@ import { Component, OnInit } from '@angular/core';
     </mgl-map>
   `,
   styleUrls: ['./examples.css', './marker-alignment.component.css'],
+  standalone: true,
+  imports: [MapComponent, MarkerComponent],
 })
 export class MarkerAlignmentComponent implements OnInit {
   pitch = 50;

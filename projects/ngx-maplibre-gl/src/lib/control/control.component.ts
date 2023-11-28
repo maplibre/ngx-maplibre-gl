@@ -28,9 +28,9 @@ export class CustomControl implements IControl {
 
 @Component({
   selector: 'mgl-control',
-  template:
-    '<div class="maplibregl-ctrl" #content><ng-content></ng-content></div>',
+  template: '<div class="maplibregl-ctrl" #content><ng-content></ng-content></div>',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class ControlComponent<T extends IControl>
   implements OnDestroy, AfterContentInit {

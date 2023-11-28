@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MapComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
@@ -9,9 +10,12 @@ import { Component } from '@angular/core';
       "
       [zoom]="[3]"
       [center]="[-77.38, 39]"
+      [preserveDrawingBuffer]="true"
     >
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [MapComponent],
 })
 export class CustomStyleIdComponent {}

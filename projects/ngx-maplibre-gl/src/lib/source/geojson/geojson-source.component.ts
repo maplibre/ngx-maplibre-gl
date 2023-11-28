@@ -14,9 +14,10 @@ import { debounceTime, filter } from 'rxjs/operators';
 import { MapService } from '../../map/map.service';
 
 @Component({
-  selector: 'mgl-geojson-source',
-  template: '',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'mgl-geojson-source',
+    template: '',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class GeoJSONSourceComponent
   implements OnInit, OnDestroy, OnChanges, GeoJSONSourceSpecification {

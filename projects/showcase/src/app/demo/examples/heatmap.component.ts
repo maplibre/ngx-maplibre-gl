@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CircleLayerSpecification, LayerSpecification } from 'maplibre-gl';
+import {
+  MapComponent,
+  GeoJSONSourceComponent,
+  LayerComponent,
+} from '@maplibre/ngx-maplibre-gl';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'showcase-demo',
@@ -10,6 +16,7 @@ import { CircleLayerSpecification, LayerSpecification } from 'maplibre-gl';
       "
       [zoom]="[3]"
       [center]="[-103.59179687498357, 40.66995747013945]"
+      [preserveDrawingBuffer]="true"
     >
       <ng-container *ngIf="earthquakes">
         <mgl-geojson-source
@@ -42,6 +49,8 @@ import { CircleLayerSpecification, LayerSpecification } from 'maplibre-gl';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [MapComponent, NgIf, GeoJSONSourceComponent, NgFor, LayerComponent],
 })
 export class HeatMapComponent implements OnInit {
   earthquakes: object;

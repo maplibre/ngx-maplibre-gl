@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import {
+  MapComponent,
+  PopupComponent as MglPopupComponent,
+} from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
@@ -9,6 +13,7 @@ import { Component } from '@angular/core';
       "
       [zoom]="[3]"
       [center]="[-96, 37.8]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-popup
         [lngLat]="[-96, 37.8]"
@@ -20,5 +25,7 @@ import { Component } from '@angular/core';
     </mgl-map>
   `,
   styleUrls: ['./examples.css', './popup.component.css'],
+  standalone: true,
+  imports: [MapComponent, MglPopupComponent],
 })
 export class PopupComponent {}

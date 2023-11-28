@@ -101,18 +101,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "showcase:build"
+            "buildTarget": "showcase:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "showcase:build:production"
+              "buildTarget": "showcase:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "showcase:build"
+            "buildTarget": "showcase:build"
           }
         },
         "test": {

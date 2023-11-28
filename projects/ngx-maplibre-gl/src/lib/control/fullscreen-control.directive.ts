@@ -11,6 +11,7 @@ import { ControlComponent } from './control.component';
 
 @Directive({
   selector: '[mglFullscreen]',
+  standalone: true,
 })
 export class FullscreenControlDirective implements AfterContentInit {
   /* Init inputs */

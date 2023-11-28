@@ -16,6 +16,7 @@ import { MapService } from '../map/map.service';
   selector: 'mgl-raster-dem-source',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class RasterDemSourceComponent
   implements OnInit, OnDestroy, OnChanges, RasterDEMSourceSpecification {

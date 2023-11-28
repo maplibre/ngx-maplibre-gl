@@ -1,4 +1,4 @@
-import { CdkPortal, DomPortalOutlet } from '@angular/cdk/portal';
+import { CdkPortal, DomPortalOutlet, PortalModule } from '@angular/cdk/portal';
 import {
   AfterViewInit,
   ApplicationRef,
@@ -17,6 +17,8 @@ import {
       <ng-content></ng-content>
     </ng-template>
   `,
+  standalone: true,
+  imports: [PortalModule],
 })
 export class LayoutToolbarMenuComponent implements AfterViewInit, OnDestroy {
   @Input() position: 'left' | 'right';

@@ -1,4 +1,9 @@
 import { Component } from '@angular/core';
+import {
+  MapComponent,
+  ControlComponent,
+  NavigationControlDirective,
+} from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
@@ -9,10 +14,13 @@ import { Component } from '@angular/core';
       "
       [zoom]="[9]"
       [center]="[-74.5, 40]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-control mglNavigation></mgl-control>
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [MapComponent, ControlComponent, NavigationControlDirective],
 })
 export class NavigationComponent {}

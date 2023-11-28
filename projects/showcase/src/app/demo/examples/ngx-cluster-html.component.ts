@@ -6,8 +6,66 @@ import {
   ViewChild,
   SimpleChanges,
 } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { GeoJSONSourceComponent } from 'projects/ngx-maplibre-gl/src/public_api';
+import {
+  MatPaginator,
+  PageEvent,
+  MatPaginatorModule,
+} from '@angular/material/paginator';
+import {
+  MapComponent,
+  GeoJSONSourceComponent,
+  PopupComponent,
+  MarkersForClustersComponent,
+  PointDirective,
+  ClusterPointDirective,
+} from '@maplibre/ngx-maplibre-gl';
+import { MatListModule } from '@angular/material/list';
+import { NgIf, NgFor } from '@angular/common';
+
+@Component({
+  selector: 'showcase-cluster-popup',
+  template: `
+    <mat-list>
+      <mat-list-item *ngFor="let leaf of leaves">
+        {{ leaf.properties['Primary ID'] }}
+      </mat-list-item>
+    </mat-list>
+    <mat-paginator
+      [length]="selectedCluster.properties?.point_count"
+      [pageSize]="5"
+      (page)="changePage($event)"
+    ></mat-paginator>
+  `,
+  standalone: true,
+  imports: [MatListModule, NgFor, MatPaginatorModule],
+})
+export class ClusterPopupComponent implements OnChanges {
+  @Input() selectedCluster: { geometry: GeoJSON.Point; properties: any };
+  @Input() clusterComponent: GeoJSONSourceComponent;
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+
+  leaves: GeoJSON.Feature<GeoJSON.Geometry>[];
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.changePage();
+    if (changes.selectedCluster && !changes.selectedCluster.isFirstChange()) {
+      this.paginator.firstPage();
+    }
+  }
+
+  async changePage(pageEvent?: PageEvent) {
+    let offset = 0;
+    if (pageEvent) {
+      offset = pageEvent.pageIndex * 5;
+    }
+    this.leaves = await this.clusterComponent.getClusterLeaves(
+      this.selectedCluster.properties!.cluster_id,
+      5,
+      offset,
+    );
+  }
+}
 
 /**
  * Remember: mgl-layer are way faster than html markers
@@ -25,6 +83,7 @@ import { GeoJSONSourceComponent } from 'projects/ngx-maplibre-gl/src/public_api'
       "
       [zoom]="[3]"
       [center]="[-103.59179687498357, 40.66995747013945]"
+      [preserveDrawingBuffer]="true"
     >
       <ng-container *ngIf="earthquakes">
         <mgl-geojson-source
@@ -60,6 +119,17 @@ import { GeoJSONSourceComponent } from 'projects/ngx-maplibre-gl/src/public_api'
     </mgl-map>
   `,
   styleUrls: ['./examples.css', './ngx-cluster-html.component.css'],
+  standalone: true,
+  imports: [
+    MapComponent,
+    NgIf,
+    GeoJSONSourceComponent,
+    MarkersForClustersComponent,
+    PointDirective,
+    ClusterPointDirective,
+    PopupComponent,
+    ClusterPopupComponent,
+  ],
 })
 export class NgxClusterHtmlComponent implements OnInit {
   earthquakes: GeoJSON.FeatureCollection;
@@ -84,48 +154,5 @@ export class NgxClusterHtmlComponent implements OnInit {
       geometry: feature.geometry,
       properties: feature.properties,
     };
-  }
-}
-
-@Component({
-  selector: 'showcase-cluster-popup',
-  template: `
-    <mat-list>
-      <mat-list-item *ngFor="let leaf of leaves">
-        {{ leaf.properties['Primary ID'] }}
-      </mat-list-item>
-    </mat-list>
-    <mat-paginator
-      [length]="selectedCluster.properties?.point_count"
-      [pageSize]="5"
-      (page)="changePage($event)"
-    ></mat-paginator>
-  `,
-})
-export class ClusterPopupComponent implements OnChanges {
-  @Input() selectedCluster: { geometry: GeoJSON.Point; properties: any };
-  @Input() clusterComponent: GeoJSONSourceComponent;
-
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-
-  leaves: GeoJSON.Feature<GeoJSON.Geometry>[];
-
-  ngOnChanges(changes: SimpleChanges) {
-    this.changePage();
-    if (changes.selectedCluster && !changes.selectedCluster.isFirstChange()) {
-      this.paginator.firstPage();
-    }
-  }
-
-  async changePage(pageEvent?: PageEvent) {
-    let offset = 0;
-    if (pageEvent) {
-      offset = pageEvent.pageIndex * 5;
-    }
-    this.leaves = await this.clusterComponent.getClusterLeaves(
-      this.selectedCluster.properties!.cluster_id,
-      5,
-      offset
-    );
   }
 }
