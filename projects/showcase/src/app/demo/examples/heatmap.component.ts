@@ -6,7 +6,6 @@ import {
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
 import { NgIf, NgFor } from '@angular/common';
-import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
   selector: 'showcase-demo',
@@ -51,14 +50,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   `,
   styleUrls: ['./examples.css'],
   standalone: true,
-  imports: [
-    MapComponent,
-    MglMapResizeDirective,
-    NgIf,
-    GeoJSONSourceComponent,
-    NgFor,
-    LayerComponent,
-  ],
+  imports: [MapComponent, NgIf, GeoJSONSourceComponent, NgFor, LayerComponent],
 })
 export class HeatMapComponent implements OnInit {
   earthquakes: object;

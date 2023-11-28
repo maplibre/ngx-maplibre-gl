@@ -1,10 +1,15 @@
 import { Component } from '@angular/core';
-import { MapComponent, ControlComponent, NavigationControlDirective, TerrainControlDirective, RasterDemSourceComponent } from '@maplibre/ngx-maplibre-gl';
-import { MglMapResizeDirective } from '../mgl-map-resize.directive';
+import {
+  MapComponent,
+  ControlComponent,
+  NavigationControlDirective,
+  TerrainControlDirective,
+  RasterDemSourceComponent,
+} from '@maplibre/ngx-maplibre-gl';
 
 @Component({
-    selector: 'showcase-demo',
-    template: `
+  selector: 'showcase-demo',
+  template: `
     <mgl-map
       [style]="
         'https://api.maptiler.com/maps/hybrid/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
@@ -33,16 +38,15 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       ></mgl-control>
     </mgl-map>
   `,
-    styleUrls: ['./examples.css'],
-    preserveWhitespaces: false,
-    standalone: true,
-    imports: [
-        MapComponent,
-        MglMapResizeDirective,
-        RasterDemSourceComponent,
-        ControlComponent,
-        NavigationControlDirective,
-        TerrainControlDirective,
-    ],
+  styleUrls: ['./examples.css'],
+  preserveWhitespaces: false,
+  standalone: true,
+  imports: [
+    MapComponent,
+    RasterDemSourceComponent,
+    ControlComponent,
+    NavigationControlDirective,
+    TerrainControlDirective,
+  ],
 })
 export class NgxTerrainSourceComponent {}

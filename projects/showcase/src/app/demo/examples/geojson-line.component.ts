@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { MapComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
-import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
   selector: 'showcase-demo',
@@ -63,10 +62,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   `,
   styleUrls: ['./examples.css'],
   standalone: true,
-  imports: [
-    MapComponent,
-    MglMapResizeDirective,
-    LayerComponent,
-  ],
+  imports: [MapComponent, LayerComponent],
 })
 export class GeoJSONLineComponent {}

@@ -4,7 +4,6 @@ import {
   ImageComponent,
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
-import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
   selector: 'showcase-demo',
@@ -49,12 +48,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   `,
   styleUrls: ['./examples.css'],
   standalone: true,
-  imports: [
-    MapComponent,
-    MglMapResizeDirective,
-    ImageComponent,
-    LayerComponent,
-  ],
+  imports: [MapComponent, ImageComponent, LayerComponent],
 })
 export class AddImageGeneratedComponent implements OnInit {
   imageData: Uint8Array;

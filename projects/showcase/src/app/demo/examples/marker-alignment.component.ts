@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
-import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
   selector: 'showcase-demo',
@@ -43,11 +42,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   `,
   styleUrls: ['./examples.css', './marker-alignment.component.css'],
   standalone: true,
-  imports: [
-    MapComponent,
-    MglMapResizeDirective,
-    MarkerComponent,
-  ],
+  imports: [MapComponent, MarkerComponent],
 })
 export class MarkerAlignmentComponent implements OnInit {
   pitch = 50;

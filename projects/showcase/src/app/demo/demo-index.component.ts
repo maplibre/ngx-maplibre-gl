@@ -22,7 +22,6 @@ import {
 import { cloneDeep, groupBy } from 'lodash-es';
 import { first } from 'rxjs/operators';
 import scrollIntoView from 'scroll-into-view-if-needed';
-import { MapResizeService } from './map-resize.service';
 import { Category, DEMO_ROUTES } from './routes';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
@@ -73,8 +72,7 @@ export class DemoIndexComponent implements OnInit, AfterViewInit {
   constructor(
     private zone: NgZone,
     private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private mapResizeService: MapResizeService
+    private activatedRoute: ActivatedRoute
   ) {
     this.originalRoutes = <RoutesByCategory>(
       (<any>(
@@ -115,9 +113,7 @@ export class DemoIndexComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onSidenavChange() {
-    this.mapResizeService.resize$.next(undefined);
-  }
+  onSidenavChange() {}
 
   search() {
     // Quick and dirty

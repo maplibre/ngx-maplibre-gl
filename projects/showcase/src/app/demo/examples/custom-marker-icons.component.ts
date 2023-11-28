@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
 import { NgFor, NgStyle } from '@angular/common';
-import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
   selector: 'showcase-demo',
@@ -32,13 +31,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   `,
   styleUrls: ['./examples.css', './custom-marker-icons.component.css'],
   standalone: true,
-  imports: [
-    MapComponent,
-    MglMapResizeDirective,
-    NgFor,
-    MarkerComponent,
-    NgStyle,
-  ],
+  imports: [MapComponent, NgFor, MarkerComponent, NgStyle],
 })
 export class CustomMarkerIconsComponent {
   geojson = {

@@ -6,7 +6,6 @@ import {
   LayerComponent,
   VectorSourceComponent,
 } from '@maplibre/ngx-maplibre-gl';
-import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
   selector: 'showcase-demo',
@@ -68,7 +67,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   standalone: true,
   imports: [
     MapComponent,
-    MglMapResizeDirective,
     VectorSourceComponent,
     LayerComponent,
     MatButtonToggleModule,
