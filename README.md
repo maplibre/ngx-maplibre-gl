@@ -64,9 +64,9 @@ For example, with _angular-cli_ add this in `angular.json`:
 
 ```json
 "styles": [
-        ...
-        "./node_modules/maplibre-gl/dist/maplibre-gl.css"
-      ],
+  ...,
+  "./node_modules/maplibre-gl/dist/maplibre-gl.css"
+],
 ```
 
 Or in the global CSS file (called `styles.css` for example in _angular-cli_):
@@ -81,27 +81,13 @@ Add this in your polyfill.ts file (https://github.com/Wykks/ngx-mapbox-gl/issues
 (window as any).global = window;
 ```
 
-Then, in your app's main module (or in any other module), import the `NgxMapLibreGLModule`:
-
-```ts
-...
-import { NgxMapLibreGLModule } from '@maplibre/ngx-maplibre-gl';
-
-@NgModule({
-  imports: [
-    ...
-    NgxMapLibreGLModule
-  ]
-})
-export class AppModule {}
-```
-
-Display a map:
+Then, in your app's main module (or in any other module), import the `MapComponent`:
 
 ```ts
 import { Component } from '@angular/core';
+import { MapComponent } from '@maplibre/ngx-maplibre-gl';
 
-@Component({
+@NgModule({
   template: `
     <mgl-map
       [style]="'https://demotiles.maplibre.org/style.json'"
@@ -118,6 +104,8 @@ import { Component } from '@angular/core';
       }
     `,
   ],
+  standalone: true,
+  imports: [MapComponent],
 })
-export class DisplayMapComponent {}
+export class AppComponent {}
 ```
