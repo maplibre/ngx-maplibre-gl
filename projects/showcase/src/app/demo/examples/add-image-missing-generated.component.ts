@@ -6,7 +6,6 @@ import {
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
 import { NgFor } from '@angular/common';
-import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
   selector: 'showcase-demo',
@@ -73,13 +72,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   `,
   styleUrls: ['./examples.css'],
   standalone: true,
-  imports: [
-    MapComponent,
-    MglMapResizeDirective,
-    NgFor,
-    ImageComponent,
-    LayerComponent,
-  ],
+  imports: [MapComponent, NgFor, ImageComponent, LayerComponent],
 })
 export class AddImageMissingGeneratedComponent {
   imagesData: (MapImageData & { id: string })[] = [];

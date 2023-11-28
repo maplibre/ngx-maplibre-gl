@@ -21,7 +21,6 @@ import {
 } from '@maplibre/ngx-maplibre-gl';
 import { MatListModule } from '@angular/material/list';
 import { NgIf, NgFor } from '@angular/common';
-import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
   selector: 'showcase-cluster-popup',
@@ -63,7 +62,7 @@ export class ClusterPopupComponent implements OnChanges {
     this.leaves = await this.clusterComponent.getClusterLeaves(
       this.selectedCluster.properties!.cluster_id,
       5,
-      offset
+      offset,
     );
   }
 }
@@ -123,7 +122,6 @@ export class ClusterPopupComponent implements OnChanges {
   standalone: true,
   imports: [
     MapComponent,
-    MglMapResizeDirective,
     NgIf,
     GeoJSONSourceComponent,
     MarkersForClustersComponent,

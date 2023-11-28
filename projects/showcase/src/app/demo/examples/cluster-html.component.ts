@@ -12,7 +12,6 @@ import {
   GeoJSONSourceComponent,
   ClusterPointDirective,
 } from '@maplibre/ngx-maplibre-gl';
-import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
   selector: 'showcase-cluster-point',
@@ -168,7 +167,6 @@ const COLORS = ['#fed976', '#feb24c', '#fd8d3c', '#fc4e2a', '#e31a1c'];
   standalone: true,
   imports: [
     MapComponent,
-    MglMapResizeDirective,
     GeoJSONSourceComponent,
     MarkersForClustersComponent,
     ClusterPointDirective,

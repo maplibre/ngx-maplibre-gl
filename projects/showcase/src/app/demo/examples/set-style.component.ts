@@ -7,12 +7,16 @@ import {
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { MapComponent } from '@maplibre/ngx-maplibre-gl';
-import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
   selector: 'showcase-demo',
   template: `
-    <mgl-map [style]="style" [zoom]="[13]" [center]="[4.899, 52.372]" [preserveDrawingBuffer]="true">
+    <mgl-map
+      [style]="style"
+      [zoom]="[13]"
+      [center]="[4.899, 52.372]"
+      [preserveDrawingBuffer]="true"
+    >
     </mgl-map>
     <mat-radio-group
       [ngModel]="layerId"
@@ -25,12 +29,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   `,
   styleUrls: ['./examples.css', './set-style.component.css'],
   standalone: true,
-  imports: [
-    MapComponent,
-    MglMapResizeDirective,
-    MatRadioModule,
-    FormsModule,
-  ],
+  imports: [MapComponent, MatRadioModule, FormsModule],
 })
 export class SetStyleComponent implements OnInit {
   layerId = 'streets';

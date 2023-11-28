@@ -7,7 +7,6 @@ import {
   GeoJSONSourceComponent,
 } from '@maplibre/ngx-maplibre-gl';
 import { NgIf } from '@angular/common';
-import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
   selector: 'showcase-demo',
@@ -43,7 +42,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   standalone: true,
   imports: [
     MapComponent,
-    MglMapResizeDirective,
     GeoJSONSourceComponent,
     LayerComponent,
     NgIf,

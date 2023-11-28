@@ -4,7 +4,6 @@ import {
   ControlComponent,
   FullscreenControlDirective,
 } from '@maplibre/ngx-maplibre-gl';
-import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
   selector: 'showcase-demo',
@@ -22,11 +21,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   `,
   styleUrls: ['./examples.css'],
   standalone: true,
-  imports: [
-    MapComponent,
-    MglMapResizeDirective,
-    ControlComponent,
-    FullscreenControlDirective,
-  ],
+  imports: [MapComponent, ControlComponent, FullscreenControlDirective],
 })
 export class FullscreenComponent {}

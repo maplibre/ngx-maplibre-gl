@@ -6,7 +6,6 @@ import {
   ControlComponent,
 } from '@maplibre/ngx-maplibre-gl';
 import { MatButtonModule } from '@angular/material/button';
-import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
   selector: 'showcase-demo',
@@ -44,13 +43,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   styleUrls: ['./examples.css'],
   preserveWhitespaces: false,
   standalone: true,
-  imports: [
-    MapComponent,
-    MglMapResizeDirective,
-    ControlComponent,
-    MatButtonModule,
-    LayerComponent,
-  ],
+  imports: [MapComponent, ControlComponent, MatButtonModule, LayerComponent],
 })
 export class ZoomtoLinestringComponent {
   bounds: LngLatBounds;

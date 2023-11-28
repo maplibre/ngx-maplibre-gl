@@ -5,7 +5,6 @@ import {
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
 import { NgIf } from '@angular/common';
-import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
   selector: 'showcase-demo',
@@ -48,13 +47,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   `,
   styleUrls: ['./examples.css'],
   standalone: true,
-  imports: [
-    MapComponent,
-    MglMapResizeDirective,
-    ImageComponent,
-    NgIf,
-    LayerComponent,
-  ],
+  imports: [MapComponent, ImageComponent, NgIf, LayerComponent],
 })
 export class AddImageComponent {
   imageLoaded = false;
