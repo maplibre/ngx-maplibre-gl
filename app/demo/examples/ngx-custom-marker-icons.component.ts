@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
@@ -9,6 +10,7 @@ import { Component } from '@angular/core';
       "
       [zoom]="[5]"
       [center]="[-65.017, -16.457]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-marker [lngLat]="[-66.324462890625, -16.024695711685304]">
         <div
@@ -34,6 +36,8 @@ import { Component } from '@angular/core';
     </mgl-map>
   `,
   styleUrls: ['./examples.css', './custom-marker-icons.component.css'],
+  standalone: true,
+  imports: [MapComponent, MarkerComponent],
 })
 export class NgxCustomMarkerIconsComponent {
   alert(message: string) {

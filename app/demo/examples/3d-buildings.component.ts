@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Map, SymbolLayerSpecification } from 'maplibre-gl';
+import { MapComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
@@ -13,6 +14,7 @@ import { Map, SymbolLayerSpecification } from 'maplibre-gl';
       [pitch]="45"
       [bearing]="-17.6"
       (mapLoad)="onLoad($event)"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-layer
         id="3d-buildings"
@@ -48,6 +50,8 @@ import { Map, SymbolLayerSpecification } from 'maplibre-gl';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [MapComponent, LayerComponent],
 })
 export class Display3dBuildingsComponent {
   labelLayerId: string;

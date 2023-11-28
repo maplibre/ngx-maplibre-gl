@@ -1,5 +1,12 @@
 import { Component } from '@angular/core';
 import { Marker } from 'maplibre-gl';
+import { MatCardModule } from '@angular/material/card';
+import {
+  MapComponent,
+  ControlComponent,
+  MarkerComponent,
+} from '@maplibre/ngx-maplibre-gl';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'showcase-demo',
@@ -10,6 +17,7 @@ import { Marker } from 'maplibre-gl';
       "
       [zoom]="[2]"
       [center]="[0, 0]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-marker
         [lngLat]="[0, 0]"
@@ -25,6 +33,14 @@ import { Marker } from 'maplibre-gl';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [
+    MapComponent,
+    MarkerComponent,
+    NgIf,
+    ControlComponent,
+    MatCardModule,
+  ],
 })
 export class DragAMarkerComponent {
   coordinates: number[];

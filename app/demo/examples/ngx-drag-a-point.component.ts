@@ -1,5 +1,14 @@
 import { Component } from '@angular/core';
 import { MapMouseEvent } from 'maplibre-gl';
+import { MatCardModule } from '@angular/material/card';
+import {
+  MapComponent,
+  ControlComponent,
+  LayerComponent,
+  DraggableDirective,
+  FeatureComponent,
+  GeoJSONSourceComponent,
+} from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
@@ -10,6 +19,7 @@ import { MapMouseEvent } from 'maplibre-gl';
       "
       [zoom]="[2]"
       [center]="[0, 0]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-geojson-source id="point">
         <mgl-feature
@@ -42,6 +52,16 @@ import { MapMouseEvent } from 'maplibre-gl';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [
+    MapComponent,
+    GeoJSONSourceComponent,
+    FeatureComponent,
+    DraggableDirective,
+    LayerComponent,
+    ControlComponent,
+    MatCardModule,
+  ],
 })
 export class NgxDragAPointComponent {
   layerPaint = {

@@ -1,4 +1,9 @@
 import { Component } from '@angular/core';
+import {
+  MapComponent,
+  ControlComponent,
+  FullscreenControlDirective,
+} from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
@@ -9,10 +14,13 @@ import { Component } from '@angular/core';
       "
       [zoom]="[13]"
       [center]="[11.255, 43.77]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-control mglFullscreen></mgl-control>
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [MapComponent, ControlComponent, FullscreenControlDirective],
 })
 export class FullscreenComponent {}

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MapComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
@@ -10,8 +11,7 @@ import { Component } from '@angular/core';
           satelliteSource: {
             tileSize: 512,
             type: 'raster',
-            url:
-              'https://api.maptiler.com/tiles/satellite-v2/tiles.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+            url: 'https://api.maptiler.com/tiles/satellite-v2/tiles.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
           },
           terrainSource: {
             type: 'raster-dem',
@@ -34,9 +34,12 @@ import { Component } from '@angular/core';
       [zoom]="[12]"
       [center]="[11.39085, 47.27574]"
       [pitch]="52"
+      [preserveDrawingBuffer]="true"
     >
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [MapComponent],
 })
 export class TerrainMapStyleComponent {}

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MapComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
@@ -9,6 +10,7 @@ import { Component } from '@angular/core';
       "
       [zoom]="[15]"
       [center]="[-122.486052, 37.830348]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-layer
         id="route"
@@ -59,5 +61,7 @@ import { Component } from '@angular/core';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [MapComponent, LayerComponent],
 })
 export class GeoJSONLineComponent {}

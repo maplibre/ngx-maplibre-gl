@@ -1,5 +1,12 @@
 import { Component } from '@angular/core';
 import { MapLayerMouseEvent } from 'maplibre-gl';
+import {
+  MapComponent,
+  PopupComponent,
+  LayerComponent,
+  GeoJSONSourceComponent,
+} from '@maplibre/ngx-maplibre-gl';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'showcase-demo',
@@ -11,6 +18,7 @@ import { MapLayerMouseEvent } from 'maplibre-gl';
       [zoom]="[11.15]"
       [center]="[-77.04, 38.907]"
       [cursorStyle]="cursorStyle"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-geojson-source id="points" [data]="points"></mgl-geojson-source>
       <mgl-layer
@@ -31,6 +39,14 @@ import { MapLayerMouseEvent } from 'maplibre-gl';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [
+    MapComponent,
+    GeoJSONSourceComponent,
+    LayerComponent,
+    NgIf,
+    PopupComponent,
+  ],
 })
 export class PopupOnClickComponent {
   points: GeoJSON.FeatureCollection<GeoJSON.Point>;

@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { LayerSpecification } from 'maplibre-gl';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import {
+  MapComponent,
+  LayerComponent,
+  VectorSourceComponent,
+} from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
@@ -10,6 +16,7 @@ import { LayerSpecification } from 'maplibre-gl';
       "
       [zoom]="[3]"
       [center]="[-71.97722138410576, -13.517379300798098]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-vector-source
         id="countries"
@@ -57,6 +64,13 @@ import { LayerSpecification } from 'maplibre-gl';
     </div>
   `,
   styleUrls: ['./examples.css', './toggle-layers.component.css'],
+  standalone: true,
+  imports: [
+    MapComponent,
+    VectorSourceComponent,
+    LayerComponent,
+    MatButtonToggleModule,
+  ],
 })
 export class ToggleLayersComponent implements OnInit {
   layouts: { [key: string]: LayerSpecification['layout'] } = {

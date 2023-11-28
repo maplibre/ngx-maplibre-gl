@@ -1,5 +1,12 @@
 import { Component } from '@angular/core';
 import { MapMouseEvent, Map } from 'maplibre-gl';
+import {
+  MapComponent,
+  FeatureComponent,
+  GeoJSONSourceComponent,
+  LayerComponent,
+} from '@maplibre/ngx-maplibre-gl';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'showcase-demo',
@@ -12,6 +19,7 @@ import { MapMouseEvent, Map } from 'maplibre-gl';
       [center]="center"
       [cursorStyle]="cursorStyle"
       (mapLoad)="map = $event"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-geojson-source id="symbols-source">
         <mgl-feature
@@ -34,6 +42,14 @@ import { MapMouseEvent, Map } from 'maplibre-gl';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [
+    MapComponent,
+    GeoJSONSourceComponent,
+    NgFor,
+    FeatureComponent,
+    LayerComponent,
+  ],
 })
 export class CenterOnSymbolComponent {
   map: Map;

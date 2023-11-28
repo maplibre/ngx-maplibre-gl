@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
-import { MapImageData } from 'projects/ngx-maplibre-gl/src/public_api';
+import {
+  MapComponent,
+  MapImageData,
+  ImageComponent,
+  LayerComponent,
+} from '@maplibre/ngx-maplibre-gl';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'showcase-demo',
@@ -9,6 +15,7 @@ import { MapImageData } from 'projects/ngx-maplibre-gl/src/public_api';
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
       "
       (styleImageMissing)="generateImage($event)"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-image
         *ngFor="let imageData of imagesData; trackBy: trackByImage"
@@ -64,6 +71,8 @@ import { MapImageData } from 'projects/ngx-maplibre-gl/src/public_api';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [MapComponent, NgFor, ImageComponent, LayerComponent],
 })
 export class AddImageMissingGeneratedComponent {
   imagesData: (MapImageData & { id: string })[] = [];

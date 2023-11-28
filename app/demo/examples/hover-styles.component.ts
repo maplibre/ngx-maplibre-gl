@@ -1,4 +1,9 @@
 import { Component } from '@angular/core';
+import {
+  MapComponent,
+  GeoJSONSourceComponent,
+  LayerComponent,
+} from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
@@ -9,6 +14,7 @@ import { Component } from '@angular/core';
       "
       [zoom]="[2]"
       [center]="[-100.486052, 37.830348]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-geojson-source
         id="states"
@@ -51,6 +57,8 @@ import { Component } from '@angular/core';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [MapComponent, GeoJSONSourceComponent, LayerComponent],
 })
 export class HoverStylesComponent {
   hoverFilter = ['==', 'name', ''];

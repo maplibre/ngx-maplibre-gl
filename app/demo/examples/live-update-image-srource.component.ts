@@ -1,5 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
+import {
+  MapComponent,
+  ImageSourceComponent,
+  LayerComponent,
+} from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
@@ -11,6 +16,7 @@ import { interval, Subscription } from 'rxjs';
       [center]="center"
       [zoom]="[14]"
       movingMethod="jumpTo"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-image-source
         id="test_source"
@@ -29,6 +35,8 @@ import { interval, Subscription } from 'rxjs';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [MapComponent, ImageSourceComponent, LayerComponent],
 })
 export class LiveUpdateImageSourceComponent implements OnInit, OnDestroy {
   private sub: Subscription;

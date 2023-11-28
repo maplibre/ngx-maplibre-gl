@@ -1,4 +1,11 @@
 import { Component } from '@angular/core';
+import {
+  MapComponent,
+  ControlComponent,
+  NavigationControlDirective,
+  TerrainControlDirective,
+  RasterDemSourceComponent,
+} from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
@@ -10,6 +17,7 @@ import { Component } from '@angular/core';
       [zoom]="[12]"
       [center]="[11.39085, 47.27574]"
       [pitch]="52"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-raster-dem-source
         id="terrainSource"
@@ -32,5 +40,13 @@ import { Component } from '@angular/core';
   `,
   styleUrls: ['./examples.css'],
   preserveWhitespaces: false,
+  standalone: true,
+  imports: [
+    MapComponent,
+    RasterDemSourceComponent,
+    ControlComponent,
+    NavigationControlDirective,
+    TerrainControlDirective,
+  ],
 })
 export class NgxTerrainSourceComponent {}

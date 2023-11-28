@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
 import { LngLatBounds } from 'maplibre-gl';
+import {
+  MapComponent,
+  LayerComponent,
+  ControlComponent,
+} from '@maplibre/ngx-maplibre-gl';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'showcase-demo',
@@ -12,6 +18,7 @@ import { LngLatBounds } from 'maplibre-gl';
       [fitBoundsOptions]="{
         padding: 20
       }"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-control>
         <button mat-raised-button class="zoom-button" (click)="zoomToBounds()">
@@ -35,6 +42,8 @@ import { LngLatBounds } from 'maplibre-gl';
   `,
   styleUrls: ['./examples.css'],
   preserveWhitespaces: false,
+  standalone: true,
+  imports: [MapComponent, ControlComponent, MatButtonModule, LayerComponent],
 })
 export class ZoomtoLinestringComponent {
   bounds: LngLatBounds;

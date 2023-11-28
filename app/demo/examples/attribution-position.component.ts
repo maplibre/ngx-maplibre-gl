@@ -1,4 +1,9 @@
 import { Component } from '@angular/core';
+import {
+  MapComponent,
+  ControlComponent,
+  AttributionControlDirective,
+} from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
@@ -10,10 +15,13 @@ import { Component } from '@angular/core';
       [center]="[-77.04, 38.907]"
       [zoom]="[11.15]"
       [attributionControl]="false"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-control mglAttribution position="top-left"></mgl-control>
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [MapComponent, ControlComponent, AttributionControlDirective],
 })
 export class AttributionPositionComponent {}

@@ -1,4 +1,10 @@
 import { Component } from '@angular/core';
+import {
+  MapComponent,
+  ImageComponent,
+  LayerComponent,
+} from '@maplibre/ngx-maplibre-gl';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'showcase-demo',
@@ -7,6 +13,7 @@ import { Component } from '@angular/core';
       [style]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
       "
+      [preserveDrawingBuffer]="true"
     >
       <mgl-image
         id="cat"
@@ -39,6 +46,8 @@ import { Component } from '@angular/core';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [MapComponent, ImageComponent, NgIf, LayerComponent],
 })
 export class AddImageComponent {
   imageLoaded = false;

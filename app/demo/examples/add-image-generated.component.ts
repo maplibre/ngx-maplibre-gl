@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import {
+  MapComponent,
+  ImageComponent,
+  LayerComponent,
+} from '@maplibre/ngx-maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
@@ -7,6 +12,7 @@ import { Component, OnInit } from '@angular/core';
       [style]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
       "
+      [preserveDrawingBuffer]="true"
     >
       <mgl-image
         id="gradient"
@@ -41,6 +47,8 @@ import { Component, OnInit } from '@angular/core';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [MapComponent, ImageComponent, LayerComponent],
 })
 export class AddImageGeneratedComponent implements OnInit {
   imageData: Uint8Array;

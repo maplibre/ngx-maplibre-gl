@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import {
+  MapComponent,
+  GeoJSONSourceComponent,
+  LayerComponent,
+} from '@maplibre/ngx-maplibre-gl';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'showcase-demo',
@@ -9,6 +15,7 @@ import { Component, OnInit } from '@angular/core';
       "
       [zoom]="[3]"
       [center]="[-103.59179687498357, 40.66995747013945]"
+      [preserveDrawingBuffer]="true"
     >
       <ng-container *ngIf="earthquakes">
         <mgl-geojson-source
@@ -75,6 +82,8 @@ import { Component, OnInit } from '@angular/core';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  standalone: true,
+  imports: [MapComponent, NgIf, GeoJSONSourceComponent, LayerComponent],
 })
 export class ClusterComponent implements OnInit {
   earthquakes: object;
