@@ -7,7 +7,6 @@ import {
   GeoJSONSourceComponent,
 } from '@maplibre/ngx-maplibre-gl';
 import { NgIf } from '@angular/common';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
@@ -20,6 +19,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       [zoom]="[11.15]"
       [center]="[-77.04, 38.907]"
       [cursorStyle]="cursorStyle"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-geojson-source id="points" [data]="points"></mgl-geojson-source>
       <mgl-layer
@@ -44,7 +44,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   imports: [
     MapComponent,
     MglMapResizeDirective,
-    MapTestingHelperDirective,
     GeoJSONSourceComponent,
     LayerComponent,
     NgIf,

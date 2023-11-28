@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Map, SymbolLayerSpecification } from 'maplibre-gl';
 import { MapComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
@@ -16,6 +15,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       [pitch]="45"
       [bearing]="-17.6"
       (mapLoad)="onLoad($event)"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-layer
         id="3d-buildings"
@@ -55,7 +55,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   imports: [
     MapComponent,
     MglMapResizeDirective,
-    MapTestingHelperDirective,
     LayerComponent,
   ],
 })

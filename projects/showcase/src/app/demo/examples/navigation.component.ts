@@ -4,7 +4,6 @@ import {
   ControlComponent,
   NavigationControlDirective,
 } from '@maplibre/ngx-maplibre-gl';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
@@ -16,6 +15,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       "
       [zoom]="[9]"
       [center]="[-74.5, 40]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-control mglNavigation></mgl-control>
     </mgl-map>
@@ -25,7 +25,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   imports: [
     MapComponent,
     MglMapResizeDirective,
-    MapTestingHelperDirective,
     ControlComponent,
     NavigationControlDirective,
   ],

@@ -11,7 +11,6 @@ import {
 } from '@maplibre/ngx-maplibre-gl';
 import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
@@ -21,6 +20,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       [style]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
       "
+      [preserveDrawingBuffer]="true"
     >
       <ng-container *ngIf="visible">
         <mgl-control>
@@ -56,7 +56,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   imports: [
     MapComponent,
     MglMapResizeDirective,
-    MapTestingHelperDirective,
     NgIf,
     ControlComponent,
     MatButtonModule,

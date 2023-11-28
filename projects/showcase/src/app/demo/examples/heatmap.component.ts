@@ -6,7 +6,6 @@ import {
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
 import { NgIf, NgFor } from '@angular/common';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
@@ -18,6 +17,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       "
       [zoom]="[3]"
       [center]="[-103.59179687498357, 40.66995747013945]"
+      [preserveDrawingBuffer]="true"
     >
       <ng-container *ngIf="earthquakes">
         <mgl-geojson-source
@@ -54,7 +54,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   imports: [
     MapComponent,
     MglMapResizeDirective,
-    MapTestingHelperDirective,
     NgIf,
     GeoJSONSourceComponent,
     NgFor,

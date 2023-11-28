@@ -21,7 +21,6 @@ import {
 } from '@maplibre/ngx-maplibre-gl';
 import { MatListModule } from '@angular/material/list';
 import { NgIf, NgFor } from '@angular/common';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
@@ -85,6 +84,7 @@ export class ClusterPopupComponent implements OnChanges {
       "
       [zoom]="[3]"
       [center]="[-103.59179687498357, 40.66995747013945]"
+      [preserveDrawingBuffer]="true"
     >
       <ng-container *ngIf="earthquakes">
         <mgl-geojson-source
@@ -124,7 +124,6 @@ export class ClusterPopupComponent implements OnChanges {
   imports: [
     MapComponent,
     MglMapResizeDirective,
-    MapTestingHelperDirective,
     NgIf,
     GeoJSONSourceComponent,
     MarkersForClustersComponent,

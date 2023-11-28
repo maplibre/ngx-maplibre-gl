@@ -9,7 +9,6 @@ import {
   FeatureComponent,
   GeoJSONSourceComponent,
 } from '@maplibre/ngx-maplibre-gl';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
@@ -21,6 +20,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       "
       [zoom]="[2]"
       [center]="[0, 0]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-geojson-source id="point">
         <mgl-feature
@@ -57,7 +57,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   imports: [
     MapComponent,
     MglMapResizeDirective,
-    MapTestingHelperDirective,
     GeoJSONSourceComponent,
     FeatureComponent,
     DraggableDirective,

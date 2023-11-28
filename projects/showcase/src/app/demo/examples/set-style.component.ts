@@ -7,13 +7,12 @@ import {
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { MapComponent } from '@maplibre/ngx-maplibre-gl';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
   selector: 'showcase-demo',
   template: `
-    <mgl-map [style]="style" [zoom]="[13]" [center]="[4.899, 52.372]">
+    <mgl-map [style]="style" [zoom]="[13]" [center]="[4.899, 52.372]" [preserveDrawingBuffer]="true">
     </mgl-map>
     <mat-radio-group
       [ngModel]="layerId"
@@ -29,7 +28,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   imports: [
     MapComponent,
     MglMapResizeDirective,
-    MapTestingHelperDirective,
     MatRadioModule,
     FormsModule,
   ],

@@ -4,7 +4,6 @@ import {
   ImageComponent,
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
@@ -14,6 +13,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       [style]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
       "
+      [preserveDrawingBuffer]="true"
     >
       <mgl-image
         id="gradient"
@@ -52,7 +52,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   imports: [
     MapComponent,
     MglMapResizeDirective,
-    MapTestingHelperDirective,
     ImageComponent,
     LayerComponent,
   ],

@@ -6,7 +6,6 @@ import {
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
 import { NgIf } from '@angular/common';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
@@ -21,6 +20,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       [centerWithPanTo]="true"
       [pitch]="pitch"
       movingMethod="jumpTo"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-geojson-source *ngIf="data" id="trace" [data]="data">
       </mgl-geojson-source>
@@ -43,7 +43,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   imports: [
     MapComponent,
     MglMapResizeDirective,
-    MapTestingHelperDirective,
     NgIf,
     GeoJSONSourceComponent,
     LayerComponent,

@@ -5,7 +5,6 @@ import {
   MarkerComponent,
 } from '@maplibre/ngx-maplibre-gl';
 import { NgStyle } from '@angular/common';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
@@ -15,6 +14,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       [style]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[15]"
       [center]="[-77.0353, 38.8895]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-marker #myMarker [lngLat]="[-77.0353, 38.8895]">
         <div
@@ -39,7 +39,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   imports: [
     MapComponent,
     MglMapResizeDirective,
-    MapTestingHelperDirective,
     MarkerComponent,
     NgStyle,
     PopupComponent,

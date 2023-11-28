@@ -3,7 +3,6 @@ import {
   MapComponent,
   PopupComponent as MglPopupComponent,
 } from '@maplibre/ngx-maplibre-gl';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
@@ -15,6 +14,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       "
       [zoom]="[3]"
       [center]="[-96, 37.8]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-popup
         [lngLat]="[-96, 37.8]"
@@ -30,7 +30,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   imports: [
     MapComponent,
     MglMapResizeDirective,
-    MapTestingHelperDirective,
     MglPopupComponent,
   ],
 })

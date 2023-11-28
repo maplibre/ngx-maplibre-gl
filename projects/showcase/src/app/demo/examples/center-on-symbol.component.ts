@@ -7,7 +7,6 @@ import {
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
 import { NgFor } from '@angular/common';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
@@ -21,6 +20,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       [center]="center"
       [cursorStyle]="cursorStyle"
       (mapLoad)="map = $event"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-geojson-source id="symbols-source">
         <mgl-feature
@@ -47,7 +47,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   imports: [
     MapComponent,
     MglMapResizeDirective,
-    MapTestingHelperDirective,
     GeoJSONSourceComponent,
     NgFor,
     FeatureComponent,

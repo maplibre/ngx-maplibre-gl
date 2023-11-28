@@ -4,7 +4,6 @@ import {
   ControlComponent,
   AttributionControlDirective,
 } from '@maplibre/ngx-maplibre-gl';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
@@ -17,6 +16,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       [center]="[-77.04, 38.907]"
       [zoom]="[11.15]"
       [attributionControl]="false"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-control mglAttribution position="top-left"></mgl-control>
     </mgl-map>
@@ -26,7 +26,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   imports: [
     MapComponent,
     MglMapResizeDirective,
-    MapTestingHelperDirective,
     ControlComponent,
     AttributionControlDirective,
   ],

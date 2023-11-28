@@ -7,7 +7,6 @@ import {
   NavigationControlDirective,
   ScaleControlDirective,
 } from '@maplibre/ngx-maplibre-gl';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
@@ -20,6 +19,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       [center]="[36.235656, 50.00387]"
       [zoom]="[11.15]"
       [locale]="locale"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-control mglFullscreen position="top-left"></mgl-control>
       <mgl-control mglGeolocate position="top-left"></mgl-control>
@@ -32,7 +32,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   imports: [
     MapComponent,
     MglMapResizeDirective,
-    MapTestingHelperDirective,
     ControlComponent,
     FullscreenControlDirective,
     GeolocateControlDirective,

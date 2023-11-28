@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
@@ -16,6 +15,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       [bearing]="[bearing]"
       [zoom]="[17]"
       [center]="[4.577979, 51.038189]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-marker
         [lngLat]="[4.577979, 51.03816]"
@@ -46,7 +46,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   imports: [
     MapComponent,
     MglMapResizeDirective,
-    MapTestingHelperDirective,
     MarkerComponent,
   ],
 })

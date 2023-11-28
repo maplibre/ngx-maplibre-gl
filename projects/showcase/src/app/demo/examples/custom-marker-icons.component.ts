@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
 import { NgFor, NgStyle } from '@angular/common';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
@@ -13,6 +12,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       "
       [zoom]="[5]"
       [center]="[-65.017, -16.457]"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-marker *ngFor="let feature of geojson.features" [feature]="feature">
         <div
@@ -35,7 +35,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   imports: [
     MapComponent,
     MglMapResizeDirective,
-    MapTestingHelperDirective,
     NgFor,
     MarkerComponent,
     NgStyle,

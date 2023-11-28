@@ -7,7 +7,6 @@ import {
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
 import { NgIf } from '@angular/common';
-import { MapTestingHelperDirective } from '../../helper/map-testing-helper.directive';
 import { MglMapResizeDirective } from '../mgl-map-resize.directive';
 
 @Component({
@@ -21,6 +20,7 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
       [center]="[-100.04, 38.907]"
       [cursorStyle]="cursorStyle"
       (mapClick)="onMapClick()"
+      [preserveDrawingBuffer]="true"
     >
       <mgl-layer
         id="states-layer"
@@ -51,7 +51,6 @@ import { MglMapResizeDirective } from '../mgl-map-resize.directive';
   imports: [
     MapComponent,
     MglMapResizeDirective,
-    MapTestingHelperDirective,
     LayerComponent,
     NgIf,
     PopupComponent,

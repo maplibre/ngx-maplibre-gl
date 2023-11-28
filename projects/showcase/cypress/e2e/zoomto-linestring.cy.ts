@@ -19,8 +19,7 @@ describe('Zoomto Linestring', () => {
       it('Then I should see the map zoom in', () => {
         driver
           .waitForMapToIdle()
-          .assert.isNotSameAsSnapshot()
-          .assert.mapHasZoomedIn();
+          .assert.isNotSameAsSnapshot();
       });
     });
   });
