@@ -21,7 +21,6 @@ import { MatMenuModule } from '@angular/material/menu';
       </div>
       <div>
         <div id="layout-right-custom-items"></div>
-        <!-- <a mat-button href="https://github.com/maplibre/ngx-maplibre-gl"> </a> -->
         <a mat-icon-button href="https://github.com/maplibre/ngx-maplibre-gl">
           <mat-icon svgIcon="github"></mat-icon>
         </a>
