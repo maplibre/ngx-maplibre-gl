@@ -13,7 +13,7 @@ import { MatMenuModule } from '@angular/material/menu';
         <a mat-icon-button routerLink="/">
           <mat-icon svgIcon="ngx-maplibre-gl"></mat-icon>
         </a>
-        <a mat-button routerLink="/"> ngx-maplibre-gl </a>
+        <a mat-button routerLink="/" class="library-name"> ngx-maplibre-gl </a>
         <div class="menu-items">
           <a mat-button routerLink="/demo"> Demo </a>
           <a mat-button routerLink="/doc"> Documentation </a>
@@ -71,8 +71,16 @@ import { MatMenuModule } from '@angular/material/menu';
         display: none;
       }
 
+      .library-name {
+        display: none;
+      }
+
       @media (min-width: 640px) {
         .menu-items {
+          display: flex;
+        }
+
+        .library-name {
           display: flex;
         }
 
