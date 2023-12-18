@@ -35,6 +35,10 @@ export const VERSIONS = ['main'];
         justify-content: center;
       }
 
+      mat-form-field {
+        width: 100px;
+      }
+
       markdown {
         margin: 8px;
         width: 60%;
