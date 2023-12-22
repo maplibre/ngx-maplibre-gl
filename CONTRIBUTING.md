@@ -3,7 +3,7 @@
 ## Install project dependencies (package.json)
 
 ```
-npm install
+npm ci
 ```
 
 ## Run ngx-maplibre-gl showcase
