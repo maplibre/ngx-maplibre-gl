@@ -18,12 +18,13 @@ import { MarkerComponent } from '../marker/marker.component';
 
 @Component({
   selector: 'mgl-popup',
-  template: '<div #content><ng-content></ng-content></div>',
+  template: '<div #content data-cy="mgl-popup"><ng-content></ng-content></div>',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
 export class PopupComponent
-  implements OnChanges, OnDestroy, AfterViewInit, OnInit {
+  implements OnChanges, OnDestroy, AfterViewInit, OnInit
+{
   /* Init input */
   @Input() closeButton?: PopupOptions['closeButton'];
   @Input() closeOnClick?: PopupOptions['closeOnClick'];
@@ -59,9 +60,7 @@ export class PopupComponent
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (
-      changes.feature && !changes.feature.isFirstChange()
-    ) {
+    if (changes.feature && !changes.feature.isFirstChange()) {
       const newlngLat = changes.lngLat
         ? this.lngLat!
         : <[number, number]>this.feature!.geometry!.coordinates!;
@@ -75,9 +74,7 @@ export class PopupComponent
       this.popupInstance = popupInstanceTmp;
     }
 
-    if (
-      changes.lngLat && !changes.lngLat.isFirstChange()
-    ) {
+    if (changes.lngLat && !changes.lngLat.isFirstChange()) {
       this.popupInstance!.setLngLat(this.lngLat!);
     }
 

@@ -1,26 +1,31 @@
-import { E2eDriver } from '../support/e2e-driver';
+import { E2eDriver } from "../support/e2e-driver";
 
-describe('Popup', () => {
-  context('Given I am on the Popup showcase', () => {
-    let driver = new E2eDriver();
+describe("Popup", () => {
+  context("Given I am on the Popup showcase", () => {
+    let { beforeAndAfter, given, when, get, then } = new E2eDriver();
+
+    beforeAndAfter();
 
     beforeEach(() => {
-      driver.visitMapPage('/demo/popup').waitForMapToIdle();
+      ({ given, when, get, then } = new E2eDriver());
+      when.visitMapPage("/demo/popup");
+      when.waitForMapToIdle();
     });
 
-    context('When the map loads', () => {
+    context("When the map loads", () => {
       it('Then I should see a popup dialog containing "Hello World !"', () => {
-        driver.assert.helloWorldPopupExists();
+        then(get.mglPopup()).shouldExist();
+        then(get.mapLibrePopUpContent()).shouldHaveText("Hello world !");
       });
     });
 
     context("When I click the popup's close button", () => {
       beforeEach(() => {
-        driver.when.clickPopupCloseButton();
+        when.clickPopupCloseButton();
       });
 
       it('Then I should not see a popup dialog containing "Hello World !"', () => {
-        driver.assert.helloWorldPopupDoesNotExist();
+        then(get.mglPopup()).shouldNotExist();
       });
     });
   });

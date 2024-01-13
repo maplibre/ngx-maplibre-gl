@@ -1,30 +1,38 @@
-import { E2eDriver } from '../support/e2e-driver';
+import { E2eDriver } from "../support/e2e-driver";
 
-describe('Custom control', () => {
-  context('Given I am on the Custom Control showcase', () => {
-    let driver = new E2eDriver();
+describe("Custom control", () => {
+  context("Given I am on the Custom Control showcase", () => {
+    let { beforeAndAfter, given, when, get, then } = new E2eDriver();
+
+    beforeAndAfter();
 
     beforeEach(() => {
-      driver.visitMapPage('/demo/ngx-custom-control').waitForMapToIdle();
+      ({ given, when, get, then } = new E2eDriver());
+      when.visitMapPage("/demo/ngx-custom-control");
+      when.waitForMapToIdle();
     });
 
     context('When I click on the "Hello" button', () => {
       beforeEach(() => {
-        driver.assert.customHelloButtonExists().when.clickHelloCustomButton();
+        given.alertStub();
+        when.clickHelloCustomButton();
       });
 
-      it('Then I should see an alert', () => {
-        driver.assert.customPopupContainsHello();
+      it("Then I should see an alert", () => {
+        then(get.alertStub()).shouldHaveBeenCalledWith("Hello");
       });
     });
 
     context('When I click on the "Hide Controls" button', () => {
       beforeEach(() => {
-        driver.assert.fullscreenControlExists().assert.customHelloButtonExists().when.clickHideControlsButton();
+        when.waitForFullScreenControls();
+        when.waitForCustomButton();
+        when.clickToggleShowControlsButton();
       });
 
-      it('Then I should not see any controls anymore', () => {
-        driver.assert.fullscreenControlDoesNotExist().assert.customHelloButtonDoesNotExist()
+      it("Then I should not see any controls anymore", () => {
+        then(get.fullscreenControl()).shouldNotExist();
+        then(get.customControlButton()).shouldNotExist();
       });
     });
   });

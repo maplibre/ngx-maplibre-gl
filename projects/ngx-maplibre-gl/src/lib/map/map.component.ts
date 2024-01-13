@@ -212,15 +212,15 @@ export class MapComponent
   ngAfterViewInit() {
     if (this.preserveDrawingBuffer) { // This is to allow better interaction with the map state
       const htmlElement: HTMLElement = this.elementRef.nativeElement;
-      htmlElement.setAttribute("data-cy", "map");
+      htmlElement.setAttribute('data-cy', 'map');
       this.subscriptions.push(this.mapLoad.subscribe(() => {
-        htmlElement.setAttribute("data-loaded", "true");
+        htmlElement.setAttribute('data-loaded', 'true');
       }));
       this.subscriptions.push(this.idle.subscribe(() => {
-        htmlElement.setAttribute("data-idle", "true");
+        htmlElement.setAttribute('data-idle', 'true');
       }));
       this.subscriptions.push(this.render.subscribe(() => {
-        htmlElement.removeAttribute("data-idle");
+        htmlElement.removeAttribute('data-idle');
       }));
     }
     

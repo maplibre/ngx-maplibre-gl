@@ -1,198 +1,112 @@
-/// <reference types="cypress" />
-import Sinon from 'cypress/types/sinon';
-import pixelmatch from 'pixelmatch';
-import { PNG } from 'pngjs';
+import { PNG } from "pngjs";
+import { MapLibreAssertable, MaplibreCypressHelper } from "./maplibre-helper";
 
 export class E2eDriver {
-  private width: number;
-  private height: number;
-  private referenceImageBuffer: Buffer;
-  private alertStub: Cypress.Agent<Sinon.SinonStub<any[], any>>;
+  private helper = new MaplibreCypressHelper();
 
-  visitMapPage = (url: string): E2eDriver => {
-    cy.visit(url);
-    this.alertStub = cy.stub().as('alertStub');
-    return this;
+  beforeAndAfter = () => {
+    beforeEach(() => {});
+    afterEach(() => {});
   };
 
-  // Aliased
-  waitForMapToIdle = (timeout: number = 30000): E2eDriver => {
-    return this.when.waitForMapToIdle(timeout);
+  given = {
+    alertStub: () => this.helper.given.onAlert(this.helper.given.stub("alert")),
+    interceptStreetsSprite: () =>
+      this.helper.given.intercept("**/streets/sprite.png", "streets"),
   };
-
-  takeImageSnapshot = (): E2eDriver => {
-    this.initReferenceImage();
-    return this;
-  };
-
-  // Used to reset the console.warn spy for cases when it is known that warnings have been
-  // logged so that the test will not fail (the spy is first defined in commands.ts and
-  // warnings are evaluated as failures in afterEach())
-  resetConsoleWarnings = (): E2eDriver => {
-    cy.get('@consoleWarnSpy').then((spy: any) => {
-      if (spy.callCount > 0) {
-        cy.log(`Clearing ${spy.callCount} console warning(s)...`);
-        spy.resetHistory();
-      }
-    });
-    return this;
-  };
-
   when = {
-    wait: (ms: number): E2eDriver => {
-      cy.wait(ms);
-      return this;
-    },
-    waitForFetch: (url: string, method: string = 'GET'): E2eDriver => {
-      cy.intercept(method, url).as('awaitFetch');
-      cy.wait('@awaitFetch', { timeout: 30000 });
-      return this;
-    },
-    waitForMapToIdle: (timeout: number = 30000): E2eDriver => {
-      cy.get('[data-idle="true"]', { timeout: timeout }).should('exist');
-      return this;
-    },
-    waitForMapLoaded: (timeout: number = 30000): E2eDriver => {
-      cy.get('[data-loaded="true"]', { timeout: timeout }).should('exist');
-      return this;
-    },
-    clickLanguageButton: (language: string): E2eDriver => {
-      cy.get('.lang-button').contains(language).click();
-      return this;
-    },
-    clickPopupCloseButton: (): E2eDriver => {
-      cy.get('.maplibregl-popup-close-button').click();
-      return this;
-    },
-    clickFromCodeRadioButton: (): E2eDriver => {
-      cy.get('mat-radio-button').contains('from code').click();
-      return this;
-    },
-    clickStreetsRadioButton: (): E2eDriver => {
-      cy.get('mat-radio-button').contains('streets').click();
-      return this;
-    },
-    clickCountryNamesButton: (): E2eDriver => {
-      cy.get('mat-button-toggle').contains('countries names').click();
-      return this;
-    },
-    clickZoomToBoundsButton: (): E2eDriver => {
-      cy.get('.zoom-button').click();
-      return this;
-    },
-    clickHelloCustomButton: (): E2eDriver => {
-      cy.on('window:alert', this.alertStub);
-      cy.get('.custom-control').click();
-      return this;
-    },
-    clickEnableTerrainControlButton: (): E2eDriver => {
-      cy.get('.maplibregl-ctrl-terrain').click();
-      return this;
-    },
-    clickDisableTerrainControlButton: (): E2eDriver => {
-      cy.get('.maplibregl-ctrl-terrain-enabled').click();
-      return this;
-    },
-    clickHideControlsButton: (): E2eDriver => {
-      cy.get('button').contains('Hide Controls').click();
-      return this;
-    },
+    wait: (ms: number) => this.helper.when.wait(ms),
+
+    resetConsoleWarnings: () => this.helper.when.resetConsoleWarnings(),
+    waitForStreetsSpriteResponse: (url: string, method: string = "GET") =>
+      this.helper.when.waitForResponse("streets"),
+    waitForMapToIdle: () =>
+      this.helper.when.waitUntil(() =>
+        this.helper.get.bySelector("true", "data-idle")
+      ),
+    waitForMapLoaded: () =>
+      this.helper.when.waitUntil(() =>
+        this.helper.get.bySelector("true", "data-loaded")
+      ),
+    waitForDisabledTerrainButton: () =>
+      this.helper.when.waitUntil(() => this.get.mapTerrainButton()),
+    WaitForEnabledTerrainButton: () =>
+      this.helper.when.waitUntil(() => this.get.mapTerrainButtonEnabled()),
+    waitForFullScreenControls: () =>
+      this.helper.when.waitUntil(() => this.get.fullscreenControl()),
+    waitForCustomButton: () =>
+      this.helper.when.waitUntil(() => this.get.customControlButton()),
+    clickLanguageButton: (language: string) =>
+      this.helper.when.click(`lang-button-${language}`),
+    clickPopupCloseButton: () =>
+      this.helper.get.element(".maplibregl-popup-close-button").click(),
+    clickFromCodeRadioButton: () =>
+      this.helper.when.doWithin(
+        () => this.helper.when.toggle(0),
+        "code-button"
+      ),
+    clickStreetsRadioButton: () =>
+      this.helper.when.doWithin(
+        () => this.helper.when.toggle(0),
+        "streets-button"
+      ),
+    clickCountryNamesButton: () =>
+      this.helper.when.click("countries-toggle-button"),
+
+    clickZoomToBoundsButton: () => this.helper.when.click("zoom-button"),
+    clickHelloCustomButton: () => this.helper.when.click("custom-control"),
+    clickEnableTerrainControlButton: () =>
+      this.helper.get.element(".maplibregl-ctrl-terrain").click(),
+    clickDisableTerrainControlButton: () =>
+      this.helper.get.element(".maplibregl-ctrl-terrain-enabled").click(),
+    clickToggleShowControlsButton: () =>
+      this.helper.when.click("toggle-show-controls"),
+
+    visitMapPage: (url: string) => this.helper.when.visit(url),
   };
 
-  assert = {
-    isSameAsSnapshot: (): E2eDriver => {
-      this.compareToReference().should('eq', 0);
-      return this;
+  get = {
+    canvas: (): Cypress.Chainable<HTMLCanvasElement> =>
+      this.helper.get
+        .element("canvas.maplibregl-canvas", 0)
+        .its(0) as unknown as Cypress.Chainable<HTMLCanvasElement>,
+
+    imageSnapshot: () => {
+      const snapshot = this.get
+        .canvas()
+        .then((mapCanvas: HTMLCanvasElement) => ({
+          width: mapCanvas.width,
+          height: mapCanvas.height,
+          buffer: this.get.imageBitmapBuffer(mapCanvas),
+        }));
+      this.get.canvas();
+
+      return snapshot;
     },
-    isNotSameAsSnapshot: (): E2eDriver => {
-      this.compareToReference().should('be.gt', 0);
-      return this;
+
+    imageBitmapBuffer: (canvas: HTMLCanvasElement) => {
+      const base64 = canvas
+        .toDataURL("image/png")
+        .replace(/data:.*;base64,/, "");
+      const buff = Cypress.Buffer.from(base64, "base64");
+      const png = PNG.sync.read(buff as any);
+      return png.data;
     },
-    mapCanvasExists: (): E2eDriver => {
-      cy.get('canvas.maplibregl-canvas').should('have.length', 1);
-      return this;
-    },
-    mapObjectLoaded: (): E2eDriver => {
-      cy.get('[data-loaded="true"]').should('exist');
-      return this;
-    },
-    mapTerrainButtonIsOff: (): E2eDriver => {
-      cy.get('.maplibregl-ctrl-terrain').should('exist');
-      return this;
-    },
-    mapTerrainButtonIsOn: (): E2eDriver => {
-      cy.get('.maplibregl-ctrl-terrain-enabled').should('exist');
-      return this;
-    },
-    helloWorldPopupExists: (): E2eDriver => {
-      cy.get('.maplibregl-popup').should('exist');
-      cy.get('.custom-popup-class1').should('exist');
-      cy.get('.custom-popup-class2').should('exist');
-      cy.get('.maplibregl-popup-content').within(() => {
-        cy.get('div').should('have.text', 'Hello world !');
-      });
-      return this;
-    },
-    helloWorldPopupDoesNotExist: (): E2eDriver => {
-      cy.get('.maplibregl-popup').should('not.exist');
-      return this;
-    },
-    customHelloButtonExists: (): E2eDriver => {
-      cy.get('.custom-control').should('have.text', ' Hello ');
-      return this;
-    },
-    customHelloButtonDoesNotExist: (): E2eDriver => {
-      cy.get('.custom-control').should('not.exist');
-      return this;
-    },
-    fullscreenControlExists: (): E2eDriver => {
-      cy.get('.maplibregl-ctrl-fullscreen').should('exist');
-      return this;
-    },
-    fullscreenControlDoesNotExist: (): E2eDriver => {
-      cy.get('.maplibregl-ctrl-fullscreen').should('not.exist');
-      return this;
-    },
-    customPopupContainsHello: (): E2eDriver => {
-      cy.get('@alertStub').should('have.been.calledOnceWith', 'Hello');
-      return this;
-    },
+
+    mapObjectLoaded: () => this.helper.get.bySelector("true", "data-loaded"),
+    mapTerrainButton: () => this.helper.get.element(".maplibregl-ctrl-terrain"),
+    mapTerrainButtonEnabled: () =>
+      this.helper.get.element(".maplibregl-ctrl-terrain-enabled"),
+    mapLibreglPopup: () => this.helper.get.element(".maplibregl-popup"),
+    mglPopup: () => this.helper.get.elementByTestId("mgl-popup"),
+    mapLibrePopUpContent: () =>
+      this.helper.get.elementByTestId("popup-content"),
+    customControlButton: () =>
+      this.helper.get.elementByTestId("custom-control"),
+    fullscreenControl: () =>
+      this.helper.get.element(".maplibregl-ctrl-fullscreen"),
+    alertStub: () => this.helper.get.stub("alert"),
   };
 
-  private getCanvas(): Cypress.Chainable<any> {
-    return cy.get('canvas.maplibregl-canvas').its(0).should('not.be.undefined');
-  }
-
-  private toImageBitmapBuffer(canvas: HTMLCanvasElement) {
-    const base64 = canvas.toDataURL('image/png').replace(/data:.*;base64,/, '');
-    const buff = Cypress.Buffer.from(base64, 'base64');
-    const png = PNG.sync.read(buff as any);
-    return png.data;
-  }
-
-  private initReferenceImage() {
-    return this.getCanvas().then((mapCanvas) => {
-      this.width = mapCanvas.width;
-      this.height = mapCanvas.height;
-      this.referenceImageBuffer = this.toImageBitmapBuffer(mapCanvas);
-    });
-  }
-
-  // Yields the number of pixels that differ from the snapshot
-  private compareToReference() {
-    return this.getCanvas()
-      .then((mapCanvas) => {
-        cy.wrap({
-          pixels: pixelmatch(
-            this.referenceImageBuffer,
-            this.toImageBitmapBuffer(mapCanvas),
-            null,
-            this.width,
-            this.height
-          ),
-        });
-      })
-      .its('pixels')
-      .should('not.be.undefined');
-  }
+  then = (chainable: Cypress.Chainable) => new MapLibreAssertable(chainable);
 }

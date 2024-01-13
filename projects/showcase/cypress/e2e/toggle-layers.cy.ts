@@ -1,36 +1,41 @@
-import { E2eDriver } from '../support/e2e-driver';
+import { E2eDriver } from "../support/e2e-driver";
 
-describe('Toggle layers', () => {
-  context('Given I am on the Toggle Layers showcase', () => {
-    let driver = new E2eDriver();
+describe("Toggle layers", () => {
+  context("Given I am on the Toggle Layers showcase", () => {
+    let { beforeAndAfter, when, get, then } = new E2eDriver();
+    let initialImageSnapshot: any;
+
+    beforeAndAfter();
 
     beforeEach(() => {
-      driver
-        .visitMapPage('/demo/toggle-layers')
-        .waitForMapToIdle()
-        .takeImageSnapshot();
+      ({ when, get, then } = new E2eDriver());
+
+      when.visitMapPage("/demo/toggle-layers");
+      when.waitForMapToIdle();
+      initialImageSnapshot = get.imageSnapshot();
     });
 
     context('When I click on the "countries names" button', () => {
       beforeEach(() => {
-        driver.when.clickCountryNamesButton();
+        when.clickCountryNamesButton();
       });
 
-      it('Then I should see the map image change', () => {
-        driver.waitForMapToIdle().assert.isNotSameAsSnapshot();
+      it("Then I should see the map image change", () => {
+        when.waitForMapToIdle();
+        then(get.imageSnapshot()).shouldNotEqualSnapshot(initialImageSnapshot);
       });
     });
 
     context('When I click on the "countries names" button twice', () => {
       beforeEach(() => {
-        driver.when
-          .clickCountryNamesButton()
-          .waitForMapToIdle()
-          .when.clickCountryNamesButton();
+        when.clickCountryNamesButton();
+        when.waitForMapToIdle();
+        when.clickCountryNamesButton();
       });
 
-      it('Then I should see the original map image', () => {
-        driver.waitForMapToIdle().assert.isSameAsSnapshot();
+      it("Then I should see the original map image", () => {
+        when.waitForMapToIdle();
+        then(get.imageSnapshot()).shouldEqualSnapshot(initialImageSnapshot);
       });
     });
   });
