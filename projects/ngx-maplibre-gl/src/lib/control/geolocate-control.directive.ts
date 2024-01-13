@@ -5,14 +5,14 @@ import {
   Host,
   Input,
   Output,
-} from '@angular/core';
-import { FitBoundsOptions, GeolocateControl } from 'maplibre-gl';
-import { MapService } from '../map/map.service';
-import { ControlComponent } from './control.component';
-import { Position } from '../map/map.types';
+} from "@angular/core";
+import { FitBoundsOptions, GeolocateControl } from "maplibre-gl";
+import { MapService } from "../map/map.service";
+import { ControlComponent } from "./control.component";
+import { Position } from "../map/map.types";
 
 @Directive({
-  selector: '[mglGeolocate]',
+  selector: "[mglGeolocate]",
   standalone: true,
 })
 export class GeolocateControlDirective implements AfterContentInit {
@@ -33,7 +33,7 @@ export class GeolocateControlDirective implements AfterContentInit {
   ngAfterContentInit() {
     this.mapService.mapCreated$.subscribe(() => {
       if (this.controlComponent.control) {
-        throw new Error('Another control is already set for this control');
+        throw new Error("Another control is already set for this control");
       }
       const options = {
         positionOptions: this.positionOptions,
@@ -49,7 +49,7 @@ export class GeolocateControlDirective implements AfterContentInit {
         }
       });
       this.controlComponent.control = new GeolocateControl(options);
-      this.controlComponent.control.on('geolocate', (data: Position) => {
+      this.controlComponent.control.on("geolocate", (data: Position) => {
         this.geolocate.emit(data);
       });
       this.mapService.addControl(

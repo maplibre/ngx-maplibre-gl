@@ -1,22 +1,22 @@
-import { SimpleChange } from '@angular/core';
+import { SimpleChange } from "@angular/core";
 import {
   ComponentFixture,
   fakeAsync,
   flushMicrotasks,
   TestBed,
   waitForAsync,
-} from '@angular/core/testing';
-import { ReplaySubject } from 'rxjs';
-import { MapComponent } from './map.component';
-import { MapService, SetupMap } from './map.service';
+} from "@angular/core/testing";
+import { ReplaySubject } from "rxjs";
+import { MapComponent } from "./map.component";
+import { MapService, SetupMap } from "./map.service";
 
-describe('MapComponent', () => {
+describe("MapComponent", () => {
   class MapServiceSpy {
-    setup = jasmine.createSpy('setup');
-    updateMinZoom = jasmine.createSpy('updateMinZoom');
-    updateMaxPitch = jasmine.createSpy('updateMaxPitch');
-    updateMinPitch = jasmine.createSpy('updateMinPitch');
-    destroyMap = jasmine.createSpy('destroyMap');
+    setup = jasmine.createSpy("setup");
+    updateMinZoom = jasmine.createSpy("updateMinZoom");
+    updateMaxPitch = jasmine.createSpy("updateMaxPitch");
+    updateMinPitch = jasmine.createSpy("updateMinPitch");
+    destroyMap = jasmine.createSpy("destroyMap");
     mapCreated$ = new ReplaySubject(1);
   }
 
@@ -42,24 +42,24 @@ describe('MapComponent', () => {
     msSpy = fixture.debugElement.injector.get<MapService>(MapService) as any;
   });
 
-  describe('Init tests', () => {
-    it('should init', () => {
+  describe("Init tests", () => {
+    it("should init", () => {
       fixture.detectChanges();
       expect(msSpy.setup.calls.count()).toBe(1);
     });
 
-    it('should init with custom inputs', (done: DoneFn) => {
-      component.style = 'style';
+    it("should init with custom inputs", (done: DoneFn) => {
+      component.style = "style";
       msSpy.setup.and.callFake((options: SetupMap) => {
-        expect(options.mapOptions.style).toEqual('style');
+        expect(options.mapOptions.style).toEqual("style");
         done();
       });
       fixture.detectChanges();
     });
   });
 
-  describe('Change tests', () => {
-    it('should update minzoom', fakeAsync(() => {
+  describe("Change tests", () => {
+    it("should update minzoom", fakeAsync(() => {
       msSpy.mapCreated$.next(undefined);
       msSpy.mapCreated$.complete();
       component.minZoom = 6;
@@ -70,7 +70,7 @@ describe('MapComponent', () => {
       expect(msSpy.updateMinZoom).toHaveBeenCalledWith(6);
     }));
 
-    it('should update minpitch', fakeAsync(() => {
+    it("should update minpitch", fakeAsync(() => {
       msSpy.mapCreated$.next(undefined);
       msSpy.mapCreated$.complete();
       component.minPitch = 15;
@@ -81,7 +81,7 @@ describe('MapComponent', () => {
       expect(msSpy.updateMinPitch).toHaveBeenCalledWith(15);
     }));
 
-    it('should update maxpitch', fakeAsync(() => {
+    it("should update maxpitch", fakeAsync(() => {
       msSpy.mapCreated$.next(undefined);
       msSpy.mapCreated$.complete();
       component.maxPitch = 25;

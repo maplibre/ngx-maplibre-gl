@@ -8,15 +8,15 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-} from '@angular/core';
-import { fromEvent, Subscription } from 'rxjs';
-import { filter, startWith, switchMap } from 'rxjs/operators';
-import { MapService } from '../map/map.service';
-import { MapImageData, MapImageOptions } from '../map/map.types';
+} from "@angular/core";
+import { fromEvent, Subscription } from "rxjs";
+import { filter, startWith, switchMap } from "rxjs/operators";
+import { MapService } from "../map/map.service";
+import { MapImageData, MapImageOptions } from "../map/map.types";
 
 @Component({
-  selector: 'mgl-image',
-  template: '',
+  selector: "mgl-image",
+  template: "",
   standalone: true,
 })
 export class ImageComponent implements OnInit, OnDestroy, OnChanges {
@@ -41,7 +41,7 @@ export class ImageComponent implements OnInit, OnDestroy, OnChanges {
     this.sub = this.mapService.mapLoaded$
       .pipe(
         switchMap(() =>
-          fromEvent(this.mapService.mapInstance, 'styledata').pipe(
+          fromEvent(this.mapService.mapInstance, "styledata").pipe(
             startWith(undefined),
             filter(
               () =>

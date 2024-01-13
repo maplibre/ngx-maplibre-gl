@@ -6,15 +6,15 @@ import {
   OnDestroy,
   OnInit,
   SimpleChanges,
-} from '@angular/core';
-import { VideoSource, VideoSourceSpecification } from 'maplibre-gl';
-import { fromEvent, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { MapService } from '../map/map.service';
+} from "@angular/core";
+import { VideoSource, VideoSourceSpecification } from "maplibre-gl";
+import { fromEvent, Subscription } from "rxjs";
+import { filter } from "rxjs/operators";
+import { MapService } from "../map/map.service";
 
 @Component({
-  selector: 'mgl-video-source',
-  template: '',
+  selector: "mgl-video-source",
+  template: "",
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
@@ -24,10 +24,10 @@ export class VideoSourceComponent
   @Input() id: string;
 
   /* Dynamic inputs */
-  @Input() urls: VideoSourceSpecification['urls'];
-  @Input() coordinates: VideoSourceSpecification['coordinates'];
+  @Input() urls: VideoSourceSpecification["urls"];
+  @Input() coordinates: VideoSourceSpecification["coordinates"];
 
-  type: VideoSourceSpecification['type'] = 'video';
+  type: VideoSourceSpecification["type"] = "video";
 
   private sourceAdded = false;
   private sub = new Subscription();
@@ -37,7 +37,7 @@ export class VideoSourceComponent
   ngOnInit() {
     const sub1 = this.mapService.mapLoaded$.subscribe(() => {
       this.init();
-      const sub = fromEvent(this.mapService.mapInstance, 'styledata')
+      const sub = fromEvent(this.mapService.mapInstance, "styledata")
         .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id)))
         .subscribe(() => {
           this.init();
@@ -74,7 +74,7 @@ export class VideoSourceComponent
 
   private init() {
     const source: VideoSourceSpecification = {
-      type: 'video',
+      type: "video",
       urls: this.urls,
       coordinates: this.coordinates,
     };

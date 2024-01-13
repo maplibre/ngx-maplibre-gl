@@ -6,15 +6,15 @@ import {
   OnDestroy,
   OnInit,
   SimpleChanges,
-} from '@angular/core';
-import { RasterDEMSourceSpecification } from 'maplibre-gl';
-import { fromEvent, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { MapService } from '../map/map.service';
+} from "@angular/core";
+import { RasterDEMSourceSpecification } from "maplibre-gl";
+import { fromEvent, Subscription } from "rxjs";
+import { filter } from "rxjs/operators";
+import { MapService } from "../map/map.service";
 
 @Component({
-  selector: 'mgl-raster-dem-source',
-  template: '',
+  selector: "mgl-raster-dem-source",
+  template: "",
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
@@ -24,16 +24,16 @@ export class RasterDemSourceComponent
   @Input() id: string;
 
   /* Dynamic inputs */
-  @Input() url?: RasterDEMSourceSpecification['url'];
-  @Input() tiles?: RasterDEMSourceSpecification['tiles'];
-  @Input() bounds?: RasterDEMSourceSpecification['bounds'];
-  @Input() minzoom?: RasterDEMSourceSpecification['minzoom'];
-  @Input() maxzoom?: RasterDEMSourceSpecification['maxzoom'];
-  @Input() tileSize?: RasterDEMSourceSpecification['tileSize'];
-  @Input() attribution?: RasterDEMSourceSpecification['attribution'];
-  @Input() encoding?: RasterDEMSourceSpecification['encoding'];
+  @Input() url?: RasterDEMSourceSpecification["url"];
+  @Input() tiles?: RasterDEMSourceSpecification["tiles"];
+  @Input() bounds?: RasterDEMSourceSpecification["bounds"];
+  @Input() minzoom?: RasterDEMSourceSpecification["minzoom"];
+  @Input() maxzoom?: RasterDEMSourceSpecification["maxzoom"];
+  @Input() tileSize?: RasterDEMSourceSpecification["tileSize"];
+  @Input() attribution?: RasterDEMSourceSpecification["attribution"];
+  @Input() encoding?: RasterDEMSourceSpecification["encoding"];
 
-  type: RasterDEMSourceSpecification['type'] = 'raster-dem';
+  type: RasterDEMSourceSpecification["type"] = "raster-dem";
 
   private sourceAdded = false;
   private sub = new Subscription();
@@ -43,7 +43,7 @@ export class RasterDemSourceComponent
   ngOnInit() {
     const sub1 = this.mapService.mapLoaded$.subscribe(() => {
       this.init();
-      const sub = fromEvent(this.mapService.mapInstance, 'styledata')
+      const sub = fromEvent(this.mapService.mapInstance, "styledata")
         .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id)))
         .subscribe(() => {
           this.init();

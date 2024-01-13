@@ -1,13 +1,13 @@
-import { SimpleChange } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { of } from 'rxjs';
-import { MapService } from '../map/map.service';
-import { ImageComponent } from './image.component';
+import { SimpleChange } from "@angular/core";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
+import { of } from "rxjs";
+import { MapService } from "../map/map.service";
+import { ImageComponent } from "./image.component";
 
-describe('ImageComponent', () => {
+describe("ImageComponent", () => {
   class MapServiceSpy {
-    addImage = jasmine.createSpy('addImage');
-    removeImage = jasmine.createSpy('removeImage');
+    addImage = jasmine.createSpy("addImage");
+    removeImage = jasmine.createSpy("removeImage");
     mapLoaded$ = of(undefined);
     mapInstance = new (class {
       on() {}
@@ -36,11 +36,11 @@ describe('ImageComponent', () => {
     fixture = TestBed.createComponent(ImageComponent);
     component = fixture.componentInstance;
     msSpy = fixture.debugElement.injector.get<MapService>(MapService) as any;
-    component.id = 'imageId';
+    component.id = "imageId";
   });
 
-  describe('Init/Destroy tests', () => {
-    it('should init with custom inputs', () => {
+  describe("Init/Destroy tests", () => {
+    it("should init with custom inputs", () => {
       component.data = {
         width: 500,
         height: 500,
@@ -50,7 +50,7 @@ describe('ImageComponent', () => {
       expect(msSpy.addImage).toHaveBeenCalled();
     });
 
-    it('should remove image on destroy', () => {
+    it("should remove image on destroy", () => {
       component.data = {
         width: 500,
         height: 500,
@@ -61,15 +61,15 @@ describe('ImageComponent', () => {
       expect(msSpy.removeImage).toHaveBeenCalledWith(component.id);
     });
 
-    it('should not remove image on destroy if not added', () => {
+    it("should not remove image on destroy if not added", () => {
       component.ngOnDestroy();
       expect(msSpy.removeImage).not.toHaveBeenCalled();
     });
   });
 
-  describe('Change tests', () => {
-    it('should update image', () => {
-      component.id = 'layerId';
+  describe("Change tests", () => {
+    it("should update image", () => {
+      component.id = "layerId";
       component.data = {
         width: 500,
         height: 500,

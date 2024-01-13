@@ -18,7 +18,7 @@ import { MarkerComponent } from "../marker/marker.component";
 
 @Component({
   selector: "mgl-popup",
-  template: '<div #content data-cy="mgl-popup"><ng-content></ng-content></div>',
+  template: "<div #content data-cy=\"mgl-popup\"><ng-content></ng-content></div>",
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })

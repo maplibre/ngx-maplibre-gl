@@ -8,21 +8,21 @@ import {
   OnInit,
   Optional,
   Output,
-} from '@angular/core';
-import { MapMouseEvent } from 'maplibre-gl';
-import { fromEvent, Observable, Subscription } from 'rxjs';
-import { filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
-import { LayerComponent } from '../layer/layer.component';
-import { MapService } from '../map/map.service';
-import { FeatureComponent } from '../source/geojson/feature.component';
+} from "@angular/core";
+import { MapMouseEvent } from "maplibre-gl";
+import { fromEvent, Observable, Subscription } from "rxjs";
+import { filter, switchMap, take, takeUntil, tap } from "rxjs/operators";
+import { LayerComponent } from "../layer/layer.component";
+import { MapService } from "../map/map.service";
+import { FeatureComponent } from "../source/geojson/feature.component";
 
 @Directive({
-  selector: '[mglDraggable]',
+  selector: "[mglDraggable]",
   standalone: true,
 })
 export class DraggableDirective implements OnInit, OnDestroy {
   // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input('mglDraggable') layer?: LayerComponent;
+  @Input("mglDraggable") layer?: LayerComponent;
 
   @Output() featureDragStart = new EventEmitter<MapMouseEvent>();
   @Output() featureDragEnd = new EventEmitter<MapMouseEvent>();
@@ -46,12 +46,12 @@ export class DraggableDirective implements OnInit, OnDestroy {
       updateCoords = this.featureComponent.updateCoordinates.bind(
         this.featureComponent
       );
-      if (this.featureComponent.geometry.type !== 'Point') {
-        throw new Error('mglDraggable only support point feature');
+      if (this.featureComponent.geometry.type !== "Point") {
+        throw new Error("mglDraggable only support point feature");
       }
     } else {
       throw new Error(
-        'mglDraggable can only be used on Feature (with a layer as input) or Marker'
+        "mglDraggable can only be used on Feature (with a layer as input) or Marker"
       );
     }
 
@@ -72,20 +72,20 @@ export class DraggableDirective implements OnInit, OnDestroy {
     this.mapService.mapCreated$.subscribe(() => {
       const mouseUp$ = fromEvent<MapMouseEvent>(
         this.mapService.mapInstance,
-        'mouseup'
+        "mouseup"
       );
       const dragStart$ = enter$.pipe(
         filter(() => !moving),
         filter((evt) => this.filterFeature(evt)),
         tap(() => {
           inside = true;
-          this.mapService.changeCanvasCursor('move');
+          this.mapService.changeCanvasCursor("move");
           this.mapService.updateDragPan(false);
         }),
         switchMap(() =>
           fromEvent<MapMouseEvent>(
             this.mapService.mapInstance,
-            'mousedown'
+            "mousedown"
           ).pipe(takeUntil(leave$))
         )
       );
@@ -93,7 +93,7 @@ export class DraggableDirective implements OnInit, OnDestroy {
         switchMap(() =>
           fromEvent<MapMouseEvent>(
             this.mapService.mapInstance,
-            'mousemove'
+            "mousemove"
           ).pipe(takeUntil(mouseUp$))
         )
       );
@@ -128,7 +128,7 @@ export class DraggableDirective implements OnInit, OnDestroy {
           }
           if (!inside) {
             // It's possible to dragEnd outside the target (small input lag)
-            this.mapService.changeCanvasCursor('');
+            this.mapService.changeCanvasCursor("");
             this.mapService.updateDragPan(true);
           }
         })
@@ -140,7 +140,7 @@ export class DraggableDirective implements OnInit, OnDestroy {
             filter(() => !moving)
           )
           .subscribe(() => {
-            this.mapService.changeCanvasCursor('');
+            this.mapService.changeCanvasCursor("");
             this.mapService.updateDragPan(true);
           })
       );
@@ -154,9 +154,9 @@ export class DraggableDirective implements OnInit, OnDestroy {
         {
           layers: [this.layer.id],
           filter: [
-            'all',
-            ['==', '$type', 'Point'],
-            ['==', '$id', this.featureComponent.id as number],
+            "all",
+            ["==", "$type", "Point"],
+            ["==", "$id", this.featureComponent.id as number],
           ],
         }
       )[0];

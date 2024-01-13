@@ -1,5 +1,5 @@
 // Can't use MapEvent interface because some event name are changed (eg zoomChange)
-import { EventEmitter } from '@angular/core';
+import { EventEmitter } from "@angular/core";
 import {
   GeolocateControl,
   Map,
@@ -14,7 +14,7 @@ import {
   MapStyleDataEvent,
   MapTouchEvent,
   MapWheelEvent,
-} from 'maplibre-gl';
+} from "maplibre-gl";
 
 export interface EventData {
   [key: string]: any;

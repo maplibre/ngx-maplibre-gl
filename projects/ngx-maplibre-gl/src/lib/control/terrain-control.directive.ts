@@ -1,10 +1,10 @@
-import { AfterContentInit, Directive, Host, Input } from '@angular/core';
-import { TerrainControl, TerrainSpecification } from 'maplibre-gl';
-import { MapService } from '../map/map.service';
-import { ControlComponent } from './control.component';
+import { AfterContentInit, Directive, Host, Input } from "@angular/core";
+import { TerrainControl, TerrainSpecification } from "maplibre-gl";
+import { MapService } from "../map/map.service";
+import { ControlComponent } from "./control.component";
 
 @Directive({
-  selector: '[mglTerrain]',
+  selector: "[mglTerrain]",
   standalone: true,
 })
 export class TerrainControlDirective implements AfterContentInit {
@@ -20,7 +20,7 @@ export class TerrainControlDirective implements AfterContentInit {
   ngAfterContentInit() {
     this.mapService.mapCreated$.subscribe(() => {
       if (this.controlComponent.control) {
-        throw new Error('Another control is already set for this control');
+        throw new Error("Another control is already set for this control");
       }
 
       const options: TerrainSpecification = {
