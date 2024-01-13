@@ -15,7 +15,7 @@ describe("Popup", () => {
     context("When the map loads", () => {
       it('Then I should see a popup dialog containing "Hello World !"', () => {
         then(get.mglPopup()).shouldExist();
-        then(get.mapLibrePopUpContent()).should("have.text", "Hello world !");
+        then(get.mapLibrePopUpContent()).shouldHaveText("Hello world !");
       });
     });
 

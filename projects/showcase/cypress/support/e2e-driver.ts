@@ -11,15 +11,15 @@ export class E2eDriver {
 
   given = {
     alertStub: () => this.helper.given.onAlert(this.helper.given.stub("alert")),
+    interceptStreetsSprite: () =>
+      this.helper.given.intercept("**/streets/sprite.png", "streets"),
   };
   when = {
     wait: (ms: number) => this.helper.when.wait(ms),
 
     resetConsoleWarnings: () => this.helper.when.resetConsoleWarnings(),
-    waitForFetch: (url: string, method: string = "GET") => {
-      cy.intercept(method, url).as("awaitFetch");
-      cy.wait("@awaitFetch");
-    },
+    waitForStreetsSpriteResponse: (url: string, method: string = "GET") =>
+      this.helper.when.waitForResponse("streets"),
     waitForMapToIdle: () =>
       this.helper.when.waitUntil(() =>
         this.helper.get.bySelector("true", "data-idle")
