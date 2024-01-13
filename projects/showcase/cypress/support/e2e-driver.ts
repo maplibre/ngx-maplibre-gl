@@ -1,8 +1,8 @@
 /// <reference types="cypress" />
-import { CypressHelper } from "@shellygo/cypress-test-utils";
 import { Assertable, then } from "@shellygo/cypress-test-utils/assertable";
 import pixelmatch from "pixelmatch";
 import { PNG } from "pngjs";
+import { MaplibreCypressHelper } from "./maplibre-helper";
 
 export class MapLibreAssertable<T> extends Assertable<T> {
   private comparePixels = (
@@ -51,7 +51,7 @@ export class MapLibreAssertable<T> extends Assertable<T> {
   ) => this.compareSnapshots(snapshot).shouldBeGreaterThen(0);
 }
 export class E2eDriver {
-  private helper = new CypressHelper();
+  private helper = new MaplibreCypressHelper();
 
   beforeAndAfter = () => {
     beforeEach(() => {});
@@ -64,14 +64,7 @@ export class E2eDriver {
   when = {
     wait: (ms: number) => this.helper.when.wait(ms),
 
-    resetConsoleWarnings: () => {
-      cy.get("@consoleWarnSpy").then((spy: any) => {
-        if (spy.callCount > 0) {
-          cy.log(`Clearing ${spy.callCount} console warning(s)...`);
-          spy.resetHistory();
-        }
-      });
-    },
+    resetConsoleWarnings: () => this.helper.when.resetConsoleWarnings(),
     waitForFetch: (url: string, method: string = "GET") => {
       cy.intercept(method, url).as("awaitFetch");
       cy.wait("@awaitFetch");
@@ -165,15 +158,4 @@ export class E2eDriver {
   };
 
   then = (chainable: Cypress.Chainable) => new MapLibreAssertable(chainable);
-
-  private getCanvas(): Cypress.Chainable<any> {
-    return cy.get("canvas.maplibregl-canvas").its(0).should("not.be.undefined");
-  }
-
-  private toImageBitmapBuffer(canvas: HTMLCanvasElement) {
-    const base64 = canvas.toDataURL("image/png").replace(/data:.*;base64,/, "");
-    const buff = Cypress.Buffer.from(base64, "base64");
-    const png = PNG.sync.read(buff as any);
-    return png.data;
-  }
 }
