@@ -1,49 +1,50 @@
-import { E2eDriver } from '../support/e2e-driver';
+import { E2eDriver } from "../support/e2e-driver";
 
-describe('Terrain Control', () => {
+describe("Terrain Control", () => {
   context(
-    'Given I am on the Terrain Control showcase and Terrain is disabled',
+    "Given I am on the Terrain Control showcase and Terrain is disabled",
     () => {
-      let driver = new E2eDriver();
+      let { beforeAndAfter, when, get, then } = new E2eDriver();
+      let initialImageSnapshot: any;
+
+      beforeAndAfter();
 
       beforeEach(() => {
-        driver
-          .visitMapPage('/demo/terrain-control')
-          .waitForMapToIdle()
-          .assert.mapTerrainButtonIsOff()
-          .takeImageSnapshot();
+        ({ when, get, then } = new E2eDriver());
+
+        when.visitMapPage("/demo/language-switch");
+        when.waitForMapToIdle();
+        when.waitForDisabledTerrainButton();
+        initialImageSnapshot = get.imageSnapshot();
       });
 
-      context('When I click on the Terrain Control button once', () => {
+      context("When I click on the Terrain Control button once", () => {
         beforeEach(() => {
-          // Enable Terrain
-          driver.when.clickEnableTerrainControlButton();
+          when.clickEnableTerrainControlButton();
         });
 
-        it('Then I should see the map image change and Terrain is enabled', () => {
-          driver
-            .waitForMapToIdle()
-            .assert.mapTerrainButtonIsOn()
-            .assert.isNotSameAsSnapshot();
+        it("Then I should see the map image change and Terrain is enabled", () => {
+          when.waitForMapToIdle();
+
+          when.WaitForEnabledTerrainButton();
+          then(get.imageSnapshot()).shouldNotEqualSnapshot(
+            initialImageSnapshot
+          );
         });
       });
 
-      context('When I click on the Terrain Control button twice', () => {
+      context("When I click on the Terrain Control button twice", () => {
         beforeEach(() => {
-          // Enable Terrain
-          driver.when
-            .clickEnableTerrainControlButton()
-            .waitForMapToIdle()
+          when.clickEnableTerrainControlButton();
+          when.waitForMapToIdle();
 
-            // Disable Terrain
-            .when.clickDisableTerrainControlButton();
+          when.clickDisableTerrainControlButton();
         });
 
-        it('Then I should see the original map image and Terrain is disabled', () => {
-          driver
-            .waitForMapToIdle()
-            .assert.mapTerrainButtonIsOff()
-            .assert.isSameAsSnapshot();
+        it("Then I should see the original map image and Terrain is disabled", () => {
+          when.waitForMapToIdle();
+          when.waitForDisabledTerrainButton();
+          then(get.imageSnapshot()).shouldEqualSnapshot(initialImageSnapshot);
         });
       });
     }

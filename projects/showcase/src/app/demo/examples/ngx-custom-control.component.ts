@@ -1,19 +1,19 @@
-import { Component } from '@angular/core';
+import { NgIf } from "@angular/common";
+import { Component } from "@angular/core";
+import { MatButtonModule } from "@angular/material/button";
 import {
-  MapComponent,
-  ControlComponent,
   AttributionControlDirective,
+  ControlComponent,
   FullscreenControlDirective,
   GeolocateControlDirective,
+  MapComponent,
   NavigationControlDirective,
-  ScaleControlDirective,
   Position,
-} from '@maplibre/ngx-maplibre-gl';
-import { MatButtonModule } from '@angular/material/button';
-import { NgIf } from '@angular/common';
+  ScaleControlDirective,
+} from "@maplibre/ngx-maplibre-gl";
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
       [style]="
@@ -27,6 +27,7 @@ import { NgIf } from '@angular/common';
             mat-fab
             color="primary"
             class="custom-control"
+            data-cy="custom-control"
             (click)="alert('Hello')"
           >
             Hello
@@ -44,13 +45,18 @@ import { NgIf } from '@angular/common';
       </ng-container>
 
       <mgl-control position="bottom-right">
-        <button mat-flat-button color="accent" (click)="toggleControls()">
-          {{ visible ? 'Hide Controls' : 'Show Controls' }}
+        <button
+          mat-flat-button
+          color="accent"
+          (click)="toggleControls()"
+          data-cy="toggle-show-controls"
+        >
+          {{ visible ? "Hide Controls" : "Show Controls" }}
         </button>
       </mgl-control>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+  styleUrls: ["./examples.css"],
   standalone: true,
   imports: [
     MapComponent,
@@ -71,7 +77,7 @@ export class NgxCustomControlComponent {
     alert(message);
   }
   onGeolocate(position: Position) {
-    console.log('geolocate', position);
+    console.log("geolocate", position);
   }
   toggleControls() {
     this.visible = !this.visible;

@@ -1,26 +1,29 @@
-import { E2eDriver } from '../support/e2e-driver';
+import { E2eDriver } from "../support/e2e-driver";
 
-describe('Set style', () => {
-  context('Given I am on the Set Style showcase', () => {
-    let driver = new E2eDriver();
+describe("Set style", () => {
+  context("Given I am on the Set Style showcase", () => {
+    let { beforeAndAfter, when, get, then } = new E2eDriver();
+    let initialImageSnapshot: any;
+
+    beforeAndAfter();
 
     beforeEach(() => {
-      driver
-        .visitMapPage('/demo/set-style')
-        .waitForMapToIdle()
-        .takeImageSnapshot();
+      ({ when, get, then } = new E2eDriver());
+
+      when.visitMapPage("/demo/set-style");
+      when.waitForMapToIdle();
+      initialImageSnapshot = get.imageSnapshot();
     });
 
     context('When I click on the "from code" radio button', () => {
       beforeEach(() => {
-        driver.when.clickFromCodeRadioButton();
+        when.clickFromCodeRadioButton();
       });
 
-      it('Then I should see the map image change', () => {
-        driver
-          .waitForMapToIdle()
-          .assert.isNotSameAsSnapshot()
-          .resetConsoleWarnings();
+      it("Then I should see the map image change", () => {
+        when.waitForMapToIdle();
+        then(get.imageSnapshot()).shouldNotEqualSnapshot(initialImageSnapshot);
+        when.resetConsoleWarnings();
       });
     });
 
@@ -28,24 +31,22 @@ describe('Set style', () => {
       'When I click the "from code" radio button and then click the "streets" radio button',
       () => {
         beforeEach(() => {
-          driver.when.wait(1000);
-          driver.when
-            .clickFromCodeRadioButton()
-            .waitForMapToIdle()
-            .when.clickStreetsRadioButton()
+          when.wait(1000);
+          when.clickFromCodeRadioButton();
+          when.waitForMapToIdle();
+          when.clickStreetsRadioButton();
 
-            // The switch back to the streets style fetches a sprite sheet - we can use this
-            // as a reliable await target just before the map is fully rendered and idle (and
-            // only then should we compare to the snapshot)
-            .when.waitForFetch('**/streets/sprite.png');
-          driver.when.wait(3000);
+          // The switch back to the streets style fetches a sprite sheet - we can use this
+          // as a reliable await target just before the map is fully rendered and idle (and
+          // only then should we compare to the snapshot)
+          when.waitForFetch("**/streets/sprite.png");
+          when.wait(3000);
         });
 
-        it('Then I should see the original map image', () => {
-          driver.when
-            .waitForMapToIdle()
-            .assert.isSameAsSnapshot()
-            .resetConsoleWarnings();
+        it("Then I should see the original map image", () => {
+          when.waitForMapToIdle();
+          then(get.imageSnapshot()).shouldEqualSnapshot(initialImageSnapshot);
+          when.resetConsoleWarnings();
         });
       }
     );

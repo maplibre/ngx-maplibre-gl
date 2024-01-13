@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 import {
   MapComponent,
   PopupComponent as MglPopupComponent,
-} from '@maplibre/ngx-maplibre-gl';
+} from "@maplibre/ngx-maplibre-gl";
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
       [style]="
@@ -14,17 +14,20 @@ import {
       [zoom]="[3]"
       [center]="[-96, 37.8]"
       [preserveDrawingBuffer]="true"
+      data-cy="mgl-map"
     >
       <mgl-popup
         [lngLat]="[-96, 37.8]"
         [closeOnClick]="false"
         [className]="'custom-popup-class1 custom-popup-class2'"
       >
-        <h1>Hello world !</h1>
+        <div data-cy="popup-content">
+          <h1>Hello world !</h1>
+        </div>
       </mgl-popup>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css', './popup.component.css'],
+  styleUrls: ["./examples.css", "./popup.component.css"],
   standalone: true,
   imports: [MapComponent, MglPopupComponent],
 })

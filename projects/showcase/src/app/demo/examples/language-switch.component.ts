@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
-import { Map } from 'maplibre-gl';
-import { MatButtonModule } from '@angular/material/button';
-import { MapComponent, ControlComponent } from '@maplibre/ngx-maplibre-gl';
+import { Component } from "@angular/core";
+import { MatButtonModule } from "@angular/material/button";
+import { ControlComponent, MapComponent } from "@maplibre/ngx-maplibre-gl";
+import { Map } from "maplibre-gl";
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
       [style]="
@@ -19,6 +19,7 @@ import { MapComponent, ControlComponent } from '@maplibre/ngx-maplibre-gl';
         <button
           mat-raised-button
           class="lang-button"
+          data-cy="lang-button-fr"
           (click)="changeLangTo('fr')"
         >
           French
@@ -26,6 +27,7 @@ import { MapComponent, ControlComponent } from '@maplibre/ngx-maplibre-gl';
         <button
           mat-raised-button
           class="lang-button"
+          data-cy="lang-button-ru"
           (click)="changeLangTo('ru')"
         >
           Russian
@@ -33,6 +35,7 @@ import { MapComponent, ControlComponent } from '@maplibre/ngx-maplibre-gl';
         <button
           mat-raised-button
           class="lang-button"
+          data-cy="lang-button-de"
           (click)="changeLangTo('de')"
         >
           German
@@ -40,6 +43,7 @@ import { MapComponent, ControlComponent } from '@maplibre/ngx-maplibre-gl';
         <button
           mat-raised-button
           class="lang-button"
+          data-cy="lang-button-es"
           (click)="changeLangTo('es')"
         >
           Spanish
@@ -47,38 +51,34 @@ import { MapComponent, ControlComponent } from '@maplibre/ngx-maplibre-gl';
       </mgl-control>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+  styleUrls: ["./examples.css"],
   preserveWhitespaces: false,
   standalone: true,
-  imports: [
-    MapComponent,
-    ControlComponent,
-    MatButtonModule,
-  ],
+  imports: [MapComponent, ControlComponent, MatButtonModule],
 })
 export class LanguageSwitchComponent {
   map: Map;
 
   public mapLoaded(map: Map) {
     this.map = map;
-  } 
+  }
 
   changeLangTo(language: string) {
     if (!this.map) return;
     this.map.setLayoutProperty(
-      'country_1',
-      'text-field',
-      '{name:' + language + '}'
+      "country_1",
+      "text-field",
+      "{name:" + language + "}"
     );
     this.map.setLayoutProperty(
-      'country_2',
-      'text-field',
-      '{name:' + language + '}'
+      "country_2",
+      "text-field",
+      "{name:" + language + "}"
     );
     this.map.setLayoutProperty(
-      'country_3',
-      'text-field',
-      '{name:' + language + '}'
+      "country_3",
+      "text-field",
+      "{name:" + language + "}"
     );
   }
 }

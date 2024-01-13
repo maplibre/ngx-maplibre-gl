@@ -11,27 +11,28 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
-} from '@angular/core';
-import { LngLatLike, Offset, Popup, PopupOptions } from 'maplibre-gl';
-import { MapService } from '../map/map.service';
-import { MarkerComponent } from '../marker/marker.component';
+} from "@angular/core";
+import { LngLatLike, Offset, Popup, PopupOptions } from "maplibre-gl";
+import { MapService } from "../map/map.service";
+import { MarkerComponent } from "../marker/marker.component";
 
 @Component({
-  selector: 'mgl-popup',
-  template: '<div #content><ng-content></ng-content></div>',
+  selector: "mgl-popup",
+  template: '<div #content data-cy="mgl-popup"><ng-content></ng-content></div>',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
 export class PopupComponent
-  implements OnChanges, OnDestroy, AfterViewInit, OnInit {
+  implements OnChanges, OnDestroy, AfterViewInit, OnInit
+{
   /* Init input */
-  @Input() closeButton?: PopupOptions['closeButton'];
-  @Input() closeOnClick?: PopupOptions['closeOnClick'];
-  @Input() closeOnMove?: PopupOptions['closeOnMove'];
-  @Input() focusAfterOpen?: PopupOptions['focusAfterOpen'];
-  @Input() anchor?: PopupOptions['anchor'];
-  @Input() className?: PopupOptions['className'];
-  @Input() maxWidth?: PopupOptions['maxWidth'];
+  @Input() closeButton?: PopupOptions["closeButton"];
+  @Input() closeOnClick?: PopupOptions["closeOnClick"];
+  @Input() closeOnMove?: PopupOptions["closeOnMove"];
+  @Input() focusAfterOpen?: PopupOptions["focusAfterOpen"];
+  @Input() anchor?: PopupOptions["anchor"];
+  @Input() className?: PopupOptions["className"];
+  @Input() maxWidth?: PopupOptions["maxWidth"];
 
   /* Dynamic input */
   @Input() feature?: GeoJSON.Feature<GeoJSON.Point>;
@@ -42,7 +43,7 @@ export class PopupComponent
   @Output() popupClose = new EventEmitter<void>();
   @Output() popupOpen = new EventEmitter<void>();
 
-  @ViewChild('content', { static: true }) content: ElementRef;
+  @ViewChild("content", { static: true }) content: ElementRef;
 
   popupInstance?: maplibregl.Popup;
 
@@ -54,14 +55,12 @@ export class PopupComponent
       (this.feature && this.lngLat) ||
       (this.feature && this.marker)
     ) {
-      throw new Error('marker, lngLat, feature input are mutually exclusive');
+      throw new Error("marker, lngLat, feature input are mutually exclusive");
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (
-      changes.feature && !changes.feature.isFirstChange()
-    ) {
+    if (changes.feature && !changes.feature.isFirstChange()) {
       const newlngLat = changes.lngLat
         ? this.lngLat!
         : <[number, number]>this.feature!.geometry!.coordinates!;
@@ -75,9 +74,7 @@ export class PopupComponent
       this.popupInstance = popupInstanceTmp;
     }
 
-    if (
-      changes.lngLat && !changes.lngLat.isFirstChange()
-    ) {
+    if (changes.lngLat && !changes.lngLat.isFirstChange()) {
       this.popupInstance!.setLngLat(this.lngLat!);
     }
 
@@ -153,7 +150,7 @@ export class PopupComponent
         this.mapService.addPopupToMarker(this.marker.markerInstance, popup);
       } else {
         throw new Error(
-          'mgl-popup need either lngLat/marker/feature to be set'
+          "mgl-popup need either lngLat/marker/feature to be set"
         );
       }
     });
