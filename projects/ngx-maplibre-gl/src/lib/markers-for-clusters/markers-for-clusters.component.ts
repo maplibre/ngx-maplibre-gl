@@ -9,23 +9,23 @@ import {
   NgZone,
   OnDestroy,
   TemplateRef,
-} from "@angular/core";
-import { GeoJSONFeature, MapSourceDataEvent } from "maplibre-gl";
-import { fromEvent, merge, Subscription } from "rxjs";
-import { filter, startWith, switchMap } from "rxjs/operators";
-import { MapService } from "../map/map.service";
-import { MarkerComponent } from "../marker/marker.component";
-import { NgFor, NgIf, NgTemplateOutlet } from "@angular/common";
-import { LayerComponent } from "../layer/layer.component";
+} from '@angular/core';
+import { GeoJSONFeature, MapSourceDataEvent } from 'maplibre-gl';
+import { fromEvent, merge, Subscription } from 'rxjs';
+import { filter, startWith, switchMap } from 'rxjs/operators';
+import { MapService } from '../map/map.service';
+import { MarkerComponent } from '../marker/marker.component';
+import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { LayerComponent } from '../layer/layer.component';
 
 @Directive({
-  selector: "ng-template[mglPoint]",
+  selector: 'ng-template[mglPoint]',
   standalone: true,
 })
 export class PointDirective {}
 
 @Directive({
-  selector: "ng-template[mglClusterPoint]",
+  selector: 'ng-template[mglClusterPoint]',
   standalone: true,
 })
 export class ClusterPointDirective {}
@@ -33,7 +33,7 @@ export class ClusterPointDirective {}
 let uniqId = 0;
 
 @Component({
-  selector: "mgl-markers-for-clusters",
+  selector: 'mgl-markers-for-clusters',
   template: `
     <mgl-layer
       [id]="layerId"
@@ -88,11 +88,11 @@ export class MarkersForClustersComponent
 
   ngAfterContentInit() {
     const clusterDataUpdate = () =>
-      fromEvent<MapSourceDataEvent>(this.mapService.mapInstance, "data").pipe(
+      fromEvent<MapSourceDataEvent>(this.mapService.mapInstance, 'data').pipe(
         filter(
           (e) =>
             e.sourceId === this.source &&
-            e.sourceDataType !== "metadata" &&
+            e.sourceDataType !== 'metadata' &&
             this.mapService.mapInstance.isSourceLoaded(this.source)
         )
       );
@@ -101,8 +101,8 @@ export class MarkersForClustersComponent
         switchMap(clusterDataUpdate),
         switchMap(() =>
           merge(
-            fromEvent(this.mapService.mapInstance, "move"),
-            fromEvent(this.mapService.mapInstance, "moveend")
+            fromEvent(this.mapService.mapInstance, 'move'),
+            fromEvent(this.mapService.mapInstance, 'moveend')
           ).pipe(startWith(undefined))
         )
       )
@@ -126,7 +126,7 @@ export class MarkersForClustersComponent
     // Invalid queryRenderedFeatures typing
     const params: any = { layers: [this.layerId] };
     if (!this.pointTpl) {
-      params.filter = ["==", "cluster", true];
+      params.filter = ['==', 'cluster', true];
     }
     this.clusterPoints = this.mapService.mapInstance.queryRenderedFeatures(
       params

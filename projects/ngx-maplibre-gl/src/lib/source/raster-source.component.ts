@@ -6,15 +6,15 @@ import {
   OnDestroy,
   OnInit,
   SimpleChanges,
-} from "@angular/core";
-import { RasterSourceSpecification } from "maplibre-gl";
-import { fromEvent, Subscription } from "rxjs";
-import { filter } from "rxjs/operators";
-import { MapService } from "../map/map.service";
+} from '@angular/core';
+import { RasterSourceSpecification } from 'maplibre-gl';
+import { fromEvent, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { MapService } from '../map/map.service';
 
 @Component({
-  selector: "mgl-raster-source",
-  template: "",
+  selector: 'mgl-raster-source',
+  template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
@@ -24,16 +24,16 @@ export class RasterSourceComponent
   @Input() id: string;
 
   /* Dynamic inputs */
-  @Input() url?: RasterSourceSpecification["url"];
-  @Input() tiles?: RasterSourceSpecification["tiles"];
-  @Input() bounds?: RasterSourceSpecification["bounds"];
-  @Input() minzoom?: RasterSourceSpecification["minzoom"];
-  @Input() maxzoom?: RasterSourceSpecification["maxzoom"];
-  @Input() tileSize?: RasterSourceSpecification["tileSize"];
-  @Input() scheme?: RasterSourceSpecification["scheme"];
-  @Input() attribution?: RasterSourceSpecification["attribution"];
+  @Input() url?: RasterSourceSpecification['url'];
+  @Input() tiles?: RasterSourceSpecification['tiles'];
+  @Input() bounds?: RasterSourceSpecification['bounds'];
+  @Input() minzoom?: RasterSourceSpecification['minzoom'];
+  @Input() maxzoom?: RasterSourceSpecification['maxzoom'];
+  @Input() tileSize?: RasterSourceSpecification['tileSize'];
+  @Input() scheme?: RasterSourceSpecification['scheme'];
+  @Input() attribution?: RasterSourceSpecification['attribution'];
 
-  type: RasterSourceSpecification["type"] = "raster";
+  type: RasterSourceSpecification['type'] = 'raster';
 
   private sourceAdded = false;
   private sub = new Subscription();
@@ -43,7 +43,7 @@ export class RasterSourceComponent
   ngOnInit() {
     const sub1 = this.mapService.mapLoaded$.subscribe(() => {
       this.init();
-      const sub = fromEvent(this.mapService.mapInstance, "styledata")
+      const sub = fromEvent(this.mapService.mapInstance, 'styledata')
         .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id)))
         .subscribe(() => {
           this.init();

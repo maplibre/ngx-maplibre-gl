@@ -6,15 +6,15 @@ import {
   OnDestroy,
   OnInit,
   SimpleChanges,
-} from "@angular/core";
-import { VectorSourceSpecification, VectorTileSource } from "maplibre-gl";
-import { fromEvent, Subscription } from "rxjs";
-import { filter } from "rxjs/operators";
-import { MapService } from "../map/map.service";
+} from '@angular/core';
+import { VectorSourceSpecification, VectorTileSource } from 'maplibre-gl';
+import { fromEvent, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { MapService } from '../map/map.service';
 
 @Component({
-  selector: "mgl-vector-source",
-  template: "",
+  selector: 'mgl-vector-source',
+  template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
@@ -24,16 +24,16 @@ export class VectorSourceComponent
   @Input() id: string;
 
   /* Dynamic inputs */
-  @Input() url?: VectorSourceSpecification["url"];
-  @Input() tiles?: VectorSourceSpecification["tiles"];
-  @Input() bounds?: VectorSourceSpecification["bounds"];
-  @Input() scheme?: VectorSourceSpecification["scheme"];
-  @Input() minzoom?: VectorSourceSpecification["minzoom"];
-  @Input() maxzoom?: VectorSourceSpecification["maxzoom"];
-  @Input() attribution?: VectorSourceSpecification["attribution"];
-  @Input() promoteId?: VectorSourceSpecification["promoteId"];
+  @Input() url?: VectorSourceSpecification['url'];
+  @Input() tiles?: VectorSourceSpecification['tiles'];
+  @Input() bounds?: VectorSourceSpecification['bounds'];
+  @Input() scheme?: VectorSourceSpecification['scheme'];
+  @Input() minzoom?: VectorSourceSpecification['minzoom'];
+  @Input() maxzoom?: VectorSourceSpecification['maxzoom'];
+  @Input() attribution?: VectorSourceSpecification['attribution'];
+  @Input() promoteId?: VectorSourceSpecification['promoteId'];
 
-  type: VectorSourceSpecification["type"] = "vector";
+  type: VectorSourceSpecification['type'] = 'vector';
 
   private sourceAdded = false;
   private sub = new Subscription();
@@ -43,7 +43,7 @@ export class VectorSourceComponent
   ngOnInit() {
     const sub1 = this.mapService.mapLoaded$.subscribe(() => {
       this.init();
-      const sub = fromEvent(this.mapService.mapInstance, "styledata")
+      const sub = fromEvent(this.mapService.mapInstance, 'styledata')
         .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id)))
         .subscribe(() => {
           this.init();

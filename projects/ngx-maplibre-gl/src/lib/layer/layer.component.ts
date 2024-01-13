@@ -7,30 +7,30 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-} from "@angular/core";
+} from '@angular/core';
 import {
   LayerSpecification,
   FilterSpecification,
   MapLayerMouseEvent,
   MapLayerTouchEvent,
-} from "maplibre-gl";
-import { fromEvent, Subscription } from "rxjs";
-import { filter, map, startWith, switchMap } from "rxjs/operators";
-import { MapService, SetupLayer } from "../map/map.service";
-import { EventData, LayerEvents } from "../map/map.types";
+} from 'maplibre-gl';
+import { fromEvent, Subscription } from 'rxjs';
+import { filter, map, startWith, switchMap } from 'rxjs/operators';
+import { MapService, SetupLayer } from '../map/map.service';
+import { EventData, LayerEvents } from '../map/map.types';
 
 @Component({
-  selector: "mgl-layer",
-  template: "",
+  selector: 'mgl-layer',
+  template: '',
   standalone: true,
 })
 export class LayerComponent
   implements OnInit, OnDestroy, OnChanges, LayerEvents {
   /* Init inputs */
-  @Input() id: LayerSpecification["id"];
+  @Input() id: LayerSpecification['id'];
   @Input() source?: string;
-  @Input() type: LayerSpecification["type"];
-  @Input() metadata?: LayerSpecification["metadata"];
+  @Input() type: LayerSpecification['type'];
+  @Input() metadata?: LayerSpecification['metadata'];
   @Input() sourceLayer?: string;
   /**
    * A flag to enable removeSource clean up functionality
@@ -39,11 +39,11 @@ export class LayerComponent
 
   /* Dynamic inputs */
   @Input() filter?: FilterSpecification;
-  @Input() layout?: LayerSpecification["layout"];
-  @Input() paint?: LayerSpecification["paint"];
+  @Input() layout?: LayerSpecification['layout'];
+  @Input() paint?: LayerSpecification['paint'];
   @Input() before?: string;
-  @Input() minzoom?: LayerSpecification["minzoom"];
-  @Input() maxzoom?: LayerSpecification["maxzoom"];
+  @Input() minzoom?: LayerSpecification['minzoom'];
+  @Input() maxzoom?: LayerSpecification['maxzoom'];
 
   @Output() layerClick = new EventEmitter<MapLayerMouseEvent & EventData>();
   @Output() layerDblClick = new EventEmitter<MapLayerMouseEvent & EventData>();
@@ -79,7 +79,7 @@ export class LayerComponent
     this.sub = this.mapService.mapLoaded$
       .pipe(
         switchMap(() =>
-          fromEvent(this.mapService.mapInstance, "styledata").pipe(
+          fromEvent(this.mapService.mapInstance, 'styledata').pipe(
             map(() => false),
             filter(() => !this.mapService.mapInstance.getLayer(this.id)),
             startWith(true)
@@ -142,7 +142,7 @@ export class LayerComponent
         source: this.source as string,
         metadata: this.metadata,
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        "source-layer": this.sourceLayer,
+        'source-layer': this.sourceLayer,
         minzoom: this.minzoom,
         maxzoom: this.maxzoom,
         filter: this.filter,
@@ -165,7 +165,7 @@ export class LayerComponent
         layerTouchCancel: this.layerTouchCancel,
       },
     };
-    if (this.removeSource && typeof this.source !== "string") {
+    if (this.removeSource && typeof this.source !== 'string') {
       // There is no id of an existing source bound to this layer
       if (undefined === this.mapService.getSource(this.id)) {
         // A source with this layer id doesn't exist so it will be created automatically in the addLayer call below

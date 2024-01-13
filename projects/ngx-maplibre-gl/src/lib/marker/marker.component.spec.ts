@@ -1,9 +1,9 @@
-import { Component } from "@angular/core";
-import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { PointLike } from "maplibre-gl";
-import { of } from "rxjs";
-import { MapService } from "../map/map.service";
-import { MarkerComponent } from "./marker.component";
+import { Component } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { PointLike } from 'maplibre-gl';
+import { of } from 'rxjs';
+import { MapService } from '../map/map.service';
+import { MarkerComponent } from './marker.component';
 
 @Component({
   template: `
@@ -20,10 +20,10 @@ class MarkerTestComponent {
   className: string;
 }
 
-describe("MarkerComponent", () => {
+describe('MarkerComponent', () => {
   class MapServiceSpy {
-    addMarker = jasmine.createSpy("addMarker");
-    removeMarker = jasmine.createSpy("removeMarker");
+    addMarker = jasmine.createSpy('addMarker');
+    removeMarker = jasmine.createSpy('removeMarker');
     mapCreated$ = of(undefined);
   }
 
@@ -49,26 +49,26 @@ describe("MarkerComponent", () => {
     msSpy = fixture.debugElement.injector.get<MapService>(MapService) as any;
   });
 
-  describe("Init/Destroy tests", () => {
-    it("should init with custom inputs", () => {
+  describe('Init/Destroy tests', () => {
+    it('should init with custom inputs', () => {
       component.lngLat = [-61, -15];
       fixture.detectChanges();
       expect(msSpy.addMarker).toHaveBeenCalled();
     });
 
-    it("should remove marker on destroy", () => {
+    it('should remove marker on destroy', () => {
       fixture.destroy();
       expect(msSpy.removeMarker).toHaveBeenCalled();
     });
 
-    it("should apply classes", () => {
-      component.className = "my-class1 my-class2";
+    it('should apply classes', () => {
+      component.className = 'my-class1 my-class2';
       fixture.detectChanges();
       const classes = (fixture.nativeElement as HTMLElement).querySelector(
-        "mgl-marker > div"
+        'mgl-marker > div'
       )!.classList;
-      expect(classes).toContain("my-class1");
-      expect(classes).toContain("my-class2");
+      expect(classes).toContain('my-class1');
+      expect(classes).toContain('my-class2');
     });
   });
 });

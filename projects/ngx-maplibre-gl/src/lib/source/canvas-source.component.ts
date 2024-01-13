@@ -6,14 +6,14 @@ import {
   OnDestroy,
   OnInit,
   SimpleChanges,
-} from "@angular/core";
-import { CanvasSource } from "maplibre-gl";
-import { fromEvent, Subscription } from "rxjs";
-import { filter } from "rxjs/operators";
-import { MapService } from "../map/map.service";
+} from '@angular/core';
+import { CanvasSource } from 'maplibre-gl';
+import { fromEvent, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { MapService } from '../map/map.service';
 
 interface CanvasSourceSpecification {
-  type: "canvas";
+  type: 'canvas';
   coordinates: [
     [number, number],
     [number, number],
@@ -25,8 +25,8 @@ interface CanvasSourceSpecification {
 }
 
 @Component({
-  selector: "mgl-canvas-source",
-  template: "",
+  selector: 'mgl-canvas-source',
+  template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
@@ -36,11 +36,11 @@ export class CanvasSourceComponent
   @Input() id: string;
 
   /* Dynamic inputs */
-  @Input() coordinates: CanvasSourceSpecification["coordinates"];
-  @Input() canvas: CanvasSourceSpecification["canvas"];
-  @Input() animate?: CanvasSourceSpecification["animate"];
+  @Input() coordinates: CanvasSourceSpecification['coordinates'];
+  @Input() canvas: CanvasSourceSpecification['canvas'];
+  @Input() animate?: CanvasSourceSpecification['animate'];
 
-  type: CanvasSourceSpecification["type"] = "canvas";
+  type: CanvasSourceSpecification['type'] = 'canvas';
   private sourceAdded = false;
   private sub = new Subscription();
 
@@ -49,7 +49,7 @@ export class CanvasSourceComponent
   ngOnInit() {
     const sub1 = this.mapService.mapLoaded$.subscribe(() => {
       this.init();
-      const sub = fromEvent(this.mapService.mapInstance, "styledata")
+      const sub = fromEvent(this.mapService.mapInstance, 'styledata')
         .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id)))
         .subscribe(() => {
           this.init();
@@ -88,7 +88,7 @@ export class CanvasSourceComponent
 
   private init() {
     const source: CanvasSourceSpecification = {
-      type: "canvas",
+      type: 'canvas',
       coordinates: this.coordinates,
       canvas: this.canvas,
       animate: this.animate,

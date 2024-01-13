@@ -1,16 +1,16 @@
-import { SimpleChange } from "@angular/core";
-import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { of } from "rxjs";
-import { MapService, SetupLayer } from "../map/map.service";
-import { LayerComponent } from "./layer.component";
+import { SimpleChange } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { of } from 'rxjs';
+import { MapService, SetupLayer } from '../map/map.service';
+import { LayerComponent } from './layer.component';
 
-describe("LayerComponent", () => {
+describe('LayerComponent', () => {
   class MapServiceSpy {
-    addLayer = jasmine.createSpy("addLayer");
-    removeLayer = jasmine.createSpy("removeLayer");
-    removeSource = jasmine.createSpy("removeSource");
-    getSource = jasmine.createSpy("getSource");
-    setAllLayerPaintProperty = jasmine.createSpy("setAllPaintProperty");
+    addLayer = jasmine.createSpy('addLayer');
+    removeLayer = jasmine.createSpy('removeLayer');
+    removeSource = jasmine.createSpy('removeSource');
+    getSource = jasmine.createSpy('getSource');
+    setAllLayerPaintProperty = jasmine.createSpy('setAllPaintProperty');
     mapLoaded$ = of(undefined);
     mapInstance = new (class {
       on() {}
@@ -39,35 +39,35 @@ describe("LayerComponent", () => {
     fixture = TestBed.createComponent(LayerComponent);
     component = fixture.componentInstance;
     msSpy = fixture.debugElement.injector.get<MapService>(MapService) as any;
-    component.id = "layerId";
+    component.id = 'layerId';
   });
 
-  describe("Init/Destroy tests", () => {
-    it("should init with custom inputs", (done: DoneFn) => {
+  describe('Init/Destroy tests', () => {
+    it('should init with custom inputs', (done: DoneFn) => {
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      component.paint = { "background-color": "green" };
-      component.type = "background";
+      component.paint = { 'background-color': 'green' };
+      component.type = 'background';
       msSpy.addLayer.and.callFake((options: SetupLayer) => {
         expect(options.layerOptions.id).toEqual(component.id);
-        expect((options.layerOptions as any).paint["background-color"]).toEqual(
-          "green"
+        expect((options.layerOptions as any).paint['background-color']).toEqual(
+          'green'
         );
         done();
       });
       fixture.detectChanges();
     });
 
-    it("should remove layer on destroy", () => {
+    it('should remove layer on destroy', () => {
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      component.paint = { "background-color": "green" };
+      component.paint = { 'background-color': 'green' };
       fixture.detectChanges();
       component.ngOnDestroy();
       expect(msSpy.removeLayer).toHaveBeenCalledWith(component.id);
     });
 
-    it("should remove layer and source on destroy", () => {
+    it('should remove layer and source on destroy', () => {
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      component.paint = { "background-color": "green" };
+      component.paint = { 'background-color': 'green' };
       component.removeSource = true;
       msSpy.getSource.and.returnValues(undefined, component.id, {});
       fixture.detectChanges();
@@ -76,20 +76,20 @@ describe("LayerComponent", () => {
       expect(msSpy.removeSource).toHaveBeenCalledWith(component.id);
     });
 
-    it("should not remove layer on destroy if not added", () => {
+    it('should not remove layer on destroy if not added', () => {
       component.ngOnDestroy();
       expect(msSpy.removeLayer).not.toHaveBeenCalled();
     });
   });
 
-  describe("Change tests", () => {
-    it("should update paint", () => {
-      component.id = "layerId";
+  describe('Change tests', () => {
+    it('should update paint', () => {
+      component.id = 'layerId';
       component.paint = {
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        "background-color": "green",
+        'background-color': 'green',
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        "background-opacity": 0.5,
+        'background-opacity': 0.5,
       };
       fixture.detectChanges();
       component.ngOnChanges({

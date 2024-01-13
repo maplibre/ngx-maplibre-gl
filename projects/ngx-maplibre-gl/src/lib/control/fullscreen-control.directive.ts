@@ -4,19 +4,19 @@ import {
   Host,
   HostListener,
   Input,
-} from "@angular/core";
-import { FullscreenControl } from "maplibre-gl";
-import { MapService } from "../map/map.service";
-import { ControlComponent } from "./control.component";
+} from '@angular/core';
+import { FullscreenControl } from 'maplibre-gl';
+import { MapService } from '../map/map.service';
+import { ControlComponent } from './control.component';
 
 @Directive({
-  selector: "[mglFullscreen]",
+  selector: '[mglFullscreen]',
   standalone: true,
 })
 export class FullscreenControlDirective implements AfterContentInit {
   /* Init inputs */
   @Input() container?: HTMLElement;
-  @HostListener("window:webkitfullscreenchange", ["$event.target"])
+  @HostListener('window:webkitfullscreenchange', ['$event.target'])
   onFullscreen() {
     this.mapService.mapInstance.resize();
   }
@@ -29,7 +29,7 @@ export class FullscreenControlDirective implements AfterContentInit {
   ngAfterContentInit() {
     this.mapService.mapCreated$.subscribe(() => {
       if (this.controlComponent.control) {
-        throw new Error("Another control is already set for this control");
+        throw new Error('Another control is already set for this control');
       }
       this.controlComponent.control = new FullscreenControl({
         container: this.container,

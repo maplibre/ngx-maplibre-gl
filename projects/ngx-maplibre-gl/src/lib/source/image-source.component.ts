@@ -6,14 +6,14 @@ import {
   OnDestroy,
   OnInit,
   SimpleChanges,
-} from "@angular/core";
-import { ImageSourceSpecification, ImageSource } from "maplibre-gl";
-import { Subscription } from "rxjs";
-import { MapService } from "../map/map.service";
+} from '@angular/core';
+import { ImageSourceSpecification, ImageSource } from 'maplibre-gl';
+import { Subscription } from 'rxjs';
+import { MapService } from '../map/map.service';
 
 @Component({
-  selector: "mgl-image-source",
-  template: "",
+  selector: 'mgl-image-source',
+  template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
@@ -23,10 +23,10 @@ export class ImageSourceComponent
   @Input() id: string;
 
   /* Dynamic inputs */
-  @Input() url: ImageSourceSpecification["url"];
-  @Input() coordinates: ImageSourceSpecification["coordinates"];
+  @Input() url: ImageSourceSpecification['url'];
+  @Input() coordinates: ImageSourceSpecification['coordinates'];
 
-  type: ImageSourceSpecification["type"] = "image";
+  type: ImageSourceSpecification['type'] = 'image';
 
   private sub: Subscription;
   private sourceId?: string;
@@ -65,7 +65,7 @@ export class ImageSourceComponent
 
   private init() {
     const imageSource: ImageSourceSpecification = {
-      type: "image",
+      type: 'image',
       url: this.url,
       coordinates: this.coordinates,
     };

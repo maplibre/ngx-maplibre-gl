@@ -1,10 +1,10 @@
-import { AfterContentInit, Directive, Host, Input } from "@angular/core";
-import { NavigationControl } from "maplibre-gl";
-import { MapService } from "../map/map.service";
-import { ControlComponent } from "./control.component";
+import { AfterContentInit, Directive, Host, Input } from '@angular/core';
+import { NavigationControl } from 'maplibre-gl';
+import { MapService } from '../map/map.service';
+import { ControlComponent } from './control.component';
 
 @Directive({
-  selector: "[mglNavigation]",
+  selector: '[mglNavigation]',
   standalone: true,
 })
 export class NavigationControlDirective implements AfterContentInit {
@@ -21,7 +21,7 @@ export class NavigationControlDirective implements AfterContentInit {
   ngAfterContentInit() {
     this.mapService.mapCreated$.subscribe(() => {
       if (this.controlComponent.control) {
-        throw new Error("Another control is already set for this control");
+        throw new Error('Another control is already set for this control');
       }
 
       const options: {

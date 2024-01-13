@@ -5,13 +5,13 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
-} from "@angular/core";
-import { ScaleControl, ScaleOptions } from "maplibre-gl";
-import { MapService } from "../map/map.service";
-import { ControlComponent } from "./control.component";
+} from '@angular/core';
+import { ScaleControl, ScaleOptions } from 'maplibre-gl';
+import { MapService } from '../map/map.service';
+import { ControlComponent } from './control.component';
 
 @Directive({
-  selector: "[mglScale]",
+  selector: '[mglScale]',
   standalone: true,
 })
 export class ScaleControlDirective implements AfterContentInit, OnChanges {
@@ -19,7 +19,7 @@ export class ScaleControlDirective implements AfterContentInit, OnChanges {
   @Input() maxWidth?: number;
 
   /* Dynamic inputs */
-  @Input() unit?: "imperial" | "metric" | "nautical";
+  @Input() unit?: 'imperial' | 'metric' | 'nautical';
 
   constructor(
     private mapService: MapService,
@@ -37,7 +37,7 @@ export class ScaleControlDirective implements AfterContentInit, OnChanges {
   ngAfterContentInit() {
     this.mapService.mapCreated$.subscribe(() => {
       if (this.controlComponent.control) {
-        throw new Error("Another control is already set for this control");
+        throw new Error('Another control is already set for this control');
       }
       const options: ScaleOptions = {};
       if (this.maxWidth !== undefined) {

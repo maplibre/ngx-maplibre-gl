@@ -1,4 +1,4 @@
-import { EventEmitter, Injectable, NgZone } from "@angular/core";
+import { EventEmitter, Injectable, NgZone } from '@angular/core';
 
 /**
  * Mock synchronous NgZone implementation that can be used

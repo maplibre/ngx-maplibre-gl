@@ -10,7 +10,7 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
-} from "@angular/core";
+} from '@angular/core';
 import {
   AnimationOptions,
   LngLatBoundsLike,
@@ -27,14 +27,14 @@ import {
   MapWheelEvent,
   PointLike,
   TerrainSpecification,
-} from "maplibre-gl";
-import { MapService, MovingOptions } from "./map.service";
-import { MapEvent, EventData } from "./map.types";
-import { Subscription, firstValueFrom } from "rxjs";
+} from 'maplibre-gl';
+import { MapService, MovingOptions } from './map.service';
+import { MapEvent, EventData } from './map.types';
+import { Subscription, firstValueFrom } from 'rxjs';
 
 @Component({
-  selector: "mgl-map",
-  template: "<div #container></div>",
+  selector: 'mgl-map',
+  template: '<div #container></div>',
   styles: [
     `
       :host {
@@ -55,57 +55,57 @@ export class MapComponent
     OnChanges,
     OnDestroy,
     AfterViewInit,
-    Omit<MapOptions, "bearing" | "container" | "pitch" | "zoom">,
+    Omit<MapOptions, 'bearing' | 'container' | 'pitch' | 'zoom'>,
     MapEvent {
   /* Init inputs */
-  @Input() collectResourceTiming?: MapOptions["collectResourceTiming"];
-  @Input() crossSourceCollisions?: MapOptions["crossSourceCollisions"];
+  @Input() collectResourceTiming?: MapOptions['collectResourceTiming'];
+  @Input() crossSourceCollisions?: MapOptions['crossSourceCollisions'];
   @Input() customMapboxApiUrl?: string;
-  @Input() fadeDuration?: MapOptions["fadeDuration"];
-  @Input() hash?: MapOptions["hash"];
-  @Input() refreshExpiredTiles?: MapOptions["refreshExpiredTiles"];
+  @Input() fadeDuration?: MapOptions['fadeDuration'];
+  @Input() hash?: MapOptions['hash'];
+  @Input() refreshExpiredTiles?: MapOptions['refreshExpiredTiles'];
   @Input()
-  failIfMajorPerformanceCaveat?: MapOptions["failIfMajorPerformanceCaveat"];
-  @Input() bearingSnap?: MapOptions["bearingSnap"];
-  @Input() interactive?: MapOptions["interactive"];
-  @Input() pitchWithRotate?: MapOptions["pitchWithRotate"];
-  @Input() clickTolerance?: MapOptions["clickTolerance"];
-  @Input() attributionControl?: MapOptions["attributionControl"];
-  @Input() logoPosition?: MapOptions["logoPosition"];
-  @Input() maxTileCacheSize?: MapOptions["maxTileCacheSize"];
-  @Input() localIdeographFontFamily?: MapOptions["localIdeographFontFamily"];
-  @Input() preserveDrawingBuffer?: MapOptions["preserveDrawingBuffer"];
-  @Input() trackResize?: MapOptions["trackResize"];
-  @Input() transformRequest?: MapOptions["transformRequest"];
-  @Input() bounds?: MapOptions["bounds"]; // Use fitBounds for dynamic input
-  @Input() antialias?: MapOptions["antialias"];
-  @Input() locale: MapOptions["locale"];
-  @Input() cooperativeGestures?: MapOptions["cooperativeGestures"];
+  failIfMajorPerformanceCaveat?: MapOptions['failIfMajorPerformanceCaveat'];
+  @Input() bearingSnap?: MapOptions['bearingSnap'];
+  @Input() interactive?: MapOptions['interactive'];
+  @Input() pitchWithRotate?: MapOptions['pitchWithRotate'];
+  @Input() clickTolerance?: MapOptions['clickTolerance'];
+  @Input() attributionControl?: MapOptions['attributionControl'];
+  @Input() logoPosition?: MapOptions['logoPosition'];
+  @Input() maxTileCacheSize?: MapOptions['maxTileCacheSize'];
+  @Input() localIdeographFontFamily?: MapOptions['localIdeographFontFamily'];
+  @Input() preserveDrawingBuffer?: MapOptions['preserveDrawingBuffer'];
+  @Input() trackResize?: MapOptions['trackResize'];
+  @Input() transformRequest?: MapOptions['transformRequest'];
+  @Input() bounds?: MapOptions['bounds']; // Use fitBounds for dynamic input
+  @Input() antialias?: MapOptions['antialias'];
+  @Input() locale: MapOptions['locale'];
+  @Input() cooperativeGestures?: MapOptions['cooperativeGestures'];
 
   /* Dynamic inputs */
-  @Input() minZoom?: MapOptions["minZoom"];
-  @Input() maxZoom?: MapOptions["maxZoom"];
-  @Input() minPitch?: MapOptions["minPitch"];
-  @Input() maxPitch?: MapOptions["maxPitch"];
-  @Input() scrollZoom?: MapOptions["scrollZoom"];
-  @Input() dragRotate?: MapOptions["dragRotate"];
-  @Input() touchPitch?: MapOptions["touchPitch"];
-  @Input() touchZoomRotate?: MapOptions["touchZoomRotate"];
-  @Input() doubleClickZoom?: MapOptions["doubleClickZoom"];
-  @Input() keyboard?: MapOptions["keyboard"];
-  @Input() dragPan?: MapOptions["dragPan"];
-  @Input() boxZoom?: MapOptions["boxZoom"];
-  @Input() style: MapOptions["style"];
-  @Input() center?: MapOptions["center"];
-  @Input() maxBounds?: MapOptions["maxBounds"];
+  @Input() minZoom?: MapOptions['minZoom'];
+  @Input() maxZoom?: MapOptions['maxZoom'];
+  @Input() minPitch?: MapOptions['minPitch'];
+  @Input() maxPitch?: MapOptions['maxPitch'];
+  @Input() scrollZoom?: MapOptions['scrollZoom'];
+  @Input() dragRotate?: MapOptions['dragRotate'];
+  @Input() touchPitch?: MapOptions['touchPitch'];
+  @Input() touchZoomRotate?: MapOptions['touchZoomRotate'];
+  @Input() doubleClickZoom?: MapOptions['doubleClickZoom'];
+  @Input() keyboard?: MapOptions['keyboard'];
+  @Input() dragPan?: MapOptions['dragPan'];
+  @Input() boxZoom?: MapOptions['boxZoom'];
+  @Input() style: MapOptions['style'];
+  @Input() center?: MapOptions['center'];
+  @Input() maxBounds?: MapOptions['maxBounds'];
   @Input() zoom?: [number];
   @Input() bearing?: [number];
   @Input() pitch?: [number];
-  @Input() fitBoundsOptions?: MapOptions["fitBoundsOptions"]; // First value goes to options.fitBoundsOptions. Subsequents changes are passed to fitBounds
-  @Input() renderWorldCopies?: MapOptions["renderWorldCopies"];
+  @Input() fitBoundsOptions?: MapOptions['fitBoundsOptions']; // First value goes to options.fitBoundsOptions. Subsequents changes are passed to fitBounds
+  @Input() renderWorldCopies?: MapOptions['renderWorldCopies'];
 
   /* Added by ngx-mapbox-gl */
-  @Input() movingMethod: "jumpTo" | "easeTo" | "flyTo" = "flyTo";
+  @Input() movingMethod: 'jumpTo' | 'easeTo' | 'flyTo' = 'flyTo';
   @Input() movingOptions?: MovingOptions;
   @Input() terrain: TerrainSpecification;
 
@@ -205,22 +205,22 @@ export class MapComponent
 
   private subscriptions: Subscription[] = [];
 
-  @ViewChild("container", { static: true }) mapContainer: ElementRef;
+  @ViewChild('container', { static: true }) mapContainer: ElementRef;
 
   constructor(private mapService: MapService, private elementRef: ElementRef) {}
 
   ngAfterViewInit() {
     if (this.preserveDrawingBuffer) { // This is to allow better interaction with the map state
       const htmlElement: HTMLElement = this.elementRef.nativeElement;
-      htmlElement.setAttribute("data-cy", "map");
+      htmlElement.setAttribute('data-cy', 'map');
       this.subscriptions.push(this.mapLoad.subscribe(() => {
-        htmlElement.setAttribute("data-loaded", "true");
+        htmlElement.setAttribute('data-loaded', 'true');
       }));
       this.subscriptions.push(this.idle.subscribe(() => {
-        htmlElement.setAttribute("data-idle", "true");
+        htmlElement.setAttribute('data-idle', 'true');
       }));
       this.subscriptions.push(this.render.subscribe(() => {
-        htmlElement.removeAttribute("data-idle");
+        htmlElement.removeAttribute('data-idle');
       }));
     }
     
@@ -362,7 +362,7 @@ export class MapComponent
         changes.fitScreenCoordinates.isFirstChange()
       ) {
         console.warn(
-          "[ngx-maplibre-gl] center / zoom / pitch / fitBounds inputs are being overridden by fitScreenCoordinates input"
+          '[ngx-maplibre-gl] center / zoom / pitch / fitBounds inputs are being overridden by fitScreenCoordinates input'
         );
       }
       this.mapService.fitScreenCoordinates(

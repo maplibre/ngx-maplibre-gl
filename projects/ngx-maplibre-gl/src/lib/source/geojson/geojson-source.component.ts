@@ -7,15 +7,15 @@ import {
   OnInit,
   SimpleChanges,
   NgZone,
-} from "@angular/core";
-import { GeoJSONSource, GeoJSONSourceSpecification } from "maplibre-gl";
-import { fromEvent, Subject, Subscription } from "rxjs";
-import { debounceTime, filter } from "rxjs/operators";
-import { MapService } from "../../map/map.service";
+} from '@angular/core';
+import { GeoJSONSource, GeoJSONSourceSpecification } from 'maplibre-gl';
+import { fromEvent, Subject, Subscription } from 'rxjs';
+import { debounceTime, filter } from 'rxjs/operators';
+import { MapService } from '../../map/map.service';
 
 @Component({
-    selector: "mgl-geojson-source",
-    template: "",
+    selector: 'mgl-geojson-source',
+    template: '',
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
 })
@@ -25,22 +25,22 @@ export class GeoJSONSourceComponent
   @Input() id: string;
 
   /* Dynamic inputs */
-  @Input() data: GeoJSONSourceSpecification["data"];
-  @Input() maxzoom?: GeoJSONSourceSpecification["maxzoom"];
-  @Input() attribution?: GeoJSONSourceSpecification["attribution"];
-  @Input() buffer?: GeoJSONSourceSpecification["buffer"];
-  @Input() tolerance?: GeoJSONSourceSpecification["tolerance"];
-  @Input() cluster?: GeoJSONSourceSpecification["cluster"];
-  @Input() clusterRadius?: GeoJSONSourceSpecification["clusterRadius"];
-  @Input() clusterMaxZoom?: GeoJSONSourceSpecification["clusterMaxZoom"];
-  @Input() clusterMinPoints?: GeoJSONSourceSpecification["clusterMinPoints"];
-  @Input() clusterProperties?: GeoJSONSourceSpecification["clusterProperties"];
-  @Input() lineMetrics?: GeoJSONSourceSpecification["lineMetrics"];
-  @Input() generateId?: GeoJSONSourceSpecification["generateId"];
-  @Input() promoteId?: GeoJSONSourceSpecification["promoteId"];
-  @Input() filter?: GeoJSONSourceSpecification["filter"];
+  @Input() data: GeoJSONSourceSpecification['data'];
+  @Input() maxzoom?: GeoJSONSourceSpecification['maxzoom'];
+  @Input() attribution?: GeoJSONSourceSpecification['attribution'];
+  @Input() buffer?: GeoJSONSourceSpecification['buffer'];
+  @Input() tolerance?: GeoJSONSourceSpecification['tolerance'];
+  @Input() cluster?: GeoJSONSourceSpecification['cluster'];
+  @Input() clusterRadius?: GeoJSONSourceSpecification['clusterRadius'];
+  @Input() clusterMaxZoom?: GeoJSONSourceSpecification['clusterMaxZoom'];
+  @Input() clusterMinPoints?: GeoJSONSourceSpecification['clusterMinPoints'];
+  @Input() clusterProperties?: GeoJSONSourceSpecification['clusterProperties'];
+  @Input() lineMetrics?: GeoJSONSourceSpecification['lineMetrics'];
+  @Input() generateId?: GeoJSONSourceSpecification['generateId'];
+  @Input() promoteId?: GeoJSONSourceSpecification['promoteId'];
+  @Input() filter?: GeoJSONSourceSpecification['filter'];
 
-  type: GeoJSONSourceSpecification["type"] = "geojson";
+  type: GeoJSONSourceSpecification['type'] = 'geojson';
 
   updateFeatureData = new Subject();
 
@@ -53,13 +53,13 @@ export class GeoJSONSourceComponent
   ngOnInit() {
     if (!this.data) {
       this.data = {
-        type: "FeatureCollection",
+        type: 'FeatureCollection',
         features: [],
       };
     }
     const sub1 = this.mapService.mapLoaded$.subscribe(() => {
       this.init();
-      const sub = fromEvent(this.mapService.mapInstance, "styledata")
+      const sub = fromEvent(this.mapService.mapInstance, 'styledata')
         .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id)))
         .subscribe(() => {
           this.init();
@@ -202,7 +202,7 @@ export class GeoJSONSourceComponent
 
   private init() {
     const source: GeoJSONSourceSpecification = {
-      type: "geojson",
+      type: 'geojson',
       data: this.data,
       maxzoom: this.maxzoom,
       attribution: this.attribution,

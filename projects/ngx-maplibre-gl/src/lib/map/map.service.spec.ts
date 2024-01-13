@@ -1,5 +1,5 @@
-import { EventEmitter, NgZone } from "@angular/core";
-import { inject, TestBed } from "@angular/core/testing";
+import { EventEmitter, NgZone } from '@angular/core';
+import { inject, TestBed } from '@angular/core/testing';
 import {
   Map,
   MapLibreEvent,
@@ -12,37 +12,37 @@ import {
   MapTouchEvent,
   MapWheelEvent,
   StyleSpecification,
-} from "maplibre-gl";
-import { first } from "rxjs/operators";
-import { MapService } from "./map.service";
-import { MapEvent, EventData } from "./map.types";
-import { MockNgZone } from "./mock-ng-zone";
+} from 'maplibre-gl';
+import { first } from 'rxjs/operators';
+import { MapService } from './map.service';
+import { MapEvent, EventData } from './map.types';
+import { MockNgZone } from './mock-ng-zone';
 
-const countries = require("./countries.geo.json");
+const countries = require('./countries.geo.json');
 
 const geoJSONStyle: StyleSpecification = {
   sources: {
     world: {
-      type: "geojson",
+      type: 'geojson',
       data: countries,
     },
   },
   version: 8,
   layers: [
     {
-      id: "countries",
-      type: "fill",
-      source: "world",
+      id: 'countries',
+      type: 'fill',
+      source: 'world',
       layout: {},
       paint: {
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        "fill-color": "#6F788A",
+        'fill-color': '#6F788A',
       },
     },
   ],
 };
 
-describe("MapService", () => {
+describe('MapService', () => {
   let container: HTMLElement;
   let mapEvents: MapEvent;
   let zone: MockNgZone;
@@ -60,7 +60,7 @@ describe("MapService", () => {
         },
       ],
     });
-    container = document.createElement("div");
+    container = document.createElement('div');
     mapEvents = {
       mapResize: new EventEmitter<MapLibreEvent & EventData>(),
       mapRemove: new EventEmitter<MapLibreEvent & EventData>(),
@@ -159,18 +159,18 @@ describe("MapService", () => {
     zone.simulateZoneExit();
   }));
 
-  it("should create a map", inject([MapService], (service: MapService) => {
+  it('should create a map', inject([MapService], (service: MapService) => {
     expect(service.mapInstance).toBeTruthy();
   }));
 
-  it("should fire mapLoad event", (done: DoneFn) => {
+  it('should fire mapLoad event', (done: DoneFn) => {
     mapEvents.mapLoad.pipe(first()).subscribe(() => {
       expect(true).toBe(true);
       done();
     });
   });
 
-  it("should update minZoom", (done: DoneFn) =>
+  it('should update minZoom', (done: DoneFn) =>
     inject([MapService], (service: MapService) => {
       mapEvents.mapLoad.pipe(first()).subscribe(() => {
         service.updateMinZoom(6);
@@ -179,7 +179,7 @@ describe("MapService", () => {
       });
     })());
 
-  it("should update minPitch", (done: DoneFn) =>
+  it('should update minPitch', (done: DoneFn) =>
     inject([MapService], (service: MapService) => {
       mapEvents.mapLoad.pipe(first()).subscribe(() => {
         service.updateMinPitch(15);
@@ -188,7 +188,7 @@ describe("MapService", () => {
       });
     })());
 
-  it("should update maxPitch", (done: DoneFn) =>
+  it('should update maxPitch', (done: DoneFn) =>
     inject([MapService], (service: MapService) => {
       mapEvents.mapLoad.pipe(first()).subscribe(() => {
         service.updateMaxPitch(25);

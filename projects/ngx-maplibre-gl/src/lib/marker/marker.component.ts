@@ -12,13 +12,13 @@ import {
   SimpleChanges,
   ViewChild,
   ViewEncapsulation,
-} from "@angular/core";
-import { LngLatLike, Marker, MarkerOptions } from "maplibre-gl";
-import { MapService } from "../map/map.service";
+} from '@angular/core';
+import { LngLatLike, Marker, MarkerOptions } from 'maplibre-gl';
+import { MapService } from '../map/map.service';
 
 @Component({
-  selector: "mgl-marker",
-  template: "<div [class]=\"className\" #content><ng-content></ng-content></div>",
+  selector: 'mgl-marker',
+  template: '<div [class]="className" #content><ng-content></ng-content></div>',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
@@ -26,24 +26,24 @@ import { MapService } from "../map/map.service";
 export class MarkerComponent
   implements OnChanges, OnDestroy, AfterViewInit, OnInit {
   /* Init input */
-  @Input() offset?: MarkerOptions["offset"];
-  @Input() anchor?: MarkerOptions["anchor"];
-  @Input() clickTolerance?: MarkerOptions["clickTolerance"];
+  @Input() offset?: MarkerOptions['offset'];
+  @Input() anchor?: MarkerOptions['anchor'];
+  @Input() clickTolerance?: MarkerOptions['clickTolerance'];
 
   /* Dynamic input */
   @Input() feature?: GeoJSON.Feature<GeoJSON.Point>;
   @Input() lngLat?: LngLatLike;
-  @Input() draggable?: MarkerOptions["draggable"];
+  @Input() draggable?: MarkerOptions['draggable'];
   @Input() popupShown?: boolean;
   @Input() className: string;
-  @Input() pitchAlignment?: MarkerOptions["pitchAlignment"];
-  @Input() rotationAlignment?: MarkerOptions["rotationAlignment"];
+  @Input() pitchAlignment?: MarkerOptions['pitchAlignment'];
+  @Input() rotationAlignment?: MarkerOptions['rotationAlignment'];
 
   @Output() markerDragStart = new EventEmitter<Marker>();
   @Output() markerDragEnd = new EventEmitter<Marker>();
   @Output() markerDrag = new EventEmitter<Marker>();
 
-  @ViewChild("content", { static: true }) content: ElementRef;
+  @ViewChild('content', { static: true }) content: ElementRef;
 
   markerInstance?: Marker;
 
@@ -51,7 +51,7 @@ export class MarkerComponent
 
   ngOnInit() {
     if (this.feature && this.lngLat) {
-      throw new Error("feature and lngLat input are mutually exclusive");
+      throw new Error('feature and lngLat input are mutually exclusive');
     }
   }
 
