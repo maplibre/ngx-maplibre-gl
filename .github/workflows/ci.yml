@@ -8,6 +8,21 @@ on:
   workflow_dispatch:
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js from .nvmrc file
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Prepare
+        run: npm ci
+
+      - name: Run lint
+        run: npm run lint
   build-and-test:
     # The type of runner that the job will run on
     runs-on: macos-latest
@@ -32,9 +47,6 @@ jobs:
 
       - name: Run unit tests
         run: npm run test -- ngx-maplibre-gl --watch=false --no-progress --browsers=ChromeHeadless
-
-      - name: Run lint
-        run: npm run lint
         
       - name: Run e2e tests
         run: npm run e2e
