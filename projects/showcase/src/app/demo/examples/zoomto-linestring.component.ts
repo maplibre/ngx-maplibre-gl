@@ -1,14 +1,14 @@
-import { Component } from "@angular/core";
-import { MatButtonModule } from "@angular/material/button";
+import { Component } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import {
   ControlComponent,
   LayerComponent,
   MapComponent,
-} from "@maplibre/ngx-maplibre-gl";
-import { LngLatBounds } from "maplibre-gl";
+} from '@maplibre/ngx-maplibre-gl';
+import { LngLatBounds } from 'maplibre-gl';
 
 @Component({
-  selector: "showcase-demo",
+  selector: 'showcase-demo',
   template: `
     <mgl-map
       [style]="'https://demotiles.maplibre.org/style.json'"
@@ -45,7 +45,7 @@ import { LngLatBounds } from "maplibre-gl";
       ></mgl-layer>
     </mgl-map>
   `,
-  styleUrls: ["./examples.css"],
+  styleUrls: ['./examples.css'],
   preserveWhitespaces: false,
   standalone: true,
   imports: [MapComponent, ControlComponent, MatButtonModule, LayerComponent],
@@ -54,14 +54,14 @@ export class ZoomtoLinestringComponent {
   bounds: LngLatBounds;
 
   source = {
-    type: "geojson",
+    type: 'geojson',
     data: {
-      type: "FeatureCollection",
+      type: 'FeatureCollection',
       features: [
         {
-          type: "Feature",
+          type: 'Feature',
           geometry: {
-            type: "LineString",
+            type: 'LineString',
             properties: {},
             coordinates: <[number, number][]>[
               [-77.0366048812866, 38.89873175227713],
@@ -85,8 +85,11 @@ export class ZoomtoLinestringComponent {
   zoomToBounds() {
     const coordinates = this.source.data.features[0].geometry.coordinates;
 
-    this.bounds = coordinates.reduce((bounds, coord) => {
-      return bounds.extend(coord);
-    }, new LngLatBounds(coordinates[0], coordinates[0]));
+    this.bounds = coordinates.reduce(
+      (bounds, coord) => {
+        return bounds.extend(coord);
+      },
+      new LngLatBounds(coordinates[0], coordinates[0]),
+    );
   }
 }

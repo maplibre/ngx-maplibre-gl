@@ -1,7 +1,7 @@
-import { E2eDriver } from "../support/e2e-driver";
+import { E2eDriver } from '../support/e2e-driver';
 
-describe("Toggle layers", () => {
-  context("Given I am on the Toggle Layers showcase", () => {
+describe('Toggle layers', () => {
+  context('Given I am on the Toggle Layers showcase', () => {
     let { beforeAndAfter, when, get, then } = new E2eDriver();
     let initialImageSnapshot: any;
 
@@ -10,7 +10,7 @@ describe("Toggle layers", () => {
     beforeEach(() => {
       ({ when, get, then } = new E2eDriver());
 
-      when.visitMapPage("/demo/toggle-layers");
+      when.visitMapPage('/demo/toggle-layers');
       when.waitForMapToIdle();
       initialImageSnapshot = get.imageSnapshot();
     });
@@ -20,7 +20,7 @@ describe("Toggle layers", () => {
         when.clickCountryNamesButton();
       });
 
-      it("Then I should see the map image change", () => {
+      it('Then I should see the map image change', () => {
         when.waitForMapToIdle();
         then(get.imageSnapshot()).shouldNotEqualSnapshot(initialImageSnapshot);
       });
@@ -33,7 +33,7 @@ describe("Toggle layers", () => {
         when.clickCountryNamesButton();
       });
 
-      it("Then I should see the original map image", () => {
+      it('Then I should see the original map image', () => {
         when.waitForMapToIdle();
         then(get.imageSnapshot()).shouldEqualSnapshot(initialImageSnapshot);
       });

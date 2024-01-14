@@ -1,7 +1,7 @@
-import { E2eDriver } from "../support/e2e-driver";
+import { E2eDriver } from '../support/e2e-driver';
 
-describe("Zoomto Linestring", () => {
-  context("Given I am on the Zoomto Linestring showcase", () => {
+describe('Zoomto Linestring', () => {
+  context('Given I am on the Zoomto Linestring showcase', () => {
     let { beforeAndAfter, given, when, get, then } = new E2eDriver();
     let initialImageSnapshot: any;
 
@@ -9,7 +9,7 @@ describe("Zoomto Linestring", () => {
 
     beforeEach(() => {
       ({ given, when, get, then } = new E2eDriver());
-      when.visitMapPage("/demo/zoomto-linestring");
+      when.visitMapPage('/demo/zoomto-linestring');
       when.waitForMapToIdle();
       initialImageSnapshot = get.imageSnapshot();
     });
@@ -19,7 +19,7 @@ describe("Zoomto Linestring", () => {
         when.clickZoomToBoundsButton();
       });
 
-      it("Then I should see the map zoom in", () => {
+      it('Then I should see the map zoom in', () => {
         when.waitForMapToIdle();
         then(get.imageSnapshot()).shouldNotEqualSnapshot(initialImageSnapshot);
       });

@@ -1,14 +1,14 @@
-import { E2eDriver } from "../support/e2e-driver";
+import { E2eDriver } from '../support/e2e-driver';
 
-describe("Custom control", () => {
-  context("Given I am on the Custom Control showcase", () => {
+describe('Custom control', () => {
+  context('Given I am on the Custom Control showcase', () => {
     let { beforeAndAfter, given, when, get, then } = new E2eDriver();
 
     beforeAndAfter();
 
     beforeEach(() => {
       ({ given, when, get, then } = new E2eDriver());
-      when.visitMapPage("/demo/ngx-custom-control");
+      when.visitMapPage('/demo/ngx-custom-control');
       when.waitForMapToIdle();
     });
 
@@ -18,8 +18,8 @@ describe("Custom control", () => {
         when.clickHelloCustomButton();
       });
 
-      it("Then I should see an alert", () => {
-        then(get.alertStub()).shouldHaveBeenCalledWith("Hello");
+      it('Then I should see an alert', () => {
+        then(get.alertStub()).shouldHaveBeenCalledWith('Hello');
       });
     });
 
@@ -30,7 +30,7 @@ describe("Custom control", () => {
         when.clickToggleShowControlsButton();
       });
 
-      it("Then I should not see any controls anymore", () => {
+      it('Then I should not see any controls anymore', () => {
         then(get.fullscreenControl()).shouldNotExist();
         then(get.customControlButton()).shouldNotExist();
       });

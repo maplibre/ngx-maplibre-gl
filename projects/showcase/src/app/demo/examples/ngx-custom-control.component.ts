@@ -1,6 +1,6 @@
-import { NgIf } from "@angular/common";
-import { Component } from "@angular/core";
-import { MatButtonModule } from "@angular/material/button";
+import { NgIf } from '@angular/common';
+import { Component } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import {
   AttributionControlDirective,
   ControlComponent,
@@ -10,10 +10,10 @@ import {
   NavigationControlDirective,
   Position,
   ScaleControlDirective,
-} from "@maplibre/ngx-maplibre-gl";
+} from '@maplibre/ngx-maplibre-gl';
 
 @Component({
-  selector: "showcase-demo",
+  selector: 'showcase-demo',
   template: `
     <mgl-map
       [style]="
@@ -51,12 +51,12 @@ import {
           (click)="toggleControls()"
           data-cy="toggle-show-controls"
         >
-          {{ visible ? "Hide Controls" : "Show Controls" }}
+          {{ visible ? 'Hide Controls' : 'Show Controls' }}
         </button>
       </mgl-control>
     </mgl-map>
   `,
-  styleUrls: ["./examples.css"],
+  styleUrls: ['./examples.css'],
   standalone: true,
   imports: [
     MapComponent,
@@ -77,7 +77,7 @@ export class NgxCustomControlComponent {
     alert(message);
   }
   onGeolocate(position: Position) {
-    console.log("geolocate", position);
+    console.log('geolocate', position);
   }
   toggleControls() {
     this.visible = !this.visible;

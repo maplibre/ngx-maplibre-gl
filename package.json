@@ -51,7 +51,7 @@
     "@angular/compiler-cli": "^17.0.4",
     "@cypress/schematic": "^2.5.1",
     "@ngrx/schematics": "^17.0.0",
-    "@shellygo/cypress-test-utils": "^2.0.28",
+    "@shellygo/cypress-test-utils": "^2.0.29",
     "@types/geojson": "^7946.0.13",
     "@types/jasmine": "~5.1.2",
     "@types/jasminewd2": "^2.0.13",

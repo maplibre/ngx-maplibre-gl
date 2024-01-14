@@ -1,15 +1,15 @@
-import { Component, OnInit } from "@angular/core";
-import { FormsModule } from "@angular/forms";
-import { MatRadioModule } from "@angular/material/radio";
-import { MapComponent } from "@maplibre/ngx-maplibre-gl";
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatRadioModule } from '@angular/material/radio';
+import { MapComponent } from '@maplibre/ngx-maplibre-gl';
 import {
   RasterLayerSpecification,
   RasterSourceSpecification,
   StyleSpecification,
-} from "maplibre-gl";
+} from 'maplibre-gl';
 
 @Component({
-  selector: "showcase-demo",
+  selector: 'showcase-demo',
   template: `
     <mgl-map
       [style]="style"
@@ -33,12 +33,12 @@ import {
       >
     </mat-radio-group>
   `,
-  styleUrls: ["./examples.css", "./set-style.component.css"],
+  styleUrls: ['./examples.css', './set-style.component.css'],
   standalone: true,
   imports: [MapComponent, MatRadioModule, FormsModule],
 })
 export class SetStyleComponent implements OnInit {
-  layerId = "streets";
+  layerId = 'streets';
   style: string | StyleSpecification;
 
   ngOnInit() {
@@ -46,26 +46,26 @@ export class SetStyleComponent implements OnInit {
   }
 
   changeStyle(layerId: string) {
-    if (layerId === "streets") {
+    if (layerId === 'streets') {
       this.style = `https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL`;
     } else {
       const source = {
-        type: "raster",
-        tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+        type: 'raster',
+        tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
         minzoom: 0,
         maxzoom: 15,
-        scheme: "xyz",
+        scheme: 'xyz',
         tileSize: 256,
       } as RasterSourceSpecification;
       const layer = {
-        id: "some-raster-layer-id",
-        type: "raster",
-        source: "raster",
+        id: 'some-raster-layer-id',
+        type: 'raster',
+        source: 'raster',
         layout: {
-          visibility: "visible",
+          visibility: 'visible',
         },
         paint: {
-          "raster-opacity": 1.0,
+          'raster-opacity': 1.0,
         },
       } as RasterLayerSpecification;
 

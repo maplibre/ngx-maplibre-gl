@@ -1,11 +1,11 @@
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 import {
   MapComponent,
   PopupComponent as MglPopupComponent,
-} from "@maplibre/ngx-maplibre-gl";
+} from '@maplibre/ngx-maplibre-gl';
 
 @Component({
-  selector: "showcase-demo",
+  selector: 'showcase-demo',
   template: `
     <mgl-map
       [style]="
@@ -27,7 +27,7 @@ import {
       </mgl-popup>
     </mgl-map>
   `,
-  styleUrls: ["./examples.css", "./popup.component.css"],
+  styleUrls: ['./examples.css', './popup.component.css'],
   standalone: true,
   imports: [MapComponent, MglPopupComponent],
 })

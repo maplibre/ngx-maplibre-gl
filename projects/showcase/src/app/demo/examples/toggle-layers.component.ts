@@ -1,14 +1,14 @@
-import { Component, OnInit } from "@angular/core";
-import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { Component, OnInit } from '@angular/core';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import {
   LayerComponent,
   MapComponent,
   VectorSourceComponent,
-} from "@maplibre/ngx-maplibre-gl";
-import { LayerSpecification } from "maplibre-gl";
+} from '@maplibre/ngx-maplibre-gl';
+import { LayerSpecification } from 'maplibre-gl';
 
 @Component({
-  selector: "showcase-demo",
+  selector: 'showcase-demo',
   template: `
     <mgl-map
       [style]="
@@ -67,7 +67,7 @@ import { LayerSpecification } from "maplibre-gl";
       >
     </div>
   `,
-  styleUrls: ["./examples.css", "./toggle-layers.component.css"],
+  styleUrls: ['./examples.css', './toggle-layers.component.css'],
   standalone: true,
   imports: [
     MapComponent,
@@ -77,14 +77,14 @@ import { LayerSpecification } from "maplibre-gl";
   ],
 })
 export class ToggleLayersComponent implements OnInit {
-  layouts: { [key: string]: LayerSpecification["layout"] } = {
+  layouts: { [key: string]: LayerSpecification['layout'] } = {
     countries: {
-      visibility: "none",
+      visibility: 'none',
     },
     names: {
-      visibility: "none",
-      "text-field": "{name:latin}",
-      "text-size": 30,
+      visibility: 'none',
+      'text-field': '{name:latin}',
+      'text-size': 30,
     },
   };
 
@@ -94,9 +94,9 @@ export class ToggleLayersComponent implements OnInit {
     this.layouts[evt.value] = {
       ...this.layouts[evt.value],
       visibility:
-        (this.layouts[evt.value] as any).visibility === "visible"
-          ? "none"
-          : "visible",
+        (this.layouts[evt.value] as any).visibility === 'visible'
+          ? 'none'
+          : 'visible',
     };
   }
 }

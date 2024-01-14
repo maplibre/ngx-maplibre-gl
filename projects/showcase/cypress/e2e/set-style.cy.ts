@@ -1,7 +1,7 @@
-import { E2eDriver } from "../support/e2e-driver";
+import { E2eDriver } from '../support/e2e-driver';
 
-describe("Set style", () => {
-  context("Given I am on the Set Style showcase", () => {
+describe('Set style', () => {
+  context('Given I am on the Set Style showcase', () => {
     let { beforeAndAfter, given, when, get, then } = new E2eDriver();
     let initialImageSnapshot: any;
 
@@ -10,7 +10,7 @@ describe("Set style", () => {
     beforeEach(() => {
       ({ given, when, get, then } = new E2eDriver());
 
-      when.visitMapPage("/demo/set-style");
+      when.visitMapPage('/demo/set-style');
       when.waitForMapToIdle();
       initialImageSnapshot = get.imageSnapshot();
     });
@@ -20,7 +20,7 @@ describe("Set style", () => {
         when.clickFromCodeRadioButton();
       });
 
-      it("Then I should see the map image change", () => {
+      it('Then I should see the map image change', () => {
         when.waitForMapToIdle();
         then(get.imageSnapshot()).shouldNotEqualSnapshot(initialImageSnapshot);
         when.resetConsoleWarnings();
@@ -40,11 +40,11 @@ describe("Set style", () => {
           // The switch back to the streets style fetches a sprite sheet - we can use this
           // as a reliable await target just before the map is fully rendered and idle (and
           // only then should we compare to the snapshot)
-          when.waitForStreetsSpriteResponse("**/streets/sprite.png");
+          when.waitForStreetsSpriteResponse();
           when.wait(3000);
         });
 
-        it("Then I should see the original map image", () => {
+        it('Then I should see the original map image', () => {
           when.waitForMapToIdle();
           then(get.imageSnapshot()).shouldEqualSnapshot(initialImageSnapshot);
           when.resetConsoleWarnings();
