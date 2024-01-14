@@ -31,11 +31,11 @@ export class E2eDriver {
       this.helper.when.waitForResponse('streets'),
     waitForMapToIdle: () =>
       this.helper.when.waitUntil(() =>
-        this.helper.get.bySelector('true', 'data-idle')
+        this.helper.get.elementByAttribute('data-idle', 'true')
       ),
     waitForMapLoaded: () =>
       this.helper.when.waitUntil(() =>
-        this.helper.get.bySelector('true', 'data-loaded')
+        this.helper.get.elementByAttribute('data-loaded', 'true')
       ),
     waitForDisabledTerrainButton: () =>
       this.helper.when.waitUntil(() => this.get.mapTerrainButton()),
