@@ -6,7 +6,7 @@ export class MapLibreAssertable<T> extends Assertable<T> {
     buffer1: Buffer,
     buffer2: Buffer,
     width: number,
-    height: number,
+    height: number
   ) => pixelmatch(buffer1, buffer2, null, width, height);
 
   private compareSnapshots = (
@@ -14,7 +14,7 @@ export class MapLibreAssertable<T> extends Assertable<T> {
       buffer: Buffer;
       height: number;
       width: number;
-    }>,
+    }>
   ) => {
     const snapshotChainable = this.chainable as unknown as Cypress.Chainable<{
       buffer: Buffer;
@@ -25,9 +25,9 @@ export class MapLibreAssertable<T> extends Assertable<T> {
       snapshotChainable.then(
         (subject: { buffer: Buffer; height: number; width: number }) =>
           snapshot.then(({ buffer, width, height }) =>
-            cy.wrap(this.comparePixels(buffer, subject.buffer, width, height)),
-          ),
-      ),
+            cy.wrap(this.comparePixels(buffer, subject.buffer, width, height))
+          )
+      )
     );
   };
 
@@ -36,7 +36,7 @@ export class MapLibreAssertable<T> extends Assertable<T> {
       buffer: Buffer;
       height: number;
       width: number;
-    }>,
+    }>
   ) => this.compareSnapshots(snapshot).shouldEqual(0);
 
   public shouldNotEqualSnapshot = (
@@ -44,7 +44,7 @@ export class MapLibreAssertable<T> extends Assertable<T> {
       buffer: Buffer;
       height: number;
       width: number;
-    }>,
+    }>
   ) => this.compareSnapshots(snapshot).shouldBeGreaterThen(0);
 }
 
@@ -60,19 +60,31 @@ export class MaplibreCypressHelper {
       fn:
         | Cypress.SinonSpyAgent<sinon.SinonSpy<any[], any>>
         | Cypress.SinonSpyAgent<sinon.SinonStub<any[], any>>
-        | ((text: string) => void),
+        | ((text: string) => void)
     ) => cy.on('window:alert', fn),
+    spyOnWindowConsoleError: () =>
+      Cypress.on('window:before:load', (win) =>
+        this.helper.given.spyOnObject(win.console, 'error')
+      ),
+    spyOnWindowConsoleWarning: () =>
+      Cypress.on('window:before:load', (win) =>
+        this.helper.given.spyOnObject(win.console, 'warn')
+      ),
   };
   public when = {
     ...this.helper.when,
     resetConsoleWarnings: () => {
-      cy.get('@consoleWarnSpy').then((spy: any) => {
+      this.get.windowConsoleWarningSpy().then((spy: any) => {
+        spy.resetHistory();
         if (spy.callCount > 0) {
           cy.log(`Clearing ${spy.callCount} console warning(s)...`);
-          spy.resetHistory();
         }
       });
     },
   };
-  public get = { ...this.helper.get };
+  public get = {
+    ...this.helper.get,
+    windowConsoleWarningSpy: () => this.helper.get.spy('warn'),
+    windowConsoleErrorSpy: () => this.helper.get.spy('error'),
+  };
 }

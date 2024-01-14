@@ -40,7 +40,7 @@ describe('Set style', () => {
           // The switch back to the streets style fetches a sprite sheet - we can use this
           // as a reliable await target just before the map is fully rendered and idle (and
           // only then should we compare to the snapshot)
-          when.waitForStreetsSpriteResponse('**/streets/sprite.png');
+          when.waitForStreetsSpriteResponse();
           when.wait(3000);
         });
 
@@ -49,7 +49,7 @@ describe('Set style', () => {
           then(get.imageSnapshot()).shouldEqualSnapshot(initialImageSnapshot);
           when.resetConsoleWarnings();
         });
-      },
+      }
     );
   });
 });

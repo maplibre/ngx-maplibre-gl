@@ -5,28 +5,37 @@ export class E2eDriver {
   private helper = new MaplibreCypressHelper();
 
   beforeAndAfter = () => {
-    beforeEach(() => {});
-    afterEach(() => {});
+    this.helper.beforeAndAfter();
+    beforeEach(() => {
+      this.helper.given.spyOnWindowConsoleError();
+      this.helper.given.spyOnWindowConsoleWarning();
+    });
+
+    afterEach(() => {
+      const then = this.then;
+      then(this.helper.get.windowConsoleWarningSpy()).shouldNotHaveBeenCalled();
+      then(this.helper.get.windowConsoleErrorSpy()).shouldNotHaveBeenCalled();
+    });
   };
 
   given = {
     alertStub: () => this.helper.given.onAlert(this.helper.given.stub('alert')),
     interceptStreetsSprite: () =>
-      this.helper.given.intercept('**/streets/sprite.png', 'streets'),
+      this.helper.given.intercept('**/streets/sprite*.png', 'streets'),
   };
   when = {
     wait: (ms: number) => this.helper.when.wait(ms),
 
     resetConsoleWarnings: () => this.helper.when.resetConsoleWarnings(),
-    waitForStreetsSpriteResponse: (url: string, method: string = 'GET') =>
+    waitForStreetsSpriteResponse: () =>
       this.helper.when.waitForResponse('streets'),
     waitForMapToIdle: () =>
       this.helper.when.waitUntil(() =>
-        this.helper.get.bySelector('true', 'data-idle'),
+        this.helper.get.bySelector('true', 'data-idle')
       ),
     waitForMapLoaded: () =>
       this.helper.when.waitUntil(() =>
-        this.helper.get.bySelector('true', 'data-loaded'),
+        this.helper.get.bySelector('true', 'data-loaded')
       ),
     waitForDisabledTerrainButton: () =>
       this.helper.when.waitUntil(() => this.get.mapTerrainButton()),
@@ -43,12 +52,12 @@ export class E2eDriver {
     clickFromCodeRadioButton: () =>
       this.helper.when.doWithin(
         () => this.helper.when.toggle(0),
-        'code-button',
+        'code-button'
       ),
     clickStreetsRadioButton: () =>
       this.helper.when.doWithin(
         () => this.helper.when.toggle(0),
-        'streets-button',
+        'streets-button'
       ),
     clickCountryNamesButton: () =>
       this.helper.when.click('countries-toggle-button'),

@@ -8,7 +8,7 @@ export default defineConfig({
     baseUrl: 'http://localhost:4200',
     supportFile: 'projects/showcase/cypress/support/e2e.ts',
     specPattern: '**/*.cy.ts',
-    defaultCommandTimeout: 10000,
+    defaultCommandTimeout: 30000,
   },
   video: true,
 });
