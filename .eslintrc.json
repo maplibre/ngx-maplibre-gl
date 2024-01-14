@@ -13,22 +13,6 @@
         "plugin:@typescript-eslint/recommended"
       ],
       "rules": {
-        "@angular-eslint/component-selector": [
-          "error",
-          {
-            "prefix": "mgl",
-            "style": "kebab-case",
-            "type": "element"
-          }
-        ],
-        "@angular-eslint/directive-selector": [
-          "error",
-          {
-            "prefix": "mgl",
-            "style": "camelCase",
-            "type": "attribute"
-          }
-        ],
         "@typescript-eslint/consistent-type-definitions": "error",
         "@typescript-eslint/dot-notation": "off",
         "@typescript-eslint/no-explicit-any": "off",

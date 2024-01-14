@@ -4,20 +4,6 @@ import { MapLibreAssertable, MaplibreCypressHelper } from './maplibre-helper';
 export class E2eDriver {
   private helper = new MaplibreCypressHelper();
 
-  beforeAndAfter = () => {
-    this.helper.beforeAndAfter();
-    beforeEach(() => {
-      this.helper.given.spyOnWindowConsoleError();
-      this.helper.given.spyOnWindowConsoleWarning();
-    });
-
-    afterEach(() => {
-      const then = this.then;
-      then(this.helper.get.windowConsoleWarningSpy()).shouldNotHaveBeenCalled();
-      then(this.helper.get.windowConsoleErrorSpy()).shouldNotHaveBeenCalled();
-    });
-  };
-
   given = {
     alertStub: () => this.helper.given.onAlert(this.helper.given.stub('alert')),
     interceptStreetsSprite: () =>
@@ -118,4 +104,18 @@ export class E2eDriver {
   };
 
   then = (chainable: Cypress.Chainable) => new MapLibreAssertable(chainable);
+
+  beforeAndAfter = () => {
+    this.helper.beforeAndAfter();
+    beforeEach(() => {
+      this.helper.given.spyOnWindowConsoleError();
+      this.helper.given.spyOnWindowConsoleWarning();
+    });
+
+    afterEach(() => {
+      const then = this.then;
+      then(this.helper.get.windowConsoleWarningSpy()).shouldNotHaveBeenCalled();
+      then(this.helper.get.windowConsoleErrorSpy()).shouldNotHaveBeenCalled();
+    });
+  };
 }

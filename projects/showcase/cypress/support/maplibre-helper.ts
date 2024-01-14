@@ -50,9 +50,6 @@ export class MapLibreAssertable<T> extends Assertable<T> {
 
 export class MaplibreCypressHelper {
   private helper = new CypressHelper();
-  beforeAndAfter = () => {
-    this.helper.beforeAndAfter();
-  };
 
   public given = {
     ...this.helper.given,
@@ -86,5 +83,9 @@ export class MaplibreCypressHelper {
     ...this.helper.get,
     windowConsoleWarningSpy: () => this.helper.get.spy('warn'),
     windowConsoleErrorSpy: () => this.helper.get.spy('error'),
+  };
+
+  beforeAndAfter = () => {
+    this.helper.beforeAndAfter();
   };
 }

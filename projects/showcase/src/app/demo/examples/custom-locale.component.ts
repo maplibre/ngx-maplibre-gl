@@ -38,6 +38,7 @@ import {
   ],
 })
 export class CustomLocaleComponent {
+  /* eslint-disable @typescript-eslint/naming-convention */
   readonly locale = {
     'FullscreenControl.Enter': 'Перейти в повноекранний режим',
     'FullscreenControl.Exit': 'Вийти з повноекранного режиму',
@@ -53,4 +54,5 @@ export class CustomLocaleComponent {
     'ScaleControl.Miles': 'ми',
     'ScaleControl.NauticalMiles': 'нм',
   };
+  /* eslint-enable @typescript-eslint/naming-convention */
 }

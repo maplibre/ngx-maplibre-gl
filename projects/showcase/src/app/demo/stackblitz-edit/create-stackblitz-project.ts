@@ -15,6 +15,7 @@ export function createStackblitzProject(
 ): Project {
   return {
     files: {
+      /* eslint-disable @typescript-eslint/naming-convention */
       'src/main.ts': projectbase[0].replace(
         /###/g,
         toPascalCase(exampleName) + 'Component'
@@ -56,5 +57,6 @@ import 'zone.js';
       '@types/supercluster': '*',
       '@types/geojson': '*',
     },
+    /* eslint-enable @typescript-eslint/naming-convention */
   };
 }

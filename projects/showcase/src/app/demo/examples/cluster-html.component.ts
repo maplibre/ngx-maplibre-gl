@@ -209,7 +209,8 @@ export class ClusterHtmlComponent {
       mag5: ['+', ['case', mag5, 1, 0]],
     };
     this.circlePaint = {
-      'circle-color': [
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      'circle-color': [ 
         'case',
         mag1,
         COLORS[0],
@@ -221,20 +222,27 @@ export class ClusterHtmlComponent {
         COLORS[3],
         COLORS[4],
       ],
-      'circle-opacity': 0.6,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      'circle-opacity': 0.6, 
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       'circle-radius': 12,
     };
     this.labelLayout = {
       // typings issue
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       'text-field': [
         'number-format',
         ['get', 'mag'],
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { 'min-fraction-digits': 1, 'max-fraction-digits': 1 },
       ],
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       'text-size': 10,
     };
     this.labelPaint = {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       'text-color': ['case', ['<', ['get', 'mag'], 3], 'black', 'white'],
     };
   }
