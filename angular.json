@@ -133,6 +133,15 @@
             ]
           }
         },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/showcase/**/*.ts",
+              "projects/showcase/**/*.html"
+            ]
+          }
+        },
         "cypress-run": {
           "builder": "@cypress/schematic:cypress",
           "options": {
