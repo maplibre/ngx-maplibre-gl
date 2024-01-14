@@ -1,10 +1,10 @@
-import { Component } from "@angular/core";
-import { MatButtonModule } from "@angular/material/button";
-import { ControlComponent, MapComponent } from "@maplibre/ngx-maplibre-gl";
-import { Map } from "maplibre-gl";
+import { Component } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { ControlComponent, MapComponent } from '@maplibre/ngx-maplibre-gl';
+import { Map } from 'maplibre-gl';
 
 @Component({
-  selector: "showcase-demo",
+  selector: 'showcase-demo',
   template: `
     <mgl-map
       [style]="
@@ -51,7 +51,7 @@ import { Map } from "maplibre-gl";
       </mgl-control>
     </mgl-map>
   `,
-  styleUrls: ["./examples.css"],
+  styleUrls: ['./examples.css'],
   preserveWhitespaces: false,
   standalone: true,
   imports: [MapComponent, ControlComponent, MatButtonModule],
@@ -66,19 +66,19 @@ export class LanguageSwitchComponent {
   changeLangTo(language: string) {
     if (!this.map) return;
     this.map.setLayoutProperty(
-      "country_1",
-      "text-field",
-      "{name:" + language + "}"
+      'country_1',
+      'text-field',
+      '{name:' + language + '}',
     );
     this.map.setLayoutProperty(
-      "country_2",
-      "text-field",
-      "{name:" + language + "}"
+      'country_2',
+      'text-field',
+      '{name:' + language + '}',
     );
     this.map.setLayoutProperty(
-      "country_3",
-      "text-field",
-      "{name:" + language + "}"
+      'country_3',
+      'text-field',
+      '{name:' + language + '}',
     );
   }
 }

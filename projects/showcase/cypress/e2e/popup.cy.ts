@@ -1,21 +1,21 @@
-import { E2eDriver } from "../support/e2e-driver";
+import { E2eDriver } from '../support/e2e-driver';
 
-describe("Popup", () => {
-  context("Given I am on the Popup showcase", () => {
+describe('Popup', () => {
+  context('Given I am on the Popup showcase', () => {
     let { beforeAndAfter, given, when, get, then } = new E2eDriver();
 
     beforeAndAfter();
 
     beforeEach(() => {
       ({ given, when, get, then } = new E2eDriver());
-      when.visitMapPage("/demo/popup");
+      when.visitMapPage('/demo/popup');
       when.waitForMapToIdle();
     });
 
-    context("When the map loads", () => {
+    context('When the map loads', () => {
       it('Then I should see a popup dialog containing "Hello World !"', () => {
         then(get.mglPopup()).shouldExist();
-        then(get.mapLibrePopUpContent()).shouldHaveText("Hello world !");
+        then(get.mapLibrePopUpContent()).shouldHaveText('Hello world !');
       });
     });
 

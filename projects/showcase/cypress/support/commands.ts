@@ -42,12 +42,12 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-Cypress.on("window:before:load", (win) => {
-  cy.spy(win.console, "error").as("consoleErrorSpy");
-  cy.spy(win.console, "warn").as("consoleWarnSpy");
+Cypress.on('window:before:load', (win) => {
+  cy.spy(win.console, 'error').as('consoleErrorSpy');
+  cy.spy(win.console, 'warn').as('consoleWarnSpy');
 });
 
 afterEach(() => {
-  cy.get("@consoleErrorSpy").should("not.be.called");
-  cy.get("@consoleWarnSpy").should("not.be.called");
+  cy.get('@consoleErrorSpy').should('not.be.called');
+  cy.get('@consoleWarnSpy').should('not.be.called');
 });
