@@ -2,14 +2,12 @@ import { E2eDriver } from '../support/e2e-driver';
 
 describe('Set style', () => {
   context('Given I am on the Set Style showcase', () => {
-    let { beforeAndAfter, given, when, get, then } = new E2eDriver();
+    const { beforeAndAfter, given, when, get, then } = new E2eDriver();
     let initialImageSnapshot: any;
 
     beforeAndAfter();
 
     beforeEach(() => {
-      ({ given, when, get, then } = new E2eDriver());
-
       when.visitMapPage('/demo/set-style');
       when.waitForMapToIdle();
       initialImageSnapshot = get.imageSnapshot();

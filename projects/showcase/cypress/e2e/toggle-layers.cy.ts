@@ -2,14 +2,12 @@ import { E2eDriver } from '../support/e2e-driver';
 
 describe('Toggle layers', () => {
   context('Given I am on the Toggle Layers showcase', () => {
-    let { beforeAndAfter, when, get, then } = new E2eDriver();
+    const { beforeAndAfter, when, get, then } = new E2eDriver();
     let initialImageSnapshot: any;
 
     beforeAndAfter();
 
     beforeEach(() => {
-      ({ when, get, then } = new E2eDriver());
-
       when.visitMapPage('/demo/toggle-layers');
       when.waitForMapToIdle();
       initialImageSnapshot = get.imageSnapshot();

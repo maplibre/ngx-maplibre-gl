@@ -1,13 +1,9 @@
 import { E2eDriver } from '../support/e2e-driver';
 
 describe('Generic runtime error check', () => {
-  let { beforeAndAfter, given, when, get, then } = new E2eDriver();
+  const { beforeAndAfter, when, get, then } = new E2eDriver();
 
   beforeAndAfter();
-
-  beforeEach(() => {
-    ({ given, when, get, then } = new E2eDriver());
-  });
 
   [
     'display-map',

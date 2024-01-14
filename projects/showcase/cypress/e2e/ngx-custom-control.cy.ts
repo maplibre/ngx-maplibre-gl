@@ -2,12 +2,11 @@ import { E2eDriver } from '../support/e2e-driver';
 
 describe('Custom control', () => {
   context('Given I am on the Custom Control showcase', () => {
-    let { beforeAndAfter, given, when, get, then } = new E2eDriver();
+    const { beforeAndAfter, given, when, get, then } = new E2eDriver();
 
     beforeAndAfter();
 
     beforeEach(() => {
-      ({ given, when, get, then } = new E2eDriver());
       when.visitMapPage('/demo/ngx-custom-control');
       when.waitForMapToIdle();
     });

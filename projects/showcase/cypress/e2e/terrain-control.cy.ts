@@ -4,14 +4,12 @@ describe('Terrain Control', () => {
   context(
     'Given I am on the Terrain Control showcase and Terrain is disabled',
     () => {
-      let { beforeAndAfter, when, get, then } = new E2eDriver();
+      const { beforeAndAfter, when, get, then } = new E2eDriver();
       let initialImageSnapshot: any;
 
       beforeAndAfter();
 
       beforeEach(() => {
-        ({ when, get, then } = new E2eDriver());
-
         when.visitMapPage('/demo/terrain-control');
         when.waitForMapToIdle();
         when.waitForDisabledTerrainButton();

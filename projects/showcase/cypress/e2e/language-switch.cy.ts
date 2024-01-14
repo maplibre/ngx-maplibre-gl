@@ -4,14 +4,12 @@ describe('Language switch', () => {
   context(
     'Given I am on the Language Switch showcase and French is selected',
     () => {
-      let { beforeAndAfter, when, get, then } = new E2eDriver();
+      const { beforeAndAfter, when, get, then } = new E2eDriver();
       let initialImageSnapshot: any;
 
       beforeAndAfter();
 
       beforeEach(() => {
-        ({ when, get, then } = new E2eDriver());
-
         when.visitMapPage('/demo/language-switch');
         when.waitForMapToIdle();
 

@@ -2,12 +2,11 @@ import { E2eDriver } from '../support/e2e-driver';
 
 describe('Popup', () => {
   context('Given I am on the Popup showcase', () => {
-    let { beforeAndAfter, given, when, get, then } = new E2eDriver();
+    const { beforeAndAfter, when, get, then } = new E2eDriver();
 
     beforeAndAfter();
 
     beforeEach(() => {
-      ({ given, when, get, then } = new E2eDriver());
       when.visitMapPage('/demo/popup');
       when.waitForMapToIdle();
     });
