@@ -2,12 +2,17 @@ import { E2eDriver } from '../support/e2e-driver';
 
 describe('Set style', () => {
   context('Given I am on the Set Style showcase', () => {
-    const { beforeAndAfter, given, when, get, then } = new E2eDriver();
+    let when: typeof E2eDriver.prototype.when; 
+    let get: typeof E2eDriver.prototype.get; 
+    let then: typeof E2eDriver.prototype.then;
+    let given: typeof E2eDriver.prototype.given;
+    const { beforeAndAfter } = new E2eDriver();
     let initialImageSnapshot: any;
 
     beforeAndAfter();
 
     beforeEach(() => {
+      ({ when, get, then } = new E2eDriver());
       when.visitMapPage('/demo/set-style');
       when.waitForMapToIdle();
       initialImageSnapshot = get.imageSnapshot();

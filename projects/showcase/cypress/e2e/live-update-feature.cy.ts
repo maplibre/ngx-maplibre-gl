@@ -2,12 +2,14 @@ import { E2eDriver } from '../support/e2e-driver';
 
 describe('Live Update', () => {
   context('Given I am on the Live Update Feature showcase', () => {
-    const { beforeAndAfter, when, get, then } = new E2eDriver();
+    let when: typeof E2eDriver.prototype.when, get: typeof E2eDriver.prototype.get, then: typeof E2eDriver.prototype.then;
+    const { beforeAndAfter } = new E2eDriver();
     let initialImageSnapshot: any;
 
     beforeAndAfter();
 
     beforeEach(() => {
+      ({ when, get, then } = new E2eDriver());
       when.visitMapPage('/demo/live-update-feature');
       when.waitForMapLoaded();
       // Note: do not wait for map to idle because this demo is constantly panning
