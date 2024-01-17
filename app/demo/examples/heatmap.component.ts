@@ -69,9 +69,11 @@ export class HeatMapComponent implements OnInit {
           type: 'circle',
           id: `cluster-${index}`,
           paint: {
+            /* eslint-disable @typescript-eslint/naming-convention */
             'circle-color': data[1],
             'circle-radius': 70,
             'circle-blur': 1,
+            /* eslint-enable @typescript-eslint/naming-convention */
           },
           filter:
             index === layersData.length - 1

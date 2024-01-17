@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import {
   LayerComponent,
@@ -76,19 +76,19 @@ import { LayerSpecification } from 'maplibre-gl';
     MatButtonToggleModule,
   ],
 })
-export class ToggleLayersComponent implements OnInit {
+export class ToggleLayersComponent {
   layouts: { [key: string]: LayerSpecification['layout'] } = {
     countries: {
       visibility: 'none',
     },
     names: {
       visibility: 'none',
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       'text-field': '{name:latin}',
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       'text-size': 30,
     },
   };
-
-  ngOnInit() {}
 
   toggleLayer(evt: { value: string }) {
     this.layouts[evt.value] = {

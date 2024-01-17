@@ -65,6 +65,7 @@ export class SetStyleComponent implements OnInit {
           visibility: 'visible',
         },
         paint: {
+          //eslint-disable-next-line @typescript-eslint/naming-convention
           'raster-opacity': 1.0,
         },
       } as RasterLayerSpecification;
