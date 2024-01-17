@@ -2,13 +2,14 @@ import { E2eDriver } from '../support/e2e-driver';
 
 describe('Zoomto Linestring', () => {
   context('Given I am on the Zoomto Linestring showcase', () => {
-    let { beforeAndAfter, given, when, get, then } = new E2eDriver();
+    let when: typeof E2eDriver.prototype.when, get: typeof E2eDriver.prototype.get, then: typeof E2eDriver.prototype.then;
+    const { beforeAndAfter } = new E2eDriver();
     let initialImageSnapshot: any;
 
     beforeAndAfter();
 
     beforeEach(() => {
-      ({ given, when, get, then } = new E2eDriver());
+      ({ when, get, then } = new E2eDriver());
       when.visitMapPage('/demo/zoomto-linestring');
       when.waitForMapToIdle();
       initialImageSnapshot = get.imageSnapshot();

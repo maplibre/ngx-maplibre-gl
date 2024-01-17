@@ -71,7 +71,7 @@ export class StackblitzEditComponent implements AfterViewInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private demoFileLoaderService: DemoFileLoaderService,
     private http: HttpClient,
-    private ChangeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnDestroy() {
@@ -85,7 +85,7 @@ export class StackblitzEditComponent implements AfterViewInit, OnDestroy {
       .pipe(
         tap(() => {
           this.loading = true;
-          this.ChangeDetectorRef.markForCheck();
+          this.changeDetectorRef.markForCheck();
         }),
         switchMap((params) =>
           forkJoin([
@@ -98,7 +98,7 @@ export class StackblitzEditComponent implements AfterViewInit, OnDestroy {
           from(this.openExample(projectbase, demoFiles, exampleName)).pipe(
             finalize(() => {
               this.loading = false;
-              this.ChangeDetectorRef.markForCheck();
+              this.changeDetectorRef.markForCheck();
             })
           )
         )

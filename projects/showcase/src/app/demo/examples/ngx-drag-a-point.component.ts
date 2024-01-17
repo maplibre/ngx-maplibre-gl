@@ -65,7 +65,9 @@ import {
 })
 export class NgxDragAPointComponent {
   layerPaint = {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     'circle-radius': 10,
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     'circle-color': '#3887be',
   };
 
@@ -85,6 +87,7 @@ export class NgxDragAPointComponent {
   }
 
   changeColor(color: string) {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     this.layerPaint = { ...this.layerPaint, 'circle-color': color };
   }
 }

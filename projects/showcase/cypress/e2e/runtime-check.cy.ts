@@ -1,12 +1,13 @@
 import { E2eDriver } from '../support/e2e-driver';
 
 describe('Generic runtime error check', () => {
-  let { beforeAndAfter, given, when, get, then } = new E2eDriver();
+  let when: typeof E2eDriver.prototype.when, get: typeof E2eDriver.prototype.get, then: typeof E2eDriver.prototype.then;
+  const { beforeAndAfter } = new E2eDriver();
 
   beforeAndAfter();
 
   beforeEach(() => {
-    ({ given, when, get, then } = new E2eDriver());
+    ({ when, get, then } = new E2eDriver());
   });
 
   [
