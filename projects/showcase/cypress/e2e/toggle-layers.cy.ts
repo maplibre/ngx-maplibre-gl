@@ -10,6 +10,7 @@ describe('Toggle layers', () => {
 
     beforeEach(() => {
       ({ when, get, then } = new E2eDriver());
+
       when.visitMapPage('/demo/toggle-layers');
       when.waitForMapToIdle();
       initialImageSnapshot = get.imageSnapshot();
