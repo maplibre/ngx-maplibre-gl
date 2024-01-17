@@ -12,7 +12,8 @@ describe('Set style', () => {
     beforeAndAfter();
 
     beforeEach(() => {
-      ({ when, get, then } = new E2eDriver());
+      ({ given, when, get, then } = new E2eDriver());
+
       when.visitMapPage('/demo/set-style');
       when.waitForMapToIdle();
       initialImageSnapshot = get.imageSnapshot();
