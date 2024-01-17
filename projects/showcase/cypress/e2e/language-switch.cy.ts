@@ -12,6 +12,7 @@ describe('Language switch', () => {
 
       beforeEach(() => {
         ({ when, get, then } = new E2eDriver());
+
         when.visitMapPage('/demo/language-switch');
         when.waitForMapToIdle();
 
