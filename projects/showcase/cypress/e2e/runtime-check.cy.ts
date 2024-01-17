@@ -6,6 +6,10 @@ describe('Generic runtime error check', () => {
 
   beforeAndAfter();
 
+  beforeEach(() => {
+    ({ when, get, then } = new E2eDriver());
+  });
+
   [
     'display-map',
     'custom-style-id',
@@ -36,7 +40,6 @@ describe('Generic runtime error check', () => {
     'add-image-missing-generated',
   ].forEach((route: string) => {
     it(`should display a map without errors for /${route}`, () => {
-      ({ when, get, then } = new E2eDriver());
       when.visitMapPage(`/demo/${route}`);
       then(get.canvas()).shouldExist();
       then(get.mapObjectLoaded()).shouldExist();
