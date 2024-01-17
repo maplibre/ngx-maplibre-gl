@@ -12,6 +12,7 @@ describe('Terrain Control', () => {
 
       beforeEach(() => {
         ({ when, get, then } = new E2eDriver());
+
         when.visitMapPage('/demo/terrain-control');
         when.waitForMapToIdle();
         when.waitForDisabledTerrainButton();
