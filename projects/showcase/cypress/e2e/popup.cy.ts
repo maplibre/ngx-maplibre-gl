@@ -20,7 +20,7 @@ describe('Popup', () => {
       });
     });
 
-    context("When I click the popup's close button", () => {
+    context('When I click the popup\'s close button', () => {
       beforeEach(() => {
         when.clickPopupCloseButton();
       });

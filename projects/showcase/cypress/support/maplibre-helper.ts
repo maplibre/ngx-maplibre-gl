@@ -1,4 +1,4 @@
-import { CypressHelper } from "@shellygo/cypress-test-utils";
+import { CypressHelper } from '@shellygo/cypress-test-utils';
 
 export class MaplibreCypressHelper {
   private helper = new CypressHelper();
@@ -10,14 +10,14 @@ export class MaplibreCypressHelper {
         | Cypress.SinonSpyAgent<sinon.SinonSpy<any[], any>>
         | Cypress.SinonSpyAgent<sinon.SinonStub<any[], any>>
         | ((text: string) => void)
-    ) => cy.on("window:alert", fn),
+    ) => cy.on('window:alert', fn),
     spyOnWindowConsoleError: () =>
-      Cypress.on("window:before:load", (win) =>
-        this.helper.given.spyOnObject(win.console, "error")
+      Cypress.on('window:before:load', (win) =>
+        this.helper.given.spyOnObject(win.console, 'error')
       ),
     spyOnWindowConsoleWarning: () =>
-      Cypress.on("window:before:load", (win) =>
-        this.helper.given.spyOnObject(win.console, "warn")
+      Cypress.on('window:before:load', (win) =>
+        this.helper.given.spyOnObject(win.console, 'warn')
       ),
   };
   public when = {
@@ -33,8 +33,8 @@ export class MaplibreCypressHelper {
   };
   public get = {
     ...this.helper.get,
-    windowConsoleWarningSpy: () => this.helper.get.spy("warn"),
-    windowConsoleErrorSpy: () => this.helper.get.spy("error"),
+    windowConsoleWarningSpy: () => this.helper.get.spy('warn'),
+    windowConsoleErrorSpy: () => this.helper.get.spy('error'),
   };
 
   beforeAndAfter = () => {

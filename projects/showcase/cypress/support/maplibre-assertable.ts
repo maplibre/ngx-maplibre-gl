@@ -1,5 +1,5 @@
-import { Assertable, then } from "@shellygo/cypress-test-utils/assertable";
-import pixelmatch from "pixelmatch";
+import { Assertable, then } from '@shellygo/cypress-test-utils/assertable';
+import pixelmatch from 'pixelmatch';
 
 export class MapLibreAssertable<T> extends Assertable<T> {
   private comparePixels = (
