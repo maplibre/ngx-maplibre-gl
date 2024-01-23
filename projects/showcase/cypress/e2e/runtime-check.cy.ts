@@ -1,7 +1,9 @@
 import { E2eDriver } from '../support/e2e-driver';
 
 describe('Generic runtime error check', () => {
-  let when: typeof E2eDriver.prototype.when, get: typeof E2eDriver.prototype.get, then: typeof E2eDriver.prototype.then;
+  let when: typeof E2eDriver.prototype.when,
+    get: typeof E2eDriver.prototype.get,
+    then: typeof E2eDriver.prototype.then;
   const { beforeAndAfter } = new E2eDriver();
 
   beforeAndAfter();
@@ -41,7 +43,7 @@ describe('Generic runtime error check', () => {
   ].forEach((route: string) => {
     it(`should display a map without errors for /${route}`, () => {
       when.visitMapPage(`/demo/${route}`);
-      then(get.canvas()).shouldExist();
+      then(get.map()).shouldExist();
       then(get.mapObjectLoaded()).shouldExist();
       when.resetConsoleWarnings();
     });

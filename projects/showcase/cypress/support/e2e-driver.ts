@@ -62,20 +62,18 @@ export class E2eDriver {
   };
 
   get = {
-    canvas: (): Cypress.Chainable<HTMLCanvasElement> =>
+    map: (): Cypress.Chainable<HTMLCanvasElement> =>
       this.helper.get
         .element('canvas.maplibregl-canvas', 0)
         .its(0) as unknown as Cypress.Chainable<HTMLCanvasElement>,
 
     imageSnapshot: () => {
-      const snapshot = this.get
-        .canvas()
-        .then((mapCanvas: HTMLCanvasElement) => ({
-          width: mapCanvas.width,
-          height: mapCanvas.height,
-          buffer: this.get.imageBitmapBuffer(mapCanvas),
-        }));
-      this.get.canvas();
+      const snapshot = this.get.map().then((mapCanvas: HTMLCanvasElement) => ({
+        width: mapCanvas.width,
+        height: mapCanvas.height,
+        buffer: this.get.imageBitmapBuffer(mapCanvas),
+      }));
+      this.get.map();
 
       return snapshot;
     },
