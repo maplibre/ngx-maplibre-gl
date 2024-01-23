@@ -50,7 +50,7 @@ export const DEMO_ROUTES: Routes = [
           import('./examples/set-style.component').then(
             (m) => m.SetStyleComponent
           ),
-        data: { label: "Change a map's style", cat: Category.STYLES },
+        data: { label: 'Change a map\'s style', cat: Category.STYLES },
       },
       {
         path: 'satellite-map',
@@ -266,7 +266,7 @@ export const DEMO_ROUTES: Routes = [
             (m) => m.LanguageSwitchComponent
           ),
         data: {
-          label: "Change a map's language",
+          label: 'Change a map\'s language',
           cat: Category.USER_INTERACTION,
         },
       },

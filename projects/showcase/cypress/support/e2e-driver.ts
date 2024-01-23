@@ -1,5 +1,6 @@
 import { PNG } from 'pngjs';
-import { MapLibreAssertable, MaplibreCypressHelper } from './maplibre-helper';
+import { MapLibreAssertable } from './maplibre-assertable';
+import { MaplibreCypressHelper } from './maplibre-helper';
 
 export class E2eDriver {
   private helper = new MaplibreCypressHelper();
