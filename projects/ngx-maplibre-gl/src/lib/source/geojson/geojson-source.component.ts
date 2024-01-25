@@ -116,15 +116,7 @@ export class GeoJSONSourceComponent
   async getClusterExpansionZoom(clusterId: number) {
     const source = this.mapService.getSource<GeoJSONSource>(this.id);
     return this.zone.run(async () => {
-      return new Promise<number>((resolve, reject) => {
-        source.getClusterExpansionZoom(clusterId, (error, zoom) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(zoom as number);
-          }
-        });
-      });
+      return source.getClusterExpansionZoom(clusterId);
     });
   }
 
@@ -135,17 +127,7 @@ export class GeoJSONSourceComponent
   async getClusterChildren(clusterId: number) {
     const source = this.mapService.getSource<GeoJSONSource>(this.id);
     return this.zone.run(async () => {
-      return new Promise<GeoJSON.Feature<GeoJSON.Geometry>[]>(
-        (resolve, reject) => {
-          source.getClusterChildren(clusterId, (error, features) => {
-            if (error) {
-              reject(error);
-            } else {
-              resolve(features as GeoJSON.Feature<GeoJSON.Geometry>[]);
-            }
-          });
-        }
-      );
+      return source.getClusterChildren(clusterId);
     });
   }
 
@@ -158,21 +140,10 @@ export class GeoJSONSourceComponent
   async getClusterLeaves(clusterId: number, limit: number, offset: number) {
     const source = this.mapService.getSource<GeoJSONSource>(this.id);
     return this.zone.run(async () => {
-      return new Promise<GeoJSON.Feature<GeoJSON.Geometry>[]>(
-        (resolve, reject) => {
-          source.getClusterLeaves(
-            clusterId,
-            limit,
-            offset,
-            (error, features) => {
-              if (error) {
-                reject(error);
-              } else {
-                resolve(features as GeoJSON.Feature<GeoJSON.Geometry>[]);
-              }
-            }
-          );
-        }
+      return source.getClusterLeaves(
+        clusterId,
+        limit,
+        offset,
       );
     });
   }
