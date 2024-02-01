@@ -10,7 +10,7 @@ import {
   OnDestroy,
   TemplateRef,
 } from '@angular/core';
-import { GeoJSONFeature, MapSourceDataEvent } from 'maplibre-gl';
+import { MapGeoJSONFeature, MapSourceDataEvent } from 'maplibre-gl';
 import { fromEvent, merge, Subscription } from 'rxjs';
 import { filter, startWith, switchMap } from 'rxjs/operators';
 import { MapService } from '../map/map.service';
@@ -75,7 +75,7 @@ export class MarkersForClustersComponent
   @ContentChild(ClusterPointDirective, { read: TemplateRef, static: false })
   clusterPointTpl: TemplateRef<any>;
 
-  clusterPoints: GeoJSONFeature[]; // Incorrect typings
+  clusterPoints: MapGeoJSONFeature[];
   layerId = `mgl-markers-for-clusters-${uniqId++}`;
 
   private sub = new Subscription();
@@ -123,7 +123,6 @@ export class MarkersForClustersComponent
   }
 
   private updateCluster() {
-    // Invalid queryRenderedFeatures typing
     const params: any = { layers: [this.layerId] };
     if (!this.pointTpl) {
       params.filter = ['==', 'cluster', true];

@@ -6,7 +6,7 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
-import { ScaleControl, ScaleOptions } from 'maplibre-gl';
+import { ScaleControl, ScaleControlOptions } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
 
@@ -39,7 +39,7 @@ export class ScaleControlDirective implements AfterContentInit, OnChanges {
       if (this.controlComponent.control) {
         throw new Error('Another control is already set for this control');
       }
-      const options: ScaleOptions = {};
+      const options: ScaleControlOptions = {};
       if (this.maxWidth !== undefined) {
         options.maxWidth = this.maxWidth;
       }
