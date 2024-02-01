@@ -539,17 +539,9 @@ export class MapService {
     url: string,
     options?: MapImageOptions
   ) {
-    return this.zone.runOutsideAngular(() => {
-      return new Promise<void>((resolve, reject) => {
-        this.mapInstance.loadImage(url, (error: any, image: any) => {
-          if (error) {
-            reject(error);
-            return;
-          }
-          this.addImage(imageId, image, options);
-          resolve();
-        });
-      });
+    return this.zone.runOutsideAngular(async () => {
+        const image = await this.mapInstance.loadImage(url);
+        this.addImage(imageId, image.data, options);
     });
   }
 
