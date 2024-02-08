@@ -67,6 +67,7 @@ export interface SetupMarker {
     rotationAlignment?: MarkerOptions['rotationAlignment'];
     offset?: MarkerOptions['offset'];
     anchor?: MarkerOptions['anchor'];
+    color?: MarkerOptions['color'];
     draggable?: MarkerOptions['draggable'];
     element: HTMLElement;
     feature?: GeoJSON.Feature<GeoJSON.Point>;
@@ -407,6 +408,7 @@ export class MapService {
     const options: MarkerOptions = {
       offset: marker.markersOptions.offset,
       anchor: marker.markersOptions.anchor,
+      color: marker.markersOptions.color,
       draggable: !!marker.markersOptions.draggable,
       rotationAlignment: marker.markersOptions.rotationAlignment,
       pitchAlignment: marker.markersOptions.pitchAlignment,
