@@ -424,6 +424,7 @@ Note: Only use this if you **really** need to use HTML/Angular component to rend
 Init only:
 
 - **offset**: [`PointLike`](https://maplibre.org/maplibre-gl-js/docs/API/types/maplibregl.PointLike/)
+- **color**: `string`
 - **anchor**: `'center' | 'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'`
 - **pitchAlignment**: `map` | `viewport` | `auto`
 - **rotationAlignment**: `map` | `viewport` | `auto`

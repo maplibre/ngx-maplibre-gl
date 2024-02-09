@@ -29,6 +29,7 @@ export class MarkerComponent
   @Input() offset?: MarkerOptions['offset'];
   @Input() anchor?: MarkerOptions['anchor'];
   @Input() clickTolerance?: MarkerOptions['clickTolerance'];
+  @Input() color?: MarkerOptions['color'];
 
   /* Dynamic input */
   @Input() feature?: GeoJSON.Feature<GeoJSON.Point>;
@@ -93,6 +94,7 @@ export class MarkerComponent
         markersOptions: {
           offset: this.offset,
           anchor: this.anchor,
+          color: this.color,
           pitchAlignment: this.pitchAlignment,
           rotationAlignment: this.rotationAlignment,
           draggable: !!this.draggable,
