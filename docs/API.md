@@ -432,6 +432,7 @@ Init only:
 Dynamic:
 
 - **lngLat**: [`LngLatLike`](https://maplibre.org/maplibre-gl-js/docs/API/types/maplibregl.LngLatLike/)
+- **rotation**: `number`
 - **draggable**: `boolean`
 - [ngx] **feature**: `GeoJSON.Feature<GeoJSON.Point>` Mutually exclusive with lngLat
 - [ngx] **className** `string` Class name to aply to the container
