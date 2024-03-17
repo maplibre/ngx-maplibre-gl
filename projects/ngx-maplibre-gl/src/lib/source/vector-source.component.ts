@@ -12,6 +12,12 @@ import { fromEvent, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { MapService } from '../map/map.service';
 
+/**
+ * `mgl-vector-source` - a vector source component
+ * @see [vector](https://maplibre.org/maplibre-style-spec/sources/#vector)
+ * 
+ * @category Source Components
+ */
 @Component({
   selector: 'mgl-vector-source',
   template: '',

@@ -9,6 +9,12 @@ import {
 } from '@angular/core';
 import { GeoJSONSourceComponent } from './geojson-source.component';
 
+/**
+ * `mgl-feature` - a feature component
+ * [ngx] inside {@link GeoJSONSourceComponent} only
+ * 
+ * @category Source Components
+ */
 @Component({
     selector: 'mgl-feature',
     template: '',
@@ -17,9 +23,11 @@ import { GeoJSONSourceComponent } from './geojson-source.component';
 })
 export class FeatureComponent
   implements OnInit, OnDestroy, GeoJSON.Feature<GeoJSON.GeometryObject> {
-  /* Init inputs */
+  /** Init input */
   @Input() id?: number; // FIXME number only for now https://github.com/mapbox/mapbox-gl-js/issues/2716
+  /** Init input */
   @Input() geometry: GeoJSON.GeometryObject;
+  /** Init input */
   @Input() properties: any;
   type: 'Feature' = 'Feature';
 

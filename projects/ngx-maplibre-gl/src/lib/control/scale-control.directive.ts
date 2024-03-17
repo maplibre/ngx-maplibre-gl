@@ -10,6 +10,11 @@ import { ScaleControl, ScaleControlOptions } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
 
+/**
+ * `mglScale` - a scale control directive
+ * 
+ * @category Directives
+ */
 @Directive({
   selector: '[mglScale]',
   standalone: true,

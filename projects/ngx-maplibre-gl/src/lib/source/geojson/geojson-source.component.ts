@@ -13,6 +13,34 @@ import { fromEvent, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 import { MapService } from '../../map/map.service';
 
+/**
+ * `mgl-geojson-source` - a geojson source component 
+ * @see [geojson](https://maplibre.org/maplibre-gl-js/docs/API/classes/maplibregl.GeoJSONSource/)
+ * 
+ * @category Source Components
+ * 
+ * @example
+ * ```html
+ * ...
+ * <mgl-map ...>
+ *   <mgl-geojson-source id="symbols-source">
+ *     <mgl-feature
+ *       *ngFor="let geometry of geometries"
+ *       [geometry]="geometry"
+ *     ></mgl-feature>
+ *   </mgl-geojson-source>
+ *   ...
+ *   <mgl-geojson-source
+ *     id="earthquakes"
+ *     [data]="earthquakes"
+ *     [cluster]="true"
+ *     [clusterMaxZoom]="14"
+ *     [clusterRadius]="50"
+ *   ></mgl-geojson-source>
+ * </mgl-map>
+ * 
+ * ```
+ */
 @Component({
     selector: 'mgl-geojson-source',
     template: '',
@@ -21,25 +49,39 @@ import { MapService } from '../../map/map.service';
 })
 export class GeoJSONSourceComponent
   implements OnInit, OnDestroy, OnChanges, GeoJSONSourceSpecification {
-  /* Init inputs */
+  /** Init input */
   @Input() id: string;
 
-  /* Dynamic inputs */
+  /** Dynamic input */
   @Input() data: GeoJSONSourceSpecification['data'];
+  /** Dynamic input */
   @Input() maxzoom?: GeoJSONSourceSpecification['maxzoom'];
+  /** Dynamic input */
   @Input() attribution?: GeoJSONSourceSpecification['attribution'];
+  /** Dynamic input */
   @Input() buffer?: GeoJSONSourceSpecification['buffer'];
+  /** Dynamic input */
   @Input() tolerance?: GeoJSONSourceSpecification['tolerance'];
+  /** Dynamic input */
   @Input() cluster?: GeoJSONSourceSpecification['cluster'];
+  /** Dynamic input */
   @Input() clusterRadius?: GeoJSONSourceSpecification['clusterRadius'];
+  /** Dynamic input */
   @Input() clusterMaxZoom?: GeoJSONSourceSpecification['clusterMaxZoom'];
+  /** Dynamic input */
   @Input() clusterMinPoints?: GeoJSONSourceSpecification['clusterMinPoints'];
+  /** Dynamic input */
   @Input() clusterProperties?: GeoJSONSourceSpecification['clusterProperties'];
+  /** Dynamic input */
   @Input() lineMetrics?: GeoJSONSourceSpecification['lineMetrics'];
+  /** Dynamic input */
   @Input() generateId?: GeoJSONSourceSpecification['generateId'];
+  /** Dynamic input */
   @Input() promoteId?: GeoJSONSourceSpecification['promoteId'];
+  /** Dynamic input */
   @Input() filter?: GeoJSONSourceSpecification['filter'];
 
+  /** @hidden */
   type: GeoJSONSourceSpecification['type'] = 'geojson';
 
   updateFeatureData = new Subject();

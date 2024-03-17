@@ -10,7 +10,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng run showcase:cypress-run",
-    "cypress:open": "ng run showcase:cypress-open"
+    "cypress:open": "ng run showcase:cypress-open",
+    "docs": "typedoc --entryPoints ./projects/ngx-maplibre-gl/src/public_api.ts --tsconfig ./projects/ngx-maplibre-gl/tsconfig.lib.json --out dist/showcase/API --treatWarningsAsErrors"
   },
   "private": true,
   "engines": {
@@ -78,6 +79,7 @@
     "pngjs": "^7.0.0",
     "standard-version": "^9.5.0",
     "ts-node": "^10.9.1",
+    "typedoc": "^0.25.12",
     "typescript": "^5.2.2"
   },
   "config": {

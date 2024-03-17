@@ -32,6 +32,33 @@ import { MapService, MovingOptions } from './map.service';
 import { MapEvent, EventData } from './map.types';
 import { Subscription, firstValueFrom } from 'rxjs';
 
+/**
+ * `mgl-map` - The main map component
+ * @see [Map](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/)
+ * 
+ * @category Map Component
+ * 
+ * @example
+ * ```typescript
+ * ...
+ * @Component({
+ *   template: `
+ *   <mgl-map
+ *     [style]="'https://demotiles.maplibre.org/style.json'"
+ *     [zoom]="[9]"
+ *     [center]="[-74.50, 40]"
+ *     (mapLoad)="map = $event"
+ *   ></mgl-map>
+ *   `,
+ * ...
+ * })
+ * export class DisplayMapComponent {
+ *   map: Map; // MapLibre GL Map object (MapLibre is ran outside angular zone, keep that in mind when binding events from this object)
+ * ...
+ * }
+ * ```
+ */
+
 @Component({
   selector: 'mgl-map',
   template: '<div #container></div>',
@@ -57,57 +84,100 @@ export class MapComponent
     AfterViewInit,
     Omit<MapOptions, 'bearing' | 'container' | 'pitch' | 'zoom'>,
     MapEvent {
-  /* Init inputs */
+  /** Init input */
   @Input() collectResourceTiming?: MapOptions['collectResourceTiming'];
+  /** Init input */
   @Input() crossSourceCollisions?: MapOptions['crossSourceCollisions'];
+  /** Init input */
   @Input() customMapboxApiUrl?: string;
+  /** Init input */
   @Input() fadeDuration?: MapOptions['fadeDuration'];
+  /** Init input */
   @Input() hash?: MapOptions['hash'];
+  /** Init input */
   @Input() refreshExpiredTiles?: MapOptions['refreshExpiredTiles'];
+  /** Init input */
   @Input()
   failIfMajorPerformanceCaveat?: MapOptions['failIfMajorPerformanceCaveat'];
+  /** Init input */
   @Input() bearingSnap?: MapOptions['bearingSnap'];
+  /** Init input */
   @Input() interactive?: MapOptions['interactive'];
+  /** Init input */
   @Input() pitchWithRotate?: MapOptions['pitchWithRotate'];
+  /** Init input */
   @Input() clickTolerance?: MapOptions['clickTolerance'];
+  /** Init input */
   @Input() attributionControl?: MapOptions['attributionControl'];
+  /** Init input */
   @Input() logoPosition?: MapOptions['logoPosition'];
+  /** Init input */
   @Input() maxTileCacheSize?: MapOptions['maxTileCacheSize'];
+  /** Init input */
   @Input() localIdeographFontFamily?: MapOptions['localIdeographFontFamily'];
+  /** Init input */
   @Input() preserveDrawingBuffer?: MapOptions['preserveDrawingBuffer'];
+  /** Init input */
   @Input() trackResize?: MapOptions['trackResize'];
+  /** Init input */
   @Input() transformRequest?: MapOptions['transformRequest'];
+  /** Init input */
   @Input() bounds?: MapOptions['bounds']; // Use fitBounds for dynamic input
+  /** Init input */
   @Input() antialias?: MapOptions['antialias'];
+  /** Init input */
   @Input() locale: MapOptions['locale'];
+  /** Init inputs */
   @Input() cooperativeGestures?: MapOptions['cooperativeGestures'];
 
-  /* Dynamic inputs */
+  /** Dynamic input */
   @Input() minZoom?: MapOptions['minZoom'];
+  /** Dynamic input */
   @Input() maxZoom?: MapOptions['maxZoom'];
+  /** Dynamic input */
   @Input() minPitch?: MapOptions['minPitch'];
+  /** Dynamic input */
   @Input() maxPitch?: MapOptions['maxPitch'];
+  /** Dynamic input */
   @Input() scrollZoom?: MapOptions['scrollZoom'];
+  /** Dynamic input */
   @Input() dragRotate?: MapOptions['dragRotate'];
+  /** Dynamic input */
   @Input() touchPitch?: MapOptions['touchPitch'];
+  /** Dynamic input */
   @Input() touchZoomRotate?: MapOptions['touchZoomRotate'];
+  /** Dynamic input */
   @Input() doubleClickZoom?: MapOptions['doubleClickZoom'];
+  /** Dynamic input */
   @Input() keyboard?: MapOptions['keyboard'];
+  /** Dynamic input */
   @Input() dragPan?: MapOptions['dragPan'];
+  /** Dynamic input */
   @Input() boxZoom?: MapOptions['boxZoom'];
+  /** Dynamic input */
   @Input() style: MapOptions['style'];
+  /** Dynamic input */
   @Input() center?: MapOptions['center'];
+  /** Dynamic input */
   @Input() maxBounds?: MapOptions['maxBounds'];
+  /** Dynamic input */
   @Input() zoom?: [number];
+  /** Dynamic input */
   @Input() bearing?: [number];
+  /** Dynamic input */
   @Input() pitch?: [number];
+  /** Dynamic input */
   @Input() fitBoundsOptions?: MapOptions['fitBoundsOptions']; // First value goes to options.fitBoundsOptions. Subsequents changes are passed to fitBounds
+  /** Dynamic input */
   @Input() renderWorldCopies?: MapOptions['renderWorldCopies'];
-
-  /* Added by ngx-mapbox-gl */
-  @Input() movingMethod: 'jumpTo' | 'easeTo' | 'flyTo' = 'flyTo';
-  @Input() movingOptions?: MovingOptions;
+  /** Dynamic input */
   @Input() terrain: TerrainSpecification;
+
+  /** Added by ngx-mapbox-gl */
+  @Input() movingMethod: 'jumpTo' | 'easeTo' | 'flyTo' = 'flyTo';
+  /** Added by ngx-mapbox-gl */
+  @Input() movingOptions?: MovingOptions;
+  
 
   // => First value is a alias to bounds input (since mapbox 0.53.0). Subsequents changes are passed to fitBounds
   @Input() fitBounds?: LngLatBoundsLike;

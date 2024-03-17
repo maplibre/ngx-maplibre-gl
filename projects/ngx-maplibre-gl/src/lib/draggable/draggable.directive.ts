@@ -16,6 +16,11 @@ import { LayerComponent } from '../layer/layer.component';
 import { MapService } from '../map/map.service';
 import { FeatureComponent } from '../source/geojson/feature.component';
 
+/**
+ * `mglDraggable` - a directive for Feature or Marker
+ * 
+ * @category Directives
+ */
 @Directive({
   selector: '[mglDraggable]',
   standalone: true,

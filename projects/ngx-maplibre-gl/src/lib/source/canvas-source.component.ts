@@ -7,23 +7,17 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { CanvasSource } from 'maplibre-gl';
+import { CanvasSource, CanvasSourceSpecification } from 'maplibre-gl';
 import { fromEvent, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { MapService } from '../map/map.service';
 
-interface CanvasSourceSpecification {
-  type: 'canvas';
-  coordinates: [
-    [number, number],
-    [number, number],
-    [number, number],
-    [number, number]
-  ];
-  animate?: boolean;
-  canvas: string | HTMLCanvasElement;
-}
-
+/**
+ * `mgl-canvas-source` - a canvas source component
+ * @see [canvas](https://maplibre.org/maplibre-style-spec/sources/#canvas)
+ * 
+ * @category Source Components
+ */
 @Component({
   selector: 'mgl-canvas-source',
   template: '',
@@ -32,12 +26,14 @@ interface CanvasSourceSpecification {
 })
 export class CanvasSourceComponent
   implements OnInit, OnDestroy, OnChanges, CanvasSourceSpecification {
-  /* Init inputs */
+  /**  Init input */
   @Input() id: string;
 
-  /* Dynamic inputs */
+  /** Dynamic input */
   @Input() coordinates: CanvasSourceSpecification['coordinates'];
+  /** Dynamic input */
   @Input() canvas: CanvasSourceSpecification['canvas'];
+  /** Dynamic input */
   @Input() animate?: CanvasSourceSpecification['animate'];
 
   type: CanvasSourceSpecification['type'] = 'canvas';

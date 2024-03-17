@@ -9,6 +9,11 @@ import { FullscreenControl } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
 
+/**
+ * `mglFullscreen` - a fullscreen control directive
+ * 
+ * @category Directives
+ */
 @Directive({
   selector: '[mglFullscreen]',
   standalone: true,

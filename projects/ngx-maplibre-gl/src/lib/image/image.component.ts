@@ -14,18 +14,51 @@ import { filter, startWith, switchMap } from 'rxjs/operators';
 import { MapService } from '../map/map.service';
 import { MapImageData, MapImageOptions } from '../map/map.types';
 
+/**
+ * `mgl-image` - an image component
+ * @see [addImage](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#addimage)
+ * 
+ * @category Components
+ * 
+ * @example
+ * ```html
+ * ...
+ * <mgl-map
+ *   ...
+ * >
+ *    <mgl-image
+ *      id="image"
+ *      url="https://..."
+ *      (imageLoaded)="imageLoaded = true"
+ *    >
+ *    ...
+ *    <mgl-image
+ *      id="image2"
+ *      [data]="{
+ *        width: 64,
+ *        height: 64,
+ *        data: imageData
+ *      }"
+ *    >
+ * </mgl-map>
+ * ...
+ * imageData: Uint8Array;
+ * ```
+ */
 @Component({
   selector: 'mgl-image',
   template: '',
   standalone: true,
 })
 export class ImageComponent implements OnInit, OnDestroy, OnChanges {
-  /* Init inputs */
+  /** Init input */
   @Input() id: string;
 
-  /* Dynamic inputs */
+  /** Dynamic input */
   @Input() data?: MapImageData;
+  /** Dynamic input */
   @Input() options?: MapImageOptions;
+  /** Dynamic input */
   @Input() url?: string;
 
   @Output() imageError = new EventEmitter<{ status: number }>();

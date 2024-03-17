@@ -11,6 +11,11 @@ import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
 import { Position } from '../map/map.types';
 
+/**
+ * `mglGeolocate` - a geolocate control directive
+ * 
+ * @category Directives
+ */
 @Directive({
   selector: '[mglGeolocate]',
   standalone: true,

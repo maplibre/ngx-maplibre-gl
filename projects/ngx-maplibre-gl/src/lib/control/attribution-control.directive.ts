@@ -3,13 +3,19 @@ import { AttributionControl } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
 
+/**
+ * `mglAttribution` - an attribution control directive
+ * 
+ * @category Directives
+ */
 @Directive({
   selector: '[mglAttribution]',
   standalone: true,
 })
 export class AttributionControlDirective implements AfterContentInit {
-  /* Init inputs */
+  /** Init input */
   @Input() compact?: boolean;
+  /** Init input */
   @Input() customAttribution?: string | string[];
 
   constructor(

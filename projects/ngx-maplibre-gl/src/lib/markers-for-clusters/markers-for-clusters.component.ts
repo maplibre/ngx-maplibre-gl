@@ -18,12 +18,22 @@ import { MarkerComponent } from '../marker/marker.component';
 import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { LayerComponent } from '../layer/layer.component';
 
+/**
+ * a template directive for point for {@link MarkersForClustersComponent}
+ * 
+ * @category Directives
+ */
 @Directive({
   selector: 'ng-template[mglPoint]',
   standalone: true,
 })
 export class PointDirective {}
 
+/**
+ * a template directive for clustered point for {@link MarkersForClustersComponent}
+ * 
+ * @category Directives
+ */
 @Directive({
   selector: 'ng-template[mglClusterPoint]',
   standalone: true,
@@ -32,7 +42,29 @@ export class ClusterPointDirective {}
 
 let uniqId = 0;
 
-@Component({
+/**
+ * [ngx] `mgl-markers-for-clusters` - an HTML marker component for clustered points.
+ * Requires a geojson source that is clustered.
+ * 
+ * @category Components
+ * 
+ * @example
+ * ```html
+ * ...
+ * <mgl-map ...>
+ *   <mgl-markers-for-cluster [source]="myGeoJsonclusteredSource">
+ *     <ng-template mglPoint let-feature> Marker! </ng-template>
+ *     <ng-template mglClusterPoint let-feature>
+ *       ClusterId: {{feature.properties?.cluster_id}}, Points:
+ *       {{feature.properties?.point_count}}
+ *     </ng-template>
+ *   </mgl-markers-for-cluster>
+ * </mgl-map>
+ * ```
+ * 
+ * Note: Only use this if you **really** need to use HTML/Angular component to render your symbols. This is **slower** than rendering symbols in WebGL.
+ */ 
+ @Component({
   selector: 'mgl-markers-for-clusters',
   template: `
     <mgl-layer
@@ -67,15 +99,19 @@ let uniqId = 0;
 })
 export class MarkersForClustersComponent
   implements OnDestroy, AfterContentInit {
-  /* Init input */
+  /** Init input */
   @Input() source: string;
 
+  /** @hidden */
   @ContentChild(PointDirective, { read: TemplateRef, static: false })
   pointTpl?: TemplateRef<any>;
+  /** @hidden */
   @ContentChild(ClusterPointDirective, { read: TemplateRef, static: false })
   clusterPointTpl: TemplateRef<any>;
 
+  /** @hidden */
   clusterPoints: MapGeoJSONFeature[];
+  /** @hidden */
   layerId = `mgl-markers-for-clusters-${uniqId++}`;
 
   private sub = new Subscription();

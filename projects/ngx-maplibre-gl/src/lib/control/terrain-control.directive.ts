@@ -3,6 +3,11 @@ import { TerrainControl, TerrainSpecification } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
 
+/**
+ * `mglTerrain` - a terrain control directive
+ * 
+ * @category Directives
+ */
 @Directive({
   selector: '[mglTerrain]',
   standalone: true,
