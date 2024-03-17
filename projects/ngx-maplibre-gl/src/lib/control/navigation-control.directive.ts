@@ -3,6 +3,14 @@ import { NavigationControl } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
 
+/**
+ * `mglNavigation` - a navigation control directive
+ * 
+ * @category Directives
+ * 
+ * @see [Navigation](https://maplibre.org/ngx-maplibre-gl/demo/navigation)
+ * @see [NavigationControl](https://maplibre.org/maplibre-gl-js/docs/API/classes/NavigationControl)
+ */
 @Directive({
   selector: '[mglNavigation]',
   standalone: true,

@@ -16,6 +16,13 @@ import { LayerComponent } from '../layer/layer.component';
 import { MapService } from '../map/map.service';
 import { FeatureComponent } from '../source/geojson/feature.component';
 
+/**
+ * `mglDraggable` - a directive for Feature or Marker
+ * 
+ * @category Directives
+ * 
+ * @see [Draggable Marker](https://maplibre.org/ng-maplibre-gl/demo/ngx-drag-a-point)
+ */
 @Directive({
   selector: '[mglDraggable]',
   standalone: true,

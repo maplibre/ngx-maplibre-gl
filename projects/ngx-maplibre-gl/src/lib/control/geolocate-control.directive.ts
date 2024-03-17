@@ -11,6 +11,14 @@ import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
 import { Position } from '../map/map.types';
 
+/**
+ * `mglGeolocate` - a geolocate control directive
+ * 
+ * @category Directives
+ * 
+ * @see [Locate user](https://maplibre.org/ngx-maplibre-gl/demo/locate-user)
+ * @see [GeolocateControl](https://maplibre.org/maplibre-gl-js/docs/API/classes/GeolocateControl)
+ */
 @Directive({
   selector: '[mglGeolocate]',
   standalone: true,

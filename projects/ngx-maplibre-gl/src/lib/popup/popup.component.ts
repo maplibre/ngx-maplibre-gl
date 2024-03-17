@@ -16,6 +16,25 @@ import { LngLatLike, Offset, Popup, PopupOptions } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { MarkerComponent } from '../marker/marker.component';
 
+/**
+ * `mgl-popup` - a popup component
+ * @see [Popup](https://maplibre.org/maplibre-gl-js/docs/API/classes/Popup/)
+ * 
+ * @category Components
+ * 
+ * @example
+ * ```html
+ * ...
+ * <mgl-map ...>
+ *   <mgl-popup [lngLat]="[-96, 37.8]" [closeOnClick]="false">
+ *     <h1>Hello world !</h1>
+ *   </mgl-popup>
+ *   ...
+ *   <mgl-marker #myMarker ...> ... </mgl-marker>
+ *   <mgl-popup [marker]="myMarker"> Hello from marker ! </mgl-popup>
+ * </mgl-map>
+ * ```
+ */
 @Component({
   selector: 'mgl-popup',
   template: '<div #content data-cy="mgl-popup"><ng-content></ng-content></div>',
@@ -25,24 +44,40 @@ import { MarkerComponent } from '../marker/marker.component';
 export class PopupComponent
   implements OnChanges, OnDestroy, AfterViewInit, OnInit
 {
-  /* Init input */
+  /** Init input */
   @Input() closeButton?: PopupOptions['closeButton'];
+  /** Init input */
   @Input() closeOnClick?: PopupOptions['closeOnClick'];
+  /** Init input */
   @Input() closeOnMove?: PopupOptions['closeOnMove'];
+  /** Init input */
   @Input() focusAfterOpen?: PopupOptions['focusAfterOpen'];
+  /** Init input */
   @Input() anchor?: PopupOptions['anchor'];
+  /** Init input */
   @Input() className?: PopupOptions['className'];
+  /** Init input */
   @Input() maxWidth?: PopupOptions['maxWidth'];
 
-  /* Dynamic input */
+  /** 
+   * Dynamic input [ngx]
+   * Mutually exclusive with `lngLat`
+   */
   @Input() feature?: GeoJSON.Feature<GeoJSON.Point>;
+  /** Dynamic input */
   @Input() lngLat?: LngLatLike;
+  /** 
+   * Dynamic input [ngx]
+   * The targeted marker
+   */
   @Input() marker?: MarkerComponent;
+  /** Dynamic input */
   @Input() offset?: Offset;
 
   @Output() popupClose = new EventEmitter<void>();
   @Output() popupOpen = new EventEmitter<void>();
 
+  /** @hidden */
   @ViewChild('content', { static: true }) content: ElementRef;
 
   popupInstance?: maplibregl.Popup;

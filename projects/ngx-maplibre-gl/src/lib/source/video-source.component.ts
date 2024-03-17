@@ -12,6 +12,12 @@ import { fromEvent, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { MapService } from '../map/map.service';
 
+/**
+ * `mgl-video-source` - a video source 
+ * @see [video](https://maplibre.org/maplibre-style-spec/sources/#video)
+ * 
+ * @category Source Components
+ */
 @Component({
   selector: 'mgl-video-source',
   template: '',
@@ -20,13 +26,15 @@ import { MapService } from '../map/map.service';
 })
 export class VideoSourceComponent
   implements OnInit, OnDestroy, OnChanges, VideoSourceSpecification {
-  /* Init inputs */
+  /** Init input */
   @Input() id: string;
 
-  /* Dynamic inputs */
+  /** Dynamic input */
   @Input() urls: VideoSourceSpecification['urls'];
+  /** Dynamic input */
   @Input() coordinates: VideoSourceSpecification['coordinates'];
 
+  /** @hidden */
   type: VideoSourceSpecification['type'] = 'video';
 
   private sourceAdded = false;

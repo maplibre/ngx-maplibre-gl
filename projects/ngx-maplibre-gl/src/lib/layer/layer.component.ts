@@ -19,6 +19,28 @@ import { filter, map, startWith, switchMap } from 'rxjs/operators';
 import { MapService, SetupLayer } from '../map/map.service';
 import { EventData, LayerEvents } from '../map/map.types';
 
+/**
+ * `mgl-layer` - a layer component
+ * @see [layers](https://maplibre.org/maplibre-style-spec/layers/)
+ * 
+ * @category Layer Component
+ * 
+ * @example
+ * ```html
+ * ...
+ * <mgl-map ...>
+ *   <mgl-layer
+ *     id="state-borders"
+ *     type="line"
+ *     [source]="states"
+ *     [paint]="{
+ *       'line-color': '#627BC1',
+ *       'line-width': 2
+ *     }"
+ *   ></mgl-layer>
+ * </mgl-map>
+ * ```
+ */
 @Component({
   selector: 'mgl-layer',
   template: '',
@@ -26,23 +48,34 @@ import { EventData, LayerEvents } from '../map/map.types';
 })
 export class LayerComponent
   implements OnInit, OnDestroy, OnChanges, LayerEvents {
-  /* Init inputs */
+  /** Init input */
   @Input() id: LayerSpecification['id'];
+  /** Init input */
   @Input() source?: string;
+  /** Init input */
   @Input() type: LayerSpecification['type'];
+  /** Init input */
   @Input() metadata?: LayerSpecification['metadata'];
+  /** Init input */
   @Input() sourceLayer?: string;
   /**
    * A flag to enable removeSource clean up functionality
+   * 
+   * Init input
    */
   @Input() removeSource?: boolean;
 
-  /* Dynamic inputs */
+  /** Dynamic input */
   @Input() filter?: FilterSpecification;
+  /** Dynamic input */
   @Input() layout?: LayerSpecification['layout'];
+  /** Dynamic input */
   @Input() paint?: LayerSpecification['paint'];
+  /** Dynamic input */
   @Input() before?: string;
+  /** Dynamic input */
   @Input() minzoom?: LayerSpecification['minzoom'];
+  /** Dynamic input */
   @Input() maxzoom?: LayerSpecification['maxzoom'];
 
   @Output() layerClick = new EventEmitter<MapLayerMouseEvent & EventData>();

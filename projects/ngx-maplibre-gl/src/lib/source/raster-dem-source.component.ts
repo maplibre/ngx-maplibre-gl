@@ -12,6 +12,12 @@ import { fromEvent, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { MapService } from '../map/map.service';
 
+/**
+ * `mgl-raster-dem-source` - a raster DEM source
+ * @see [raster DEM](https://maplibre.org/maplibre-style-spec/sources/#raster-dem)
+ * 
+ * @category Source Components
+ */
 @Component({
   selector: 'mgl-raster-dem-source',
   template: '',
@@ -20,19 +26,27 @@ import { MapService } from '../map/map.service';
 })
 export class RasterDemSourceComponent
   implements OnInit, OnDestroy, OnChanges, RasterDEMSourceSpecification {
-  /* Init inputs */
+  /** Init input */
   @Input() id: string;
 
-  /* Dynamic inputs */
+  /** Dynamic input */
   @Input() url?: RasterDEMSourceSpecification['url'];
+  /** Dynamic input */
   @Input() tiles?: RasterDEMSourceSpecification['tiles'];
+  /** Dynamic input */
   @Input() bounds?: RasterDEMSourceSpecification['bounds'];
+  /** Dynamic input */
   @Input() minzoom?: RasterDEMSourceSpecification['minzoom'];
+  /** Dynamic input */
   @Input() maxzoom?: RasterDEMSourceSpecification['maxzoom'];
+  /** Dynamic input */
   @Input() tileSize?: RasterDEMSourceSpecification['tileSize'];
+  /** Dynamic input */
   @Input() attribution?: RasterDEMSourceSpecification['attribution'];
+  /** Dynamic input */
   @Input() encoding?: RasterDEMSourceSpecification['encoding'];
 
+  /** @hidden */
   type: RasterDEMSourceSpecification['type'] = 'raster-dem';
 
   private sourceAdded = false;

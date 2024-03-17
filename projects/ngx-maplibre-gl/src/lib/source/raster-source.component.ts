@@ -12,6 +12,12 @@ import { fromEvent, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { MapService } from '../map/map.service';
 
+/**
+ * `mgl-raster-source` - a raster source component
+ * @see [raster](https://maplibre.org/maplibre-style-spec/sources/#raster)
+ * 
+ * @category Source Components
+ */
 @Component({
   selector: 'mgl-raster-source',
   template: '',
@@ -20,19 +26,27 @@ import { MapService } from '../map/map.service';
 })
 export class RasterSourceComponent
   implements OnInit, OnDestroy, OnChanges, RasterSourceSpecification {
-  /* Init inputs */
+  /** Init input */
   @Input() id: string;
 
-  /* Dynamic inputs */
+  /** Dynamic input */
   @Input() url?: RasterSourceSpecification['url'];
+  /** Dynamic input */
   @Input() tiles?: RasterSourceSpecification['tiles'];
+  /** Dynamic input */
   @Input() bounds?: RasterSourceSpecification['bounds'];
+  /** Dynamic input */
   @Input() minzoom?: RasterSourceSpecification['minzoom'];
+  /** Dynamic input */
   @Input() maxzoom?: RasterSourceSpecification['maxzoom'];
+  /** Dynamic input */
   @Input() tileSize?: RasterSourceSpecification['tileSize'];
+  /** Dynamic input */
   @Input() scheme?: RasterSourceSpecification['scheme'];
+  /** Dynamic input */
   @Input() attribution?: RasterSourceSpecification['attribution'];
 
+  /** @hidden */
   type: RasterSourceSpecification['type'] = 'raster';
 
   private sourceAdded = false;

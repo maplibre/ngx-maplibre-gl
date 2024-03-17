@@ -26,6 +26,30 @@ export class CustomControl implements IControl {
   }
 }
 
+/**
+ * `mgl-control` - a custom control component
+ * @see [Controls](https://maplibre.org/maplibre-gl-js/docs/API/interfaces/IControl/)
+ * 
+ * @category Components
+ * 
+ * @example
+ * ```html
+ * ...
+ * <mgl-map ...>
+ *   <mgl-control> Hello </mgl-control>
+ *   ...
+ *   <mgl-control mglNavigation></mgl-control>
+ *   ...
+ *   <mgl-control mglScale unit="imperial" position="top-right"></mgl-control>
+ *   ...
+ *   <mgl-control
+ *     mglTerrain
+ *     source="rasterDemSource"
+ *     exaggeration="3.1"
+ *   ></mgl-control>
+ * </mgl-map>
+ * ```
+ */
 @Component({
   selector: 'mgl-control',
   template: '<div class="maplibregl-ctrl" #content><ng-content></ng-content></div>',
@@ -34,9 +58,9 @@ export class CustomControl implements IControl {
 })
 export class ControlComponent<T extends IControl>
   implements OnDestroy, AfterContentInit {
-  /* Init inputs */
+  /** Init input */
   @Input() position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
-
+  /** @hidden */
   @ViewChild('content', { static: true }) content: ElementRef;
 
   control: T | CustomControl;

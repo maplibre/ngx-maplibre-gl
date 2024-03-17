@@ -16,6 +16,24 @@ import {
 import { LngLatLike, Marker, MarkerOptions } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 
+/**
+ * `mgl-marker` - a marker component
+ * @see [Marker](https://maplibre.org/maplibre-gl-js/docs/API/classes/Marker/)
+ * 
+ * @category Components
+ * 
+ * @example
+ * ```html
+ * ...
+ * <mgl-map ...>
+ *   <mgl-marker [lngLat]="[-66.324462890625, -16.024695711685304]">
+ *     <div (click)="alert('Foo')" class="marker">Hello</div>
+ *   </mgl-marker>
+ * </mgl-map>
+ * ```
+ * 
+ * Note: Only use this if you **really** need to use HTML/Angular component to render your symbol. These markers are slow compared to a `Layer` of symbol because they're not rendered using WebGL.
+ */
 @Component({
   selector: 'mgl-marker',
   template: '<div [class]="className" #content><ng-content></ng-content></div>',
