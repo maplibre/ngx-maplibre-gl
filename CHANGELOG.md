@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [17.4.2](https://github.com/maplibre/ngx-maplibre-gl/compare/v17.4.1...v17.4.2) (2024-03-17)
+
+- Add rotation to marker API
+- Generate API docs using typedoc
+
 ### [17.4.1](https://github.com/maplibre/ngx-maplibre-gl/compare/v17.4.0...v17.4.1) (2024-02-10)
 
 - Add color property to marker [#141](https://github.com/maplibre/ngx-maplibre-gl/pull/141)
