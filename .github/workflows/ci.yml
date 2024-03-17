@@ -45,6 +45,9 @@ jobs:
       - name: Build showcase
         run: npm run build:showcase
 
+      - name: Build docs
+        run: npm run docs
+
       - name: Run unit tests
         run: npm run test -- ngx-maplibre-gl --watch=false --no-progress --browsers=ChromeHeadless
         
