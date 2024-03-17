@@ -65,6 +65,7 @@ export interface SetupMarker {
   markersOptions: {
     pitchAlignment?: MarkerOptions['pitchAlignment'];
     rotationAlignment?: MarkerOptions['rotationAlignment'];
+    rotation?: MarkerOptions['rotation'];
     offset?: MarkerOptions['offset'];
     anchor?: MarkerOptions['anchor'];
     color?: MarkerOptions['color'];
@@ -411,6 +412,7 @@ export class MapService {
       color: marker.markersOptions.color,
       draggable: !!marker.markersOptions.draggable,
       rotationAlignment: marker.markersOptions.rotationAlignment,
+      rotation: marker.markersOptions.rotation,
       pitchAlignment: marker.markersOptions.pitchAlignment,
       clickTolerance: marker.markersOptions.clickTolerance,
     };

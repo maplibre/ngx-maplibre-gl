@@ -19,9 +19,7 @@ import { NgFor, NgStyle } from '@angular/common';
           class="marker"
           [ngStyle]="{
             'background-image':
-              'url(https://placekitten.com/g/' +
-              feature.properties.iconSize.join('/') +
-              '/)',
+              'url(/assets/ngx-maplibre-gl-red.svg)',
             width: feature.properties.iconSize[0] + 'px',
             height: feature.properties.iconSize[1] + 'px'
           }"

@@ -39,6 +39,7 @@ export class MarkerComponent
   @Input() className: string;
   @Input() pitchAlignment?: MarkerOptions['pitchAlignment'];
   @Input() rotationAlignment?: MarkerOptions['rotationAlignment'];
+  @Input() rotation?: MarkerOptions['rotation'];
 
   @Output() markerDragStart = new EventEmitter<Marker>();
   @Output() markerDragEnd = new EventEmitter<Marker>();
@@ -86,6 +87,14 @@ export class MarkerComponent
         changes.rotationAlignment.currentValue
       );
     }
+    if (
+      changes.rotation &&
+      !changes.rotation.isFirstChange()
+    ) {
+      this.markerInstance!.setRotation(
+        changes.rotation.currentValue
+      );
+    }
   }
 
   ngAfterViewInit() {
@@ -97,6 +106,7 @@ export class MarkerComponent
           color: this.color,
           pitchAlignment: this.pitchAlignment,
           rotationAlignment: this.rotationAlignment,
+          rotation: this.rotation,
           draggable: !!this.draggable,
           element: this.content.nativeElement,
           feature: this.feature,

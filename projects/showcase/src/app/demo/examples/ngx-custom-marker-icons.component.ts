@@ -16,21 +16,21 @@ import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
         <div
           (click)="alert('Foo')"
           class="marker"
-          style="background-image: url(https://placekitten.com/g/60/60/); width: 60px; height: 60px"
+          style="background-image: url(assets/ngx-maplibre-gl-red.svg); width: 60px; height: 60px"
         ></div>
       </mgl-marker>
       <mgl-marker [lngLat]="[-61.2158203125, -15.97189158092897]">
         <div
           (click)="alert('Bar')"
           class="marker"
-          style="background-image: url(https://placekitten.com/g/50/50/); width: 50px; height: 50px"
+          style="background-image: url(assets/ngx-maplibre-gl-red.svg); width: 50px; height: 50px"
         ></div>
       </mgl-marker>
       <mgl-marker [lngLat]="[-63.29223632812499, -18.28151823530889]">
         <div
           (click)="alert('Baz')"
           class="marker"
-          style="background-image: url(https://placekitten.com/g/40/40/); width: 40px; height: 40px"
+          style="background-image: url(assets/ngx-maplibre-gl-red.svg); width: 40px; height: 40px"
         ></div>
       </mgl-marker>
     </mgl-map>
