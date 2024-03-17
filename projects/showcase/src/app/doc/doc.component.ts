@@ -20,13 +20,8 @@ import { LayoutToolbarMenuComponent } from '../shared/layout/layout-toolbar-menu
       }
 
       iframe {
-        width: 60%;
+        width: 100%;
         border: none;
-      }
-      @media (max-width: 640px) {
-        iframe {
-          width: 100%;
-        }
       }
     `,
   ],

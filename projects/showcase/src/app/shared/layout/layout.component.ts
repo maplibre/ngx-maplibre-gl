@@ -15,8 +15,8 @@ import { MatMenuModule } from '@angular/material/menu';
         </a>
         <a mat-button routerLink="/" class="library-name"> ngx-maplibre-gl </a>
         <div class="menu-items">
-          <a mat-button routerLink="/demo"> Demo </a>
-          <a mat-button routerLink="/doc"> Documentation </a>
+          <a mat-button routerLink="/demo"> Examples </a>
+          <a mat-button routerLink="/doc"> API </a>
         </div>
       </div>
       <div>
