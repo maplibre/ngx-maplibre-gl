@@ -10,7 +10,7 @@ import 'prismjs/components/prism-typescript.min.js';
 
 @Component({
   template: `
-    <iframe src="https://www.maplibre.org/ngx-maplibre-gl/API"></iframe>
+    <iframe src="https://www.maplibre.org/ngx-maplibre-gl/API/modules.html"></iframe>
   `,
   styles: [
     `

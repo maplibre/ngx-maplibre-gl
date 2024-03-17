@@ -1,0 +1,9 @@
+{
+    "navigation": {
+        "includeCategories": true
+    },
+    "entryPoints": ["./projects/ngx-maplibre-gl/src/public_api.ts"],
+    "tsconfig": "./projects/ngx-maplibre-gl/tsconfig.lib.json",
+    "out": "dist/showcase/API",
+    "treatWarningsAsErrors": true
+}

@@ -11,7 +11,7 @@
     "lint": "ng lint",
     "e2e": "ng run showcase:cypress-run",
     "cypress:open": "ng run showcase:cypress-open",
-    "docs": "typedoc --entryPoints ./projects/ngx-maplibre-gl/src/public_api.ts --tsconfig ./projects/ngx-maplibre-gl/tsconfig.lib.json --out dist/showcase/API --treatWarningsAsErrors"
+    "docs": "typedoc"
   },
   "private": true,
   "engines": {
