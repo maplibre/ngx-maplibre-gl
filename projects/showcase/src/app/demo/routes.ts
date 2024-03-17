@@ -150,6 +150,17 @@ export const DEMO_ROUTES: Routes = [
         },
       },
       {
+        path: 'ngx-marker-rotate',
+        loadComponent: () =>
+          import('./examples/ngx-marker-rotate.component').then(
+            (m) => m.NgxMarkerRotateComponent
+          ),
+        data: {
+          label: '[NGX] Add marker and rotate it',
+          cat: Category.CONTROLS_AND_OVERLAYS,
+        },
+      },
+      {
         path: 'live-update-feature',
         loadComponent: () =>
           import('./examples/live-update-feature.component').then(
@@ -423,7 +434,7 @@ export const DEMO_ROUTES: Routes = [
       },
       {
         path: 'terrain-control',
-        loadComponent: () => 
+        loadComponent: () =>
           import('./examples/ngx-terrain-control.component').then(
             (m) => m.NgxTerrainSourceComponent
           ),
