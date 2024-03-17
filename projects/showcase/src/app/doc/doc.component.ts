@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { MarkdownComponent } from 'ngx-markdown';
 import { MatOptionModule } from '@angular/material/core';
 import { NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -41,7 +40,6 @@ import 'prismjs/components/prism-typescript.min.js';
     FormsModule,
     NgFor,
     MatOptionModule,
-    MarkdownComponent,
   ],
 })
 export class DocComponent {

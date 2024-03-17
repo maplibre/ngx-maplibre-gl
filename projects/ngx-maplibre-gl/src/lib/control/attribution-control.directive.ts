@@ -7,6 +7,9 @@ import { ControlComponent } from './control.component';
  * `mglAttribution` - an attribution control directive
  * 
  * @category Directives
+ * 
+ * @see [Add custom attribution](https://maplibre.org/ngx-maplibre-gl/demo/custom-attribution)
+ * @see [AttributionControl](https://maplibre.org/maplibre-gl-js/docs/API/classes/AttributionControl)
  */
 @Directive({
   selector: '[mglAttribution]',

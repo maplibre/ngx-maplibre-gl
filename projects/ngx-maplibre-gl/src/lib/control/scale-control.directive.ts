@@ -14,6 +14,9 @@ import { ControlComponent } from './control.component';
  * `mglScale` - a scale control directive
  * 
  * @category Directives
+ * 
+ * @see [Scale](https://maplibre.org/ngx-maplibre-gl/demo/ngx-scale-control)
+ * @see [ScaleControl](https://maplibre.org/maplibre-gl-js/docs/API/classes/ScaleControl)
  */
 @Directive({
   selector: '[mglScale]',
