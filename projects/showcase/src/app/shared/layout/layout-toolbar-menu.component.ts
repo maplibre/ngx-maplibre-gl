@@ -8,6 +8,7 @@ import {
   Input,
   OnDestroy,
   ViewChild,
+  afterNextRender,
 } from '@angular/core';
 
 @Component({
@@ -30,23 +31,28 @@ export class LayoutToolbarMenuComponent implements AfterViewInit, OnDestroy {
     private componentFactoryResolver: ComponentFactoryResolver,
     private injector: Injector,
     private appRef: ApplicationRef
-  ) {}
+  ) {
+
+    afterNextRender(() => {
+      this.portalOutlet = new DomPortalOutlet(
+        document.querySelector(
+          this.position === 'left'
+            ? '#layout-left-custom-items'
+            : '#layout-right-custom-items'
+        )!,
+        this.componentFactoryResolver,
+        this.appRef,
+        this.injector
+      );
+      this.portalOutlet.attach(this.portal);
+    })
+  }
 
   ngAfterViewInit() {
-    this.portalOutlet = new DomPortalOutlet(
-      document.querySelector(
-        this.position === 'left'
-          ? '#layout-left-custom-items'
-          : '#layout-right-custom-items'
-      )!,
-      this.componentFactoryResolver,
-      this.appRef,
-      this.injector
-    );
-    this.portalOutlet.attach(this.portal);
+    
   }
 
   ngOnDestroy() {
-    this.portalOutlet.detach();
+    // this.portalOutlet.detach();
   }
 }
