@@ -61,7 +61,7 @@
             "index": "projects/showcase/src/index.html",
             "browser": "projects/showcase/src/main.ts",
             "polyfills": [
-              "projects/showcase/src/polyfills.ts"
+              "projects/showcase/src/polyfills.ts", "zone.js"
             ],
             "tsConfig": "projects/showcase/tsconfig.app.json",
             "assets": [
