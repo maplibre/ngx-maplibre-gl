@@ -6,6 +6,7 @@ import {
   Input,
   OnDestroy,
   ViewChild,
+  afterNextRender,
 } from '@angular/core';
 import { ControlPosition, IControl } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
@@ -65,20 +66,24 @@ export class ControlComponent<T extends IControl>
 
   control: T | CustomControl;
 
-  constructor(private mapService: MapService) {}
+  constructor(private mapService: MapService) {
+    afterNextRender(() => {
+      if (this.content.nativeElement.childNodes.length) {
+        this.control = new CustomControl(this.content.nativeElement);
+        this.mapService.mapCreated$.subscribe(() => {
+          this.mapService.addControl(this.control!, this.position);
+        });
+      }
+    })
+  }
 
   ngAfterContentInit() {
-    if (this.content.nativeElement.childNodes.length) {
-      this.control = new CustomControl(this.content.nativeElement);
-      this.mapService.mapCreated$.subscribe(() => {
-        this.mapService.addControl(this.control!, this.position);
-      });
-    }
+   
   }
 
   ngOnDestroy() {
-    if (this.mapService.mapInstance.hasControl(this.control)) {
-      this.mapService.removeControl(this.control);
-    }
+    // if (this.mapService.mapInstance.hasControl(this.control)) {
+    //   this.mapService.removeControl(this.control);
+    // }
   }
 }
