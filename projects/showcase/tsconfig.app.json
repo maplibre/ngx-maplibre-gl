@@ -3,12 +3,21 @@
   "compilerOptions": {
     "outDir": "../../out-tsc/app",
     "resolveJsonModule": true,
-    "types": ["geojson"]
+    "types": [
+      "geojson",
+      "node"
+    ]
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "preserveWhitespaces": false
   },
-  "files": ["src/main.ts", "src/polyfills.ts"],
+  "files": [
+    "src/main.ts",
+    "src/polyfills.ts",
+    "src/main.server.ts",
+    "server.ts",
+    "server.ts"
+  ],
   "include": ["projects/showcase/src/**/*.d.ts"]
 }

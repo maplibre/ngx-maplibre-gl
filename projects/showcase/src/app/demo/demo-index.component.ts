@@ -6,6 +6,7 @@ import {
   OnInit,
   QueryList,
   ViewChildren,
+  afterNextRender,
 } from '@angular/core';
 import {
   MatSlideToggleChange,
@@ -90,6 +91,10 @@ export class DemoIndexComponent implements OnInit, AfterViewInit {
       Category.CONTROLS_AND_OVERLAYS,
       Category.TERRAIN,
     ];
+
+    afterNextRender(() => {
+      this.scrollInToActiveExampleLink();
+    })
   }
 
   ngOnInit() {
@@ -97,7 +102,7 @@ export class DemoIndexComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.scrollInToActiveExampleLink();
+    
   }
 
   toggleSidenav() {
