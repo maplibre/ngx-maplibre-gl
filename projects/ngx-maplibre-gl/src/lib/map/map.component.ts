@@ -10,6 +10,7 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
+  afterNextRender,
 } from '@angular/core';
 import {
   AnimationOptions,
@@ -277,74 +278,80 @@ export class MapComponent
 
   @ViewChild('container', { static: true }) mapContainer: ElementRef;
 
-  constructor(private mapService: MapService, private elementRef: ElementRef) {}
+  constructor(private mapService: MapService, private elementRef: ElementRef) {
+
+    afterNextRender(()=>{
+      if (this.preserveDrawingBuffer) { // This is to allow better interaction with the map state
+        const htmlElement: HTMLElement = this.elementRef.nativeElement;
+        htmlElement.setAttribute('data-cy', 'map');
+        this.subscriptions.push(this.mapLoad.subscribe(() => {
+          htmlElement.setAttribute('data-loaded', 'true');
+        }));
+        this.subscriptions.push(this.idle.subscribe(() => {
+          htmlElement.setAttribute('data-idle', 'true');
+        }));
+        this.subscriptions.push(this.render.subscribe(() => {
+          htmlElement.removeAttribute('data-idle');
+        }));
+      }
+      
+      this.mapService.setup({
+        mapOptions: {
+          collectResourceTiming: this.collectResourceTiming,
+          container: this.mapContainer.nativeElement,
+          crossSourceCollisions: this.crossSourceCollisions,
+          fadeDuration: this.fadeDuration,
+          minZoom: this.minZoom,
+          maxZoom: this.maxZoom,
+          minPitch: this.minPitch,
+          maxPitch: this.maxPitch,
+          style: this.style,
+          hash: this.hash,
+          interactive: this.interactive,
+          bearingSnap: this.bearingSnap,
+          pitchWithRotate: this.pitchWithRotate,
+          clickTolerance: this.clickTolerance,
+          attributionControl: this.attributionControl,
+          logoPosition: this.logoPosition,
+          failIfMajorPerformanceCaveat: this.failIfMajorPerformanceCaveat,
+          preserveDrawingBuffer: this.preserveDrawingBuffer,
+          refreshExpiredTiles: this.refreshExpiredTiles,
+          maxBounds: this.maxBounds,
+          scrollZoom: this.scrollZoom,
+          boxZoom: this.boxZoom,
+          dragRotate: this.dragRotate,
+          dragPan: this.dragPan,
+          keyboard: this.keyboard,
+          doubleClickZoom: this.doubleClickZoom,
+          touchPitch: this.touchPitch,
+          touchZoomRotate: this.touchZoomRotate,
+          trackResize: this.trackResize,
+          center: this.center,
+          zoom: this.zoom,
+          bearing: this.bearing,
+          pitch: this.pitch,
+          renderWorldCopies: this.renderWorldCopies,
+          maxTileCacheSize: this.maxTileCacheSize,
+          localIdeographFontFamily: this.localIdeographFontFamily,
+          transformRequest: this.transformRequest,
+          bounds: this.bounds ? this.bounds : this.fitBounds,
+          fitBoundsOptions: this.fitBoundsOptions,
+          antialias: this.antialias,
+          locale: this.locale,
+          cooperativeGestures: this.cooperativeGestures,
+          terrain: this.terrain,
+        },
+        mapEvents: this,
+      });
+      if (this.cursorStyle) {
+        this.mapService.changeCanvasCursor(this.cursorStyle);
+      }
+    })
+
+  }
 
   ngAfterViewInit() {
-    if (this.preserveDrawingBuffer) { // This is to allow better interaction with the map state
-      const htmlElement: HTMLElement = this.elementRef.nativeElement;
-      htmlElement.setAttribute('data-cy', 'map');
-      this.subscriptions.push(this.mapLoad.subscribe(() => {
-        htmlElement.setAttribute('data-loaded', 'true');
-      }));
-      this.subscriptions.push(this.idle.subscribe(() => {
-        htmlElement.setAttribute('data-idle', 'true');
-      }));
-      this.subscriptions.push(this.render.subscribe(() => {
-        htmlElement.removeAttribute('data-idle');
-      }));
-    }
-    
-    this.mapService.setup({
-      mapOptions: {
-        collectResourceTiming: this.collectResourceTiming,
-        container: this.mapContainer.nativeElement,
-        crossSourceCollisions: this.crossSourceCollisions,
-        fadeDuration: this.fadeDuration,
-        minZoom: this.minZoom,
-        maxZoom: this.maxZoom,
-        minPitch: this.minPitch,
-        maxPitch: this.maxPitch,
-        style: this.style,
-        hash: this.hash,
-        interactive: this.interactive,
-        bearingSnap: this.bearingSnap,
-        pitchWithRotate: this.pitchWithRotate,
-        clickTolerance: this.clickTolerance,
-        attributionControl: this.attributionControl,
-        logoPosition: this.logoPosition,
-        failIfMajorPerformanceCaveat: this.failIfMajorPerformanceCaveat,
-        preserveDrawingBuffer: this.preserveDrawingBuffer,
-        refreshExpiredTiles: this.refreshExpiredTiles,
-        maxBounds: this.maxBounds,
-        scrollZoom: this.scrollZoom,
-        boxZoom: this.boxZoom,
-        dragRotate: this.dragRotate,
-        dragPan: this.dragPan,
-        keyboard: this.keyboard,
-        doubleClickZoom: this.doubleClickZoom,
-        touchPitch: this.touchPitch,
-        touchZoomRotate: this.touchZoomRotate,
-        trackResize: this.trackResize,
-        center: this.center,
-        zoom: this.zoom,
-        bearing: this.bearing,
-        pitch: this.pitch,
-        renderWorldCopies: this.renderWorldCopies,
-        maxTileCacheSize: this.maxTileCacheSize,
-        localIdeographFontFamily: this.localIdeographFontFamily,
-        transformRequest: this.transformRequest,
-        bounds: this.bounds ? this.bounds : this.fitBounds,
-        fitBoundsOptions: this.fitBoundsOptions,
-        antialias: this.antialias,
-        locale: this.locale,
-        cooperativeGestures: this.cooperativeGestures,
-        terrain: this.terrain,
-      },
-      mapEvents: this,
-    });
-    if (this.cursorStyle) {
-      this.mapService.changeCanvasCursor(this.cursorStyle);
-    }
+  
   }
 
   ngOnDestroy() {
