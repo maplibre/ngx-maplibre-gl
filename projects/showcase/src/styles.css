@@ -1,5 +1,5 @@
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
-@import '~maplibre-gl/dist/maplibre-gl.css';
+@import 'maplibre-gl/dist/maplibre-gl.css';
 
 body {
   margin: 0;
