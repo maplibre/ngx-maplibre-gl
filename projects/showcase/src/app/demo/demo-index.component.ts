@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   ElementRef,
   NgZone,
@@ -59,7 +58,7 @@ type RoutesByCategory = { [P in Category]: Routes };
     RouterOutlet,
   ],
 })
-export class DemoIndexComponent implements OnInit, AfterViewInit {
+export class DemoIndexComponent implements OnInit {
   routes: RoutesByCategory;
   originalRoutes: RoutesByCategory;
   categories: Category[];
@@ -94,15 +93,11 @@ export class DemoIndexComponent implements OnInit, AfterViewInit {
 
     afterNextRender(() => {
       this.scrollInToActiveExampleLink();
-    })
+    });
   }
 
   ngOnInit() {
     this.routes = this.originalRoutes;
-  }
-
-  ngAfterViewInit() {
-    
   }
 
   toggleSidenav() {

@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
@@ -36,9 +35,9 @@ import { Subscription, firstValueFrom } from 'rxjs';
 /**
  * `mgl-map` - The main map component
  * @see [Map](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/)
- * 
+ *
  * @category Map Component
- * 
+ *
  * @example
  * ```typescript
  * ...
@@ -82,9 +81,9 @@ export class MapComponent
   implements
     OnChanges,
     OnDestroy,
-    AfterViewInit,
     Omit<MapOptions, 'bearing' | 'container' | 'pitch' | 'zoom'>,
-    MapEvent {
+    MapEvent
+{
   /** Init input */
   @Input() collectResourceTiming?: MapOptions['collectResourceTiming'];
   /** Init input */
@@ -178,7 +177,6 @@ export class MapComponent
   @Input() movingMethod: 'jumpTo' | 'easeTo' | 'flyTo' = 'flyTo';
   /** Added by ngx-mapbox-gl */
   @Input() movingOptions?: MovingOptions;
-  
 
   // => First value is a alias to bounds input (since mapbox 0.53.0). Subsequents changes are passed to fitBounds
   @Input() fitBounds?: LngLatBoundsLike;
@@ -279,22 +277,28 @@ export class MapComponent
   @ViewChild('container', { static: true }) mapContainer: ElementRef;
 
   constructor(private mapService: MapService, private elementRef: ElementRef) {
-
-    afterNextRender(()=>{
-      if (this.preserveDrawingBuffer) { // This is to allow better interaction with the map state
+    afterNextRender(() => {
+      if (this.preserveDrawingBuffer) {
+        // This is to allow better interaction with the map state
         const htmlElement: HTMLElement = this.elementRef.nativeElement;
         htmlElement.setAttribute('data-cy', 'map');
-        this.subscriptions.push(this.mapLoad.subscribe(() => {
-          htmlElement.setAttribute('data-loaded', 'true');
-        }));
-        this.subscriptions.push(this.idle.subscribe(() => {
-          htmlElement.setAttribute('data-idle', 'true');
-        }));
-        this.subscriptions.push(this.render.subscribe(() => {
-          htmlElement.removeAttribute('data-idle');
-        }));
+        this.subscriptions.push(
+          this.mapLoad.subscribe(() => {
+            htmlElement.setAttribute('data-loaded', 'true');
+          })
+        );
+        this.subscriptions.push(
+          this.idle.subscribe(() => {
+            htmlElement.setAttribute('data-idle', 'true');
+          })
+        );
+        this.subscriptions.push(
+          this.render.subscribe(() => {
+            htmlElement.removeAttribute('data-idle');
+          })
+        );
       }
-      
+
       this.mapService.setup({
         mapOptions: {
           collectResourceTiming: this.collectResourceTiming,
@@ -346,12 +350,7 @@ export class MapComponent
       if (this.cursorStyle) {
         this.mapService.changeCanvasCursor(this.cursorStyle);
       }
-    })
-
-  }
-
-  ngAfterViewInit() {
-  
+    });
   }
 
   ngOnDestroy() {

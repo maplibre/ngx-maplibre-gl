@@ -1,5 +1,4 @@
 import {
-  AfterContentInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
@@ -7,9 +6,11 @@ import {
   OnDestroy,
   ViewChild,
   afterNextRender,
+  inject,
 } from '@angular/core';
 import { ControlPosition, IControl } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
+import { Platform } from '@angular/cdk/platform';
 
 export class CustomControl implements IControl {
   constructor(private container: HTMLElement) {}
@@ -30,9 +31,9 @@ export class CustomControl implements IControl {
 /**
  * `mgl-control` - a custom control component
  * @see [Controls](https://maplibre.org/maplibre-gl-js/docs/API/interfaces/IControl/)
- * 
+ *
  * @category Components
- * 
+ *
  * @example
  * ```html
  * ...
@@ -53,18 +54,20 @@ export class CustomControl implements IControl {
  */
 @Component({
   selector: 'mgl-control',
-  template: '<div class="maplibregl-ctrl" #content><ng-content></ng-content></div>',
+  template:
+    '<div class="maplibregl-ctrl" #content><ng-content></ng-content></div>',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class ControlComponent<T extends IControl>
-  implements OnDestroy, AfterContentInit {
+export class ControlComponent<T extends IControl> implements OnDestroy {
   /** Init input */
   @Input() position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
   /** @hidden */
   @ViewChild('content', { static: true }) content: ElementRef;
 
   control: T | CustomControl;
+
+  private _isBrowser = inject(Platform).isBrowser;
 
   constructor(private mapService: MapService) {
     afterNextRender(() => {
@@ -74,16 +77,14 @@ export class ControlComponent<T extends IControl>
           this.mapService.addControl(this.control!, this.position);
         });
       }
-    })
-  }
-
-  ngAfterContentInit() {
-   
+    });
   }
 
   ngOnDestroy() {
-    // if (this.mapService.mapInstance.hasControl(this.control)) {
-    //   this.mapService.removeControl(this.control);
-    // }
+    if (this._isBrowser) {
+      if (this.mapService.mapInstance.hasControl(this.control)) {
+        this.mapService.removeControl(this.control);
+      }
+    }
   }
 }
