@@ -60,7 +60,7 @@
             "outputPath": "dist/showcase",
             "index": "projects/showcase/src/index.html",
             "browser": "projects/showcase/src/main.ts",
-            "polyfills": ["projects/showcase/src/polyfills.ts", "zone.js"],
+            "polyfills": ["zone.js"],
             "tsConfig": "projects/showcase/tsconfig.app.json",
             "assets": [
               "projects/showcase/src/favicon.ico",
