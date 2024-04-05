@@ -16,8 +16,7 @@
     "src/main.ts",
     "src/polyfills.ts",
     "src/main.server.ts",
-    "server.ts",
     "server.ts"
   ],
-  "include": ["projects/showcase/src/**/*.d.ts"]
+  "include": ["src/**/*.d.ts"]
 }

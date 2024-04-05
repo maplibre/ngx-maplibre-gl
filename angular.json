@@ -60,23 +60,22 @@
             "outputPath": "dist/showcase",
             "index": "projects/showcase/src/index.html",
             "browser": "projects/showcase/src/main.ts",
-            "polyfills": [
-              "projects/showcase/src/polyfills.ts", "zone.js"
-            ],
+            "polyfills": ["projects/showcase/src/polyfills.ts", "zone.js"],
             "tsConfig": "projects/showcase/tsconfig.app.json",
             "assets": [
               "projects/showcase/src/favicon.ico",
               "projects/showcase/src/assets",
               "projects/showcase/src/app/demo/examples"
             ],
-            "styles": [
-              "projects/showcase/src/styles.css"
-            ],
+            "styles": ["projects/showcase/src/styles.css"],
             "scripts": [],
             "server": "projects/showcase/src/main.server.ts",
-            "prerender": true,
+            "prerender": false,
             "ssr": {
               "entry": "projects/showcase/server.ts"
+            },
+            "loader": {
+              ".svg": "text"
             }
           },
           "configurations": {
@@ -95,9 +94,8 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true
             }
           }

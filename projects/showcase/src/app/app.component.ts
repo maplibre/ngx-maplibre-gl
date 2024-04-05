@@ -1,7 +1,11 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
+
+import github from '../assets/github.svg';
+import logo from '../assets/ngx-maplibre-gl.svg';
+import logoRed from '../assets/ngx-maplibre-gl-red.svg';
 
 @Component({
   selector: 'showcase-root',
@@ -9,26 +13,22 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
   imports: [RouterOutlet],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   private iconRegistry = inject(MatIconRegistry);
   private sanitizer = inject(DomSanitizer);
 
-  ngOnInit(): void {
-    this.iconRegistry.addSvgIcon(
+  constructor() {
+    this.iconRegistry.addSvgIconLiteral(
       'ngx-maplibre-gl',
-      this.sanitizer.bypassSecurityTrustResourceUrl(
-        'assets/ngx-maplibre-gl.svg'
-      )
+      this.sanitizer.bypassSecurityTrustHtml(logo)
     );
-    this.iconRegistry.addSvgIcon(
+    this.iconRegistry.addSvgIconLiteral(
       'ngx-maplibre-gl-red',
-      this.sanitizer.bypassSecurityTrustResourceUrl(
-        'assets/ngx-maplibre-gl-red.svg'
-      )
+      this.sanitizer.bypassSecurityTrustHtml(logoRed)
     );
-    this.iconRegistry.addSvgIcon(
+    this.iconRegistry.addSvgIconLiteral(
       'github',
-      this.sanitizer.bypassSecurityTrustResourceUrl('assets/github.svg')
+      this.sanitizer.bypassSecurityTrustHtml(github)
     );
   }
 }
