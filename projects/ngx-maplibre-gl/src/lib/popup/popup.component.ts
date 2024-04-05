@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
@@ -11,6 +10,7 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
+  afterNextRender,
 } from '@angular/core';
 import { LngLatLike, Offset, Popup, PopupOptions } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
@@ -19,9 +19,9 @@ import { MarkerComponent } from '../marker/marker.component';
 /**
  * `mgl-popup` - a popup component
  * @see [Popup](https://maplibre.org/maplibre-gl-js/docs/API/classes/Popup/)
- * 
+ *
  * @category Components
- * 
+ *
  * @example
  * ```html
  * ...
@@ -41,9 +41,7 @@ import { MarkerComponent } from '../marker/marker.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class PopupComponent
-  implements OnChanges, OnDestroy, AfterViewInit, OnInit
-{
+export class PopupComponent implements OnChanges, OnDestroy, OnInit {
   /** Init input */
   @Input() closeButton?: PopupOptions['closeButton'];
   /** Init input */
@@ -59,14 +57,14 @@ export class PopupComponent
   /** Init input */
   @Input() maxWidth?: PopupOptions['maxWidth'];
 
-  /** 
+  /**
    * Dynamic input [ngx]
    * Mutually exclusive with `lngLat`
    */
   @Input() feature?: GeoJSON.Feature<GeoJSON.Point>;
   /** Dynamic input */
   @Input() lngLat?: LngLatLike;
-  /** 
+  /**
    * Dynamic input [ngx]
    * The targeted marker
    */
@@ -82,7 +80,12 @@ export class PopupComponent
 
   popupInstance?: maplibregl.Popup;
 
-  constructor(private mapService: MapService) {}
+  constructor(private mapService: MapService) {
+    afterNextRender(() => {
+      this.popupInstance = this.createPopup();
+      this.addPopup(this.popupInstance as Popup);
+    });
+  }
 
   ngOnInit() {
     if (
@@ -132,11 +135,6 @@ export class PopupComponent
     ) {
       this.popupInstance.setOffset(this.offset);
     }
-  }
-
-  ngAfterViewInit() {
-    this.popupInstance = this.createPopup();
-    this.addPopup(this.popupInstance as Popup);
   }
 
   ngOnDestroy() {
