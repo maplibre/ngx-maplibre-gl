@@ -47,7 +47,7 @@ export class LiveUpdateFeatureComponent implements OnInit, OnDestroy {
   zoom = [0];
   pitch: number;
 
-  private timer: number;
+  private timer: NodeJS.Timeout;
 
   constructor() {}
 
@@ -62,19 +62,19 @@ export class LiveUpdateFeatureComponent implements OnInit, OnDestroy {
     this.zoom = [14];
     this.pitch = 30;
     let i = 0;
-    this.timer = window.setInterval(() => {
+    this.timer = setInterval(() => {
       if (i < coordinates.length) {
         this.center = <[number, number]>coordinates[i];
         data.features[0].geometry!.coordinates.push(coordinates[i]);
         this.data = { ...this.data };
         i++;
       } else {
-        window.clearInterval(this.timer);
+        clearInterval(this.timer);
       }
     }, 10);
   }
 
   ngOnDestroy() {
-    window.clearInterval(this.timer);
+    clearInterval(this.timer);
   }
 }
