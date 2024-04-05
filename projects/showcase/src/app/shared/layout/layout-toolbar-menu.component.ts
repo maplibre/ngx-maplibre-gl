@@ -1,6 +1,6 @@
+import { Platform } from '@angular/cdk/platform';
 import { CdkPortal, DomPortalOutlet, PortalModule } from '@angular/cdk/portal';
 import {
-  AfterViewInit,
   ApplicationRef,
   Component,
   ComponentFactoryResolver,
@@ -9,6 +9,7 @@ import {
   OnDestroy,
   ViewChild,
   afterNextRender,
+  inject,
 } from '@angular/core';
 
 @Component({
@@ -21,18 +22,19 @@ import {
   standalone: true,
   imports: [PortalModule],
 })
-export class LayoutToolbarMenuComponent implements AfterViewInit, OnDestroy {
+export class LayoutToolbarMenuComponent implements OnDestroy {
   @Input() position: 'left' | 'right';
 
   private portalOutlet: DomPortalOutlet;
   @ViewChild(CdkPortal) portal: CdkPortal;
+
+  private _isBrowser = inject(Platform).isBrowser;
 
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
     private injector: Injector,
     private appRef: ApplicationRef
   ) {
-
     afterNextRender(() => {
       this.portalOutlet = new DomPortalOutlet(
         document.querySelector(
@@ -45,14 +47,12 @@ export class LayoutToolbarMenuComponent implements AfterViewInit, OnDestroy {
         this.injector
       );
       this.portalOutlet.attach(this.portal);
-    })
-  }
-
-  ngAfterViewInit() {
-    
+    });
   }
 
   ngOnDestroy() {
-    // this.portalOutlet.detach();
+    if (this._isBrowser) {
+      this.portalOutlet.detach();
+    }
   }
 }
