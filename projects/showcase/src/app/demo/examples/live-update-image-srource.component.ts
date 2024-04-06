@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { interval, Subscription } from 'rxjs';
+import { Component, NgZone, OnDestroy, afterNextRender } from '@angular/core';
 import {
   MapComponent,
   ImageSourceComponent,
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
+import data from './hike.geo.json';
 
 @Component({
   selector: 'showcase-demo',
@@ -38,36 +38,39 @@ import {
   standalone: true,
   imports: [MapComponent, ImageSourceComponent, LayerComponent],
 })
-export class LiveUpdateImageSourceComponent implements OnInit, OnDestroy {
-  private sub: Subscription;
+export class LiveUpdateImageSourceComponent implements OnDestroy {
+  private timer: ReturnType<typeof setInterval>;
   private readonly size = 0.001;
-  center: number[];
 
+  center: number[];
   url = 'assets/red.png';
   coordinates: number[][];
 
-  async ngOnInit() {
-    const data: GeoJSON.FeatureCollection<GeoJSON.LineString> = (await import(
-      './hike.geo.json'
-    )) as any;
-    const points = data.features[0].geometry!.coordinates;
-    const coordinates = points.map((c) => this.makeRectangle(c));
+  constructor(private ngZone: NgZone) {
+    this.center = data.features[0].geometry!.coordinates[0];
+    this.coordinates = this.makeRectangle(this.center);
+    afterNextRender(() => {
+      const points = data.features[0].geometry!.coordinates;
+      const coordinates = points.map((c) => this.makeRectangle(c));
 
-    this.center = points[0];
-    this.coordinates = coordinates[0];
+      this.center = points[0];
+      this.coordinates = coordinates[0];
 
-    let i = 0;
+      let i = 0;
 
-    this.sub = interval(250).subscribe(() => {
-      this.url = Math.random() < 0.5 ? 'assets/red.png' : 'assets/blue.png';
-      this.coordinates = coordinates[i];
-      i = (i + 1) % coordinates.length;
+      this.timer = setInterval(() => {
+        this.ngZone.run(() => {
+          this.url = Math.random() < 0.5 ? 'assets/red.png' : 'assets/blue.png';
+          this.coordinates = coordinates[i];
+          i = (i + 1) % coordinates.length;
+        });
+      }, 250);
     });
   }
 
   ngOnDestroy() {
-    if (this.sub !== undefined) {
-      this.sub.unsubscribe();
+    if (this.timer !== undefined) {
+      clearInterval(this.timer);
     }
   }
 
