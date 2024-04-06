@@ -47,7 +47,7 @@ export class LiveUpdateFeatureComponent implements OnDestroy {
   zoom = [0];
   pitch: number;
 
-  private timer?: NodeJS.Timeout;
+  private timer?: ReturnType<typeof setTimeout>;
 
   constructor() {
     afterNextRender(async () => {
