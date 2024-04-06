@@ -70,10 +70,7 @@
             "styles": ["projects/showcase/src/styles.css"],
             "scripts": [],
             "server": "projects/showcase/src/main.server.ts",
-            "prerender": {
-              "discoverRoutes": false,
-              "routesFile": "projects/showcase/src/routes.txt"
-            },
+            "prerender": true,
             "ssr": {
               "entry": "projects/showcase/server.ts"
             },

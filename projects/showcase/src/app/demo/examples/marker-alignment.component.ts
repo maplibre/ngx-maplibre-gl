@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, afterNextRender } from '@angular/core';
 import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
@@ -44,18 +44,22 @@ import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
   standalone: true,
   imports: [MapComponent, MarkerComponent],
 })
-export class MarkerAlignmentComponent implements OnInit {
+export class MarkerAlignmentComponent {
   pitch = 50;
   bearing = -97;
-  ngOnInit(): void {
-    let angle = 0;
-    setInterval(() => {
-      angle += 0.01;
-      if (angle === 1) {
-        angle = 0;
-      }
-      this.pitch = 45 + 15 * Math.cos(angle);
-      this.bearing = -103 + 20 * Math.sin(angle);
-    }, 20);
+
+  constructor() {
+    afterNextRender(() => {
+      let angle = 0;
+      setInterval(() => {
+        angle += 0.01;
+        if (angle === 1) {
+          angle = 0;
+        }
+        this.pitch = 45 + 15 * Math.cos(angle);
+        this.bearing = -103 + 20 * Math.sin(angle);
+      }, 20);
+      })
   }
 }
+

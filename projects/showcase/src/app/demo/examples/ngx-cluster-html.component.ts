@@ -1,10 +1,10 @@
 import {
   Component,
   Input,
-  OnInit,
   OnChanges,
   ViewChild,
   SimpleChanges,
+  afterNextRender,
 } from '@angular/core';
 import {
   MatPaginator,
@@ -131,20 +131,22 @@ export class ClusterPopupComponent implements OnChanges {
     ClusterPopupComponent,
   ],
 })
-export class NgxClusterHtmlComponent implements OnInit {
+export class NgxClusterHtmlComponent {
   earthquakes: GeoJSON.FeatureCollection;
   selectedCluster: { geometry: GeoJSON.Point; properties: any };
 
-  async ngOnInit() {
-    const earthquakes: GeoJSON.FeatureCollection = (await import(
-      './earthquakes.geo.json'
-    )) as any;
-    setInterval(() => {
-      if (earthquakes.features.length) {
-        earthquakes.features.pop();
-      }
-      this.earthquakes = { ...earthquakes };
-    }, 500);
+  constructor() {
+    afterNextRender(async () => {
+      const earthquakes: GeoJSON.FeatureCollection = (await import(
+        './earthquakes.geo.json'
+      )) as any;
+      setInterval(() => {
+        if (earthquakes.features.length) {
+          earthquakes.features.pop();
+        }
+        this.earthquakes = { ...earthquakes };
+      }, 500);
+    });
   }
 
   selectCluster(event: MouseEvent, feature: any) {
