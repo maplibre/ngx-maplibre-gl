@@ -1,4 +1,4 @@
-import { Component, afterNextRender } from '@angular/core';
+import { Component, OnDestroy, afterNextRender } from '@angular/core';
 import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
@@ -44,14 +44,15 @@ import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
   standalone: true,
   imports: [MapComponent, MarkerComponent],
 })
-export class MarkerAlignmentComponent {
+export class MarkerAlignmentComponent implements OnDestroy {
   pitch = 50;
   bearing = -97;
+  timer: ReturnType<typeof setInterval>;
 
   constructor() {
     afterNextRender(() => {
       let angle = 0;
-      setInterval(() => {
+      this.timer = setInterval(() => {
         angle += 0.01;
         if (angle === 1) {
           angle = 0;
@@ -59,7 +60,13 @@ export class MarkerAlignmentComponent {
         this.pitch = 45 + 15 * Math.cos(angle);
         this.bearing = -103 + 20 * Math.sin(angle);
       }, 20);
-      })
+    })
+  }
+
+  ngOnDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
   }
 }
 

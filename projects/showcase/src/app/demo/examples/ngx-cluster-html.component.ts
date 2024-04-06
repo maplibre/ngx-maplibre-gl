@@ -5,6 +5,7 @@ import {
   ViewChild,
   SimpleChanges,
   afterNextRender,
+  OnDestroy,
 } from '@angular/core';
 import {
   MatPaginator,
@@ -131,22 +132,27 @@ export class ClusterPopupComponent implements OnChanges {
     ClusterPopupComponent,
   ],
 })
-export class NgxClusterHtmlComponent {
+export class NgxClusterHtmlComponent implements OnDestroy {
   earthquakes: GeoJSON.FeatureCollection;
   selectedCluster: { geometry: GeoJSON.Point; properties: any };
+  timer: ReturnType<typeof setInterval>;
 
   constructor() {
     afterNextRender(async () => {
       const earthquakes: GeoJSON.FeatureCollection = (await import(
         './earthquakes.geo.json'
       )) as any;
-      setInterval(() => {
+      this.timer = setInterval(() => {
         if (earthquakes.features.length) {
           earthquakes.features.pop();
         }
         this.earthquakes = { ...earthquakes };
       }, 500);
     });
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.timer);
   }
 
   selectCluster(event: MouseEvent, feature: any) {
