@@ -1,4 +1,3 @@
-import { Platform } from '@angular/cdk/platform';
 import { CdkPortal, DomPortalOutlet, PortalModule } from '@angular/cdk/portal';
 import {
   ApplicationRef,
@@ -8,8 +7,7 @@ import {
   Input,
   OnDestroy,
   ViewChild,
-  afterNextRender,
-  inject,
+  afterNextRender
 } from '@angular/core';
 
 @Component({
@@ -27,8 +25,6 @@ export class LayoutToolbarMenuComponent implements OnDestroy {
 
   private portalOutlet: DomPortalOutlet;
   @ViewChild(CdkPortal) portal: CdkPortal;
-
-  private _isBrowser = inject(Platform).isBrowser;
 
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
@@ -51,8 +47,6 @@ export class LayoutToolbarMenuComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this._isBrowser) {
-      this.portalOutlet.detach();
-    }
+    this.portalOutlet?.detach();
   }
 }

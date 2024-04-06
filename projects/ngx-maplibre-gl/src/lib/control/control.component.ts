@@ -5,12 +5,10 @@ import {
   Input,
   OnDestroy,
   ViewChild,
-  afterNextRender,
-  inject,
+  afterNextRender
 } from '@angular/core';
 import { ControlPosition, IControl } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
-import { Platform } from '@angular/cdk/platform';
 
 export class CustomControl implements IControl {
   constructor(private container: HTMLElement) {}
@@ -67,8 +65,6 @@ export class ControlComponent<T extends IControl> implements OnDestroy {
 
   control: T | CustomControl;
 
-  private _isBrowser = inject(Platform).isBrowser;
-
   constructor(private mapService: MapService) {
     afterNextRender(() => {
       if (this.content.nativeElement.childNodes.length) {
@@ -81,10 +77,8 @@ export class ControlComponent<T extends IControl> implements OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this._isBrowser) {
-      if (this.mapService.mapInstance.hasControl(this.control)) {
-        this.mapService.removeControl(this.control);
-      }
+    if (this.mapService?.mapInstance?.hasControl(this.control)) {
+      this.mapService.removeControl(this.control);
     }
   }
 }
