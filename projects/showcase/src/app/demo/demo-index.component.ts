@@ -1,11 +1,11 @@
 import {
-  AfterViewInit,
   Component,
   ElementRef,
   NgZone,
   OnInit,
   QueryList,
   ViewChildren,
+  afterNextRender,
 } from '@angular/core';
 import {
   MatSlideToggleChange,
@@ -58,7 +58,7 @@ type RoutesByCategory = { [P in Category]: Routes };
     RouterOutlet,
   ],
 })
-export class DemoIndexComponent implements OnInit, AfterViewInit {
+export class DemoIndexComponent implements OnInit {
   routes: RoutesByCategory;
   originalRoutes: RoutesByCategory;
   categories: Category[];
@@ -90,14 +90,14 @@ export class DemoIndexComponent implements OnInit, AfterViewInit {
       Category.CONTROLS_AND_OVERLAYS,
       Category.TERRAIN,
     ];
+
+    afterNextRender(() => {
+      this.scrollInToActiveExampleLink();
+    });
   }
 
   ngOnInit() {
     this.routes = this.originalRoutes;
-  }
-
-  ngAfterViewInit() {
-    this.scrollInToActiveExampleLink();
   }
 
   toggleSidenav() {

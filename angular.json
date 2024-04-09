@@ -49,7 +49,7 @@
       "schematics": {},
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "allowedCommonJsDependencies": [
               "@mapbox/mapbox-sdk",
@@ -59,8 +59,8 @@
             "aot": true,
             "outputPath": "dist/showcase",
             "index": "projects/showcase/src/index.html",
-            "main": "projects/showcase/src/main.ts",
-            "polyfills": "projects/showcase/src/polyfills.ts",
+            "browser": "projects/showcase/src/main.ts",
+            "polyfills": ["zone.js"],
             "tsConfig": "projects/showcase/tsconfig.app.json",
             "assets": [
               "projects/showcase/src/favicon.ico",
@@ -68,7 +68,15 @@
               "projects/showcase/src/app/demo/examples"
             ],
             "styles": ["projects/showcase/src/styles.css"],
-            "scripts": []
+            "scripts": [],
+            "server": "projects/showcase/src/main.server.ts",
+            "prerender": true,
+            "ssr": {
+              "entry": "projects/showcase/server.ts"
+            },
+            "loader": {
+              ".svg": "text"
+            }
           },
           "configurations": {
             "production": {
@@ -86,12 +94,9 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": true,
               "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true
+              "extractLicenses": true
             }
           }
         },

@@ -28,7 +28,7 @@ describe('Generic runtime error check', () => {
     'custom-marker-icons',
     'ngx-custom-marker-icons',
     'ngx-marker-rotate',
-    'ive-update-feature',
+    'live-update-feature',
     'live-update-image-source',
     'popup',
     'set-popup',

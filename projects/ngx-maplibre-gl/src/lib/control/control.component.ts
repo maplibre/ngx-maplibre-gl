@@ -1,11 +1,11 @@
 import {
-  AfterContentInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
   Input,
   OnDestroy,
   ViewChild,
+  afterNextRender
 } from '@angular/core';
 import { ControlPosition, IControl } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
@@ -29,9 +29,9 @@ export class CustomControl implements IControl {
 /**
  * `mgl-control` - a custom control component
  * @see [Controls](https://maplibre.org/maplibre-gl-js/docs/API/interfaces/IControl/)
- * 
+ *
  * @category Components
- * 
+ *
  * @example
  * ```html
  * ...
@@ -52,12 +52,12 @@ export class CustomControl implements IControl {
  */
 @Component({
   selector: 'mgl-control',
-  template: '<div class="maplibregl-ctrl" #content><ng-content></ng-content></div>',
+  template:
+    '<div class="maplibregl-ctrl" #content><ng-content></ng-content></div>',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class ControlComponent<T extends IControl>
-  implements OnDestroy, AfterContentInit {
+export class ControlComponent<T extends IControl> implements OnDestroy {
   /** Init input */
   @Input() position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
   /** @hidden */
@@ -65,19 +65,19 @@ export class ControlComponent<T extends IControl>
 
   control: T | CustomControl;
 
-  constructor(private mapService: MapService) {}
-
-  ngAfterContentInit() {
-    if (this.content.nativeElement.childNodes.length) {
-      this.control = new CustomControl(this.content.nativeElement);
-      this.mapService.mapCreated$.subscribe(() => {
-        this.mapService.addControl(this.control!, this.position);
-      });
-    }
+  constructor(private mapService: MapService) {
+    afterNextRender(() => {
+      if (this.content.nativeElement.childNodes.length) {
+        this.control = new CustomControl(this.content.nativeElement);
+        this.mapService.mapCreated$.subscribe(() => {
+          this.mapService.addControl(this.control!, this.position);
+        });
+      }
+    });
   }
 
   ngOnDestroy() {
-    if (this.mapService.mapInstance.hasControl(this.control)) {
+    if (this.mapService?.mapInstance?.hasControl(this.control)) {
       this.mapService.removeControl(this.control);
     }
   }
