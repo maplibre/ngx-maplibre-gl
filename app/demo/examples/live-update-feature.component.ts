@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { LngLatLike } from 'maplibre-gl';
+import { Component, OnDestroy, afterNextRender } from '@angular/core';
 import {
   MapComponent,
   GeoJSONSourceComponent,
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
 import { NgIf } from '@angular/common';
+import data from './hike.geo.json';
 
 @Component({
   selector: 'showcase-demo',
@@ -41,40 +41,38 @@ import { NgIf } from '@angular/common';
   standalone: true,
   imports: [MapComponent, NgIf, GeoJSONSourceComponent, LayerComponent],
 })
-export class LiveUpdateFeatureComponent implements OnInit, OnDestroy {
+export class LiveUpdateFeatureComponent implements OnDestroy {
   data: GeoJSON.FeatureCollection<GeoJSON.LineString>;
-  center: LngLatLike;
-  zoom = [0];
-  pitch: number;
+  center: number[];
+  zoom = [14];
+  pitch: number = 30;
 
-  private timer: number;
+  private timer?: ReturnType<typeof setTimeout>;
 
-  constructor() {}
-
-  async ngOnInit() {
-    const data: GeoJSON.FeatureCollection<GeoJSON.LineString> = (await import(
-      './hike.geo.json'
-    )) as any;
-    const coordinates = data.features[0].geometry!.coordinates;
-    data.features[0].geometry!.coordinates = [coordinates[0]];
-    this.data = data;
-    this.center = <[number, number]>coordinates[0];
-    this.zoom = [14];
-    this.pitch = 30;
-    let i = 0;
-    this.timer = window.setInterval(() => {
-      if (i < coordinates.length) {
-        this.center = <[number, number]>coordinates[i];
-        data.features[0].geometry!.coordinates.push(coordinates[i]);
-        this.data = { ...this.data };
-        i++;
-      } else {
-        window.clearInterval(this.timer);
-      }
-    }, 10);
+  constructor() {
+    this.center = data.features[0].geometry!.coordinates[0];
+    this.data = data as GeoJSON.FeatureCollection<GeoJSON.LineString>;
+    afterNextRender(() => {
+      const coordinates = data.features[0].geometry!.coordinates;
+      data.features[0].geometry!.coordinates = [coordinates[0]];
+      this.center = coordinates[0];
+      let i = 0;
+      this.timer = setInterval(() => {
+        if (i < coordinates.length) {
+          this.center = coordinates[i];
+          data.features[0].geometry!.coordinates.push(coordinates[i]);
+          this.data = { ...this.data };
+          i++;
+        } else {
+          clearInterval(this.timer);
+        }
+      }, 10);
+    });
   }
 
   ngOnDestroy() {
-    window.clearInterval(this.timer);
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
   }
 }

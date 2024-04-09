@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/showcase/src/app/demo/examples/set-style.component.css"],
+  "sourcesContent": [".radio-group {\n  position: absolute;\n  padding: 8px;\n  background: #fff;\n}\n"],
+  "mappings": "AAAA,CAAC,YACC,SAAU,SADZ,QAEW,IACT,WAAY,IACd",
+  "names": []
+}

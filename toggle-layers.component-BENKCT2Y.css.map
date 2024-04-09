@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/showcase/src/app/demo/examples/toggle-layers.component.css"],
+  "sourcesContent": [".menu {\n  position: absolute;\n  padding: 8px;\n}\n"],
+  "mappings": "AAAA,CAAC,KACC,SAAU,SADZ,QAEW,GACX",
+  "names": []
+}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["angular:styles/component:css;f4f1e715291760eb07d4a49bb235362777ffaaad1fccb5793288a6138820231c;/home/runner/work/ngx-maplibre-gl/ngx-maplibre-gl/projects/showcase/src/app/demo/stackblitz-edit/stackblitz-edit.component.ts"],
+  "sourcesContent": ["\n      :host {\n        display: flex;\n        flex: 1;\n        position: relative;\n      }\n      :host ::ng-deep iframe {\n        height: 100%;\n        width: 100%;\n        border: 0;\n      }\n      .loader {\n        position: absolute;\n        left: 50%;\n        top: 50%;\n        transform: translate(-50%, -50%);\n      }\n    "],
+  "mappings": "AACM,MACE,QAAS,KACT,KAAM,EACN,SAAU,QACZ,CACA,MAAM,UAAU,OACd,OAAQ,KACR,MAAO,KACP,OAAQ,CACV,CACA,CAAC,OACC,SAAU,SACV,KAAM,IACN,IAAK,IACL,UAAW,UAAU,IAAI,CAAE,KAC7B",
+  "names": []
+}

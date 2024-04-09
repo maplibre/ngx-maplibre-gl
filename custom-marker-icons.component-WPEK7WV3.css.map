@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/showcase/src/app/demo/examples/custom-marker-icons.component.css"],
+  "sourcesContent": [".marker {\n  border: none;\n  border-radius: 50%;\n  cursor: pointer;\n  padding: 0;\n}\n"],
+  "mappings": "AAAA,CAAC,OACC,OAAQ,KADV,cAEiB,IACf,OAAQ,QAHV,QAIW,CACX",
+  "names": []
+}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/showcase/src/app/demo/examples/marker-alignment.component.css"],
+  "sourcesContent": [".arrow {\n  width: 50px;\n  height: 50px;\n  transform: rotate(-97deg);\n}\n"],
+  "mappings": "AAAA,CAAC,MACC,MAAO,KACP,OAAQ,KACR,UAAW,OAAO,OACpB",
+  "names": []
+}

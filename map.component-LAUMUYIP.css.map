@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["angular:styles/component:css;24e7fcff55eb42cab2fed2cf30520b0012ba8e19280f238cff7f2f7ab39c59f7;/home/runner/work/ngx-maplibre-gl/ngx-maplibre-gl/projects/ngx-maplibre-gl/src/lib/map/map.component.ts"],
+  "sourcesContent": ["\n      :host {\n        display: block;\n      }\n      div {\n        height: 100%;\n        width: 100%;\n      }\n    "],
+  "mappings": "AACM,MACE,QAAS,KACX,CACA,IACE,OAAQ,KACR,MAAO,IACT",
+  "names": []
+}

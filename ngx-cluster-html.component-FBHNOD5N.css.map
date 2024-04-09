@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/showcase/src/app/demo/examples/ngx-cluster-html.component.css"],
+  "sourcesContent": ["/* to simplify readability of the component.ts */\n::ng-deep .marker-cluster {\n  width: 30px;\n  height: 30px;\n  border-radius: 50%;\n  background-color: #4f615a;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  color: white;\n  border: 2px solid #56c498;\n  cursor: pointer;\n}\n\n.marker {\n  width: 30px;\n  height: 30px;\n  border-radius: 50%;\n  background-color: #7d7d7d;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border: 2px solid #c9c9c9;\n}\n"],
+  "mappings": "AACA,UAAU,CAAC,eACT,MAAO,KACP,OAAQ,KAHV,cAIiB,IACf,iBAAkB,QAClB,QAAS,KACT,gBAAiB,OACjB,YAAa,OACb,MAAO,KACP,OAAQ,IAAI,MAAM,QAClB,OAAQ,OACV,CAEA,CAAC,OACC,MAAO,KACP,OAAQ,KAhBV,cAiBiB,IACf,iBAAkB,QAClB,QAAS,KACT,gBAAiB,OACjB,YAAa,OACb,OAAQ,IAAI,MAAM,OACpB",
+  "names": []
+}
