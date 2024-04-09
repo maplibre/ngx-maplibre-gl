@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [17.4.3](https://github.com/maplibre/ngx-maplibre-gl/compare/v17.4.2...v17.4.3) (2024-04-09)
+
+- Add SSR support
+- Move showcase to be support SSR and prerender all the demo (expample) pages to overcome github limitation regarding SPA
+
 ### [17.4.2](https://github.com/maplibre/ngx-maplibre-gl/compare/v17.4.1...v17.4.2) (2024-03-17)
 
 - Add rotation to marker API
