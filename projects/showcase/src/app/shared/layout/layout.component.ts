@@ -35,8 +35,8 @@ import { MatMenuModule } from '@angular/material/menu';
         </button>
 
         <mat-menu #mobileMenu="matMenu">
-          <a mat-menu-item routerLink="/demo"> Demo </a>
-          <a mat-menu-item routerLink="/doc"> Documentation </a>
+          <a mat-menu-item routerLink="/demo"> Examples </a>
+          <a mat-menu-item routerLink="/doc"> API </a>
         </mat-menu>
       </div>
     </mat-toolbar>
