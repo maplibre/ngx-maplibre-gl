@@ -12,12 +12,7 @@ export const routes: Routes = [
         path: 'demo',
         children: DEMO_ROUTES,
       },
-      ...HOME_ROUTES,
-      {
-        path: 'doc',
-        loadComponent: () =>
-          import('./doc/doc.component').then((m) => m.DocComponent),
-      },
+      ...HOME_ROUTES
     ],
   },
   { path: '**', redirectTo: '' },

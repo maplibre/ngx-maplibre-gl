@@ -1,6 +1,6 @@
 
 <div align="center">
-  <img src="./projects/showcase/src/assets/ngx-maplibre-gl-red.svg" height="128">
+  <img src="https://raw.githubusercontent.com/maplibre/ngx-maplibre-gl/main/projects/showcase/src/assets/ngx-maplibre-gl-red.svg" height="128">
 </div>
 <div align="center">
   <h1>ngx-maplibre-gl</h1>
@@ -19,27 +19,9 @@ https://maplibre.org/ngx-maplibre-gl/
 
 This is a fork of [ngx-mapbox-gl](https://github.com/Wykks/ngx-mapbox-gl) and I would like to thank the maintainers there for thier amazing work to build this up. It's truely a great piece of sotware!
 
-### Components
+### API Documentation
 
-- [mgl-map](docs/API.md#mgl-map-mapbox-gl-api)
-- [mgl-layer](docs/API.md#mgl-layer-mapbox-gl-style-spec)
-- [mgl-geojson-source](docs/API.md#mgl-geojson-source-mapbox-gl-style-spec)
-- [mgl-canvas-source](docs/API.md#mgl-canvas-source-mapbox-gl-style-spec)
-- [mgl-image-source](docs/API.md#mgl-image-source-mapbox-gl-style-spec)
-- [mgl-raster-dem-source](docs/API.md#mgl-raster-dem-source-mapbox-gl-style-spec)
-- [mgl-raster-source](docs/API.md#mgl-raster-source-mapbox-gl-style-spec)
-- [mgl-vector-source](docs/API.md#mgl-vector-source-mapbox-gl-style-spec)
-- [mgl-video-source](docs/API.md#mgl-video-source-mapbox-gl-style-spec)
-- [mgl-image](docs/API.md#mgl-image-mapbox-gl-api)
-- [mgl-control](docs/API.md#mgl-control) with builtin control:
-  - mglScale
-  - mglFullscreen
-  - mglAttribution
-  - mglGeolocate
-  - mglNavigation
-- [mgl-marker](docs/API.md#mgl-marker-mapbox-gl-api)
-- [mgl-popup](docs/API.md#mgl-popup-mapbox-gl-api)
-- [mgl-marker-cluster](docs/API.md#ngx-mgl-marker-cluster-supercluster-api)
+[The API documentation can be found here](https://maplibre.org/ngx-maplibre-gl/API/modules.html).
 
 ## How to start
 

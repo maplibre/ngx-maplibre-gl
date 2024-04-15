@@ -16,7 +16,7 @@ import { MatMenuModule } from '@angular/material/menu';
         <a mat-button routerLink="/" class="library-name"> ngx-maplibre-gl </a>
         <div class="menu-items">
           <a mat-button routerLink="/demo"> Examples </a>
-          <a mat-button routerLink="/doc"> API </a>
+          <a mat-button href="https://www.maplibre.org/ngx-maplibre-gl/API/"> API </a>
         </div>
       </div>
       <div>
@@ -36,7 +36,7 @@ import { MatMenuModule } from '@angular/material/menu';
 
         <mat-menu #mobileMenu="matMenu">
           <a mat-menu-item routerLink="/demo"> Examples </a>
-          <a mat-menu-item routerLink="/doc"> API </a>
+          <a mat-menu-item href="https://www.maplibre.org/ngx-maplibre-gl/API/"> API </a>
         </mat-menu>
       </div>
     </mat-toolbar>

@@ -11,6 +11,12 @@ import { ImageSourceSpecification, ImageSource } from 'maplibre-gl';
 import { Subscription } from 'rxjs';
 import { MapService } from '../map/map.service';
 
+/**
+ * `mgl-image-source` - an image source component
+ * @see [image](https://maplibre.org/maplibre-style-spec/sources/#image)
+ * 
+ * @category Source Components
+ */
 @Component({
   selector: 'mgl-image-source',
   template: '',

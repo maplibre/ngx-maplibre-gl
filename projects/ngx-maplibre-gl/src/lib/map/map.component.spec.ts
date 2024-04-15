@@ -50,7 +50,7 @@ describe('MapComponent', () => {
 
     it('should init with custom inputs', () => {
       // Since we don't want to trigger afterNextRender, we need to create the component in a different way
-      let componentRef = createComponent(MapComponent, {
+      const componentRef = createComponent(MapComponent, {
         environmentInjector: TestBed.inject(EnvironmentInjector),
       });
       msSpy = componentRef.injector.get<MapService>(MapService) as any;
