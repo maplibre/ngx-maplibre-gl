@@ -1,4 +1,4 @@
-import { SimpleChange } from '@angular/core';
+import { ApplicationRef, createComponent, EnvironmentInjector, SimpleChange } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
@@ -49,11 +49,17 @@ describe('MapComponent', () => {
     });
 
     it('should init with custom inputs', () => {
-      component.style = 'style';
-      fixture.detectChanges();
+      // Since we don't want to trigger afterNextRender, we need to create the component in a different way
+      let componentRef = createComponent(MapComponent, {
+        environmentInjector: TestBed.inject(EnvironmentInjector),
+      });
+      msSpy = componentRef.injector.get<MapService>(MapService) as any;
+      componentRef.instance.style = 'style';
+      TestBed.inject(ApplicationRef).attachView(componentRef.hostView);
+      expect(msSpy.setup.calls.count()).toBe(0);
+      TestBed.inject(ApplicationRef).tick();
       expect(msSpy.setup.calls.count()).toBe(1);
-      // HM TODO: find a way to fix this
-      //expect(msSpy.setup.calls.all()[0].args[0].mapOptions.style).toEqual('style');
+      expect(msSpy.setup.calls.first().args[0].mapOptions.style).toEqual('style');
     });
   });
 
