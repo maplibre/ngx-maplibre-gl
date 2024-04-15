@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["angular:styles/component:css;ea51b84614a25614b08cdff948dd1f37b78157809aa177aebdbb6333e566173e;/home/runner/work/ngx-maplibre-gl/ngx-maplibre-gl/projects/showcase/src/app/doc/doc.component.ts"],
-  "sourcesContent": ["\n      :host {\n        display: flex;\n        flex: 1;\n        overflow: auto;\n        justify-content: center;\n      }\n\n      iframe {\n        width: 100%;\n        border: none;\n      }\n    "],
-  "mappings": "AACM,MACE,QAAS,KACT,KAAM,EACN,SAAU,KACV,gBAAiB,MACnB,CAEA,OACE,MAAO,KACP,OAAQ,IACV",
-  "names": []
-}
