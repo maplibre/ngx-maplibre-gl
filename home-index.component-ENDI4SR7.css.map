@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/showcase/src/app/home/home-index.component.scss"],
-  "sourcesContent": [":host {\n  display: flex;\n  flex: 1;\n  position: relative;\n}\n\n.main {\n  position: absolute;\n  top: 0px;\n  height: 100%;\n  width: 100%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n  pointer-events: none;\n}\n\n.logo {\n  width: 150px;\n  height: 150px;\n}\n\nmgl-map {\n  flex: 1;\n}\n"],
-  "mappings": "AAAA,MACE,QAAA,KACA,KAAA,EACA,SAAA,SAGF,CAAA,KACE,SAAA,SACA,IAAA,EACA,OAAA,KACA,MAAA,KACA,QAAA,KACA,YAAA,OACA,gBAAA,OACA,eAAA,OACA,eAAA,KAGF,CAAA,KACE,MAAA,MACA,OAAA,MAGF,QACE,KAAA",
-  "names": []
-}

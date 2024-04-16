@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/showcase/src/app/home/home-index.component.scss"],
+  "sourcesContent": [":host {\n  display: flex;\n  flex: 1;\n  position: relative;\n}\n\nmgl-map {\n  flex: 1;\n}\n"],
+  "mappings": "AAAA,MACE,QAAA,KACA,KAAA,EACA,SAAA,SAGF,QACE,KAAA",
+  "names": []
+}
