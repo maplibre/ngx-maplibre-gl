@@ -5,7 +5,6 @@ import { RouterOutlet } from '@angular/router';
 
 import github from '../assets/github.svg';
 import logo from '../assets/ngx-maplibre-gl.svg';
-import logoRed from '../assets/ngx-maplibre-gl-red.svg';
 
 @Component({
   selector: 'showcase-root',
@@ -21,10 +20,6 @@ export class AppComponent {
     this.iconRegistry.addSvgIconLiteral(
       'ngx-maplibre-gl',
       this.sanitizer.bypassSecurityTrustHtml(logo)
-    );
-    this.iconRegistry.addSvgIconLiteral(
-      'ngx-maplibre-gl-red',
-      this.sanitizer.bypassSecurityTrustHtml(logoRed)
     );
     this.iconRegistry.addSvgIconLiteral(
       'github',
