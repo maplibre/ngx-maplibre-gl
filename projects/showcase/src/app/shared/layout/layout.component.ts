@@ -15,8 +15,13 @@ import { MatMenuModule } from '@angular/material/menu';
         </a>
         <a mat-button routerLink="/" class="library-name"> ngx-maplibre-gl </a>
         <div class="menu-items">
-          <a mat-button routerLink="/demo"> Examples </a>
-          <a mat-button href="https://www.maplibre.org/ngx-maplibre-gl/API/"> API </a>
+        @for (link of links; track link) {
+          @if (link.routerLink) {
+            <a mat-button [routerLink]="link.url">{{link.label}}</a>
+          } @else {
+            <a mat-button [href]="link.url">{{link.label}}</a>
+          }
+        }
         </div>
       </div>
       <div>
@@ -35,8 +40,13 @@ import { MatMenuModule } from '@angular/material/menu';
         </button>
 
         <mat-menu #mobileMenu="matMenu">
-          <a mat-menu-item routerLink="/demo"> Examples </a>
-          <a mat-menu-item href="https://www.maplibre.org/ngx-maplibre-gl/API/"> API </a>
+        @for (link of links; track link) {
+          @if (link.routerLink) {
+            <a mat-menu-item [routerLink]="link.url">{{link.label}}</a>
+          } @else {
+            <a mat-menu-item [href]="link.url">{{link.label}}</a>
+          }
+        }
         </mat-menu>
       </div>
     </mat-toolbar>
@@ -100,4 +110,16 @@ import { MatMenuModule } from '@angular/material/menu';
     MatMenuModule,
   ],
 })
-export class LayoutComponent {}
+export class LayoutComponent {
+  links = [{
+    url: '/demo',
+    routerLink: true,
+    label: 'Examples'
+  },
+  {
+    url: 'https://www.maplibre.org/ngx-maplibre-gl/API/',
+    routerLink: false,
+    label: 'API'
+  },
+  ]
+}

@@ -15,10 +15,6 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
       (mapLoad)="moveCenter()"
       (moveEnd)="moveCenter()"
     ></mgl-map>
-    <div class="main">
-      <mat-icon class="logo" svgIcon="ngx-maplibre-gl-red"></mat-icon>
-      <h1>Angular binding of maplibre-gl-js</h1>
-    </div>
   `,
   styleUrls: ['./home-index.component.scss'],
   standalone: true,
