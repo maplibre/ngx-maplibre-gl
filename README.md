@@ -17,7 +17,7 @@ https://maplibre.org/ngx-maplibre-gl/
 
 ### Attribution
 
-This is a fork of [ngx-mapbox-gl](https://github.com/Wykks/ngx-mapbox-gl) and I would like to thank the maintainers there for thier amazing work to build this up. It's truely a great piece of sotware!
+This is a fork of [ngx-mapbox-gl](https://github.com/Wykks/ngx-mapbox-gl) and I would like to thank the maintainers there for their amazing work to build this up. It's truly a great piece of software!
 
 ### API Documentation
 
@@ -55,12 +55,6 @@ Or in the global CSS file (called `styles.css` for example in _angular-cli_):
 
 ```css
 @import '~maplibre-gl/dist/maplibre-gl.css';
-```
-
-Add this in your polyfill.ts file (https://github.com/Wykks/ngx-mapbox-gl/issues/136#issuecomment-496224634):
-
-```
-(window as any).global = window;
 ```
 
 Then, in your app's main module (or in any other module), import the `MapComponent`:
