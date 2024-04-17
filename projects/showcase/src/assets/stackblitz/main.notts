@@ -1,4 +1,4 @@
-import './polyfills';
+
 import { bootstrapApplication } from '@angular/platform-browser';
 import { ### } from './demo';
 
