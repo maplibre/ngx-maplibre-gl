@@ -83,6 +83,7 @@
     "ng-packagr": "^17.3.0",
     "pixelmatch": "^5.3.0",
     "pngjs": "^7.0.0",
+    "prettier": "^3.3.0",
     "standard-version": "^9.5.0",
     "ts-node": "^10.9.2",
     "typedoc": "^0.25.12",
