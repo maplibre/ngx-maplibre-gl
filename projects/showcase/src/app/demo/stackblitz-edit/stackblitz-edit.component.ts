@@ -16,15 +16,16 @@ import { finalize, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { createStackblitzProject } from './create-stackblitz-project';
 import { DemoFileLoaderService } from './demo-file-loader.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { NgIf } from '@angular/common';
 
 @Component({
   template: `
     <div #container></div>
-    <div *ngIf="loading" class="loader">
-      <mat-spinner></mat-spinner>
-      <div></div>
-    </div>
+    @if (loading) {
+      <div class="loader">
+        <mat-spinner></mat-spinner>
+        <div></div>
+      </div>
+    }
   `,
   styles: [
     `
@@ -48,7 +49,7 @@ import { NgIf } from '@angular/common';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, MatProgressSpinnerModule],
+  imports: [MatProgressSpinnerModule],
 })
 export class StackblitzEditComponent implements AfterViewInit, OnDestroy {
   @ViewChild('container') stackblitzContainer: ElementRef;

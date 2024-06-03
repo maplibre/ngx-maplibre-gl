@@ -21,15 +21,16 @@ import {
   ClusterPointDirective,
 } from '@maplibre/ngx-maplibre-gl';
 import { MatListModule } from '@angular/material/list';
-import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'showcase-cluster-popup',
   template: `
     <mat-list>
-      <mat-list-item *ngFor="let leaf of leaves">
-        {{ leaf.properties['Primary ID'] }}
-      </mat-list-item>
+      @for (leaf of leaves; track leaf) {
+        <mat-list-item>
+          {{ leaf.properties?.['Primary ID'] }}
+        </mat-list-item>
+      }
     </mat-list>
     <mat-paginator
       [length]="selectedCluster.properties?.point_count"
@@ -38,7 +39,7 @@ import { NgIf, NgFor } from '@angular/common';
     ></mat-paginator>
   `,
   standalone: true,
-  imports: [MatListModule, NgFor, MatPaginatorModule],
+  imports: [MatListModule, MatPaginatorModule],
 })
 export class ClusterPopupComponent implements OnChanges {
   @Input() selectedCluster: { geometry: GeoJSON.Point; properties: any };
@@ -86,7 +87,7 @@ export class ClusterPopupComponent implements OnChanges {
       [center]="[-103.59179687498357, 40.66995747013945]"
       [preserveDrawingBuffer]="true"
     >
-      <ng-container *ngIf="earthquakes">
+      @if (earthquakes) {
         <mgl-geojson-source
           #clusterComponent
           id="earthquakes"
@@ -110,20 +111,21 @@ export class ClusterPopupComponent implements OnChanges {
             </div>
           </ng-template>
         </mgl-markers-for-clusters>
-        <mgl-popup *ngIf="selectedCluster" [feature]="selectedCluster">
-          <showcase-cluster-popup
-            [clusterComponent]="clusterComponent"
-            [selectedCluster]="selectedCluster"
-          ></showcase-cluster-popup>
-        </mgl-popup>
-      </ng-container>
+        @if (selectedCluster) {
+          <mgl-popup [feature]="selectedCluster">
+            <showcase-cluster-popup
+              [clusterComponent]="clusterComponent"
+              [selectedCluster]="selectedCluster"
+            ></showcase-cluster-popup>
+          </mgl-popup>
+        }
+      }
     </mgl-map>
   `,
   styleUrls: ['./examples.css', './ngx-cluster-html.component.css'],
   standalone: true,
   imports: [
     MapComponent,
-    NgIf,
     GeoJSONSourceComponent,
     MarkersForClustersComponent,
     PointDirective,
