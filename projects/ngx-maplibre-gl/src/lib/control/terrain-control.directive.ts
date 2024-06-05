@@ -1,4 +1,4 @@
-import { AfterContentInit, Directive, Host, Input } from '@angular/core';
+import { AfterContentInit, Directive, Host, input } from '@angular/core';
 import { TerrainControl, TerrainSpecification } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
@@ -17,8 +17,8 @@ import { ControlComponent } from './control.component';
 })
 export class TerrainControlDirective implements AfterContentInit {
   /* Init inputs */
-  @Input() source: string;
-  @Input() exaggeration?: number;
+  source = input.required<string>();
+  exaggeration = input<number>();
 
   constructor(
     private mapService: MapService,
@@ -32,15 +32,15 @@ export class TerrainControlDirective implements AfterContentInit {
       }
 
       const options: TerrainSpecification = {
-        source: this.source,
-        exaggeration: this.exaggeration ?? 1,
+        source: this.source(),
+        exaggeration: this.exaggeration() ?? 1,
       };
 
       this.controlComponent.control = new TerrainControl(options);
 
       this.mapService.addControl(
         this.controlComponent.control,
-        this.controlComponent.position
+        this.controlComponent.position()
       );
     });
   }

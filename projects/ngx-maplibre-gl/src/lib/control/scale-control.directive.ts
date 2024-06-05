@@ -2,7 +2,7 @@ import {
   AfterContentInit,
   Directive,
   Host,
-  Input,
+  input,
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
@@ -24,10 +24,10 @@ import { ControlComponent } from './control.component';
 })
 export class ScaleControlDirective implements AfterContentInit, OnChanges {
   /* Init inputs */
-  @Input() maxWidth?: number;
+  maxWidth = input<number>();
 
   /* Dynamic inputs */
-  @Input() unit?: 'imperial' | 'metric' | 'nautical';
+  unit = input<'imperial' | 'metric' | 'nautical'>();
 
   constructor(
     private mapService: MapService,
@@ -48,16 +48,16 @@ export class ScaleControlDirective implements AfterContentInit, OnChanges {
         throw new Error('Another control is already set for this control');
       }
       const options: ScaleControlOptions = {};
-      if (this.maxWidth !== undefined) {
-        options.maxWidth = this.maxWidth;
+      if (this.maxWidth() !== undefined) {
+        options.maxWidth = this.maxWidth();
       }
-      if (this.unit !== undefined) {
-        options.unit = this.unit;
+      if (this.unit() !== undefined) {
+        options.unit = this.unit();
       }
       this.controlComponent.control = new ScaleControl(options);
       this.mapService.addControl(
         this.controlComponent.control,
-        this.controlComponent.position
+        this.controlComponent.position()
       );
     });
   }

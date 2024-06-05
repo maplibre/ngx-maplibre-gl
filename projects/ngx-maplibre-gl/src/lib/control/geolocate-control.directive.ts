@@ -3,13 +3,13 @@ import {
   Directive,
   EventEmitter,
   Host,
-  Input,
+  input,
   Output,
 } from '@angular/core';
 import { FitBoundsOptions, GeolocateControl } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
-import { ControlComponent } from './control.component';
 import { Position } from '../map/map.types';
+import { ControlComponent } from './control.component';
 
 /**
  * `mglGeolocate` - a geolocate control directive
@@ -25,10 +25,10 @@ import { Position } from '../map/map.types';
 })
 export class GeolocateControlDirective implements AfterContentInit {
   /* Init inputs */
-  @Input() positionOptions?: PositionOptions;
-  @Input() fitBoundsOptions?: FitBoundsOptions;
-  @Input() trackUserLocation?: boolean;
-  @Input() showUserLocation?: boolean;
+  positionOptions = input<PositionOptions>();
+  fitBoundsOptions = input<FitBoundsOptions>();
+  trackUserLocation = input<boolean>();
+  showUserLocation = input<boolean>();
 
   @Output()
   geolocate: EventEmitter<Position> = new EventEmitter<Position>();
@@ -44,10 +44,10 @@ export class GeolocateControlDirective implements AfterContentInit {
         throw new Error('Another control is already set for this control');
       }
       const options = {
-        positionOptions: this.positionOptions,
-        fitBoundsOptions: this.fitBoundsOptions,
-        trackUserLocation: this.trackUserLocation,
-        showUserLocation: this.showUserLocation,
+        positionOptions: this.positionOptions(),
+        fitBoundsOptions: this.fitBoundsOptions(),
+        trackUserLocation: this.trackUserLocation(),
+        showUserLocation: this.showUserLocation(),
       };
 
       Object.keys(options).forEach((key: string) => {
@@ -62,7 +62,7 @@ export class GeolocateControlDirective implements AfterContentInit {
       });
       this.mapService.addControl(
         this.controlComponent.control,
-        this.controlComponent.position
+        this.controlComponent.position()
       );
     });
   }

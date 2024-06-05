@@ -3,7 +3,7 @@ import {
   Directive,
   Host,
   HostListener,
-  Input,
+  input
 } from '@angular/core';
 import { FullscreenControl } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
@@ -20,7 +20,7 @@ import { ControlComponent } from './control.component';
 })
 export class FullscreenControlDirective implements AfterContentInit {
   /* Init inputs */
-  @Input() container?: HTMLElement;
+  container = input<HTMLElement>();
   @HostListener('window:webkitfullscreenchange', ['$event.target'])
   onFullscreen() {
     this.mapService.mapInstance.resize();
@@ -37,11 +37,11 @@ export class FullscreenControlDirective implements AfterContentInit {
         throw new Error('Another control is already set for this control');
       }
       this.controlComponent.control = new FullscreenControl({
-        container: this.container,
+        container: this.container(),
       });
       this.mapService.addControl(
         this.controlComponent.control,
-        this.controlComponent.position
+        this.controlComponent.position()
       );
     });
   }

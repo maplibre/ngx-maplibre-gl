@@ -1,4 +1,4 @@
-import { AfterContentInit, Directive, Host, Input } from '@angular/core';
+import { AfterContentInit, Directive, Host, input } from '@angular/core';
 import { NavigationControl } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
@@ -17,9 +17,9 @@ import { ControlComponent } from './control.component';
 })
 export class NavigationControlDirective implements AfterContentInit {
   /* Init inputs */
-  @Input() showCompass?: boolean;
-  @Input() showZoom?: boolean;
-  @Input() visualizePitch?: boolean;
+  showCompass = input<boolean>();
+  showZoom = input<boolean>();
+  visualizePitch = input<boolean>();
 
   constructor(
     private mapService: MapService,
@@ -38,22 +38,22 @@ export class NavigationControlDirective implements AfterContentInit {
         visualizePitch?: boolean;
       } = {};
 
-      if (this.showCompass !== undefined) {
-        options.showCompass = this.showCompass;
+      if (this.showCompass() !== undefined) {
+        options.showCompass = this.showCompass();
       }
 
-      if (this.showZoom !== undefined) {
-        options.showZoom = this.showZoom;
+      if (this.showZoom() !== undefined) {
+        options.showZoom = this.showZoom();
       }
 
-      if (this.visualizePitch != undefined) {
-        options.visualizePitch = this.visualizePitch;
+      if (this.visualizePitch() !== undefined) {
+        options.visualizePitch = this.visualizePitch();
       }
 
       this.controlComponent.control = new NavigationControl(options);
       this.mapService.addControl(
         this.controlComponent.control,
-        this.controlComponent.position
+        this.controlComponent.position()
       );
     });
   }

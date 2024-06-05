@@ -1,4 +1,4 @@
-import { AfterContentInit, Directive, Host, Input } from '@angular/core';
+import { AfterContentInit, Directive, Host, input } from '@angular/core';
 import { AttributionControl } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
@@ -17,9 +17,9 @@ import { ControlComponent } from './control.component';
 })
 export class AttributionControlDirective implements AfterContentInit {
   /** Init input */
-  @Input() compact?: boolean;
+  compact = input<boolean>();
   /** Init input */
-  @Input() customAttribution?: string | string[];
+  customAttribution = input<string | string[]>();
 
   constructor(
     private mapService: MapService,
@@ -35,16 +35,16 @@ export class AttributionControlDirective implements AfterContentInit {
         compact?: boolean;
         customAttribution?: string | string[];
       } = {};
-      if (this.compact !== undefined) {
-        options.compact = this.compact;
+      if (this.compact() !== undefined) {
+        options.compact = this.compact();
       }
-      if (this.customAttribution !== undefined) {
-        options.customAttribution = this.customAttribution;
+      if (this.customAttribution() !== undefined) {
+        options.customAttribution = this.customAttribution();
       }
       this.controlComponent.control = new AttributionControl(options);
       this.mapService.addControl(
         this.controlComponent.control,
-        this.controlComponent.position
+        this.controlComponent.position()
       );
     });
   }

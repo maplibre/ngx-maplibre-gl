@@ -2,10 +2,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  Input,
   OnDestroy,
   ViewChild,
-  afterNextRender
+  afterNextRender,
+  input
 } from '@angular/core';
 import { ControlPosition, IControl } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
@@ -59,7 +59,7 @@ export class CustomControl implements IControl {
 })
 export class ControlComponent<T extends IControl> implements OnDestroy {
   /** Init input */
-  @Input() position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+  position = input<'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'>();
   /** @hidden */
   @ViewChild('content', { static: true }) content: ElementRef;
 
@@ -70,7 +70,7 @@ export class ControlComponent<T extends IControl> implements OnDestroy {
       if (this.content.nativeElement.childNodes.length) {
         this.control = new CustomControl(this.content.nativeElement);
         this.mapService.mapCreated$.subscribe(() => {
-          this.mapService.addControl(this.control!, this.position);
+          this.mapService.addControl(this.control!, this.position());
         });
       }
     });

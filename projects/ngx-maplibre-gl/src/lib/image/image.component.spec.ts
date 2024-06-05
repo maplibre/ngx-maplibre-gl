@@ -1,4 +1,4 @@
-import { SimpleChange } from '@angular/core';
+import { SimpleChange, signal } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { MapService } from '../map/map.service';
@@ -36,29 +36,29 @@ describe('ImageComponent', () => {
     fixture = TestBed.createComponent(ImageComponent);
     component = fixture.componentInstance;
     msSpy = fixture.debugElement.injector.get<MapService>(MapService) as any;
-    component.id = 'imageId';
+    component.id = signal('imageId') as unknown as typeof fixture.componentInstance.id;
   });
 
   describe('Init/Destroy tests', () => {
     it('should init with custom inputs', () => {
-      component.data = {
+      component.data = signal({
         width: 500,
         height: 500,
         data: new Uint8Array([5, 5]),
-      };
+      }) as unknown as typeof fixture.componentInstance.data;
       fixture.detectChanges();
       expect(msSpy.addImage).toHaveBeenCalled();
     });
 
     it('should remove image on destroy', () => {
-      component.data = {
+      component.data = signal({
         width: 500,
         height: 500,
         data: new Uint8Array([5, 5]),
-      };
+      }) as unknown as typeof fixture.componentInstance.data;
       fixture.detectChanges();
       component.ngOnDestroy();
-      expect(msSpy.removeImage).toHaveBeenCalledWith(component.id);
+      expect(msSpy.removeImage).toHaveBeenCalledWith(component.id());
     });
 
     it('should not remove image on destroy if not added', () => {
@@ -69,17 +69,17 @@ describe('ImageComponent', () => {
 
   describe('Change tests', () => {
     it('should update image', () => {
-      component.id = 'layerId';
-      component.data = {
+      component.id = signal('layerId') as unknown as typeof fixture.componentInstance.id;
+      component.data = signal({
         width: 500,
         height: 500,
         data: new Uint8Array([5, 5]),
-      };
+      }) as unknown as typeof fixture.componentInstance.data;
       fixture.detectChanges();
       component.ngOnChanges({
-        data: new SimpleChange(null, component.data, false),
+        data: new SimpleChange(null, component.data(), false),
       });
-      expect(msSpy.removeImage).toHaveBeenCalledWith(component.id);
+      expect(msSpy.removeImage).toHaveBeenCalledWith(component.id());
       expect(msSpy.addImage).toHaveBeenCalled();
     });
   });

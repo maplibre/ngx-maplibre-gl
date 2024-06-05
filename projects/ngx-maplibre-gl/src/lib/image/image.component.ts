@@ -1,7 +1,7 @@
 import {
   Component,
   EventEmitter,
-  Input,
+  input,
   NgZone,
   OnChanges,
   OnDestroy,
@@ -52,14 +52,14 @@ import { MapImageData, MapImageOptions } from '../map/map.types';
 })
 export class ImageComponent implements OnInit, OnDestroy, OnChanges {
   /** Init input */
-  @Input() id: string;
+  id = input.required<string>();
 
   /** Dynamic input */
-  @Input() data?: MapImageData;
+  data = input<MapImageData>();
   /** Dynamic input */
-  @Input() options?: MapImageOptions;
+  options = input<MapImageOptions>();
   /** Dynamic input */
-  @Input() url?: string;
+  url = input<string>();
 
   @Output() imageError = new EventEmitter<{ status: number }>();
   @Output() imageLoaded = new EventEmitter<void>();
@@ -68,7 +68,7 @@ export class ImageComponent implements OnInit, OnDestroy, OnChanges {
   private isAdding = false;
   private sub: Subscription;
 
-  constructor(private mapService: MapService, private zone: NgZone) {}
+  constructor(private mapService: MapService, private zone: NgZone) { }
 
   ngOnInit() {
     this.sub = this.mapService.mapLoaded$
@@ -78,7 +78,7 @@ export class ImageComponent implements OnInit, OnDestroy, OnChanges {
             startWith(undefined),
             filter(
               () =>
-                !this.isAdding && !this.mapService.mapInstance.hasImage(this.id)
+                !this.isAdding && !this.mapService.mapInstance.hasImage(this.id())
             )
           )
         )
@@ -99,7 +99,7 @@ export class ImageComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy() {
     if (this.isAdded) {
-      this.mapService.removeImage(this.id);
+      this.mapService.removeImage(this.id());
     }
     if (this.sub) {
       this.sub.unsubscribe();
@@ -108,13 +108,13 @@ export class ImageComponent implements OnInit, OnDestroy, OnChanges {
 
   private async init() {
     this.isAdding = true;
-    if (this.data) {
-      this.mapService.addImage(this.id, this.data, this.options);
+    if (this.data()) {
+      this.mapService.addImage(this.id(), this.data()!, this.options());
       this.isAdded = true;
       this.isAdding = false;
-    } else if (this.url) {
+    } else if (this.url()) {
       try {
-        await this.mapService.loadAndAddImage(this.id, this.url, this.options);
+        await this.mapService.loadAndAddImage(this.id(), this.url() ?? '', this.options());
         this.isAdded = true;
         this.isAdding = false;
         this.zone.run(() => {
