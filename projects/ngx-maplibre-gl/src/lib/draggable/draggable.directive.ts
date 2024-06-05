@@ -2,15 +2,15 @@ import {
   Directive,
   EventEmitter,
   Host,
-  Input,
   NgZone,
   OnDestroy,
   OnInit,
   Optional,
   Output,
+  input
 } from '@angular/core';
 import { MapMouseEvent } from 'maplibre-gl';
-import { fromEvent, Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, fromEvent } from 'rxjs';
 import { filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { LayerComponent } from '../layer/layer.component';
 import { MapService } from '../map/map.service';
@@ -29,7 +29,7 @@ import { FeatureComponent } from '../source/geojson/feature.component';
 })
 export class DraggableDirective implements OnInit, OnDestroy {
   // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input('mglDraggable') layer?: LayerComponent;
+  layer = input<LayerComponent | undefined>(undefined, { alias: 'mglDraggable' });
 
   @Output() featureDragStart = new EventEmitter<MapMouseEvent>();
   @Output() featureDragEnd = new EventEmitter<MapMouseEvent>();
@@ -47,9 +47,9 @@ export class DraggableDirective implements OnInit, OnDestroy {
     let enter$;
     let leave$;
     let updateCoords;
-    if (this.featureComponent && this.layer) {
-      enter$ = this.layer.layerMouseEnter;
-      leave$ = this.layer.layerMouseLeave;
+    if (this.featureComponent && this.layer()) {
+      enter$ = this.layer()!.layerMouseEnter;
+      leave$ = this.layer()!.layerMouseLeave;
       updateCoords = this.featureComponent.updateCoordinates.bind(
         this.featureComponent
       );
@@ -155,11 +155,11 @@ export class DraggableDirective implements OnInit, OnDestroy {
   }
 
   private filterFeature(evt: MapMouseEvent) {
-    if (this.featureComponent && this.layer) {
+    if (this.featureComponent && this.layer()) {
       const feature: GeoJSON.Feature = this.mapService.queryRenderedFeatures(
         evt.point,
         {
-          layers: [this.layer.id],
+          layers: [this.layer()!.id()],
           filter: [
             'all',
             ['==', '$type', 'Point'],

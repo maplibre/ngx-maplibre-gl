@@ -1,7 +1,7 @@
 import {
   Component,
   EventEmitter,
-  Input,
+  input,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -9,8 +9,8 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import {
-  LayerSpecification,
   FilterSpecification,
+  LayerSpecification,
   MapLayerMouseEvent,
   MapLayerTouchEvent,
 } from 'maplibre-gl';
@@ -49,34 +49,34 @@ import { EventData, LayerEvents } from '../map/map.types';
 export class LayerComponent
   implements OnInit, OnDestroy, OnChanges, LayerEvents {
   /** Init input */
-  @Input() id: LayerSpecification['id'];
+  id = input.required<LayerSpecification['id']>();
   /** Init input */
-  @Input() source?: string;
+  source = input<string>();
   /** Init input */
-  @Input() type: LayerSpecification['type'];
+  type = input.required<LayerSpecification['type']>();
   /** Init input */
-  @Input() metadata?: LayerSpecification['metadata'];
+  metadata = input<LayerSpecification['metadata']>();
   /** Init input */
-  @Input() sourceLayer?: string;
+  sourceLayer = input<string>();
   /**
    * A flag to enable removeSource clean up functionality
    * 
    * Init input
    */
-  @Input() removeSource?: boolean;
+  removeSource = input<boolean>();
 
   /** Dynamic input */
-  @Input() filter?: FilterSpecification;
+  filter = input<FilterSpecification>();
   /** Dynamic input */
-  @Input() layout?: LayerSpecification['layout'];
+  layout = input<LayerSpecification['layout']>();
   /** Dynamic input */
-  @Input() paint?: LayerSpecification['paint'];
+  paint = input<LayerSpecification['paint']>();
   /** Dynamic input */
-  @Input() before?: string;
+  before = input<string>();
   /** Dynamic input */
-  @Input() minzoom?: LayerSpecification['minzoom'];
+  minzoom = input<LayerSpecification['minzoom']>();
   /** Dynamic input */
-  @Input() maxzoom?: LayerSpecification['maxzoom'];
+  maxzoom = input<LayerSpecification['maxzoom']>();
 
   @Output() layerClick = new EventEmitter<MapLayerMouseEvent & EventData>();
   @Output() layerDblClick = new EventEmitter<MapLayerMouseEvent & EventData>();
@@ -114,7 +114,7 @@ export class LayerComponent
         switchMap(() =>
           fromEvent(this.mapService.mapInstance, 'styledata').pipe(
             map(() => false),
-            filter(() => !this.mapService.mapInstance.getLayer(this.id)),
+            filter(() => !this.mapService.mapInstance.getLayer(this.id())),
             startWith(true)
           )
         )
@@ -128,33 +128,33 @@ export class LayerComponent
     }
     if (changes.paint && !changes.paint.isFirstChange()) {
       this.mapService.setAllLayerPaintProperty(
-        this.id,
+        this.id(),
         changes.paint.currentValue!
       );
     }
     if (changes.layout && !changes.layout.isFirstChange()) {
       this.mapService.setAllLayerLayoutProperty(
-        this.id,
+        this.id(),
         changes.layout.currentValue!
       );
     }
     if (changes.filter && !changes.filter.isFirstChange()) {
-      this.mapService.setLayerFilter(this.id, changes.filter.currentValue!);
+      this.mapService.setLayerFilter(this.id(), changes.filter.currentValue!);
     }
     if (changes.before && !changes.before.isFirstChange()) {
-      this.mapService.setLayerBefore(this.id, changes.before.currentValue!);
+      this.mapService.setLayerBefore(this.id(), changes.before.currentValue!);
     }
     if (
       (changes.minzoom && !changes.minzoom.isFirstChange()) ||
       (changes.maxzoom && !changes.maxzoom.isFirstChange())
     ) {
-      this.mapService.setLayerZoomRange(this.id, this.minzoom, this.maxzoom);
+      this.mapService.setLayerZoomRange(this.id(), this.minzoom(), this.maxzoom());
     }
   }
 
   ngOnDestroy() {
     if (this.layerAdded) {
-      this.mapService.removeLayer(this.id);
+      this.mapService.removeLayer(this.id());
       if (undefined !== this.sourceIdAdded) {
         // Clean up any automatically created source for this layer
         if (this.mapService.getSource(this.sourceIdAdded)) {
@@ -170,17 +170,17 @@ export class LayerComponent
   private init(bindEvents: boolean) {
     const layer: SetupLayer = {
       layerOptions: {
-        id: this.id,
-        type: this.type,
-        source: this.source as string,
-        metadata: this.metadata,
+        id: this.id(),
+        type: this.type(),
+        source: this.source(),
+        metadata: this.metadata(),
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        'source-layer': this.sourceLayer,
-        minzoom: this.minzoom,
-        maxzoom: this.maxzoom,
-        filter: this.filter,
-        layout: this.layout,
-        paint: this.paint,
+        'source-layer': this.sourceLayer(),
+        minzoom: this.minzoom(),
+        maxzoom: this.maxzoom(),
+        filter: this.filter(),
+        layout: this.layout(),
+        paint: this.paint(),
       } as LayerSpecification,
       layerEvents: {
         layerClick: this.layerClick,
@@ -198,14 +198,14 @@ export class LayerComponent
         layerTouchCancel: this.layerTouchCancel,
       },
     };
-    if (this.removeSource && typeof this.source !== 'string') {
+    if (this.removeSource() && typeof this.source() !== 'string') {
       // There is no id of an existing source bound to this layer
-      if (undefined === this.mapService.getSource(this.id)) {
+      if (undefined === this.mapService.getSource(this.id())) {
         // A source with this layer id doesn't exist so it will be created automatically in the addLayer call below
-        this.sourceIdAdded = this.id;
+        this.sourceIdAdded = this.id();
       }
     }
-    this.mapService.addLayer(layer, bindEvents, this.before);
+    this.mapService.addLayer(layer, bindEvents, this.before());
     if (undefined !== this.sourceIdAdded) {
       if (undefined === this.mapService.getSource(this.sourceIdAdded)) {
         // If it wasn't created for some reason then we don't want to clean it up

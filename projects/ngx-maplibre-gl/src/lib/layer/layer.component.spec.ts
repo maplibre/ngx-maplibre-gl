@@ -1,4 +1,4 @@
-import { SimpleChange } from '@angular/core';
+import { SimpleChange, signal } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { MapService, SetupLayer } from '../map/map.service';
@@ -39,16 +39,16 @@ describe('LayerComponent', () => {
     fixture = TestBed.createComponent(LayerComponent);
     component = fixture.componentInstance;
     msSpy = fixture.debugElement.injector.get<MapService>(MapService) as any;
-    component.id = 'layerId';
+    component.id = signal('layerId') as unknown as typeof fixture.componentInstance.id;
   });
 
   describe('Init/Destroy tests', () => {
     it('should init with custom inputs', (done: DoneFn) => {
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      component.paint = { 'background-color': 'green' };
-      component.type = 'background';
+      component.paint = signal({ 'background-color': 'green' }) as unknown as typeof fixture.componentInstance.paint;
+      component.type = signal('background') as unknown as typeof fixture.componentInstance.type;
       msSpy.addLayer.and.callFake((options: SetupLayer) => {
-        expect(options.layerOptions.id).toEqual(component.id);
+        expect(options.layerOptions.id).toEqual(component.id());
         expect((options.layerOptions as any).paint['background-color']).toEqual(
           'green'
         );
@@ -59,21 +59,21 @@ describe('LayerComponent', () => {
 
     it('should remove layer on destroy', () => {
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      component.paint = { 'background-color': 'green' };
+      component.paint = signal({ 'background-color': 'green' }) as unknown as typeof fixture.componentInstance.paint;
       fixture.detectChanges();
       component.ngOnDestroy();
-      expect(msSpy.removeLayer).toHaveBeenCalledWith(component.id);
+      expect(msSpy.removeLayer).toHaveBeenCalledWith(component.id());
     });
 
     it('should remove layer and source on destroy', () => {
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      component.paint = { 'background-color': 'green' };
-      component.removeSource = true;
-      msSpy.getSource.and.returnValues(undefined, component.id, {});
+      component.paint = signal({ 'background-color': 'green' }) as unknown as typeof fixture.componentInstance.paint;
+      component.removeSource = signal(true) as unknown as typeof fixture.componentInstance.removeSource;
+      msSpy.getSource.and.returnValues(undefined, component.id(), {});
       fixture.detectChanges();
       component.ngOnDestroy();
-      expect(msSpy.removeLayer).toHaveBeenCalledWith(component.id);
-      expect(msSpy.removeSource).toHaveBeenCalledWith(component.id);
+      expect(msSpy.removeLayer).toHaveBeenCalledWith(component.id());
+      expect(msSpy.removeSource).toHaveBeenCalledWith(component.id());
     });
 
     it('should not remove layer on destroy if not added', () => {
@@ -84,20 +84,20 @@ describe('LayerComponent', () => {
 
   describe('Change tests', () => {
     it('should update paint', () => {
-      component.id = 'layerId';
-      component.paint = {
+      component.id = signal('layerId') as unknown as typeof fixture.componentInstance.id;
+      component.paint = signal({
         // eslint-disable-next-line @typescript-eslint/naming-convention
         'background-color': 'green',
         // eslint-disable-next-line @typescript-eslint/naming-convention
         'background-opacity': 0.5,
-      };
+      }) as unknown as typeof fixture.componentInstance.paint;
       fixture.detectChanges();
       component.ngOnChanges({
-        paint: new SimpleChange(null, component.paint, false),
+        paint: new SimpleChange(null, component.paint(), false),
       });
       expect(msSpy.setAllLayerPaintProperty).toHaveBeenCalledWith(
-        component.id,
-        component.paint
+        component.id(),
+        component.paint()
       );
     });
   });
