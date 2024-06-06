@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
-import { NgFor, NgStyle } from '@angular/common';
+import { NgStyle } from '@angular/common';
 
 @Component({
   selector: 'showcase-demo',
@@ -13,23 +13,24 @@ import { NgFor, NgStyle } from '@angular/common';
       [center]="[-65.017, -16.457]"
       [preserveDrawingBuffer]="true"
     >
-      <mgl-marker *ngFor="let feature of geojson.features" [feature]="feature">
-        <div
-          (click)="alert(feature.properties.message)"
-          class="marker"
-          [ngStyle]="{
-            'background-image':
-              'url(/assets/ngx-maplibre-gl-red.svg)',
-            width: feature.properties.iconSize[0] + 'px',
-            height: feature.properties.iconSize[1] + 'px'
-          }"
-        ></div>
-      </mgl-marker>
+      @for (feature of geojson.features; track feature) {
+        <mgl-marker [feature]="feature">
+          <div
+            (click)="alert(feature.properties.message)"
+            class="marker"
+            [ngStyle]="{
+              'background-image': 'url(/assets/ngx-maplibre-gl-red.svg)',
+              width: feature.properties.iconSize[0] + 'px',
+              height: feature.properties.iconSize[1] + 'px',
+            }"
+          ></div>
+        </mgl-marker>
+      }
     </mgl-map>
   `,
   styleUrls: ['./examples.css', './custom-marker-icons.component.css'],
   standalone: true,
-  imports: [MapComponent, NgFor, MarkerComponent, NgStyle],
+  imports: [MapComponent, MarkerComponent, NgStyle],
 })
 export class CustomMarkerIconsComponent {
   geojson = {

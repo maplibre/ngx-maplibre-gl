@@ -6,7 +6,6 @@ import {
   LayerComponent,
   GeoJSONSourceComponent,
 } from '@maplibre/ngx-maplibre-gl';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'showcase-demo',
@@ -33,9 +32,11 @@ import { NgIf } from '@angular/common';
         (layerMouseEnter)="cursorStyle = 'pointer'"
         (layerMouseLeave)="cursorStyle = ''"
       ></mgl-layer>
-      <mgl-popup *ngIf="selectedPoint" [feature]="selectedPoint">
-        <span [innerHTML]="selectedPoint.properties?.description"></span>
-      </mgl-popup>
+      @if (selectedPoint) {
+        <mgl-popup [feature]="selectedPoint">
+          <span [innerHTML]="selectedPoint.properties?.description"></span>
+        </mgl-popup>
+      }
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
@@ -44,7 +45,6 @@ import { NgIf } from '@angular/common';
     MapComponent,
     GeoJSONSourceComponent,
     LayerComponent,
-    NgIf,
     PopupComponent,
   ],
 })
