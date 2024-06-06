@@ -4,7 +4,7 @@ import {
   SymbolLayerSpecification,
   ExpressionSpecification,
 } from 'maplibre-gl';
-import { NgStyle, NgFor } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import {
   MapComponent,
   LayerComponent,
@@ -23,11 +23,9 @@ import {
       text-anchor="middle"
       [ngStyle]="{ font: font }"
     >
-      <path
-        *ngFor="let segment of segments"
-        [attr.d]="segment.d"
-        [ngStyle]="{ fill: segment.fill }"
-      />
+      @for (segment of segments; track segment) {
+        <path [attr.d]="segment.d" [ngStyle]="{ fill: segment.fill }" />
+      }
       <circle [attr.cx]="r" [attr.cy]="r" [attr.r]="r0" fill="white" />
       <text dominant-baseline="central" [attr.transform]="textTransform">
         {{ totalString }}
@@ -35,7 +33,7 @@ import {
     </svg>
   `,
   standalone: true,
-  imports: [NgStyle, NgFor],
+  imports: [NgStyle],
 })
 export class ClusterPointComponent implements OnInit {
   @Input() properties: any;

@@ -6,7 +6,6 @@ import {
   GeoJSONSourceComponent,
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
-import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'showcase-demo',
@@ -22,10 +21,9 @@ import { NgFor } from '@angular/common';
       [preserveDrawingBuffer]="true"
     >
       <mgl-geojson-source id="symbols-source">
-        <mgl-feature
-          *ngFor="let geometry of geometries"
-          [geometry]="geometry"
-        ></mgl-feature>
+        @for (geometry of geometries; track geometry) {
+          <mgl-feature [geometry]="geometry"></mgl-feature>
+        }
       </mgl-geojson-source>
       <mgl-layer
         id="symbols"
@@ -46,7 +44,6 @@ import { NgFor } from '@angular/common';
   imports: [
     MapComponent,
     GeoJSONSourceComponent,
-    NgFor,
     FeatureComponent,
     LayerComponent,
   ],
