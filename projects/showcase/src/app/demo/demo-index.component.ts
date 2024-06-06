@@ -25,7 +25,6 @@ import scrollIntoView from 'scroll-into-view-if-needed';
 import { Category, DEMO_ROUTES } from './routes';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
-import { NgIf, NgFor } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -49,9 +48,7 @@ type RoutesByCategory = { [P in Category]: Routes };
     MatSidenavModule,
     MatFormFieldModule,
     MatInputModule,
-    NgIf,
     MatListModule,
-    NgFor,
     RouterLinkActive,
     RouterLink,
     MatDividerModule,

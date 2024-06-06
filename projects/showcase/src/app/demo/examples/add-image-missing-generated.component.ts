@@ -5,7 +5,6 @@ import {
   ImageComponent,
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
-import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'showcase-demo',
@@ -17,11 +16,9 @@ import { NgFor } from '@angular/common';
       (styleImageMissing)="generateImage($event)"
       [preserveDrawingBuffer]="true"
     >
-      <mgl-image
-        *ngFor="let imageData of imagesData; trackBy: trackByImage"
-        [id]="imageData.id"
-        [data]="imageData"
-      ></mgl-image>
+      @for (imageData of imagesData; track trackByImage($index, imageData)) {
+        <mgl-image [id]="imageData.id" [data]="imageData"></mgl-image>
+      }
       <mgl-layer
         id="points"
         type="symbol"
@@ -72,7 +69,7 @@ import { NgFor } from '@angular/common';
   `,
   styleUrls: ['./examples.css'],
   standalone: true,
-  imports: [MapComponent, NgFor, ImageComponent, LayerComponent],
+  imports: [MapComponent, ImageComponent, LayerComponent],
 })
 export class AddImageMissingGeneratedComponent {
   imagesData: (MapImageData & { id: string })[] = [];

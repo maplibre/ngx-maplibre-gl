@@ -4,7 +4,6 @@ import {
   GeoJSONSourceComponent,
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
-import { NgIf } from '@angular/common';
 import data from './hike.geo.json';
 
 @Component({
@@ -21,25 +20,25 @@ import data from './hike.geo.json';
       movingMethod="jumpTo"
       [preserveDrawingBuffer]="true"
     >
-      <mgl-geojson-source *ngIf="data" id="trace" [data]="data">
-      </mgl-geojson-source>
-      <mgl-layer
-        *ngIf="data"
-        id="trace"
-        type="line"
-        source="trace"
-        [paint]="{
-          'line-color': 'yellow',
-          'line-opacity': 0.75,
-          'line-width': 5
-        }"
-      >
-      </mgl-layer>
+      @if (data) {
+        <mgl-geojson-source id="trace" [data]="data"> </mgl-geojson-source>
+        <mgl-layer
+          id="trace"
+          type="line"
+          source="trace"
+          [paint]="{
+            'line-color': 'yellow',
+            'line-opacity': 0.75,
+            'line-width': 5,
+          }"
+        >
+        </mgl-layer>
+      }
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
   standalone: true,
-  imports: [MapComponent, NgIf, GeoJSONSourceComponent, LayerComponent],
+  imports: [MapComponent, GeoJSONSourceComponent, LayerComponent],
 })
 export class LiveUpdateFeatureComponent implements OnDestroy {
   data: GeoJSON.FeatureCollection<GeoJSON.LineString>;

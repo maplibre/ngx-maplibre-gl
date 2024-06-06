@@ -27,35 +27,39 @@
         [(ngModel)]="searchTerm"
         (ngModelChange)="search()"
       />
-      <button
-        *ngIf="searchTerm"
-        matSuffix
-        mat-icon-button
-        aria-label="Clear"
-        (click)="clearSearch()"
-      >
-        <mat-icon>close</mat-icon>
-      </button>
+      @if (searchTerm) {
+        <button
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="clearSearch()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      }
     </mat-form-field>
     <mat-nav-list>
-      <ng-container *ngFor="let cat of categories">
+      @for (cat of categories; track cat) {
         <h3 matSubheader>{{ cat }}</h3>
-        <ng-container *ngFor="let route of $any(routes)[cat]">
-          <a
-            *ngIf="route"
-            mat-list-item
-            [routerLink]="'/demo/' + (isEditMode ? '/edit/' : '') + route.path"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{
-              _routerLinkActiveWakeUpHack_: isEditMode
-            }"
-            #exampleLink
-          >
-            {{ route.data.label }}
-          </a>
-        </ng-container>
+        @for (route of $any(routes)[cat]; track route) {
+          @if (route) {
+            <a
+              mat-list-item
+              [routerLink]="
+                '/demo/' + (isEditMode ? '/edit/' : '') + route.path
+              "
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{
+                _routerLinkActiveWakeUpHack_: isEditMode,
+              }"
+              #exampleLink
+            >
+              {{ route.data.label }}
+            </a>
+          }
+        }
         <mat-divider></mat-divider>
-      </ng-container>
+      }
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
