@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [18.0.0](https://github.com/maplibre/ngx-maplibre-gl/compare/v17.4.3...v18.0.0) (2024-06-06)
+
+- Upgrade Angular to version 18
+
 ### [17.4.3](https://github.com/maplibre/ngx-maplibre-gl/compare/v17.4.2...v17.4.3) (2024-04-09)
 
 - Add SSR support
