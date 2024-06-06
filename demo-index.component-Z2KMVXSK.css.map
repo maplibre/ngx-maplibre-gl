@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/showcase/src/app/demo/demo-index.component.scss"],
+  "sourcesContent": ["@use \"@angular/material\" as mat;\n\n:host,\n.content {\n  display: flex;\n  flex: 1;\n  flex-direction: row;\n}\n\nmat-sidenav {\n  width: 345px;\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n}\n\nmat-nav-list {\n  overflow-y: auto;\n}\n\nmat-sidenav-container {\n  flex: 1;\n}\n\n.content {\n  height: 100%;\n}\n\nmat-form-field.search {\n  width: 100%;\n  margin-bottom: -1.25em;\n}\n\na.active {\n  --mdc-list-list-item-label-text-color: white;\n  --mdc-list-list-item-hover-label-text-color: white;\n  --mdc-list-list-item-focus-label-text-color: white;\n  background-color: mat.m2-get-color-from-palette(\n    mat.m2-define-palette(mat.$m2-indigo-palette)\n  ) !important;\n}\n"],
+  "mappings": "AAEA,MAAA,CAAA,QAEE,QAAA,KACA,KAAA,EACA,eAAA,IAGF,YACE,MAAA,MACA,QAAA,KACA,eAAA,OACA,KAAA,EAGF,aACE,WAAA,KAGF,sBACE,KAAA,EAGF,CAtBA,QAuBE,OAAA,KAGF,cAAA,CAAA,OACE,MAAA,KACA,cAAA,QAGF,CAAA,CAAA,OACE,uCAAA,MACA,6CAAA,MACA,6CAAA,MACA,iBAAA",
+  "names": []
+}
