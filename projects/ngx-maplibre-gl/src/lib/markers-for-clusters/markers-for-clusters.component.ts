@@ -3,12 +3,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChild,
   Directive,
   Input,
   NgZone,
   OnDestroy,
   TemplateRef,
+  contentChild,
+  inject,
 } from '@angular/core';
 import { MapGeoJSONFeature, MapSourceDataEvent } from 'maplibre-gl';
 import { fromEvent, merge, Subscription } from 'rxjs';
@@ -20,7 +21,7 @@ import { LayerComponent } from '../layer/layer.component';
 
 /**
  * a template directive for point for {@link MarkersForClustersComponent}
- * 
+ *
  * @category Directives
  */
 @Directive({
@@ -31,7 +32,7 @@ export class PointDirective {}
 
 /**
  * a template directive for clustered point for {@link MarkersForClustersComponent}
- * 
+ *
  * @category Directives
  */
 @Directive({
@@ -45,9 +46,9 @@ let uniqId = 0;
 /**
  * [ngx] `mgl-markers-for-clusters` - an HTML marker component for clustered points.
  * Requires a geojson source that is clustered.
- * 
+ *
  * @category Components
- * 
+ *
  * @example
  * ```html
  * ...
@@ -61,50 +62,55 @@ let uniqId = 0;
  *   </mgl-markers-for-cluster>
  * </mgl-map>
  * ```
- * 
+ *
  * Note: Only use this if you **really** need to use HTML/Angular component to render your symbols. This is **slower** than rendering symbols in WebGL.
- */ 
- @Component({
+ */
+@Component({
   selector: 'mgl-markers-for-clusters',
-  template: `
-    <mgl-layer
-      [id]="layerId"
-      [source]="source"
-      type="circle"
-      [paint]="{ 'circle-radius': 0 }"
-    ></mgl-layer>
-    @for (feature of clusterPoints; track feature.id) {
-      @if (feature.properties.cluster) {
-        <mgl-marker [feature]="feature">
-          <ng-container
-            *ngTemplateOutlet="clusterPointTpl; context: { $implicit: feature }"
-          ></ng-container>
-        </mgl-marker>
-      } @else {
-        <mgl-marker [feature]="feature">
-          <ng-container
-            *ngTemplateOutlet="pointTpl; context: { $implicit: feature }"
-          ></ng-container>
-        </mgl-marker>
-      }
-    }
-    `,
+
+  template: `    <mgl-layer
+  [id]="layerId"
+  [source]="source"
+  type="circle"
+  [paint]="{ 'circle-radius': 0 }"
+></mgl-layer>
+@for (feature of clusterPoints; track feature.id) {
+  @if (feature.properties.cluster) {
+    <mgl-marker [feature]="feature">
+      <ng-container
+        *ngTemplateOutlet="clusterPointTpl(); context: { $implicit: feature }"
+      ></ng-container>
+    </mgl-marker>
+  } @else {
+    <mgl-marker [feature]="feature">
+      <ng-container
+        *ngTemplateOutlet="pointTpl(); context: { $implicit: feature }"
+      ></ng-container>
+    </mgl-marker>
+  }
+}
+`,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
   standalone: true,
   imports: [LayerComponent, MarkerComponent, NgTemplateOutlet],
 })
 export class MarkersForClustersComponent
-  implements OnDestroy, AfterContentInit {
+  implements OnDestroy, AfterContentInit
+{
+  private readonly mapService = inject(MapService);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+  private readonly ngZone = inject(NgZone);
+
   /** Init input */
   @Input() source: string;
 
   /** @hidden */
-  @ContentChild(PointDirective, { read: TemplateRef, static: false })
-  pointTpl?: TemplateRef<any>;
+  readonly pointTpl = contentChild(PointDirective, { read: TemplateRef });
   /** @hidden */
-  @ContentChild(ClusterPointDirective, { read: TemplateRef, static: false })
-  clusterPointTpl: TemplateRef<any>;
+  readonly clusterPointTpl = contentChild(ClusterPointDirective, {
+    read: TemplateRef,
+  });
 
   /** @hidden */
   clusterPoints: MapGeoJSONFeature[];
@@ -112,12 +118,6 @@ export class MarkersForClustersComponent
   layerId = `mgl-markers-for-clusters-${uniqId++}`;
 
   private sub = new Subscription();
-
-  constructor(
-    private mapService: MapService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private ngZone: NgZone
-  ) {}
 
   ngAfterContentInit() {
     const clusterDataUpdate = () =>
@@ -151,14 +151,17 @@ export class MarkersForClustersComponent
     this.sub.unsubscribe();
   }
 
+  trackByClusterPoint(_index: number, clusterPoint: { id: number }) {
+    return clusterPoint.id;
+  }
+
   private updateCluster() {
     const params: any = { layers: [this.layerId] };
-    if (!this.pointTpl) {
+    if (!this.pointTpl()) {
       params.filter = ['==', 'cluster', true];
     }
-    this.clusterPoints = this.mapService.mapInstance.queryRenderedFeatures(
-      params
-    );
+    this.clusterPoints =
+      this.mapService.mapInstance.queryRenderedFeatures(params);
     this.changeDetectorRef.markForCheck();
   }
 }

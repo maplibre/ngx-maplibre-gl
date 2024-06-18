@@ -1,12 +1,12 @@
 import {
   Component,
-  EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Output,
   SimpleChanges,
+  inject,
+  output,
 } from '@angular/core';
 import {
   LayerSpecification,
@@ -22,9 +22,9 @@ import { EventData, LayerEvents } from '../map/map.types';
 /**
  * `mgl-layer` - a layer component
  * @see [layers](https://maplibre.org/maplibre-style-spec/layers/)
- * 
+ *
  * @category Layer Component
- * 
+ *
  * @example
  * ```html
  * ...
@@ -47,7 +47,11 @@ import { EventData, LayerEvents } from '../map/map.types';
   standalone: true,
 })
 export class LayerComponent
-  implements OnInit, OnDestroy, OnChanges, LayerEvents {
+  implements OnInit, OnDestroy, OnChanges, LayerEvents
+{
+  /** Init injection */
+  private readonly mapService = inject(MapService);
+
   /** Init input */
   @Input() id: LayerSpecification['id'];
   /** Init input */
@@ -60,7 +64,7 @@ export class LayerComponent
   @Input() sourceLayer?: string;
   /**
    * A flag to enable removeSource clean up functionality
-   * 
+   *
    * Init input
    */
   @Input() removeSource?: boolean;
@@ -78,35 +82,23 @@ export class LayerComponent
   /** Dynamic input */
   @Input() maxzoom?: LayerSpecification['maxzoom'];
 
-  @Output() layerClick = new EventEmitter<MapLayerMouseEvent & EventData>();
-  @Output() layerDblClick = new EventEmitter<MapLayerMouseEvent & EventData>();
-  @Output() layerMouseDown = new EventEmitter<MapLayerMouseEvent & EventData>();
-  @Output() layerMouseUp = new EventEmitter<MapLayerMouseEvent & EventData>();
-  @Output() layerMouseEnter = new EventEmitter<
-    MapLayerMouseEvent & EventData
-  >();
-  @Output() layerMouseLeave = new EventEmitter<
-    MapLayerMouseEvent & EventData
-  >();
-  @Output() layerMouseMove = new EventEmitter<MapLayerMouseEvent & EventData>();
-  @Output() layerMouseOver = new EventEmitter<MapLayerMouseEvent & EventData>();
-  @Output() layerMouseOut = new EventEmitter<MapLayerMouseEvent & EventData>();
-  @Output() layerContextMenu = new EventEmitter<
-    MapLayerMouseEvent & EventData
-  >();
-  @Output() layerTouchStart = new EventEmitter<
-    MapLayerTouchEvent & EventData
-  >();
-  @Output() layerTouchEnd = new EventEmitter<MapLayerTouchEvent & EventData>();
-  @Output() layerTouchCancel = new EventEmitter<
-    MapLayerTouchEvent & EventData
-  >();
+  readonly layerClick = output<MapLayerMouseEvent & EventData>();
+  readonly layerDblClick = output<MapLayerMouseEvent & EventData>();
+  readonly layerMouseDown = output<MapLayerMouseEvent & EventData>();
+  readonly layerMouseUp = output<MapLayerMouseEvent & EventData>();
+  readonly layerMouseEnter = output<MapLayerMouseEvent & EventData>();
+  readonly layerMouseLeave = output<MapLayerMouseEvent & EventData>();
+  readonly layerMouseMove = output<MapLayerMouseEvent & EventData>();
+  readonly layerMouseOver = output<MapLayerMouseEvent & EventData>();
+  readonly layerMouseOut = output<MapLayerMouseEvent & EventData>();
+  readonly layerContextMenu = output<MapLayerMouseEvent & EventData>();
+  readonly layerTouchStart = output<MapLayerTouchEvent & EventData>();
+  readonly layerTouchEnd = output<MapLayerTouchEvent & EventData>();
+  readonly layerTouchCancel = output<MapLayerTouchEvent & EventData>();
 
   private layerAdded = false;
   private sub: Subscription;
   private sourceIdAdded?: string;
-
-  constructor(private mapService: MapService) {}
 
   ngOnInit() {
     this.sub = this.mapService.mapLoaded$

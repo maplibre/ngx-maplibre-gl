@@ -1,13 +1,13 @@
-import { AfterContentInit, Directive, Host, Input } from '@angular/core';
+import { AfterContentInit, Directive, Input, inject } from '@angular/core';
 import { NavigationControl } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
 
 /**
  * `mglNavigation` - a navigation control directive
- * 
+ *
  * @category Directives
- * 
+ *
  * @see [Navigation](https://maplibre.org/ngx-maplibre-gl/demo/navigation)
  * @see [NavigationControl](https://maplibre.org/maplibre-gl-js/docs/API/classes/NavigationControl)
  */
@@ -16,15 +16,16 @@ import { ControlComponent } from './control.component';
   standalone: true,
 })
 export class NavigationControlDirective implements AfterContentInit {
+  /* Init injection */
+  private readonly mapService = inject(MapService);
+  private readonly controlComponent = inject<
+    ControlComponent<NavigationControl>
+  >(ControlComponent, { host: true });
+
   /* Init inputs */
   @Input() showCompass?: boolean;
   @Input() showZoom?: boolean;
   @Input() visualizePitch?: boolean;
-
-  constructor(
-    private mapService: MapService,
-    @Host() private controlComponent: ControlComponent<NavigationControl>
-  ) {}
 
   ngAfterContentInit() {
     this.mapService.mapCreated$.subscribe(() => {

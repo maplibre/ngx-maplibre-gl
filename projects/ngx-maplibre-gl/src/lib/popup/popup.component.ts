@@ -2,15 +2,15 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Output,
   SimpleChanges,
-  ViewChild,
   afterNextRender,
+  inject,
+  output,
+  viewChild,
 } from '@angular/core';
 import { LngLatLike, Offset, Popup, PopupOptions } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
@@ -42,6 +42,9 @@ import { MarkerComponent } from '../marker/marker.component';
   standalone: true,
 })
 export class PopupComponent implements OnChanges, OnDestroy, OnInit {
+  /** Init injection */
+  private readonly mapService = inject(MapService);
+
   /** Init input */
   @Input() closeButton?: PopupOptions['closeButton'];
   /** Init input */
@@ -72,15 +75,15 @@ export class PopupComponent implements OnChanges, OnDestroy, OnInit {
   /** Dynamic input */
   @Input() offset?: Offset;
 
-  @Output() popupClose = new EventEmitter<void>();
-  @Output() popupOpen = new EventEmitter<void>();
+  readonly popupClose = output<void>();
+  readonly popupOpen = output<void>();
 
   /** @hidden */
-  @ViewChild('content', { static: true }) content: ElementRef;
+  readonly content = viewChild.required<ElementRef>('content');
 
   popupInstance?: maplibregl.Popup;
 
-  constructor(private mapService: MapService) {
+  constructor() {
     afterNextRender(() => {
       this.popupInstance = this.createPopup();
       this.addPopup(this.popupInstance as Popup);
@@ -166,7 +169,7 @@ export class PopupComponent implements OnChanges, OnDestroy, OnInit {
           popupClose: this.popupClose,
         },
       },
-      this.content.nativeElement
+      this.content().nativeElement
     );
   }
 

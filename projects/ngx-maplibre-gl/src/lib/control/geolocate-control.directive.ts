@@ -1,10 +1,9 @@
 import {
   AfterContentInit,
   Directive,
-  EventEmitter,
-  Host,
   Input,
-  Output,
+  inject,
+  output,
 } from '@angular/core';
 import { FitBoundsOptions, GeolocateControl } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
@@ -13,9 +12,9 @@ import { Position } from '../map/map.types';
 
 /**
  * `mglGeolocate` - a geolocate control directive
- * 
+ *
  * @category Directives
- * 
+ *
  * @see [Locate user](https://maplibre.org/ngx-maplibre-gl/demo/locate-user)
  * @see [GeolocateControl](https://maplibre.org/maplibre-gl-js/docs/API/classes/GeolocateControl)
  */
@@ -24,19 +23,19 @@ import { Position } from '../map/map.types';
   standalone: true,
 })
 export class GeolocateControlDirective implements AfterContentInit {
+  /* Init injection */
+  private readonly mapService = inject(MapService);
+  private readonly controlComponent = inject<
+    ControlComponent<GeolocateControl>
+  >(ControlComponent, { host: true });
+
   /* Init inputs */
   @Input() positionOptions?: PositionOptions;
   @Input() fitBoundsOptions?: FitBoundsOptions;
   @Input() trackUserLocation?: boolean;
   @Input() showUserLocation?: boolean;
 
-  @Output()
-  geolocate: EventEmitter<Position> = new EventEmitter<Position>();
-
-  constructor(
-    private mapService: MapService,
-    @Host() private controlComponent: ControlComponent<GeolocateControl>
-  ) {}
+  readonly geolocate = output<Position>();
 
   ngAfterContentInit() {
     this.mapService.mapCreated$.subscribe(() => {

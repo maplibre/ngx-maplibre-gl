@@ -6,6 +6,7 @@ import {
   OnDestroy,
   OnInit,
   SimpleChanges,
+  inject,
 } from '@angular/core';
 import { CanvasSource, CanvasSourceSpecification } from 'maplibre-gl';
 import { fromEvent, Subscription } from 'rxjs';
@@ -15,7 +16,7 @@ import { MapService } from '../map/map.service';
 /**
  * `mgl-canvas-source` - a canvas source component
  * @see [canvas](https://maplibre.org/maplibre-style-spec/sources/#canvas)
- * 
+ *
  * @category Source Components
  */
 @Component({
@@ -25,7 +26,10 @@ import { MapService } from '../map/map.service';
   standalone: true,
 })
 export class CanvasSourceComponent
-  implements OnInit, OnDestroy, OnChanges, CanvasSourceSpecification {
+  implements OnInit, OnDestroy, OnChanges, CanvasSourceSpecification
+{
+  /** Init injection */
+  private readonly mapService = inject(MapService);
   /**  Init input */
   @Input() id: string;
 
@@ -39,8 +43,6 @@ export class CanvasSourceComponent
   type: CanvasSourceSpecification['type'] = 'canvas';
   private sourceAdded = false;
   private sub = new Subscription();
-
-  constructor(private mapService: MapService) {}
 
   ngOnInit() {
     const sub1 = this.mapService.mapLoaded$.subscribe(() => {

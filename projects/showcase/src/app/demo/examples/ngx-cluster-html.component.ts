@@ -2,10 +2,10 @@ import {
   Component,
   Input,
   OnChanges,
-  ViewChild,
   SimpleChanges,
   afterNextRender,
   OnDestroy,
+  viewChild,
 } from '@angular/core';
 import {
   MatPaginator,
@@ -26,7 +26,7 @@ import { MatListModule } from '@angular/material/list';
   selector: 'showcase-cluster-popup',
   template: `
     <mat-list>
-      @for (leaf of leaves; track leaf) {
+    @for (leaf of leaves; track leaf) {
         <mat-list-item>
           {{ leaf.properties?.['Primary ID'] }}
         </mat-list-item>
@@ -45,14 +45,14 @@ export class ClusterPopupComponent implements OnChanges {
   @Input() selectedCluster: { geometry: GeoJSON.Point; properties: any };
   @Input() clusterComponent: GeoJSONSourceComponent;
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  readonly paginator = viewChild.required(MatPaginator);
 
   leaves: GeoJSON.Feature<GeoJSON.Geometry>[];
 
   ngOnChanges(changes: SimpleChanges) {
     this.changePage();
     if (changes.selectedCluster && !changes.selectedCluster.isFirstChange()) {
-      this.paginator.firstPage();
+      this.paginator().firstPage();
     }
   }
 
@@ -64,7 +64,7 @@ export class ClusterPopupComponent implements OnChanges {
     this.leaves = await this.clusterComponent.getClusterLeaves(
       this.selectedCluster.properties!.cluster_id,
       5,
-      offset,
+      offset
     );
   }
 }

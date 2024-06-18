@@ -1,15 +1,14 @@
 import {
   Directive,
-  EventEmitter,
-  Host,
   Input,
   NgZone,
   OnDestroy,
   OnInit,
-  Optional,
-  Output,
+  inject,
+  output,
 } from '@angular/core';
 import { MapMouseEvent } from 'maplibre-gl';
+import { outputToObservable } from '@angular/core/rxjs-interop';
 import { fromEvent, Observable, Subscription } from 'rxjs';
 import { filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { LayerComponent } from '../layer/layer.component';
@@ -18,9 +17,9 @@ import { FeatureComponent } from '../source/geojson/feature.component';
 
 /**
  * `mglDraggable` - a directive for Feature or Marker
- * 
+ *
  * @category Directives
- * 
+ *
  * @see [Draggable Marker](https://maplibre.org/ng-maplibre-gl/demo/ngx-drag-a-point)
  */
 @Directive({
@@ -28,28 +27,30 @@ import { FeatureComponent } from '../source/geojson/feature.component';
   standalone: true,
 })
 export class DraggableDirective implements OnInit, OnDestroy {
+  /** Init injection */
+  private readonly mapService = inject(MapService);
+  private readonly ngZone = inject(NgZone);
+  private readonly featureComponent = inject(FeatureComponent, {
+    host: true,
+    optional: true,
+  });
+
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('mglDraggable') layer?: LayerComponent;
 
-  @Output() featureDragStart = new EventEmitter<MapMouseEvent>();
-  @Output() featureDragEnd = new EventEmitter<MapMouseEvent>();
-  @Output() featureDrag = new EventEmitter<MapMouseEvent>();
+  featureDragStart = output<MapMouseEvent>();
+  featureDragEnd = output<MapMouseEvent>();
+  featureDrag = output<MapMouseEvent>();
 
   private sub = new Subscription();
-
-  constructor(
-    private mapService: MapService,
-    private ngZone: NgZone,
-    @Optional() @Host() private featureComponent?: FeatureComponent
-  ) {}
 
   ngOnInit() {
     let enter$;
     let leave$;
     let updateCoords;
     if (this.featureComponent && this.layer) {
-      enter$ = this.layer.layerMouseEnter;
-      leave$ = this.layer.layerMouseLeave;
+      enter$ = outputToObservable(this.layer.layerMouseEnter);
+      leave$ = outputToObservable(this.layer.layerMouseLeave);
       updateCoords = this.featureComponent.updateCoordinates.bind(
         this.featureComponent
       );
@@ -108,31 +109,25 @@ export class DraggableDirective implements OnInit, OnDestroy {
       this.sub.add(
         dragStart$.subscribe((evt) => {
           moving = true;
-          if (this.featureDragStart.observers.length) {
-            this.ngZone.run(() => {
-              this.featureDragStart.emit(evt);
-            });
-          }
+          this.ngZone.run(() => {
+            this.featureDragStart.emit(evt);
+          });
         })
       );
       this.sub.add(
         dragging$.subscribe((evt) => {
           updateCoords([evt.lngLat.lng, evt.lngLat.lat]);
-          if (this.featureDrag.observers.length) {
-            this.ngZone.run(() => {
-              this.featureDrag.emit(evt);
-            });
-          }
+          this.ngZone.run(() => {
+            this.featureDrag.emit(evt);
+          });
         })
       );
       this.sub.add(
         dragEnd$.subscribe((evt) => {
           moving = false;
-          if (this.featureDragEnd.observers.length) {
-            this.ngZone.run(() => {
-              this.featureDragEnd.emit(evt);
-            });
-          }
+          this.ngZone.run(() => {
+            this.featureDragEnd.emit(evt);
+          });
           if (!inside) {
             // It's possible to dragEnd outside the target (small input lag)
             this.mapService.changeCanvasCursor('');

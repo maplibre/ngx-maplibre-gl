@@ -6,6 +6,7 @@ import {
   OnDestroy,
   OnInit,
   SimpleChanges,
+  inject,
 } from '@angular/core';
 import { RasterDEMSourceSpecification } from 'maplibre-gl';
 import { fromEvent, Subscription } from 'rxjs';
@@ -15,7 +16,7 @@ import { MapService } from '../map/map.service';
 /**
  * `mgl-raster-dem-source` - a raster DEM source
  * @see [raster DEM](https://maplibre.org/maplibre-style-spec/sources/#raster-dem)
- * 
+ *
  * @category Source Components
  */
 @Component({
@@ -25,7 +26,11 @@ import { MapService } from '../map/map.service';
   standalone: true,
 })
 export class RasterDemSourceComponent
-  implements OnInit, OnDestroy, OnChanges, RasterDEMSourceSpecification {
+  implements OnInit, OnDestroy, OnChanges, RasterDEMSourceSpecification
+{
+  /** Init injection */
+  private readonly mapService = inject(MapService);
+
   /** Init input */
   @Input() id: string;
 
@@ -51,8 +56,6 @@ export class RasterDemSourceComponent
 
   private sourceAdded = false;
   private sub = new Subscription();
-
-  constructor(private mapService: MapService) {}
 
   ngOnInit() {
     const sub1 = this.mapService.mapLoaded$.subscribe(() => {

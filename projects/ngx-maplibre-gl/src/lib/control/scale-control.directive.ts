@@ -1,10 +1,10 @@
 import {
   AfterContentInit,
   Directive,
-  Host,
   Input,
   OnChanges,
   SimpleChanges,
+  inject,
 } from '@angular/core';
 import { ScaleControl, ScaleControlOptions } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
@@ -12,9 +12,9 @@ import { ControlComponent } from './control.component';
 
 /**
  * `mglScale` - a scale control directive
- * 
+ *
  * @category Directives
- * 
+ *
  * @see [Scale](https://maplibre.org/ngx-maplibre-gl/demo/ngx-scale-control)
  * @see [ScaleControl](https://maplibre.org/maplibre-gl-js/docs/API/classes/ScaleControl)
  */
@@ -23,16 +23,18 @@ import { ControlComponent } from './control.component';
   standalone: true,
 })
 export class ScaleControlDirective implements AfterContentInit, OnChanges {
+  /* Init injection */
+  private readonly mapService = inject(MapService);
+  private readonly controlComponent = inject<ControlComponent<ScaleControl>>(
+    ControlComponent,
+    { host: true }
+  );
+
   /* Init inputs */
   @Input() maxWidth?: number;
 
   /* Dynamic inputs */
   @Input() unit?: 'imperial' | 'metric' | 'nautical';
-
-  constructor(
-    private mapService: MapService,
-    @Host() private controlComponent: ControlComponent<ScaleControl>
-  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.unit && !changes.unit.isFirstChange()) {

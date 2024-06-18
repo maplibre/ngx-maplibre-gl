@@ -1,13 +1,13 @@
-import { AfterContentInit, Directive, Host, Input } from '@angular/core';
+import { AfterContentInit, Directive, Input, inject } from '@angular/core';
 import { AttributionControl } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
 
 /**
  * `mglAttribution` - an attribution control directive
- * 
+ *
  * @category Directives
- * 
+ *
  * @see [Add custom attribution](https://maplibre.org/ngx-maplibre-gl/demo/custom-attribution)
  * @see [AttributionControl](https://maplibre.org/maplibre-gl-js/docs/API/classes/AttributionControl)
  */
@@ -16,15 +16,16 @@ import { ControlComponent } from './control.component';
   standalone: true,
 })
 export class AttributionControlDirective implements AfterContentInit {
+  /* Init injection */
+  private readonly mapService = inject(MapService);
+  private readonly controlComponent = inject<
+    ControlComponent<AttributionControl>
+  >(ControlComponent, { host: true });
+
   /** Init input */
   @Input() compact?: boolean;
   /** Init input */
   @Input() customAttribution?: string | string[];
-
-  constructor(
-    private mapService: MapService,
-    @Host() private controlComponent: ControlComponent<AttributionControl>
-  ) {}
 
   ngAfterContentInit() {
     this.mapService.mapCreated$.subscribe(() => {

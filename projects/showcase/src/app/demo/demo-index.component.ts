@@ -3,10 +3,7 @@ import {
   ElementRef,
   NgZone,
   OnInit,
-  QueryList,
-  ViewChildren,
-  afterNextRender,
-} from '@angular/core';
+  afterNextRender, viewChildren } from '@angular/core';
 import {
   MatSlideToggleChange,
   MatSlideToggleModule,
@@ -63,8 +60,7 @@ export class DemoIndexComponent implements OnInit {
   sidenavIsOpen = true;
   isEditMode = !!this.activatedRoute.snapshot.firstChild!.params.demoUrl;
 
-  @ViewChildren('exampleLink', { read: ElementRef })
-  exampleLinks: QueryList<ElementRef>;
+  exampleLinks = viewChildren<ElementRef>('exampleLink');
 
   constructor(
     private zone: NgZone,
@@ -136,7 +132,7 @@ export class DemoIndexComponent implements OnInit {
 
   private scrollInToActiveExampleLink() {
     this.zone.onStable.pipe(first()).subscribe(() => {
-      const activeLink = this.exampleLinks.find((elm) =>
+      const activeLink = this.exampleLinks().find((elm) =>
         (<HTMLElement>elm.nativeElement).classList.contains('active')
       );
       if (activeLink) {

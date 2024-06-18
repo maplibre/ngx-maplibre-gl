@@ -6,6 +6,7 @@ import {
   OnDestroy,
   OnInit,
   SimpleChanges,
+  inject,
 } from '@angular/core';
 import { ImageSourceSpecification, ImageSource } from 'maplibre-gl';
 import { Subscription } from 'rxjs';
@@ -14,7 +15,7 @@ import { MapService } from '../map/map.service';
 /**
  * `mgl-image-source` - an image source component
  * @see [image](https://maplibre.org/maplibre-style-spec/sources/#image)
- * 
+ *
  * @category Source Components
  */
 @Component({
@@ -24,7 +25,11 @@ import { MapService } from '../map/map.service';
   standalone: true,
 })
 export class ImageSourceComponent
-  implements OnInit, OnDestroy, OnChanges, ImageSourceSpecification {
+  implements OnInit, OnDestroy, OnChanges, ImageSourceSpecification
+{
+  /** Init injection */
+  private readonly mapService = inject(MapService);
+
   /* Init inputs */
   @Input() id: string;
 
@@ -36,8 +41,6 @@ export class ImageSourceComponent
 
   private sub: Subscription;
   private sourceId?: string;
-
-  constructor(private mapService: MapService) {}
 
   ngOnInit() {
     this.sub = this.mapService.mapLoaded$.subscribe(() => this.init());

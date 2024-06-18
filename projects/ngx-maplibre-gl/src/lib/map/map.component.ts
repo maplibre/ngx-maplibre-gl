@@ -2,14 +2,15 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
-  Output,
+  OutputRefSubscription,
   SimpleChanges,
-  ViewChild,
   afterNextRender,
+  inject,
+  output,
+  viewChild,
 } from '@angular/core';
 import {
   AnimationOptions,
@@ -30,7 +31,7 @@ import {
 } from 'maplibre-gl';
 import { MapService, MovingOptions } from './map.service';
 import { MapEvent, EventData } from './map.types';
-import { Subscription, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 /**
  * `mgl-map` - The main map component
@@ -84,6 +85,10 @@ export class MapComponent
     Omit<MapOptions, 'bearing' | 'container' | 'pitch' | 'zoom'>,
     MapEvent
 {
+  /** Init injection */
+  private readonly mapService = inject(MapService);
+  private readonly elementRef = inject(ElementRef);
+
   /** Init input */
   @Input() collectResourceTiming?: MapOptions['collectResourceTiming'];
   /** Init input */
@@ -185,98 +190,96 @@ export class MapComponent
   @Input() panToOptions?: AnimationOptions;
   @Input() cursorStyle?: string;
 
-  @Output() mapResize = new EventEmitter<MapLibreEvent & EventData>();
-  @Output() mapRemove = new EventEmitter<MapLibreEvent & EventData>();
-  @Output() mapMouseDown = new EventEmitter<MapMouseEvent & EventData>();
-  @Output() mapMouseUp = new EventEmitter<MapMouseEvent & EventData>();
-  @Output() mapMouseMove = new EventEmitter<MapMouseEvent & EventData>();
-  @Output() mapClick = new EventEmitter<MapMouseEvent & EventData>();
-  @Output() mapDblClick = new EventEmitter<MapMouseEvent & EventData>();
-  @Output() mapMouseOver = new EventEmitter<MapMouseEvent & EventData>();
-  @Output() mapMouseOut = new EventEmitter<MapMouseEvent & EventData>();
-  @Output() mapContextMenu = new EventEmitter<MapMouseEvent & EventData>();
-  @Output() mapTouchStart = new EventEmitter<MapTouchEvent & EventData>();
-  @Output() mapTouchEnd = new EventEmitter<MapTouchEvent & EventData>();
-  @Output() mapTouchMove = new EventEmitter<MapTouchEvent & EventData>();
-  @Output() mapTouchCancel = new EventEmitter<MapTouchEvent & EventData>();
-  @Output() mapWheel = new EventEmitter<MapWheelEvent & EventData>();
-  @Output() moveStart = new EventEmitter<
+  readonly mapResize = output<MapLibreEvent & EventData>();
+  readonly mapRemove = output<MapLibreEvent & EventData>();
+  readonly mapMouseDown = output<MapMouseEvent & EventData>();
+  readonly mapMouseUp = output<MapMouseEvent & EventData>();
+  readonly mapMouseMove = output<MapMouseEvent & EventData>();
+  readonly mapClick = output<MapMouseEvent & EventData>();
+  readonly mapDblClick = output<MapMouseEvent & EventData>();
+  readonly mapMouseOver = output<MapMouseEvent & EventData>();
+  readonly mapMouseOut = output<MapMouseEvent & EventData>();
+  readonly mapContextMenu = output<MapMouseEvent & EventData>();
+  readonly mapTouchStart = output<MapTouchEvent & EventData>();
+  readonly mapTouchEnd = output<MapTouchEvent & EventData>();
+  readonly mapTouchMove = output<MapTouchEvent & EventData>();
+  readonly mapTouchCancel = output<MapTouchEvent & EventData>();
+  readonly mapWheel = output<MapWheelEvent & EventData>();
+  readonly moveStart = output<
     MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
   >();
-  @Output() move = new EventEmitter<
+  readonly move = output<
     MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
   >();
-  @Output() moveEnd = new EventEmitter<
+  readonly moveEnd = output<
     MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
   >();
-  @Output() mapDragStart = new EventEmitter<
+  readonly mapDragStart = output<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >();
-  @Output() mapDrag = new EventEmitter<
+  readonly mapDrag = output<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >();
-  @Output() mapDragEnd = new EventEmitter<
+  readonly mapDragEnd = output<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >();
-  @Output() zoomStart = new EventEmitter<
+  readonly zoomStart = output<
     MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
   >();
-  @Output() zoomEvt = new EventEmitter<
+  readonly zoomEvt = output<
     MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
   >();
-  @Output() zoomEnd = new EventEmitter<
+  readonly zoomEnd = output<
     MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
   >();
-  @Output() rotateStart = new EventEmitter<
+  readonly rotateStart = output<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >();
-  @Output() rotate = new EventEmitter<
+  readonly rotate = output<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >();
-  @Output() rotateEnd = new EventEmitter<
+  readonly rotateEnd = output<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >();
-  @Output() pitchStart = new EventEmitter<
+  readonly pitchStart = output<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >();
-  @Output() pitchEvt = new EventEmitter<
+  readonly pitchEvt = output<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >();
-  @Output() pitchEnd = new EventEmitter<
+  readonly pitchEnd = output<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >();
-  @Output() boxZoomStart = new EventEmitter<MapLibreZoomEvent & EventData>();
-  @Output() boxZoomEnd = new EventEmitter<MapLibreZoomEvent & EventData>();
-  @Output() boxZoomCancel = new EventEmitter<MapLibreZoomEvent & EventData>();
-  @Output() webGlContextLost = new EventEmitter<MapContextEvent & EventData>();
-  @Output() webGlContextRestored = new EventEmitter<
-    MapContextEvent & EventData
+  readonly boxZoomStart = output<MapLibreZoomEvent & EventData>();
+  readonly boxZoomEnd = output<MapLibreZoomEvent & EventData>();
+  readonly boxZoomCancel = output<MapLibreZoomEvent & EventData>();
+  readonly webGlContextLost = output<MapContextEvent & EventData>();
+  readonly webGlContextRestored = output<MapContextEvent & EventData>();
+  readonly mapLoad = output<Map>();
+  readonly idle = output<MapLibreEvent & EventData>();
+  readonly render = output<MapLibreEvent & EventData>();
+  readonly mapError = output<ErrorEvent & EventData>();
+  readonly data = output<MapDataEvent & EventData>();
+  readonly styleData = output<MapStyleDataEvent & EventData>();
+  readonly sourceData = output<MapSourceDataEvent & EventData>();
+  readonly dataLoading = output<MapDataEvent & EventData>();
+  readonly styleDataLoading = output<MapStyleDataEvent & EventData>();
+  readonly sourceDataLoading = output<MapSourceDataEvent & EventData>();
+  readonly styleImageMissing = output<
+    {
+      id: string;
+    } & EventData
   >();
-  @Output() mapLoad = new EventEmitter<Map>();
-  @Output() idle = new EventEmitter<MapLibreEvent & EventData>();
-  @Output() render = new EventEmitter<MapLibreEvent & EventData>();
-  @Output() mapError = new EventEmitter<ErrorEvent & EventData>();
-  @Output() data = new EventEmitter<MapDataEvent & EventData>();
-  @Output() styleData = new EventEmitter<MapStyleDataEvent & EventData>();
-  @Output() sourceData = new EventEmitter<MapSourceDataEvent & EventData>();
-  @Output() dataLoading = new EventEmitter<MapDataEvent & EventData>();
-  @Output() styleDataLoading = new EventEmitter<
-    MapStyleDataEvent & EventData
-  >();
-  @Output() sourceDataLoading = new EventEmitter<
-    MapSourceDataEvent & EventData
-  >();
-  @Output() styleImageMissing = new EventEmitter<{ id: string } & EventData>();
 
   get mapInstance(): Map {
     return this.mapService.mapInstance;
   }
 
-  private subscriptions: Subscription[] = [];
+  private subscriptions: OutputRefSubscription[] = [];
 
-  @ViewChild('container', { static: true }) mapContainer: ElementRef;
+  readonly mapContainer = viewChild.required<ElementRef>('container');
 
-  constructor(private mapService: MapService, private elementRef: ElementRef) {
+  constructor() {
     afterNextRender(() => {
       if (this.preserveDrawingBuffer) {
         // This is to allow better interaction with the map state
@@ -302,7 +305,7 @@ export class MapComponent
       this.mapService.setup({
         mapOptions: {
           collectResourceTiming: this.collectResourceTiming,
-          container: this.mapContainer.nativeElement,
+          container: this.mapContainer().nativeElement,
           crossSourceCollisions: this.crossSourceCollisions,
           fadeDuration: this.fadeDuration,
           minZoom: this.minZoom,

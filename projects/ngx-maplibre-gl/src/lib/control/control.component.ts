@@ -1,11 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
   Input,
-  OnDestroy,
-  ViewChild,
-  afterNextRender
+  afterNextRender,
+  inject,
+  viewChild,
 } from '@angular/core';
 import { ControlPosition, IControl } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
@@ -57,28 +58,32 @@ export class CustomControl implements IControl {
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class ControlComponent<T extends IControl> implements OnDestroy {
+export class ControlComponent<T extends IControl> {
+  /** Init injection */
+  private readonly mapService = inject(MapService);
+  private readonly destroyRef = inject(DestroyRef);
+
   /** Init input */
   @Input() position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
   /** @hidden */
-  @ViewChild('content', { static: true }) content: ElementRef;
+  content = viewChild.required<ElementRef>('content');
 
   control: T | CustomControl;
 
-  constructor(private mapService: MapService) {
+  constructor() {
     afterNextRender(() => {
-      if (this.content.nativeElement.childNodes.length) {
-        this.control = new CustomControl(this.content.nativeElement);
+      if (this.content().nativeElement.childNodes.length) {
+        this.control = new CustomControl(this.content().nativeElement);
         this.mapService.mapCreated$.subscribe(() => {
           this.mapService.addControl(this.control!, this.position);
         });
       }
     });
-  }
 
-  ngOnDestroy() {
-    if (this.mapService?.mapInstance?.hasControl(this.control)) {
-      this.mapService.removeControl(this.control);
-    }
+    this.destroyRef.onDestroy(() => {
+      if (this.mapService?.mapInstance?.hasControl(this.control)) {
+        this.mapService.removeControl(this.control);
+      }
+    });
   }
 }

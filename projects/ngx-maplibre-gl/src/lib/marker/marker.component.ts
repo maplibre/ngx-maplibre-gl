@@ -3,15 +3,15 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Output,
   SimpleChanges,
-  ViewChild,
   ViewEncapsulation,
+  inject,
+  output,
+  viewChild,
 } from '@angular/core';
 import { LngLatLike, Marker, MarkerOptions } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
@@ -19,9 +19,9 @@ import { MapService } from '../map/map.service';
 /**
  * `mgl-marker` - a marker component
  * @see [Marker](https://maplibre.org/maplibre-gl-js/docs/API/classes/Marker/)
- * 
+ *
  * @category Components
- * 
+ *
  * @example
  * ```html
  * ...
@@ -31,7 +31,7 @@ import { MapService } from '../map/map.service';
  *   </mgl-marker>
  * </mgl-map>
  * ```
- * 
+ *
  * Note: Only use this if you **really** need to use HTML/Angular component to render your symbol. These markers are slow compared to a `Layer` of symbol because they're not rendered using WebGL.
  */
 @Component({
@@ -42,7 +42,11 @@ import { MapService } from '../map/map.service';
   standalone: true,
 })
 export class MarkerComponent
-  implements OnChanges, OnDestroy, AfterViewInit, OnInit {
+  implements OnChanges, OnDestroy, AfterViewInit, OnInit
+{
+  /* Init injection */
+  private readonly mapService = inject(MapService);
+
   /* Init input */
   @Input() offset?: MarkerOptions['offset'];
   @Input() anchor?: MarkerOptions['anchor'];
@@ -59,15 +63,13 @@ export class MarkerComponent
   @Input() rotationAlignment?: MarkerOptions['rotationAlignment'];
   @Input() rotation?: MarkerOptions['rotation'];
 
-  @Output() markerDragStart = new EventEmitter<Marker>();
-  @Output() markerDragEnd = new EventEmitter<Marker>();
-  @Output() markerDrag = new EventEmitter<Marker>();
+  readonly markerDragStart = output<Marker>();
+  readonly markerDragEnd = output<Marker>();
+  readonly markerDrag = output<Marker>();
 
-  @ViewChild('content', { static: true }) content: ElementRef;
+  readonly content = viewChild.required<ElementRef>('content');
 
   markerInstance?: Marker;
-
-  constructor(private mapService: MapService) {}
 
   ngOnInit() {
     if (this.feature && this.lngLat) {
@@ -105,13 +107,8 @@ export class MarkerComponent
         changes.rotationAlignment.currentValue
       );
     }
-    if (
-      changes.rotation &&
-      !changes.rotation.isFirstChange()
-    ) {
-      this.markerInstance!.setRotation(
-        changes.rotation.currentValue
-      );
+    if (changes.rotation && !changes.rotation.isFirstChange()) {
+      this.markerInstance!.setRotation(changes.rotation.currentValue);
     }
   }
 
@@ -126,7 +123,7 @@ export class MarkerComponent
           rotationAlignment: this.rotationAlignment,
           rotation: this.rotation,
           draggable: !!this.draggable,
-          element: this.content.nativeElement,
+          element: this.content().nativeElement,
           feature: this.feature,
           lngLat: this.lngLat,
           clickTolerance: this.clickTolerance,

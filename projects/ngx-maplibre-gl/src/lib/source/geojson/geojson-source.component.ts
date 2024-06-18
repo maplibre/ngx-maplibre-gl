@@ -7,6 +7,7 @@ import {
   OnInit,
   SimpleChanges,
   NgZone,
+  inject,
 } from '@angular/core';
 import { GeoJSONSource, GeoJSONSourceSpecification } from 'maplibre-gl';
 import { fromEvent, Subject, Subscription } from 'rxjs';
@@ -14,11 +15,11 @@ import { debounceTime, filter } from 'rxjs/operators';
 import { MapService } from '../../map/map.service';
 
 /**
- * `mgl-geojson-source` - a geojson source component 
+ * `mgl-geojson-source` - a geojson source component
  * @see [geojson](https://maplibre.org/maplibre-gl-js/docs/API/classes/maplibregl.GeoJSONSource/)
- * 
+ *
  * @category Source Components
- * 
+ *
  * @example
  * ```html
  * ...
@@ -38,17 +39,22 @@ import { MapService } from '../../map/map.service';
  *     [clusterRadius]="50"
  *   ></mgl-geojson-source>
  * </mgl-map>
- * 
+ *
  * ```
  */
 @Component({
-    selector: 'mgl-geojson-source',
-    template: '',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
+  selector: 'mgl-geojson-source',
+  template: '',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class GeoJSONSourceComponent
-  implements OnInit, OnDestroy, OnChanges, GeoJSONSourceSpecification {
+  implements OnInit, OnDestroy, OnChanges, GeoJSONSourceSpecification
+{
+  /** Init injection */
+  private readonly mapService = inject(MapService);
+  private readonly ngZone = inject(NgZone);
+
   /** Init input */
   @Input() id: string;
 
@@ -89,8 +95,6 @@ export class GeoJSONSourceComponent
   private sub = new Subscription();
   private sourceAdded = false;
   private featureIdCounter = 0;
-
-  constructor(private mapService: MapService, private zone: NgZone) {}
 
   ngOnInit() {
     if (!this.data) {
@@ -157,7 +161,7 @@ export class GeoJSONSourceComponent
    */
   async getClusterExpansionZoom(clusterId: number) {
     const source = this.mapService.getSource<GeoJSONSource>(this.id);
-    return this.zone.run(async () => {
+    return this.ngZone.run(async () => {
       return source.getClusterExpansionZoom(clusterId);
     });
   }
@@ -168,7 +172,7 @@ export class GeoJSONSourceComponent
    */
   async getClusterChildren(clusterId: number) {
     const source = this.mapService.getSource<GeoJSONSource>(this.id);
-    return this.zone.run(async () => {
+    return this.ngZone.run(async () => {
       return source.getClusterChildren(clusterId);
     });
   }
@@ -181,12 +185,8 @@ export class GeoJSONSourceComponent
    */
   async getClusterLeaves(clusterId: number, limit: number, offset: number) {
     const source = this.mapService.getSource<GeoJSONSource>(this.id);
-    return this.zone.run(async () => {
-      return source.getClusterLeaves(
-        clusterId,
-        limit,
-        offset,
-      );
+    return this.ngZone.run(async () => {
+      return source.getClusterLeaves(clusterId, limit, offset);
     });
   }
 

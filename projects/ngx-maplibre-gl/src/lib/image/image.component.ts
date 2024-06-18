@@ -1,13 +1,13 @@
 import {
   Component,
-  EventEmitter,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
-  Output,
   SimpleChanges,
+  inject,
+  output,
 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 import { filter, startWith, switchMap } from 'rxjs/operators';
@@ -17,9 +17,9 @@ import { MapImageData, MapImageOptions } from '../map/map.types';
 /**
  * `mgl-image` - an image component
  * @see [addImage](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#addimage)
- * 
+ *
  * @category Components
- * 
+ *
  * @example
  * ```html
  * ...
@@ -51,6 +51,10 @@ import { MapImageData, MapImageOptions } from '../map/map.types';
   standalone: true,
 })
 export class ImageComponent implements OnInit, OnDestroy, OnChanges {
+  /** Init injection */
+  private readonly mapService = inject(MapService);
+  private readonly zone = inject(NgZone);
+
   /** Init input */
   @Input() id: string;
 
@@ -61,14 +65,14 @@ export class ImageComponent implements OnInit, OnDestroy, OnChanges {
   /** Dynamic input */
   @Input() url?: string;
 
-  @Output() imageError = new EventEmitter<{ status: number }>();
-  @Output() imageLoaded = new EventEmitter<void>();
+  imageError = output<{
+    status: number;
+  }>();
+  imageLoaded = output<void>();
 
   private isAdded = false;
   private isAdding = false;
   private sub: Subscription;
-
-  constructor(private mapService: MapService, private zone: NgZone) {}
 
   ngOnInit() {
     this.sub = this.mapService.mapLoaded$
