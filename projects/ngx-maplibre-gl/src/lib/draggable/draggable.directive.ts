@@ -1,17 +1,17 @@
 import {
   Directive,
-  Input,
   NgZone,
   OnDestroy,
   OnInit,
   inject,
+  input,
   output,
 } from '@angular/core';
-import { MapMouseEvent } from 'maplibre-gl';
+import type { MapMouseEvent } from 'maplibre-gl';
 import { outputToObservable } from '@angular/core/rxjs-interop';
 import { fromEvent, Observable, Subscription } from 'rxjs';
 import { filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
-import { LayerComponent } from '../layer/layer.component';
+import type { LayerComponent } from '../layer/layer.component';
 import { MapService } from '../map/map.service';
 import { FeatureComponent } from '../source/geojson/feature.component';
 
@@ -36,7 +36,9 @@ export class DraggableDirective implements OnInit, OnDestroy {
   });
 
   // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input('mglDraggable') layer?: LayerComponent;
+  readonly layer = input<LayerComponent | null>(null, {
+    alias: 'mglDraggable',
+  });
 
   featureDragStart = output<MapMouseEvent>();
   featureDragEnd = output<MapMouseEvent>();
@@ -48,13 +50,14 @@ export class DraggableDirective implements OnInit, OnDestroy {
     let enter$;
     let leave$;
     let updateCoords;
-    if (this.featureComponent && this.layer) {
-      enter$ = outputToObservable(this.layer.layerMouseEnter);
-      leave$ = outputToObservable(this.layer.layerMouseLeave);
+    const layer = this.layer();
+    if (this.featureComponent && layer) {
+      enter$ = outputToObservable(layer.layerMouseEnter);
+      leave$ = outputToObservable(layer.layerMouseLeave);
       updateCoords = this.featureComponent.updateCoordinates.bind(
         this.featureComponent
       );
-      if (this.featureComponent.geometry.type !== 'Point') {
+      if (this.featureComponent.geometry().type !== 'Point') {
         throw new Error('mglDraggable only support point feature');
       }
     } else {
@@ -150,15 +153,16 @@ export class DraggableDirective implements OnInit, OnDestroy {
   }
 
   private filterFeature(evt: MapMouseEvent) {
-    if (this.featureComponent && this.layer) {
+    const layer = this.layer();
+    if (this.featureComponent && layer) {
       const feature: GeoJSON.Feature = this.mapService.queryRenderedFeatures(
         evt.point,
         {
-          layers: [this.layer.id],
+          layers: [layer.id()],
           filter: [
             'all',
             ['==', '$type', 'Point'],
-            ['==', '$id', this.featureComponent.id as number],
+            ['==', '$id', this.featureComponent.id() as number],
           ],
         }
       )[0];

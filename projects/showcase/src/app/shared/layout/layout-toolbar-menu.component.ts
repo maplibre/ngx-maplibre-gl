@@ -5,9 +5,9 @@ import {
   ComponentFactoryResolver,
   DestroyRef,
   Injector,
-  Input,
   afterNextRender,
   inject,
+  input,
   viewChild,
 } from '@angular/core';
 
@@ -27,7 +27,7 @@ export class LayoutToolbarMenuComponent {
   private readonly destroyRef = inject(DestroyRef);
   private readonly appRef = inject(ApplicationRef);
 
-  @Input() position: 'left' | 'right';
+  readonly position = input<'left' | 'right'>();
 
   private portalOutlet: DomPortalOutlet;
   readonly portal = viewChild.required(CdkPortal);
@@ -36,7 +36,7 @@ export class LayoutToolbarMenuComponent {
     afterNextRender(() => {
       this.portalOutlet = new DomPortalOutlet(
         document.querySelector(
-          this.position === 'left'
+          this.position() === 'left'
             ? '#layout-left-custom-items'
             : '#layout-right-custom-items'
         )!,

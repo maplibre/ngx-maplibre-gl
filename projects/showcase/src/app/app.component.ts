@@ -13,8 +13,8 @@ import logo from '../assets/ngx-maplibre-gl.svg';
   imports: [RouterOutlet],
 })
 export class AppComponent {
-  private iconRegistry = inject(MatIconRegistry);
-  private sanitizer = inject(DomSanitizer);
+  private readonly iconRegistry = inject(MatIconRegistry);
+  private readonly sanitizer = inject(DomSanitizer);
 
   constructor() {
     this.iconRegistry.addSvgIconLiteral(

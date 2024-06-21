@@ -1,10 +1,5 @@
-import {
-  AfterContentInit,
-  Directive,
-  Input,
-  inject,
-} from '@angular/core';
-import { TerrainControl, TerrainSpecification } from 'maplibre-gl';
+import { Directive, afterNextRender, inject, input } from '@angular/core';
+import { TerrainControl, type TerrainSpecification } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
 
@@ -20,7 +15,7 @@ import { ControlComponent } from './control.component';
   selector: '[mglTerrain]',
   standalone: true,
 })
-export class TerrainControlDirective implements AfterContentInit {
+export class TerrainControlDirective {
   /* Init injection */
   private readonly mapService = inject(MapService);
   private readonly controlComponent = inject<ControlComponent<TerrainControl>>(
@@ -29,26 +24,28 @@ export class TerrainControlDirective implements AfterContentInit {
   );
 
   /* Init inputs */
-  @Input() source: string;
-  @Input() exaggeration?: number;
+  readonly source = input.required<string>();
+  readonly exaggeration = input<number>();
 
-  ngAfterContentInit() {
-    this.mapService.mapCreated$.subscribe(() => {
-      if (this.controlComponent.control) {
-        throw new Error('Another control is already set for this control');
-      }
+  constructor() {
+    afterNextRender(() => {
+      this.mapService.mapCreated$.subscribe(() => {
+        if (this.controlComponent.control) {
+          throw new Error('Another control is already set for this control');
+        }
 
-      const options: TerrainSpecification = {
-        source: this.source,
-        exaggeration: this.exaggeration ?? 1,
-      };
+        const options: TerrainSpecification = {
+          source: this.source(),
+          exaggeration: this.exaggeration() ?? 1,
+        };
 
-      this.controlComponent.control = new TerrainControl(options);
+        this.controlComponent.control = new TerrainControl(options);
 
-      this.mapService.addControl(
-        this.controlComponent.control,
-        this.controlComponent.position
-      );
+        this.mapService.addControl(
+          this.controlComponent.control,
+          this.controlComponent.position()
+        );
+      });
     });
   }
 }

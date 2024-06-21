@@ -1,23 +1,29 @@
 import {
-  AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   Directive,
-  Input,
   NgZone,
-  OnDestroy,
   TemplateRef,
+  afterNextRender,
   contentChild,
   inject,
+  input,
+  signal,
 } from '@angular/core';
-import { MapGeoJSONFeature, MapSourceDataEvent } from 'maplibre-gl';
-import { fromEvent, merge, Subscription } from 'rxjs';
+import type {
+  MapGeoJSONFeature,
+  MapSourceDataEvent,
+  QueryRenderedFeaturesOptions,
+} from 'maplibre-gl';
+import { fromEvent, merge } from 'rxjs';
 import { filter, startWith, switchMap } from 'rxjs/operators';
 import { MapService } from '../map/map.service';
 import { MarkerComponent } from '../marker/marker.component';
 import { NgTemplateOutlet } from '@angular/common';
 import { LayerComponent } from '../layer/layer.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
  * a template directive for point for {@link MarkersForClustersComponent}
@@ -68,42 +74,41 @@ let uniqId = 0;
 @Component({
   selector: 'mgl-markers-for-clusters',
 
-  template: `    <mgl-layer
-  [id]="layerId"
-  [source]="source"
-  type="circle"
-  [paint]="{ 'circle-radius': 0 }"
-></mgl-layer>
-@for (feature of clusterPoints; track feature.id) {
-  @if (feature.properties.cluster) {
+  template: `
+    <mgl-layer
+      [id]="layerId"
+      [source]="source"
+      type="circle"
+      [paint]="{ 'circle-radius': 0 }"
+    ></mgl-layer>
+    @for (feature of clusterPoints(); track feature.id) { @if
+    (feature.properties.cluster) {
     <mgl-marker [feature]="feature">
       <ng-container
         *ngTemplateOutlet="clusterPointTpl(); context: { $implicit: feature }"
       ></ng-container>
     </mgl-marker>
-  } @else {
+    } @else {
     <mgl-marker [feature]="feature">
       <ng-container
         *ngTemplateOutlet="pointTpl(); context: { $implicit: feature }"
       ></ng-container>
     </mgl-marker>
-  }
-}
-`,
+    } }
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
   standalone: true,
   imports: [LayerComponent, MarkerComponent, NgTemplateOutlet],
 })
-export class MarkersForClustersComponent
-  implements OnDestroy, AfterContentInit
-{
+export class MarkersForClustersComponent {
+  private readonly destroyRef = inject(DestroyRef);
   private readonly mapService = inject(MapService);
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
   private readonly ngZone = inject(NgZone);
 
   /** Init input */
-  @Input() source: string;
+  readonly source = input.required<string>();
 
   /** @hidden */
   readonly pointTpl = contentChild(PointDirective, { read: TemplateRef });
@@ -113,55 +118,55 @@ export class MarkersForClustersComponent
   });
 
   /** @hidden */
-  clusterPoints: MapGeoJSONFeature[];
+  readonly clusterPoints = signal<MapGeoJSONFeature[]>([]);
   /** @hidden */
-  layerId = `mgl-markers-for-clusters-${uniqId++}`;
+  readonly layerId = `mgl-markers-for-clusters-${uniqId++}`;
 
-  private sub = new Subscription();
-
-  ngAfterContentInit() {
-    const clusterDataUpdate = () =>
-      fromEvent<MapSourceDataEvent>(this.mapService.mapInstance, 'data').pipe(
-        filter(
-          (e) =>
-            e.sourceId === this.source &&
-            e.sourceDataType !== 'metadata' &&
-            this.mapService.mapInstance.isSourceLoaded(this.source)
+  constructor() {
+    afterNextRender(() => {
+      const clusterDataUpdate = () =>
+        fromEvent<MapSourceDataEvent>(this.mapService.mapInstance, 'data').pipe(
+          filter(
+            (e) =>
+              e.sourceId === this.source() &&
+              e.sourceDataType !== 'metadata' &&
+              this.mapService.mapInstance.isSourceLoaded(this.source())
+          )
+        );
+      this.mapService.mapCreated$
+        .pipe(
+          switchMap(clusterDataUpdate),
+          switchMap(() =>
+            merge(
+              fromEvent(this.mapService.mapInstance, 'move'),
+              fromEvent(this.mapService.mapInstance, 'moveend')
+            ).pipe(startWith(undefined))
+          )
         )
-      );
-    const sub = this.mapService.mapCreated$
-      .pipe(
-        switchMap(clusterDataUpdate),
-        switchMap(() =>
-          merge(
-            fromEvent(this.mapService.mapInstance, 'move'),
-            fromEvent(this.mapService.mapInstance, 'moveend')
-          ).pipe(startWith(undefined))
-        )
-      )
-      .subscribe(() => {
-        this.ngZone.run(() => {
-          this.updateCluster();
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(() => {
+          this.ngZone.run(() => {
+            this.updateCluster();
+          });
         });
-      });
-    this.sub.add(sub);
-  }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
-
-  trackByClusterPoint(_index: number, clusterPoint: { id: number }) {
-    return clusterPoint.id;
+    });
   }
 
   private updateCluster() {
-    const params: any = { layers: [this.layerId] };
-    if (!this.pointTpl()) {
-      params.filter = ['==', 'cluster', true];
-    }
-    this.clusterPoints =
-      this.mapService.mapInstance.queryRenderedFeatures(params);
+    const params = this.getClusterParams(this.pointTpl());
+    this.clusterPoints.set(
+      this.mapService.mapInstance.queryRenderedFeatures(params)
+    );
     this.changeDetectorRef.markForCheck();
+  }
+
+  getClusterParams(
+    pointTpl: TemplateRef<any> | undefined
+  ): QueryRenderedFeaturesOptions {
+    if (!pointTpl) {
+      return { layers: [this.layerId], filter: ['==', 'cluster', true] };
+    }
+
+    return { layers: [this.layerId] };
   }
 }

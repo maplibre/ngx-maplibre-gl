@@ -1,37 +1,43 @@
-import { Injectable, NgZone, OutputEmitterRef, inject } from '@angular/core';
 import {
-  CameraOptions,
-  FlyToOptions,
-  LngLatLike,
-  MapOptions,
-  MarkerOptions,
-  PopupOptions,
+  Injectable,
+  NgZone,
+  OutputEmitterRef,
+  inject,
+  signal,
+} from '@angular/core';
+import {
+  type CameraOptions,
+  type FlyToOptions,
+  type LngLatLike,
+  type MapOptions,
+  type MarkerOptions,
+  type PopupOptions,
   Map,
   Marker,
   Popup,
-  AnimationOptions,
-  LayerSpecification,
-  StyleSpecification,
-  LngLatBoundsLike,
-  PointLike,
-  IControl,
-  SourceSpecification,
-  FitBoundsOptions,
-  Source,
-  BackgroundLayerSpecification,
-  FillLayerSpecification,
-  FillExtrusionLayerSpecification,
-  LineLayerSpecification,
-  SymbolLayerSpecification,
-  RasterLayerSpecification,
-  CircleLayerSpecification,
-  FilterSpecification,
-  TerrainSpecification,
-  QueryRenderedFeaturesOptions,
+  type AnimationOptions,
+  type LayerSpecification,
+  type StyleSpecification,
+  type LngLatBoundsLike,
+  type PointLike,
+  type IControl,
+  type SourceSpecification,
+  type FitBoundsOptions,
+  type Source,
+  type BackgroundLayerSpecification,
+  type FillLayerSpecification,
+  type FillExtrusionLayerSpecification,
+  type LineLayerSpecification,
+  type SymbolLayerSpecification,
+  type RasterLayerSpecification,
+  type CircleLayerSpecification,
+  type FilterSpecification,
+  type TerrainSpecification,
+  type QueryRenderedFeaturesOptions,
 } from 'maplibre-gl';
 import { AsyncSubject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
-import {
+import type {
   LayerEvents,
   MapEvent,
   MapImageData,
@@ -94,15 +100,15 @@ export class MapService {
   mapInstance: Map;
   mapEvents: MapEvent;
 
-  private mapCreated = new AsyncSubject<void>();
-  private mapLoaded = new AsyncSubject<void>();
-  private markersToRemove: Marker[] = [];
-  private popupsToRemove: Popup[] = [];
-  private imageIdsToRemove: string[] = [];
-  private subscription = new Subscription();
+  private readonly mapCreated = new AsyncSubject<void>();
+  private readonly mapLoaded = new AsyncSubject<void>();
+  private readonly markersToRemove = signal<Marker[]>([]);
+  private readonly popupsToRemove = signal<Popup[]>([]);
+  private readonly imageIdsToRemove = signal<string[]>([]);
+  private readonly subscription = new Subscription();
 
-  mapCreated$ = this.mapCreated.asObservable();
-  mapLoaded$ = this.mapLoaded.asObservable();
+  readonly mapCreated$ = this.mapCreated.asObservable();
+  readonly mapLoaded$ = this.mapLoaded.asObservable();
 
   setup(options: SetupMap) {
     // Need onStable to wait for a potential @angular/route transition to end
@@ -426,7 +432,7 @@ export class MapService {
   }
 
   removeMarker(marker: Marker) {
-    this.markersToRemove.push(marker);
+    this.markersToRemove.update((markers) => [...markers, marker]);
   }
 
   createPopup(popup: SetupPopup, element: Node) {
@@ -472,7 +478,7 @@ export class MapService {
     if (skipCloseEvent && popup._listeners) {
       delete popup._listeners['close'];
     }
-    this.popupsToRemove.push(popup);
+    this.popupsToRemove.update((popups) => [...popups, popup]);
   }
 
   removePopupFromMarker(marker: Marker) {
@@ -514,7 +520,7 @@ export class MapService {
   }
 
   removeImage(imageId: string) {
-    this.imageIdsToRemove.push(imageId);
+    this.imageIdsToRemove.update((imagesIds) => [...imagesIds, imageId]);
   }
 
   addSource(sourceId: string, source: SourceSpecification) {
@@ -654,24 +660,24 @@ export class MapService {
   }
 
   private removeMarkers() {
-    for (const marker of this.markersToRemove) {
+    for (const marker of this.markersToRemove()) {
       marker.remove();
     }
-    this.markersToRemove = [];
+    this.markersToRemove.set([]);
   }
 
   private removePopups() {
-    for (const popup of this.popupsToRemove) {
+    for (const popup of this.popupsToRemove()) {
       popup.remove();
     }
-    this.popupsToRemove = [];
+    this.popupsToRemove.set([]);
   }
 
   private removeImages() {
-    for (const imageId of this.imageIdsToRemove) {
+    for (const imageId of this.imageIdsToRemove()) {
       this.mapInstance.removeImage(imageId);
     }
-    this.imageIdsToRemove = [];
+    this.imageIdsToRemove.set([]);
   }
 
   private findLayersBySourceId(sourceId: string): LayerSpecification[] {

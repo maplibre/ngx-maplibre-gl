@@ -1,23 +1,27 @@
 import {
+  ChangeDetectionStrategy,
   Component,
-  Input,
+  DestroyRef,
   OnChanges,
   OnDestroy,
   OnInit,
   SimpleChanges,
   inject,
+  input,
   output,
+  signal,
 } from '@angular/core';
-import {
+import type {
   LayerSpecification,
   FilterSpecification,
   MapLayerMouseEvent,
   MapLayerTouchEvent,
 } from 'maplibre-gl';
-import { fromEvent, Subscription } from 'rxjs';
+import { fromEvent } from 'rxjs';
 import { filter, map, startWith, switchMap } from 'rxjs/operators';
-import { MapService, SetupLayer } from '../map/map.service';
-import { EventData, LayerEvents } from '../map/map.types';
+import { MapService, type SetupLayer } from '../map/map.service';
+import type { EventData, LayerEvents } from '../map/map.types';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
  * `mgl-layer` - a layer component
@@ -45,42 +49,36 @@ import { EventData, LayerEvents } from '../map/map.types';
   selector: 'mgl-layer',
   template: '',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayerComponent
   implements OnInit, OnDestroy, OnChanges, LayerEvents
 {
   /** Init injection */
+  private readonly destroyRef = inject(DestroyRef);
   private readonly mapService = inject(MapService);
 
   /** Init input */
-  @Input() id: LayerSpecification['id'];
-  /** Init input */
-  @Input() source?: string;
-  /** Init input */
-  @Input() type: LayerSpecification['type'];
-  /** Init input */
-  @Input() metadata?: LayerSpecification['metadata'];
-  /** Init input */
-  @Input() sourceLayer?: string;
+  readonly id = input.required<LayerSpecification['id']>();
+  readonly type = input.required<LayerSpecification['type']>();
+  readonly source = input<string>();
+  readonly metadata = input<LayerSpecification['metadata']>();
+  readonly sourceLayer = input<string>();
+
   /**
    * A flag to enable removeSource clean up functionality
    *
    * Init input
    */
-  @Input() removeSource?: boolean;
+  readonly removeSource = input<boolean>();
 
   /** Dynamic input */
-  @Input() filter?: FilterSpecification;
-  /** Dynamic input */
-  @Input() layout?: LayerSpecification['layout'];
-  /** Dynamic input */
-  @Input() paint?: LayerSpecification['paint'];
-  /** Dynamic input */
-  @Input() before?: string;
-  /** Dynamic input */
-  @Input() minzoom?: LayerSpecification['minzoom'];
-  /** Dynamic input */
-  @Input() maxzoom?: LayerSpecification['maxzoom'];
+  readonly filter = input<FilterSpecification>();
+  readonly layout = input<LayerSpecification['layout']>();
+  readonly paint = input<LayerSpecification['paint']>();
+  readonly before = input<string>();
+  readonly minzoom = input<LayerSpecification['minzoom']>();
+  readonly maxzoom = input<LayerSpecification['maxzoom']>();
 
   readonly layerClick = output<MapLayerMouseEvent & EventData>();
   readonly layerDblClick = output<MapLayerMouseEvent & EventData>();
@@ -96,83 +94,86 @@ export class LayerComponent
   readonly layerTouchEnd = output<MapLayerTouchEvent & EventData>();
   readonly layerTouchCancel = output<MapLayerTouchEvent & EventData>();
 
-  private layerAdded = false;
-  private sub: Subscription;
-  private sourceIdAdded?: string;
+  private readonly layerAdded = signal(false);
+  private readonly sourceIdAdded = signal<string | null>(null);
 
   ngOnInit() {
-    this.sub = this.mapService.mapLoaded$
+    this.mapService.mapLoaded$
       .pipe(
         switchMap(() =>
           fromEvent(this.mapService.mapInstance, 'styledata').pipe(
             map(() => false),
-            filter(() => !this.mapService.mapInstance.getLayer(this.id)),
+            filter(() => !this.mapService.mapInstance.getLayer(this.id())),
             startWith(true)
           )
-        )
+        ),
+        takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe((bindEvents: boolean) => this.init(bindEvents));
+      .subscribe((bindEvents) => this.init(bindEvents));
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.layerAdded) {
+    if (!this.layerAdded()) {
       return;
     }
     if (changes.paint && !changes.paint.isFirstChange()) {
       this.mapService.setAllLayerPaintProperty(
-        this.id,
-        changes.paint.currentValue!
+        this.id(),
+        changes.paint.currentValue
       );
     }
     if (changes.layout && !changes.layout.isFirstChange()) {
       this.mapService.setAllLayerLayoutProperty(
-        this.id,
-        changes.layout.currentValue!
+        this.id(),
+        changes.layout.currentValue
       );
     }
     if (changes.filter && !changes.filter.isFirstChange()) {
-      this.mapService.setLayerFilter(this.id, changes.filter.currentValue!);
+      this.mapService.setLayerFilter(this.id(), changes.filter.currentValue);
     }
     if (changes.before && !changes.before.isFirstChange()) {
-      this.mapService.setLayerBefore(this.id, changes.before.currentValue!);
+      this.mapService.setLayerBefore(this.id(), changes.before.currentValue);
     }
     if (
       (changes.minzoom && !changes.minzoom.isFirstChange()) ||
       (changes.maxzoom && !changes.maxzoom.isFirstChange())
     ) {
-      this.mapService.setLayerZoomRange(this.id, this.minzoom, this.maxzoom);
+      this.mapService.setLayerZoomRange(
+        this.id(),
+        this.minzoom(),
+        this.maxzoom()
+      );
     }
   }
 
   ngOnDestroy() {
-    if (this.layerAdded) {
-      this.mapService.removeLayer(this.id);
-      if (undefined !== this.sourceIdAdded) {
+    if (this.layerAdded()) {
+      const sourceIdAdded = this.sourceIdAdded();
+      this.mapService.removeLayer(this.id());
+
+      if (sourceIdAdded !== null) {
         // Clean up any automatically created source for this layer
-        if (this.mapService.getSource(this.sourceIdAdded)) {
-          this.mapService.removeSource(this.sourceIdAdded);
+        if (this.mapService.getSource(sourceIdAdded)) {
+          this.mapService.removeSource(sourceIdAdded);
         }
       }
-    }
-    if (this.sub) {
-      this.sub.unsubscribe();
     }
   }
 
   private init(bindEvents: boolean) {
     const layer: SetupLayer = {
       layerOptions: {
-        id: this.id,
-        type: this.type,
-        source: this.source as string,
-        metadata: this.metadata,
+        id: this.id(),
+        type: this.type(),
+        source: this.source() as string,
+        metadata: this.metadata(),
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        'source-layer': this.sourceLayer,
-        minzoom: this.minzoom,
-        maxzoom: this.maxzoom,
-        filter: this.filter,
-        layout: this.layout,
-        paint: this.paint,
+        'source-layer': this.sourceLayer(),
+        minzoom: this.minzoom(),
+        maxzoom: this.maxzoom(),
+        filter: this.filter(),
+        layout: this.layout(),
+        paint: this.paint(),
       } as LayerSpecification,
       layerEvents: {
         layerClick: this.layerClick,
@@ -190,20 +191,24 @@ export class LayerComponent
         layerTouchCancel: this.layerTouchCancel,
       },
     };
-    if (this.removeSource && typeof this.source !== 'string') {
+
+    if (this.removeSource() && typeof this.source() !== 'string') {
       // There is no id of an existing source bound to this layer
-      if (undefined === this.mapService.getSource(this.id)) {
+      if (this.mapService.getSource(this.id()) === undefined) {
         // A source with this layer id doesn't exist so it will be created automatically in the addLayer call below
-        this.sourceIdAdded = this.id;
+        this.sourceIdAdded.set(this.id());
       }
     }
-    this.mapService.addLayer(layer, bindEvents, this.before);
-    if (undefined !== this.sourceIdAdded) {
-      if (undefined === this.mapService.getSource(this.sourceIdAdded)) {
+    this.mapService.addLayer(layer, bindEvents, this.before());
+
+    const sourceIdAdded = this.sourceIdAdded();
+    if (sourceIdAdded !== null) {
+      const getSource = this.mapService.getSource(sourceIdAdded);
+      if (getSource === undefined) {
         // If it wasn't created for some reason then we don't want to clean it up
-        this.sourceIdAdded = undefined;
+        this.sourceIdAdded.set(null);
       }
     }
-    this.layerAdded = true;
+    this.layerAdded.set(true);
   }
 }

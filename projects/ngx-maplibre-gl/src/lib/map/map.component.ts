@@ -2,17 +2,16 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  Input,
   OnChanges,
   OnDestroy,
-  OutputRefSubscription,
   SimpleChanges,
   afterNextRender,
   inject,
+  input,
   output,
   viewChild,
 } from '@angular/core';
-import {
+import type {
   AnimationOptions,
   LngLatBoundsLike,
   Map,
@@ -29,8 +28,8 @@ import {
   PointLike,
   TerrainSpecification,
 } from 'maplibre-gl';
-import { MapService, MovingOptions } from './map.service';
-import { MapEvent, EventData } from './map.types';
+import { MapService, type MovingOptions } from './map.service';
+import type { MapEvent, EventData } from './map.types';
 import { firstValueFrom } from 'rxjs';
 
 /**
@@ -78,117 +77,73 @@ import { firstValueFrom } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class MapComponent
-  implements
-    OnChanges,
-    OnDestroy,
-    Omit<MapOptions, 'bearing' | 'container' | 'pitch' | 'zoom'>,
-    MapEvent
-{
+// Omit<MapOptions, "bearing" | "container" | "pitch" | "zoom">,
+export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   /** Init injection */
   private readonly mapService = inject(MapService);
   private readonly elementRef = inject(ElementRef);
 
   /** Init input */
-  @Input() collectResourceTiming?: MapOptions['collectResourceTiming'];
-  /** Init input */
-  @Input() crossSourceCollisions?: MapOptions['crossSourceCollisions'];
-  /** Init input */
-  @Input() customMapboxApiUrl?: string;
-  /** Init input */
-  @Input() fadeDuration?: MapOptions['fadeDuration'];
-  /** Init input */
-  @Input() hash?: MapOptions['hash'];
-  /** Init input */
-  @Input() refreshExpiredTiles?: MapOptions['refreshExpiredTiles'];
-  /** Init input */
-  @Input()
-  failIfMajorPerformanceCaveat?: MapOptions['failIfMajorPerformanceCaveat'];
-  /** Init input */
-  @Input() bearingSnap?: MapOptions['bearingSnap'];
-  /** Init input */
-  @Input() interactive?: MapOptions['interactive'];
-  /** Init input */
-  @Input() pitchWithRotate?: MapOptions['pitchWithRotate'];
-  /** Init input */
-  @Input() clickTolerance?: MapOptions['clickTolerance'];
-  /** Init input */
-  @Input() attributionControl?: MapOptions['attributionControl'];
-  /** Init input */
-  @Input() logoPosition?: MapOptions['logoPosition'];
-  /** Init input */
-  @Input() maxTileCacheSize?: MapOptions['maxTileCacheSize'];
-  /** Init input */
-  @Input() localIdeographFontFamily?: MapOptions['localIdeographFontFamily'];
-  /** Init input */
-  @Input() preserveDrawingBuffer?: MapOptions['preserveDrawingBuffer'];
-  /** Init input */
-  @Input() trackResize?: MapOptions['trackResize'];
-  /** Init input */
-  @Input() transformRequest?: MapOptions['transformRequest'];
-  /** Init input */
-  @Input() bounds?: MapOptions['bounds']; // Use fitBounds for dynamic input
-  /** Init input */
-  @Input() antialias?: MapOptions['antialias'];
-  /** Init input */
-  @Input() locale: MapOptions['locale'];
-  /** Init inputs */
-  @Input() cooperativeGestures?: MapOptions['cooperativeGestures'];
+
+  readonly collectResourceTiming = input<MapOptions['collectResourceTiming']>();
+  readonly crossSourceCollisions = input<MapOptions['crossSourceCollisions']>();
+  readonly customMapboxApiUrl = input<string>();
+  readonly fadeDuration = input<MapOptions['fadeDuration']>();
+  readonly hash = input<MapOptions['hash']>();
+  readonly refreshExpiredTiles = input<MapOptions['refreshExpiredTiles']>();
+  readonly failIfMajorPerformanceCaveat =
+    input<MapOptions['failIfMajorPerformanceCaveat']>();
+  readonly bearingSnap = input<MapOptions['bearingSnap']>();
+  readonly interactive = input<MapOptions['interactive']>();
+  readonly pitchWithRotate = input<MapOptions['pitchWithRotate']>();
+  readonly clickTolerance = input<MapOptions['clickTolerance']>();
+  readonly attributionControl = input<MapOptions['attributionControl']>();
+  readonly logoPosition = input<MapOptions['logoPosition']>();
+  readonly maxTileCacheSize = input<MapOptions['maxTileCacheSize']>();
+  readonly localIdeographFontFamily =
+    input<MapOptions['localIdeographFontFamily']>();
+  readonly preserveDrawingBuffer = input<MapOptions['preserveDrawingBuffer']>();
+  readonly trackResize = input<MapOptions['trackResize']>();
+  readonly transformRequest = input<MapOptions['transformRequest']>();
+  readonly bounds = input<MapOptions['bounds']>();
+  readonly antialias = input<MapOptions['antialias']>();
+  readonly locale = input<MapOptions['locale']>();
+  readonly cooperativeGestures = input<MapOptions['cooperativeGestures']>();
 
   /** Dynamic input */
-  @Input() minZoom?: MapOptions['minZoom'];
-  /** Dynamic input */
-  @Input() maxZoom?: MapOptions['maxZoom'];
-  /** Dynamic input */
-  @Input() minPitch?: MapOptions['minPitch'];
-  /** Dynamic input */
-  @Input() maxPitch?: MapOptions['maxPitch'];
-  /** Dynamic input */
-  @Input() scrollZoom?: MapOptions['scrollZoom'];
-  /** Dynamic input */
-  @Input() dragRotate?: MapOptions['dragRotate'];
-  /** Dynamic input */
-  @Input() touchPitch?: MapOptions['touchPitch'];
-  /** Dynamic input */
-  @Input() touchZoomRotate?: MapOptions['touchZoomRotate'];
-  /** Dynamic input */
-  @Input() doubleClickZoom?: MapOptions['doubleClickZoom'];
-  /** Dynamic input */
-  @Input() keyboard?: MapOptions['keyboard'];
-  /** Dynamic input */
-  @Input() dragPan?: MapOptions['dragPan'];
-  /** Dynamic input */
-  @Input() boxZoom?: MapOptions['boxZoom'];
-  /** Dynamic input */
-  @Input() style: MapOptions['style'];
-  /** Dynamic input */
-  @Input() center?: MapOptions['center'];
-  /** Dynamic input */
-  @Input() maxBounds?: MapOptions['maxBounds'];
-  /** Dynamic input */
-  @Input() zoom?: [number];
-  /** Dynamic input */
-  @Input() bearing?: [number];
-  /** Dynamic input */
-  @Input() pitch?: [number];
-  /** Dynamic input */
-  @Input() fitBoundsOptions?: MapOptions['fitBoundsOptions']; // First value goes to options.fitBoundsOptions. Subsequents changes are passed to fitBounds
-  /** Dynamic input */
-  @Input() renderWorldCopies?: MapOptions['renderWorldCopies'];
-  /** Dynamic input */
-  @Input() terrain: TerrainSpecification;
+  readonly minZoom = input<MapOptions['minZoom']>();
+  readonly maxZoom = input<MapOptions['maxZoom']>();
+  readonly minPitch = input<MapOptions['minPitch']>();
+  readonly maxPitch = input<MapOptions['maxPitch']>();
+  readonly scrollZoom = input<MapOptions['scrollZoom']>();
+  readonly dragRotate = input<MapOptions['dragRotate']>();
+  readonly touchPitch = input<MapOptions['touchPitch']>();
+  readonly touchZoomRotate = input<MapOptions['touchZoomRotate']>();
+  readonly doubleClickZoom = input<MapOptions['doubleClickZoom']>();
+  readonly keyboard = input<MapOptions['keyboard']>();
+  readonly dragPan = input<MapOptions['dragPan']>();
+  readonly boxZoom = input<MapOptions['boxZoom']>();
+  readonly style = input.required<MapOptions['style']>();
+  readonly center = input<MapOptions['center']>();
+  readonly maxBounds = input<MapOptions['maxBounds']>();
+  readonly zoom = input<[number]>();
+  readonly bearing = input<[number]>();
+  readonly pitch = input<[number]>();
+  readonly fitBoundsOptions = input<MapOptions['fitBoundsOptions']>(); // First value goes to options.fitBoundsOptions. Subsequents changes are passed to fitBounds
+  readonly renderWorldCopies = input<MapOptions['renderWorldCopies']>();
+
+  readonly terrain = input<TerrainSpecification>();
 
   /** Added by ngx-mapbox-gl */
-  @Input() movingMethod: 'jumpTo' | 'easeTo' | 'flyTo' = 'flyTo';
-  /** Added by ngx-mapbox-gl */
-  @Input() movingOptions?: MovingOptions;
+  readonly movingMethod = input<'jumpTo' | 'easeTo' | 'flyTo'>('flyTo');
+  readonly movingOptions = input<MovingOptions>();
 
   // => First value is a alias to bounds input (since mapbox 0.53.0). Subsequents changes are passed to fitBounds
-  @Input() fitBounds?: LngLatBoundsLike;
-  @Input() fitScreenCoordinates?: [PointLike, PointLike];
-  @Input() centerWithPanTo?: boolean;
-  @Input() panToOptions?: AnimationOptions;
-  @Input() cursorStyle?: string;
+  readonly fitBounds = input<LngLatBoundsLike>();
+  readonly fitScreenCoordinates = input<[PointLike, PointLike]>();
+  readonly centerWithPanTo = input<boolean>();
+  readonly panToOptions = input<AnimationOptions>();
+  readonly cursorStyle = input<string>();
 
   readonly mapResize = output<MapLibreEvent & EventData>();
   readonly mapRemove = output<MapLibreEvent & EventData>();
@@ -275,96 +230,90 @@ export class MapComponent
     return this.mapService.mapInstance;
   }
 
-  private subscriptions: OutputRefSubscription[] = [];
-
   readonly mapContainer = viewChild.required<ElementRef>('container');
 
   constructor() {
     afterNextRender(() => {
-      if (this.preserveDrawingBuffer) {
+      if (this.preserveDrawingBuffer()) {
         // This is to allow better interaction with the map state
         const htmlElement: HTMLElement = this.elementRef.nativeElement;
         htmlElement.setAttribute('data-cy', 'map');
-        this.subscriptions.push(
-          this.mapLoad.subscribe(() => {
-            htmlElement.setAttribute('data-loaded', 'true');
-          })
-        );
-        this.subscriptions.push(
-          this.idle.subscribe(() => {
-            htmlElement.setAttribute('data-idle', 'true');
-          })
-        );
-        this.subscriptions.push(
-          this.render.subscribe(() => {
-            htmlElement.removeAttribute('data-idle');
-          })
-        );
+        this.mapLoad.subscribe(() => {
+          htmlElement.setAttribute('data-loaded', 'true');
+        });
+        this.idle.subscribe(() => {
+          htmlElement.setAttribute('data-idle', 'true');
+        });
+        this.render.subscribe(() => {
+          htmlElement.removeAttribute('data-idle');
+        });
       }
-
       this.mapService.setup({
         mapOptions: {
-          collectResourceTiming: this.collectResourceTiming,
+          collectResourceTiming: this.collectResourceTiming(),
           container: this.mapContainer().nativeElement,
-          crossSourceCollisions: this.crossSourceCollisions,
-          fadeDuration: this.fadeDuration,
-          minZoom: this.minZoom,
-          maxZoom: this.maxZoom,
-          minPitch: this.minPitch,
-          maxPitch: this.maxPitch,
-          style: this.style,
-          hash: this.hash,
-          interactive: this.interactive,
-          bearingSnap: this.bearingSnap,
-          pitchWithRotate: this.pitchWithRotate,
-          clickTolerance: this.clickTolerance,
-          attributionControl: this.attributionControl,
-          logoPosition: this.logoPosition,
-          failIfMajorPerformanceCaveat: this.failIfMajorPerformanceCaveat,
-          preserveDrawingBuffer: this.preserveDrawingBuffer,
-          refreshExpiredTiles: this.refreshExpiredTiles,
-          maxBounds: this.maxBounds,
-          scrollZoom: this.scrollZoom,
-          boxZoom: this.boxZoom,
-          dragRotate: this.dragRotate,
-          dragPan: this.dragPan,
-          keyboard: this.keyboard,
-          doubleClickZoom: this.doubleClickZoom,
-          touchPitch: this.touchPitch,
-          touchZoomRotate: this.touchZoomRotate,
-          trackResize: this.trackResize,
-          center: this.center,
-          zoom: this.zoom,
-          bearing: this.bearing,
-          pitch: this.pitch,
-          renderWorldCopies: this.renderWorldCopies,
-          maxTileCacheSize: this.maxTileCacheSize,
-          localIdeographFontFamily: this.localIdeographFontFamily,
-          transformRequest: this.transformRequest,
-          bounds: this.bounds ? this.bounds : this.fitBounds,
-          fitBoundsOptions: this.fitBoundsOptions,
-          antialias: this.antialias,
+          crossSourceCollisions: this.crossSourceCollisions(),
+          fadeDuration: this.fadeDuration(),
+          minZoom: this.minZoom(),
+          maxZoom: this.maxZoom(),
+          minPitch: this.minPitch(),
+          maxPitch: this.maxPitch(),
+          style: this.style(),
+          hash: this.hash(),
+          interactive: this.interactive(),
+          bearingSnap: this.bearingSnap(),
+          pitchWithRotate: this.pitchWithRotate(),
+          clickTolerance: this.clickTolerance(),
+          attributionControl: this.attributionControl(),
+          logoPosition: this.logoPosition(),
+          failIfMajorPerformanceCaveat: this.failIfMajorPerformanceCaveat(),
+          preserveDrawingBuffer: this.preserveDrawingBuffer(),
+          refreshExpiredTiles: this.refreshExpiredTiles(),
+          maxBounds: this.maxBounds(),
+          scrollZoom: this.scrollZoom(),
+          boxZoom: this.boxZoom(),
+          dragRotate: this.dragRotate(),
+          dragPan: this.dragPan(),
+          keyboard: this.keyboard(),
+          doubleClickZoom: this.doubleClickZoom(),
+          touchPitch: this.touchPitch(),
+          touchZoomRotate: this.touchZoomRotate(),
+          trackResize: this.trackResize(),
+          center: this.center(),
+          zoom: this.zoom(),
+          bearing: this.bearing(),
+          pitch: this.pitch(),
+          renderWorldCopies: this.renderWorldCopies(),
+          maxTileCacheSize: this.maxTileCacheSize(),
+          localIdeographFontFamily: this.localIdeographFontFamily(),
+          transformRequest: this.transformRequest(),
+          bounds: this.bounds() ? this.bounds() : this.fitBounds(),
+          fitBoundsOptions: this.fitBoundsOptions(),
+          antialias: this.antialias(),
           locale: this.locale,
-          cooperativeGestures: this.cooperativeGestures,
-          terrain: this.terrain,
+          cooperativeGestures: this.cooperativeGestures(),
+          terrain: this.terrain(),
         },
         mapEvents: this,
       });
-      if (this.cursorStyle) {
-        this.mapService.changeCanvasCursor(this.cursorStyle);
+      const cursorStyle = this.cursorStyle();
+      if (cursorStyle) {
+        this.mapService.changeCanvasCursor(cursorStyle);
       }
     });
   }
 
   ngOnDestroy() {
     this.mapService.destroyMap();
-    for (const subscription of this.subscriptions) {
-      subscription.unsubscribe();
-    }
   }
 
   async ngOnChanges(changes: SimpleChanges) {
     await firstValueFrom(this.mapService.mapCreated$);
+    const zoom = this.zoom();
+    const bearing = this.bearing();
+    const pitch = this.pitch();
+    const center = this.center();
+
     if (changes.cursorStyle && !changes.cursorStyle.isFirstChange()) {
       this.mapService.changeCanvasCursor(changes.cursorStyle.currentValue);
     }
@@ -429,7 +378,7 @@ export class MapComponent
     ) {
       this.mapService.fitBounds(
         changes.fitBounds.currentValue,
-        this.fitBoundsOptions
+        this.fitBoundsOptions()
       );
     }
     if (
@@ -437,7 +386,7 @@ export class MapComponent
       changes.fitScreenCoordinates.currentValue
     ) {
       if (
-        (this.center || this.zoom || this.pitch || this.fitBounds) &&
+        (center || zoom || pitch || this.fitBounds()) &&
         changes.fitScreenCoordinates.isFirstChange()
       ) {
         console.warn(
@@ -446,19 +395,19 @@ export class MapComponent
       }
       this.mapService.fitScreenCoordinates(
         changes.fitScreenCoordinates.currentValue,
-        this.bearing ? this.bearing[0] : 0,
-        this.movingOptions
+        bearing ? bearing[0] : 0,
+        this.movingOptions()
       );
     }
     if (
-      this.centerWithPanTo &&
+      this.centerWithPanTo() &&
       changes.center &&
       !changes.center.isFirstChange() &&
       !changes.zoom &&
       !changes.bearing &&
       !changes.pitch
     ) {
-      this.mapService.panTo(this.center!, this.panToOptions);
+      this.mapService.panTo(this.center()!, this.panToOptions());
     } else if (
       (changes.center && !changes.center.isFirstChange()) ||
       (changes.zoom && !changes.zoom.isFirstChange()) ||
@@ -468,12 +417,12 @@ export class MapComponent
       (changes.pitch && !changes.pitch.isFirstChange())
     ) {
       this.mapService.move(
-        this.movingMethod,
-        this.movingOptions,
-        changes.zoom && this.zoom ? this.zoom[0] : undefined,
-        changes.center ? this.center : undefined,
-        changes.bearing && this.bearing ? this.bearing[0] : undefined,
-        changes.pitch && this.pitch ? this.pitch[0] : undefined
+        this.movingMethod(),
+        this.movingOptions(),
+        changes.zoom && zoom ? zoom[0] : undefined,
+        changes.center ? center : undefined,
+        changes.bearing && bearing ? bearing[0] : undefined,
+        changes.pitch && pitch ? pitch[0] : undefined
       );
     }
     if (changes.terrain && !changes.terrain.isFirstChange()) {

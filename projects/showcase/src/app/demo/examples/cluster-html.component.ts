@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import {
   CircleLayerSpecification,
   SymbolLayerSpecification,
@@ -24,7 +24,7 @@ import {
       [ngStyle]="{ font: font }"
     >
       @for (segment of segments; track segment) {
-        <path [attr.d]="segment.d" [ngStyle]="{ fill: segment.fill }" />
+      <path [attr.d]="segment.d" [ngStyle]="{ fill: segment.fill }" />
       }
       <circle [attr.cx]="r" [attr.cy]="r" [attr.r]="r0" fill="white" />
       <text dominant-baseline="central" [attr.transform]="textTransform">
@@ -36,7 +36,7 @@ import {
   imports: [NgStyle],
 })
 export class ClusterPointComponent implements OnInit {
-  @Input() properties: any;
+  properties = input<any>();
 
   w: number;
   r: number;
@@ -49,12 +49,13 @@ export class ClusterPointComponent implements OnInit {
 
   ngOnInit() {
     const offsets = [];
+    const properties = this.properties();
     const counts = [
-      this.properties.mag1,
-      this.properties.mag2,
-      this.properties.mag3,
-      this.properties.mag4,
-      this.properties.mag5,
+      properties.mag1,
+      properties.mag2,
+      properties.mag3,
+      properties.mag4,
+      properties.mag5,
     ];
     let total = 0;
     for (let i = 0; i < counts.length; i++) {
@@ -208,7 +209,7 @@ export class ClusterHtmlComponent {
     };
     this.circlePaint = {
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      'circle-color': [ 
+      'circle-color': [
         'case',
         mag1,
         COLORS[0],
@@ -221,7 +222,7 @@ export class ClusterHtmlComponent {
         COLORS[4],
       ],
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      'circle-opacity': 0.6, 
+      'circle-opacity': 0.6,
       // eslint-disable-next-line @typescript-eslint/naming-convention
       'circle-radius': 12,
     };

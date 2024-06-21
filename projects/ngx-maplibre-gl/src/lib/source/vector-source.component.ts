@@ -1,14 +1,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
   OnChanges,
   OnDestroy,
   OnInit,
   SimpleChanges,
   inject,
+  input,
+  signal,
 } from '@angular/core';
-import { VectorSourceSpecification, VectorTileSource } from 'maplibre-gl';
+import type { VectorSourceSpecification, VectorTileSource } from 'maplibre-gl';
 import { fromEvent, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { MapService } from '../map/map.service';
@@ -25,35 +26,34 @@ import { MapService } from '../map/map.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class VectorSourceComponent
-  implements OnInit, OnDestroy, OnChanges, VectorSourceSpecification
-{
+// VectorSourceSpecification
+export class VectorSourceComponent implements OnInit, OnDestroy, OnChanges {
   /* Init injection */
   private readonly mapService = inject(MapService);
 
   /* Init inputs */
-  @Input() id: string;
+  readonly id = input.required<string>();
 
   /* Dynamic inputs */
-  @Input() url?: VectorSourceSpecification['url'];
-  @Input() tiles?: VectorSourceSpecification['tiles'];
-  @Input() bounds?: VectorSourceSpecification['bounds'];
-  @Input() scheme?: VectorSourceSpecification['scheme'];
-  @Input() minzoom?: VectorSourceSpecification['minzoom'];
-  @Input() maxzoom?: VectorSourceSpecification['maxzoom'];
-  @Input() attribution?: VectorSourceSpecification['attribution'];
-  @Input() promoteId?: VectorSourceSpecification['promoteId'];
+  readonly url = input<VectorSourceSpecification['url']>();
+  readonly tiles = input<VectorSourceSpecification['tiles']>();
+  readonly bounds = input<VectorSourceSpecification['bounds']>();
+  readonly scheme = input<VectorSourceSpecification['scheme']>();
+  readonly minzoom = input<VectorSourceSpecification['minzoom']>();
+  readonly maxzoom = input<VectorSourceSpecification['maxzoom']>();
+  readonly attribution = input<VectorSourceSpecification['attribution']>();
+  readonly promoteId = input<VectorSourceSpecification['promoteId']>();
 
-  type: VectorSourceSpecification['type'] = 'vector';
+  readonly type: VectorSourceSpecification['type'] = 'vector';
 
-  private sourceAdded = false;
+  private readonly sourceAdded = signal(false);
   private sub = new Subscription();
 
   ngOnInit() {
     const sub1 = this.mapService.mapLoaded$.subscribe(() => {
       this.init();
       const sub = fromEvent(this.mapService.mapInstance, 'styledata')
-        .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id)))
+        .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id())))
         .subscribe(() => {
           this.init();
         });
@@ -63,7 +63,7 @@ export class VectorSourceComponent
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.sourceAdded) {
+    if (!this.sourceAdded()) {
       return;
     }
 
@@ -81,41 +81,43 @@ export class VectorSourceComponent
       (changes.url && !changes.url.isFirstChange()) ||
       (changes.tiles && !changes.tiles.isFirstChange())
     ) {
-      const source = this.mapService.getSource<VectorTileSource>(this.id);
+      const source = this.mapService.getSource<VectorTileSource>(this.id());
       if (source === undefined) {
         return;
       }
-      if (changes.url && this.url) {
-        source.setUrl(this.url);
+      const url = this.url();
+      if (changes.url && url) {
+        source.setUrl(url);
       }
 
-      if (changes.tiles && this.tiles) {
-        source.setTiles(this.tiles);
+      const tiles = this.tiles();
+      if (changes.tiles && tiles) {
+        source.setTiles(tiles);
       }
     }
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
-    if (this.sourceAdded) {
-      this.mapService.removeSource(this.id);
-      this.sourceAdded = false;
+    if (this.sourceAdded()) {
+      this.mapService.removeSource(this.id());
+      this.sourceAdded.set(false);
     }
   }
 
   private init() {
     const source: VectorSourceSpecification = {
       type: this.type,
-      url: this.url,
-      tiles: this.tiles,
-      bounds: this.bounds,
-      scheme: this.scheme,
-      minzoom: this.minzoom,
-      maxzoom: this.maxzoom,
-      attribution: this.attribution,
-      promoteId: this.promoteId,
+      url: this.url(),
+      tiles: this.tiles(),
+      bounds: this.bounds(),
+      scheme: this.scheme(),
+      minzoom: this.minzoom(),
+      maxzoom: this.maxzoom(),
+      attribution: this.attribution(),
+      promoteId: this.promoteId(),
     };
-    this.mapService.addSource(this.id, source);
-    this.sourceAdded = true;
+    this.mapService.addSource(this.id(), source);
+    this.sourceAdded.set(true);
   }
 }

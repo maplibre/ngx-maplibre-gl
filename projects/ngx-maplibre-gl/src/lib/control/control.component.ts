@@ -3,12 +3,12 @@ import {
   Component,
   DestroyRef,
   ElementRef,
-  Input,
   afterNextRender,
   inject,
+  input,
   viewChild,
 } from '@angular/core';
-import { ControlPosition, IControl } from 'maplibre-gl';
+import type { ControlPosition, IControl } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 
 export class CustomControl implements IControl {
@@ -64,9 +64,12 @@ export class ControlComponent<T extends IControl> {
   private readonly destroyRef = inject(DestroyRef);
 
   /** Init input */
-  @Input() position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+  readonly position = input<
+    'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+  >();
+
   /** @hidden */
-  content = viewChild.required<ElementRef>('content');
+  readonly content = viewChild.required<ElementRef>('content');
 
   control: T | CustomControl;
 
@@ -75,7 +78,7 @@ export class ControlComponent<T extends IControl> {
       if (this.content().nativeElement.childNodes.length) {
         this.control = new CustomControl(this.content().nativeElement);
         this.mapService.mapCreated$.subscribe(() => {
-          this.mapService.addControl(this.control!, this.position);
+          this.mapService.addControl(this.control, this.position());
         });
       }
     });

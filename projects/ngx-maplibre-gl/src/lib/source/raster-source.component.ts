@@ -1,14 +1,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
   OnChanges,
   OnDestroy,
   OnInit,
   SimpleChanges,
   inject,
+  input,
+  signal,
 } from '@angular/core';
-import { RasterSourceSpecification } from 'maplibre-gl';
+import type { RasterSourceSpecification } from 'maplibre-gl';
 import { fromEvent, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { MapService } from '../map/map.service';
@@ -25,43 +26,35 @@ import { MapService } from '../map/map.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class RasterSourceComponent
-  implements OnInit, OnDestroy, OnChanges, RasterSourceSpecification
-{
+// RasterSourceSpecification
+export class RasterSourceComponent implements OnInit, OnDestroy, OnChanges {
   /** Init injection */
   private readonly mapService = inject(MapService);
 
   /** Init input */
-  @Input() id: string;
+  readonly id = input.required<string>();
 
   /** Dynamic input */
-  @Input() url?: RasterSourceSpecification['url'];
-  /** Dynamic input */
-  @Input() tiles?: RasterSourceSpecification['tiles'];
-  /** Dynamic input */
-  @Input() bounds?: RasterSourceSpecification['bounds'];
-  /** Dynamic input */
-  @Input() minzoom?: RasterSourceSpecification['minzoom'];
-  /** Dynamic input */
-  @Input() maxzoom?: RasterSourceSpecification['maxzoom'];
-  /** Dynamic input */
-  @Input() tileSize?: RasterSourceSpecification['tileSize'];
-  /** Dynamic input */
-  @Input() scheme?: RasterSourceSpecification['scheme'];
-  /** Dynamic input */
-  @Input() attribution?: RasterSourceSpecification['attribution'];
+  readonly url = input<RasterSourceSpecification['url']>();
+  readonly tiles = input<RasterSourceSpecification['tiles']>();
+  readonly bounds = input<RasterSourceSpecification['bounds']>();
+  readonly scheme = input<RasterSourceSpecification['scheme']>();
+  readonly minzoom = input<RasterSourceSpecification['minzoom']>();
+  readonly maxzoom = input<RasterSourceSpecification['maxzoom']>();
+  readonly tileSize = input<RasterSourceSpecification['tileSize']>();
+  readonly attribution = input<RasterSourceSpecification['attribution']>();
 
   /** @hidden */
-  type: RasterSourceSpecification['type'] = 'raster';
+  readonly type: RasterSourceSpecification['type'] = 'raster';
 
-  private sourceAdded = false;
-  private sub = new Subscription();
+  private readonly sourceAdded = signal(false);
+  private readonly sub = new Subscription();
 
   ngOnInit() {
     const sub1 = this.mapService.mapLoaded$.subscribe(() => {
       this.init();
       const sub = fromEvent(this.mapService.mapInstance, 'styledata')
-        .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id)))
+        .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id())))
         .subscribe(() => {
           this.init();
         });
@@ -71,7 +64,7 @@ export class RasterSourceComponent
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.sourceAdded) {
+    if (!this.sourceAdded()) {
       return;
     }
     if (
@@ -91,25 +84,25 @@ export class RasterSourceComponent
 
   ngOnDestroy() {
     this.sub.unsubscribe();
-    if (this.sourceAdded) {
-      this.mapService.removeSource(this.id);
-      this.sourceAdded = false;
+    if (this.sourceAdded()) {
+      this.mapService.removeSource(this.id());
+      this.sourceAdded.set(false);
     }
   }
 
   private init() {
     const source: RasterSourceSpecification = {
       type: this.type,
-      url: this.url,
-      tiles: this.tiles,
-      bounds: this.bounds,
-      minzoom: this.minzoom,
-      maxzoom: this.maxzoom,
-      tileSize: this.tileSize,
-      scheme: this.scheme,
-      attribution: this.attribution,
+      url: this.url(),
+      tiles: this.tiles(),
+      bounds: this.bounds(),
+      minzoom: this.minzoom(),
+      maxzoom: this.maxzoom(),
+      tileSize: this.tileSize(),
+      scheme: this.scheme(),
+      attribution: this.attribution(),
     };
-    this.mapService.addSource(this.id, source);
-    this.sourceAdded = true;
+    this.mapService.addSource(this.id(), source);
+    this.sourceAdded.set(true);
   }
 }

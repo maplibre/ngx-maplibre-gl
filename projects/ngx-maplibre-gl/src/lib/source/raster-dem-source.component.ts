@@ -1,14 +1,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
   OnChanges,
   OnDestroy,
   OnInit,
   SimpleChanges,
   inject,
+  input,
+  signal,
 } from '@angular/core';
-import { RasterDEMSourceSpecification } from 'maplibre-gl';
+import type { RasterDEMSourceSpecification } from 'maplibre-gl';
 import { fromEvent, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { MapService } from '../map/map.service';
@@ -25,43 +26,35 @@ import { MapService } from '../map/map.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class RasterDemSourceComponent
-  implements OnInit, OnDestroy, OnChanges, RasterDEMSourceSpecification
-{
+// RasterDEMSourceSpecification
+export class RasterDemSourceComponent implements OnInit, OnDestroy, OnChanges {
   /** Init injection */
   private readonly mapService = inject(MapService);
 
   /** Init input */
-  @Input() id: string;
+  readonly id = input.required<string>();
 
   /** Dynamic input */
-  @Input() url?: RasterDEMSourceSpecification['url'];
-  /** Dynamic input */
-  @Input() tiles?: RasterDEMSourceSpecification['tiles'];
-  /** Dynamic input */
-  @Input() bounds?: RasterDEMSourceSpecification['bounds'];
-  /** Dynamic input */
-  @Input() minzoom?: RasterDEMSourceSpecification['minzoom'];
-  /** Dynamic input */
-  @Input() maxzoom?: RasterDEMSourceSpecification['maxzoom'];
-  /** Dynamic input */
-  @Input() tileSize?: RasterDEMSourceSpecification['tileSize'];
-  /** Dynamic input */
-  @Input() attribution?: RasterDEMSourceSpecification['attribution'];
-  /** Dynamic input */
-  @Input() encoding?: RasterDEMSourceSpecification['encoding'];
+  readonly url = input<RasterDEMSourceSpecification['url']>();
+  readonly tiles = input<RasterDEMSourceSpecification['tiles']>();
+  readonly bounds = input<RasterDEMSourceSpecification['bounds']>();
+  readonly minzoom = input<RasterDEMSourceSpecification['minzoom']>();
+  readonly maxzoom = input<RasterDEMSourceSpecification['maxzoom']>();
+  readonly tileSize = input<RasterDEMSourceSpecification['tileSize']>();
+  readonly attribution = input<RasterDEMSourceSpecification['attribution']>();
+  readonly encoding = input<RasterDEMSourceSpecification['encoding']>();
 
   /** @hidden */
-  type: RasterDEMSourceSpecification['type'] = 'raster-dem';
+  readonly type: RasterDEMSourceSpecification['type'] = 'raster-dem';
 
-  private sourceAdded = false;
-  private sub = new Subscription();
+  private readonly sourceAdded = signal(false);
+  private readonly sub = new Subscription();
 
   ngOnInit() {
     const sub1 = this.mapService.mapLoaded$.subscribe(() => {
       this.init();
       const sub = fromEvent(this.mapService.mapInstance, 'styledata')
-        .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id)))
+        .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id())))
         .subscribe(() => {
           this.init();
         });
@@ -71,7 +64,7 @@ export class RasterDemSourceComponent
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.sourceAdded) {
+    if (!this.sourceAdded()) {
       return;
     }
     if (
@@ -91,25 +84,25 @@ export class RasterDemSourceComponent
 
   ngOnDestroy() {
     this.sub.unsubscribe();
-    if (this.sourceAdded) {
-      this.mapService.removeSource(this.id);
-      this.sourceAdded = false;
+    if (this.sourceAdded()) {
+      this.mapService.removeSource(this.id());
+      this.sourceAdded.set(false);
     }
   }
 
   private init() {
     const source: RasterDEMSourceSpecification = {
       type: this.type,
-      url: this.url,
-      tiles: this.tiles,
-      bounds: this.bounds,
-      minzoom: this.minzoom,
-      maxzoom: this.maxzoom,
-      tileSize: this.tileSize,
-      attribution: this.attribution,
-      encoding: this.encoding,
+      url: this.url(),
+      tiles: this.tiles(),
+      bounds: this.bounds(),
+      minzoom: this.minzoom(),
+      maxzoom: this.maxzoom(),
+      tileSize: this.tileSize(),
+      attribution: this.attribution(),
+      encoding: this.encoding(),
     };
-    this.mapService.addSource(this.id, source);
-    this.sourceAdded = true;
+    this.mapService.addSource(this.id(), source);
+    this.sourceAdded.set(true);
   }
 }

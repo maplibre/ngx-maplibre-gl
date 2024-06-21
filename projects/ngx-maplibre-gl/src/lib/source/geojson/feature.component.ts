@@ -1,53 +1,53 @@
 import {
   Component,
   forwardRef,
-  Inject,
-  Input,
   OnDestroy,
   OnInit,
   ChangeDetectionStrategy,
+  input,
+  model,
+  inject,
 } from '@angular/core';
 import { GeoJSONSourceComponent } from './geojson-source.component';
 
 /**
  * `mgl-feature` - a feature component
  * [ngx] inside {@link GeoJSONSourceComponent} only
- * 
+ *
  * @category Source Components
  */
 @Component({
-    selector: 'mgl-feature',
-    template: '',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
+  selector: 'mgl-feature',
+  template: '',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
-export class FeatureComponent
-  implements OnInit, OnDestroy, GeoJSON.Feature<GeoJSON.GeometryObject> {
+// GeoJSON.Feature<GeoJSON.GeometryObject>
+export class FeatureComponent implements OnInit, OnDestroy {
+  /** Init injection */
+  private readonly geoJSONSourceComponent = inject<GeoJSONSourceComponent>(
+    forwardRef(() => GeoJSONSourceComponent)
+  );
   /** Init input */
-  @Input() id?: number; // FIXME number only for now https://github.com/mapbox/mapbox-gl-js/issues/2716
-  /** Init input */
-  @Input() geometry: GeoJSON.GeometryObject;
-  /** Init input */
-  @Input() properties: any;
-  type: 'Feature' = 'Feature';
+  readonly id = model<number>(); // FIXME number only for now https://github.com/mapbox/mapbox-gl-js/issues/2716
+  readonly geometry = input.required<GeoJSON.GeometryObject>();
+  readonly properties = input<any>();
+
+  readonly type: 'Feature' = 'Feature';
 
   private feature: GeoJSON.Feature<GeoJSON.GeometryObject>;
 
-  constructor(
-    @Inject(forwardRef(() => GeoJSONSourceComponent))
-    private geoJSONSourceComponent: GeoJSONSourceComponent
-  ) {}
-
   ngOnInit() {
-    if (!this.id) {
-      this.id = this.geoJSONSourceComponent._getNewFeatureId();
+    const id = this.id();
+    if (!id) {
+      this.id.set(this.geoJSONSourceComponent._getNewFeatureId());
     }
     this.feature = {
       type: this.type,
-      geometry: this.geometry,
+      geometry: this.geometry(),
       properties: this.properties ? this.properties : {},
     };
-    this.feature.id = this.id;
+    this.feature.id = this.id();
     this.geoJSONSourceComponent._addFeature(this.feature);
   }
 

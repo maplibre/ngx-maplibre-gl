@@ -1,6 +1,6 @@
 // Can't use MapEvent interface because some event name are changed (eg zoomChange)
 import { OutputEmitterRef } from '@angular/core';
-import {
+import type {
   GeolocateControl,
   Map,
   MapLibreEvent,

@@ -1,4 +1,4 @@
-import { AfterContentInit, Directive, Input, inject } from '@angular/core';
+import { Directive, afterNextRender, inject, input } from '@angular/core';
 import { NavigationControl } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
@@ -15,7 +15,7 @@ import { ControlComponent } from './control.component';
   selector: '[mglNavigation]',
   standalone: true,
 })
-export class NavigationControlDirective implements AfterContentInit {
+export class NavigationControlDirective {
   /* Init injection */
   private readonly mapService = inject(MapService);
   private readonly controlComponent = inject<
@@ -23,39 +23,42 @@ export class NavigationControlDirective implements AfterContentInit {
   >(ControlComponent, { host: true });
 
   /* Init inputs */
-  @Input() showCompass?: boolean;
-  @Input() showZoom?: boolean;
-  @Input() visualizePitch?: boolean;
+  readonly showCompass = input<boolean>();
+  readonly showZoom = input<boolean>();
+  readonly visualizePitch = input<boolean>();
 
-  ngAfterContentInit() {
-    this.mapService.mapCreated$.subscribe(() => {
-      if (this.controlComponent.control) {
-        throw new Error('Another control is already set for this control');
-      }
+  constructor() {
+    afterNextRender(() => {
+      this.mapService.mapCreated$.subscribe(() => {
+        if (this.controlComponent.control) {
+          throw new Error('Another control is already set for this control');
+        }
 
-      const options: {
-        showCompass?: boolean;
-        showZoom?: boolean;
-        visualizePitch?: boolean;
-      } = {};
+        const options: {
+          showCompass?: boolean;
+          showZoom?: boolean;
+          visualizePitch?: boolean;
+        } = {};
+        const showCompass = this.showCompass();
+        if (showCompass !== undefined) {
+          options.showCompass = showCompass;
+        }
+        const showZoom = this.showCompass();
+        if (showZoom !== undefined) {
+          options.showZoom = showZoom;
+        }
 
-      if (this.showCompass !== undefined) {
-        options.showCompass = this.showCompass;
-      }
+        const visualizePitch = this.visualizePitch();
+        if (this.visualizePitch !== undefined) {
+          options.visualizePitch = visualizePitch;
+        }
 
-      if (this.showZoom !== undefined) {
-        options.showZoom = this.showZoom;
-      }
-
-      if (this.visualizePitch != undefined) {
-        options.visualizePitch = this.visualizePitch;
-      }
-
-      this.controlComponent.control = new NavigationControl(options);
-      this.mapService.addControl(
-        this.controlComponent.control,
-        this.controlComponent.position
-      );
+        this.controlComponent.control = new NavigationControl(options);
+        this.mapService.addControl(
+          this.controlComponent.control,
+          this.controlComponent.position()
+        );
+      });
     });
   }
 }

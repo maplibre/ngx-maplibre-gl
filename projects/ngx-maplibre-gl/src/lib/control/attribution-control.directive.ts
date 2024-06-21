@@ -1,4 +1,4 @@
-import { AfterContentInit, Directive, Input, inject } from '@angular/core';
+import { Directive, afterNextRender, inject, input } from '@angular/core';
 import { AttributionControl } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
@@ -15,7 +15,7 @@ import { ControlComponent } from './control.component';
   selector: '[mglAttribution]',
   standalone: true,
 })
-export class AttributionControlDirective implements AfterContentInit {
+export class AttributionControlDirective {
   /* Init injection */
   private readonly mapService = inject(MapService);
   private readonly controlComponent = inject<
@@ -23,30 +23,34 @@ export class AttributionControlDirective implements AfterContentInit {
   >(ControlComponent, { host: true });
 
   /** Init input */
-  @Input() compact?: boolean;
-  /** Init input */
-  @Input() customAttribution?: string | string[];
+  readonly compact = input<boolean>();
+  readonly customAttribution = input<string | string[]>();
 
-  ngAfterContentInit() {
-    this.mapService.mapCreated$.subscribe(() => {
-      if (this.controlComponent.control) {
-        throw new Error('Another control is already set for this control');
-      }
-      const options: {
-        compact?: boolean;
-        customAttribution?: string | string[];
-      } = {};
-      if (this.compact !== undefined) {
-        options.compact = this.compact;
-      }
-      if (this.customAttribution !== undefined) {
-        options.customAttribution = this.customAttribution;
-      }
-      this.controlComponent.control = new AttributionControl(options);
-      this.mapService.addControl(
-        this.controlComponent.control,
-        this.controlComponent.position
-      );
+  constructor() {
+    afterNextRender(() => {
+      this.mapService.mapCreated$.subscribe(() => {
+        if (this.controlComponent.control) {
+          throw new Error('Another control is already set for this control');
+        }
+        const options: {
+          compact?: boolean;
+          customAttribution?: string | string[];
+        } = {};
+        const compact = this.compact();
+
+        if (compact !== undefined) {
+          options.compact = compact;
+        }
+        const customAttribution = this.customAttribution();
+        if (customAttribution !== undefined) {
+          options.customAttribution = customAttribution;
+        }
+        this.controlComponent.control = new AttributionControl(options);
+        this.mapService.addControl(
+          this.controlComponent.control,
+          this.controlComponent.position()
+        );
+      });
     });
   }
 }
