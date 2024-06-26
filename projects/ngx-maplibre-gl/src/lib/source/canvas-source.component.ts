@@ -1,18 +1,18 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   OnChanges,
-  OnDestroy,
   OnInit,
   SimpleChanges,
   inject,
   input,
-  signal,
 } from '@angular/core';
 import type { CanvasSource, CanvasSourceSpecification } from 'maplibre-gl';
-import { fromEvent, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { fromEvent } from 'rxjs';
+import { filter, switchMap, tap } from 'rxjs/operators';
 import { MapService } from '../map/map.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
  * `mgl-canvas-source` - a canvas source component
@@ -26,46 +26,49 @@ import { MapService } from '../map/map.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-// CanvasSourceSpecification
-export class CanvasSourceComponent implements OnInit, OnDestroy, OnChanges {
+export class CanvasSourceComponent implements OnInit, OnChanges {
   /** Init injection */
   private readonly mapService = inject(MapService);
+  private readonly destroyRef = inject(DestroyRef);
 
   /**  Init input */
   readonly id = input.required<string>();
 
-  /** Dynamic input */
   readonly coordinates =
     input.required<CanvasSourceSpecification['coordinates']>();
   readonly canvas = input.required<CanvasSourceSpecification['canvas']>();
   readonly animate = input<CanvasSourceSpecification['animate']>();
 
-  readonly type: CanvasSourceSpecification['type'] = 'canvas';
-  private readonly sourceAdded = signal(false);
-  private sub = new Subscription();
+  private sourceAdded = false;
+
+  constructor() {
+    this.destroyRef.onDestroy(() => this.removeSource());
+  }
 
   ngOnInit() {
-    const sub1 = this.mapService.mapLoaded$.subscribe(() => {
-      this.init();
-      const sub = fromEvent(this.mapService.mapInstance, 'styledata')
-        .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id())))
-        .subscribe(() => {
-          this.init();
-        });
-      this.sub.add(sub);
-    });
-    this.sub.add(sub1);
+    this.mapService.mapLoaded$
+      .pipe(
+        tap(() => this.init()),
+        switchMap(() =>
+          fromEvent(this.mapService.mapInstance, 'styledata').pipe(
+            filter(() => !this.mapService.mapInstance.getSource(this.id())),
+            tap(() => this.init())
+          )
+        ),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.sourceAdded()) {
+    if (!this.sourceAdded) {
       return;
     }
     if (
       (changes.canvas && !changes.canvas.isFirstChange()) ||
       (changes.animate && !changes.animate.isFirstChange())
     ) {
-      this.ngOnDestroy();
+      this.removeSource();
       this.ngOnInit();
     } else if (changes.coordinates && !changes.coordinates.isFirstChange()) {
       const source = this.mapService.getSource<CanvasSource>(this.id());
@@ -76,11 +79,10 @@ export class CanvasSourceComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-    if (this.sourceAdded()) {
+  removeSource() {
+    if (this.sourceAdded) {
       this.mapService.removeSource(this.id());
-      this.sourceAdded.set(false);
+      this.sourceAdded = false;
     }
   }
 
@@ -92,6 +94,6 @@ export class CanvasSourceComponent implements OnInit, OnDestroy, OnChanges {
       animate: this.animate(),
     };
     this.mapService.addSource(this.id(), source as any);
-    this.sourceAdded.set(true);
+    this.sourceAdded = true;
   }
 }

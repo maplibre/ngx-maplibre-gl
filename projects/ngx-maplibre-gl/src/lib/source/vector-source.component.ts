@@ -26,15 +26,12 @@ import { MapService } from '../map/map.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-// VectorSourceSpecification
 export class VectorSourceComponent implements OnInit, OnDestroy, OnChanges {
   /* Init injection */
   private readonly mapService = inject(MapService);
 
   /* Init inputs */
   readonly id = input.required<string>();
-
-  /* Dynamic inputs */
   readonly url = input<VectorSourceSpecification['url']>();
   readonly tiles = input<VectorSourceSpecification['tiles']>();
   readonly bounds = input<VectorSourceSpecification['bounds']>();

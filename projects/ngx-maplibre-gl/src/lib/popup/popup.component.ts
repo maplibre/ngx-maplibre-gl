@@ -1,9 +1,9 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
   OnChanges,
-  OnDestroy,
   OnInit,
   SimpleChanges,
   afterNextRender,
@@ -15,6 +15,8 @@ import {
 import type { LngLatLike, Offset, Popup, PopupOptions } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { MarkerComponent } from '../marker/marker.component';
+import { tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
  * `mgl-popup` - a popup component
@@ -41,8 +43,9 @@ import { MarkerComponent } from '../marker/marker.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class PopupComponent implements OnChanges, OnDestroy, OnInit {
+export class PopupComponent implements OnChanges, OnInit {
   /** Init injection */
+  private readonly destroyRef = inject(DestroyRef);
   private readonly mapService = inject(MapService);
 
   /** Init input */
@@ -55,34 +58,34 @@ export class PopupComponent implements OnChanges, OnDestroy, OnInit {
   readonly maxWidth = input<PopupOptions['maxWidth']>();
 
   /**
-   * Dynamic input [ngx]
    * Mutually exclusive with `lngLat`
    */
   readonly feature = input<GeoJSON.Feature<GeoJSON.Point>>();
-  /** Dynamic input */
   readonly lngLat = input<LngLatLike>();
   /**
-   * Dynamic input [ngx]
    * The targeted marker
    */
   readonly marker = input<MarkerComponent>();
 
-  /** Dynamic input */
   readonly offset = input<Offset>();
 
   readonly popupClose = output<void>();
   readonly popupOpen = output<void>();
 
   /** @hidden */
-  readonly content = viewChild.required<ElementRef>('content');
+  readonly content = viewChild.required<ElementRef<HTMLDivElement>>('content');
 
-  popupInstance?: maplibregl.Popup;
+  private popupInstance: maplibregl.Popup | null = null;
 
   constructor() {
     afterNextRender(() => {
       this.popupInstance = this.createPopup();
-      this.addPopup(this.popupInstance as Popup);
+      this.addPopup(this.popupInstance as Popup)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe();
     });
+
+    this.destroyRef.onDestroy(() => this.removePopupFromMarker());
   }
 
   ngOnInit() {
@@ -97,10 +100,7 @@ export class PopupComponent implements OnChanges, OnDestroy, OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.feature && !changes.feature.isFirstChange()) {
-      const newlngLat = this.getLngLat(
-        changes.lngLat.currentValue,
-        changes.feature.currentValue
-      );
+      const newlngLat = this.getLngLat(this.lngLat(), this.feature());
       this.mapService.removePopupFromMap(this.popupInstance!, true);
       const popupInstanceTmp = this.createPopup();
       this.mapService.addPopupToMap(
@@ -123,9 +123,7 @@ export class PopupComponent implements OnChanges, OnDestroy, OnInit {
         this.mapService.removePopupFromMarker(previousMarkerInstance);
       }
 
-      const marker = this.marker();
-      const markerInstance = marker && marker.markerInstance();
-
+      const markerInstance = this.marker()?.markerInstance();
       if (markerInstance && this.popupInstance) {
         this.mapService.addPopupToMarker(markerInstance, this.popupInstance);
       }
@@ -137,19 +135,6 @@ export class PopupComponent implements OnChanges, OnDestroy, OnInit {
     ) {
       this.popupInstance.setOffset(changes.offset.currentValue);
     }
-  }
-
-  ngOnDestroy() {
-    if (this.popupInstance) {
-      const marker = this.marker();
-      const markerInstance = marker && marker.markerInstance();
-      if (this.lngLat() || this.feature()) {
-        this.mapService.removePopupFromMap(this.popupInstance);
-      } else if (markerInstance) {
-        this.mapService.removePopupFromMarker(markerInstance);
-      }
-    }
-    this.popupInstance = undefined;
   }
 
   private createPopup() {
@@ -175,21 +160,34 @@ export class PopupComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   private addPopup(popup: Popup) {
-    this.mapService.mapCreated$.subscribe(() => {
-      const marker = this.marker();
-      const lngLat = this.lngLat();
-      const feature = this.feature();
-      const markerInstance = marker && marker.markerInstance();
-      if (lngLat || feature) {
-        this.mapService.addPopupToMap(popup, this.getLngLat(lngLat, feature));
+    return this.mapService.mapCreated$.pipe(
+      tap(() => {
+        const lngLat = this.lngLat();
+        const feature = this.feature();
+        const markerInstance = this.marker()?.markerInstance();
+        if (lngLat || feature) {
+          this.mapService.addPopupToMap(popup, this.getLngLat(lngLat, feature));
+        } else if (markerInstance) {
+          this.mapService.addPopupToMarker(markerInstance, popup);
+        } else {
+          throw new Error(
+            'mgl-popup need either lngLat/marker/feature to be set'
+          );
+        }
+      })
+    );
+  }
+
+  removePopupFromMarker() {
+    if (this.popupInstance) {
+      const markerInstance = this.marker()?.markerInstance();
+      if (this.lngLat() || this.feature()) {
+        this.mapService.removePopupFromMap(this.popupInstance, true);
       } else if (markerInstance) {
-        this.mapService.addPopupToMarker(markerInstance, popup);
-      } else {
-        throw new Error(
-          'mgl-popup need either lngLat/marker/feature to be set'
-        );
+        this.mapService.removePopupFromMarker(markerInstance);
       }
-    });
+    }
+    this.popupInstance = null;
   }
 
   getLngLat(
@@ -201,6 +199,6 @@ export class PopupComponent implements OnChanges, OnDestroy, OnInit {
     } else if (feature) {
       return feature.geometry.coordinates as [number, number];
     }
-    throw new Error('toto');
+    throw new Error('lngLat or feature value is required');
   }
 }

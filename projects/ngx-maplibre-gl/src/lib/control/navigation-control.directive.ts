@@ -1,7 +1,8 @@
 import { Directive, afterNextRender, inject, input } from '@angular/core';
-import { NavigationControl } from 'maplibre-gl';
+import { NavigationControl, type NavigationControlOptions } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
+import { keepAvailableObjectValues } from '../shared';
 
 /**
  * `mglNavigation` - a navigation control directive
@@ -33,26 +34,11 @@ export class NavigationControlDirective {
         if (this.controlComponent.control) {
           throw new Error('Another control is already set for this control');
         }
-
-        const options: {
-          showCompass?: boolean;
-          showZoom?: boolean;
-          visualizePitch?: boolean;
-        } = {};
-        const showCompass = this.showCompass();
-        if (showCompass !== undefined) {
-          options.showCompass = showCompass;
-        }
-        const showZoom = this.showCompass();
-        if (showZoom !== undefined) {
-          options.showZoom = showZoom;
-        }
-
-        const visualizePitch = this.visualizePitch();
-        if (this.visualizePitch !== undefined) {
-          options.visualizePitch = visualizePitch;
-        }
-
+        const options = keepAvailableObjectValues<NavigationControlOptions>({
+          showCompass: this.showCompass(),
+          showZoom: this.showZoom(),
+          visualizePitch: this.visualizePitch(),
+        });
         this.controlComponent.control = new NavigationControl(options);
         this.mapService.addControl(
           this.controlComponent.control,

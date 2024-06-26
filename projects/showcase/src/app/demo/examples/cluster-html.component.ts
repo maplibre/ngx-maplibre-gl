@@ -1,8 +1,10 @@
 import { Component, OnInit, input } from '@angular/core';
-import {
+import type {
   CircleLayerSpecification,
   SymbolLayerSpecification,
   ExpressionSpecification,
+  GeoJSONSourceSpecification,
+  MapGeoJSONFeature
 } from 'maplibre-gl';
 import { NgStyle } from '@angular/common';
 import {
@@ -10,7 +12,7 @@ import {
   LayerComponent,
   MarkersForClustersComponent,
   GeoJSONSourceComponent,
-  ClusterPointDirective,
+  ClusterPointDirective
 } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
@@ -36,7 +38,7 @@ import {
   imports: [NgStyle],
 })
 export class ClusterPointComponent implements OnInit {
-  properties = input<any>();
+  readonly properties = input<MapGeoJSONFeature['properties']>();
 
   w: number;
   r: number;
@@ -50,12 +52,13 @@ export class ClusterPointComponent implements OnInit {
   ngOnInit() {
     const offsets = [];
     const properties = this.properties();
+
     const counts = [
-      properties.mag1,
-      properties.mag2,
-      properties.mag3,
-      properties.mag4,
-      properties.mag5,
+      properties?.mag1,
+      properties?.mag2,
+      properties?.mag3,
+      properties?.mag4,
+      properties?.mag5,
     ];
     let total = 0;
     for (let i = 0; i < counts.length; i++) {
@@ -174,7 +177,7 @@ const COLORS = ['#fed976', '#feb24c', '#fd8d3c', '#fc4e2a', '#e31a1c'];
   ],
 })
 export class ClusterHtmlComponent {
-  clusterProperties: any;
+  clusterProperties: GeoJSONSourceSpecification['clusterProperties'];
   circlePaint: CircleLayerSpecification['paint'];
   labelLayout: SymbolLayerSpecification['layout'];
   labelPaint: SymbolLayerSpecification['paint'];

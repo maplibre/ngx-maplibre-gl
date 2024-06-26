@@ -4,7 +4,6 @@ import {
   DestroyRef,
   NgZone,
   OnChanges,
-  OnDestroy,
   OnInit,
   SimpleChanges,
   inject,
@@ -55,7 +54,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ImageComponent implements OnInit, OnDestroy, OnChanges {
+export class ImageComponent implements OnInit, OnChanges {
   /** Init injection */
   private readonly mapService = inject(MapService);
   private readonly destroyRef = inject(DestroyRef);
@@ -64,7 +63,6 @@ export class ImageComponent implements OnInit, OnDestroy, OnChanges {
   /** Init input */
   readonly id = input.required<string>();
 
-  /** Dynamic input */
   readonly data = input<MapImageData>();
   readonly options = input<MapImageOptions>();
   readonly url = input<string>();
@@ -77,6 +75,10 @@ export class ImageComponent implements OnInit, OnDestroy, OnChanges {
 
   private isAdded = signal(false);
   private isAdding = signal(false);
+
+  constructor() {
+    this.destroyRef.onDestroy(() => this.removeImage());
+  }
 
   ngOnInit() {
     this.mapService.mapLoaded$
@@ -102,12 +104,12 @@ export class ImageComponent implements OnInit, OnDestroy, OnChanges {
       (changes.options && !changes.options.isFirstChange()) ||
       (changes.url && !changes.url.isFirstChange())
     ) {
-      this.ngOnDestroy();
+      this.removeImage();
       this.ngOnInit();
     }
   }
 
-  ngOnDestroy() {
+  removeImage() {
     if (this.isAdded()) {
       this.mapService.removeImage(this.id());
     }

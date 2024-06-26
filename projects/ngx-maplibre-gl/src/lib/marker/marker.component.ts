@@ -1,13 +1,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
   OnChanges,
-  OnDestroy,
   OnInit,
   SimpleChanges,
   ViewEncapsulation,
-  afterRender,
+  afterNextRender,
   inject,
   input,
   output,
@@ -16,6 +16,7 @@ import {
 } from '@angular/core';
 import type { LngLatLike, Marker, MarkerOptions } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
  * `mgl-marker` - a marker component
@@ -37,22 +38,23 @@ import { MapService } from '../map/map.service';
  */
 @Component({
   selector: 'mgl-marker',
-  template: '<div [class]="className()" #content><ng-content></ng-content></div>',
+  template: `<div [class]="className()" #content>
+    <ng-content></ng-content>
+  </div>`,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class MarkerComponent implements OnChanges, OnDestroy, OnInit {
+export class MarkerComponent implements OnChanges, OnInit {
   /* Init injection */
   private readonly mapService = inject(MapService);
+  private readonly destroyRef = inject(DestroyRef);
 
   /* Init input */
   readonly offset = input<MarkerOptions['offset']>();
   readonly anchor = input<MarkerOptions['anchor']>();
   readonly clickTolerance = input<MarkerOptions['clickTolerance']>();
   readonly color = input<MarkerOptions['color']>();
-
-  /* Dynamic input */
   readonly feature = input<GeoJSON.Feature<GeoJSON.Point>>();
   readonly lngLat = input<LngLatLike>();
   readonly draggable = input<MarkerOptions['draggable']>();
@@ -66,38 +68,40 @@ export class MarkerComponent implements OnChanges, OnDestroy, OnInit {
   readonly markerDragEnd = output<Marker>();
   readonly markerDrag = output<Marker>();
 
-  readonly content = viewChild.required<string, ElementRef>('content', {
-    read: ElementRef,
-  });
+  readonly content = viewChild.required<ElementRef<HTMLDivElement>>('content');
 
   readonly markerInstance = signal<Marker | null>(null);
 
   constructor() {
-    afterRender(() => {
-      this.mapService.mapCreated$.subscribe(() => {
-        const marker = this.mapService.addMarker({
-          markersOptions: {
-            offset: this.offset(),
-            anchor: this.anchor(),
-            color: this.color(),
-            pitchAlignment: this.pitchAlignment(),
-            rotationAlignment: this.rotationAlignment(),
-            rotation: this.rotation(),
-            draggable: !!this.draggable(),
-            element: this.content().nativeElement,
-            feature: this.feature(),
-            lngLat: this.lngLat(),
-            clickTolerance: this.clickTolerance(),
-          },
-          markersEvents: {
-            markerDragStart: this.markerDragStart,
-            markerDrag: this.markerDrag,
-            markerDragEnd: this.markerDragEnd,
-          },
-        });
+    afterNextRender(() => {
+      this.mapService.mapCreated$
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(() => {
+          const marker = this.mapService.addMarker({
+            markersOptions: {
+              offset: this.offset(),
+              anchor: this.anchor(),
+              color: this.color(),
+              pitchAlignment: this.pitchAlignment(),
+              rotationAlignment: this.rotationAlignment(),
+              rotation: this.rotation(),
+              draggable: !!this.draggable(),
+              element: this.content().nativeElement,
+              feature: this.feature(),
+              lngLat: this.lngLat(),
+              clickTolerance: this.clickTolerance(),
+            },
+            markersEvents: {
+              markerDragStart: this.markerDragStart,
+              markerDrag: this.markerDrag,
+              markerDragEnd: this.markerDragEnd,
+            },
+          });
         this.markerInstance.set(marker);
-      });
+        });
     });
+
+    this.destroyRef.onDestroy(() => this.removeMarker());
   }
 
   ngOnInit() {
@@ -114,7 +118,7 @@ export class MarkerComponent implements OnChanges, OnDestroy, OnInit {
 
     if (changes.feature && !changes.feature.isFirstChange()) {
       markerInstance.setLngLat(
-        <[number, number]>changes.feature.currentValue.geometry.coordinates
+        changes.feature.currentValue.geometry.coordinates
       );
     }
     if (changes.draggable && !changes.draggable.isFirstChange()) {
@@ -141,16 +145,12 @@ export class MarkerComponent implements OnChanges, OnDestroy, OnInit {
     }
   }
 
-  ngOnDestroy() {
+  removeMarker() {
     this.mapService.removeMarker(this.markerInstance()!);
     this.markerInstance.set(null);
   }
 
   togglePopup() {
     this.markerInstance()!.togglePopup();
-  }
-
-  updateCoordinates(coordinates: number[]) {
-    this.markerInstance()!.setLngLat(<[number, number]>coordinates);
   }
 }

@@ -5,10 +5,15 @@ import {
   input,
   output,
 } from '@angular/core';
-import { type FitBoundsOptions, GeolocateControl } from 'maplibre-gl';
+import {
+  type FitBoundsOptions,
+  GeolocateControl,
+  GeolocateControlOptions,
+} from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
 import type { Position } from '../map/map.types';
+import { keepAvailableObjectValues } from '../shared';
 
 /**
  * `mglGeolocate` - a geolocate control directive
@@ -43,19 +48,14 @@ export class GeolocateControlDirective {
         if (this.controlComponent.control) {
           throw new Error('Another control is already set for this control');
         }
-        const options = {
+
+        const options = keepAvailableObjectValues<GeolocateControlOptions>({
           positionOptions: this.positionOptions(),
           fitBoundsOptions: this.fitBoundsOptions(),
           trackUserLocation: this.trackUserLocation(),
           showUserLocation: this.showUserLocation(),
-        };
-
-        Object.keys(options).forEach((key: string) => {
-          const tkey = <keyof typeof options>key;
-          if (options[tkey] === undefined) {
-            delete options[tkey];
-          }
         });
+
         this.controlComponent.control = new GeolocateControl(options);
         this.controlComponent.control.on('geolocate', (data: Position) => {
           this.geolocate.emit(data);

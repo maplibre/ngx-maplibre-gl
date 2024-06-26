@@ -26,15 +26,12 @@ import { MapService } from '../map/map.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-// RasterSourceSpecification
 export class RasterSourceComponent implements OnInit, OnDestroy, OnChanges {
   /** Init injection */
   private readonly mapService = inject(MapService);
 
   /** Init input */
   readonly id = input.required<string>();
-
-  /** Dynamic input */
   readonly url = input<RasterSourceSpecification['url']>();
   readonly tiles = input<RasterSourceSpecification['tiles']>();
   readonly bounds = input<RasterSourceSpecification['bounds']>();

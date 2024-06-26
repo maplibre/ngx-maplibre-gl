@@ -72,7 +72,6 @@ export class LayerComponent
    */
   readonly removeSource = input<boolean>();
 
-  /** Dynamic input */
   readonly filter = input<FilterSpecification>();
   readonly layout = input<LayerSpecification['layout']>();
   readonly paint = input<LayerSpecification['paint']>();

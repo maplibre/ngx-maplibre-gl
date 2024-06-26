@@ -26,7 +26,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-// ImageSourceSpecification
 export class ImageSourceComponent implements OnInit, OnDestroy, OnChanges {
   /** Init injection */
   private readonly destroyRef = inject(DestroyRef);
@@ -34,8 +33,6 @@ export class ImageSourceComponent implements OnInit, OnDestroy, OnChanges {
 
   /* Init inputs */
   readonly id = input.required<string>();
-
-  /* Dynamic inputs */
   readonly url = input.required<ImageSourceSpecification['url']>();
   readonly coordinates =
     input.required<ImageSourceSpecification['coordinates']>();
@@ -60,7 +57,7 @@ export class ImageSourceComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
     source.updateImage({
-      url: changes.url === undefined ? (undefined as any) : this.url,
+      url: changes.url === undefined ? (undefined as any) : this.url(),
       coordinates:
         changes.coordinates === undefined ? undefined : this.coordinates(),
     });

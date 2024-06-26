@@ -34,6 +34,7 @@ import {
   type FilterSpecification,
   type TerrainSpecification,
   type QueryRenderedFeaturesOptions,
+  type ControlPosition,
 } from 'maplibre-gl';
 import { AsyncSubject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -43,6 +44,7 @@ import type {
   MapImageData,
   MapImageOptions,
 } from './map.types';
+import { keepAvailableObjectValues } from '../shared';
 
 export interface SetupMap {
   mapOptions: Omit<MapOptions, 'bearing' | 'pitch' | 'zoom'> & {
@@ -393,10 +395,12 @@ export class MapService {
       rotation: marker.markersOptions.rotation,
       pitchAlignment: marker.markersOptions.pitchAlignment,
       clickTolerance: marker.markersOptions.clickTolerance,
+      element:
+        marker.markersOptions.element.childNodes.length > 0
+          ? marker.markersOptions.element
+          : undefined,
     };
-    if (marker.markersOptions.element.childNodes.length > 0) {
-      options.element = marker.markersOptions.element;
-    }
+
     const markerInstance = new Marker(options);
     markerInstance.on('dragstart', (event: { target: Marker }) => {
       if (event) {
@@ -437,12 +441,8 @@ export class MapService {
 
   createPopup(popup: SetupPopup, element: Node) {
     return this.zone.runOutsideAngular(() => {
-      Object.keys(popup.popupOptions).forEach(
-        (key) =>
-          (popup.popupOptions as any)[key] === undefined &&
-          delete (popup.popupOptions as any)[key]
-      );
-      const popupInstance = new Popup(popup.popupOptions);
+      const popupOptions = keepAvailableObjectValues(popup.popupOptions);
+      const popupInstance = new Popup(popupOptions);
       popupInstance.setDOMContent(element);
       popupInstance.on('close', () => {
         this.zone.run(() => {
@@ -487,10 +487,7 @@ export class MapService {
     });
   }
 
-  addControl(
-    control: IControl,
-    position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
-  ) {
+  addControl(control: IControl, position?: ControlPosition) {
     return this.zone.runOutsideAngular(() => {
       this.mapInstance.addControl(control, position);
     });
@@ -640,13 +637,10 @@ export class MapService {
 
   private createMap(options: MapOptions) {
     NgZone.assertNotInAngularZone();
-    Object.keys(options).forEach((key: string) => {
-      const tkey = <keyof MapOptions>key;
-      if (options[tkey] === undefined) {
-        delete options[tkey];
-      }
-    });
-    this.mapInstance = new Map(options);
+
+    const mapOptions = keepAvailableObjectValues<MapOptions>(options);
+
+    this.mapInstance = new Map(mapOptions);
 
     const isIEorEdge =
       window && /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);

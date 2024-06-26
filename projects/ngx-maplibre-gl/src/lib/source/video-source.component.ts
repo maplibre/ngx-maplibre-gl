@@ -26,15 +26,12 @@ import { MapService } from '../map/map.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-// VideoSourceSpecification
 export class VideoSourceComponent implements OnInit, OnDestroy, OnChanges {
   /** Init injection */
   private readonly mapService = inject(MapService);
 
   /** Init input */
   readonly id = input.required<string>();
-
-  /** Dynamic input */
   readonly urls = input.required<VideoSourceSpecification['urls']>();
   readonly coordinates =
     input.required<VideoSourceSpecification['coordinates']>();

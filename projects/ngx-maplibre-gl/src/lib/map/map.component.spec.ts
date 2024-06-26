@@ -59,12 +59,6 @@ describe('MapComponent', () => {
   });
 
   describe('Init tests', () => {
-    // xit("should init", fakeAsync(() => {
-    //   tick();
-    //   fixture.detectChanges();
-    //   expect(mapServiceStub.setup.calls.count()).toBe(1);
-    // }));
-
     it('should init with custom inputs', () => {
       // Since we don't want to trigger afterNextRender, we need to create the component in a different way
       const componentRef = createComponent(MapComponent, {

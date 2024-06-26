@@ -1,6 +1,5 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   DestroyRef,
   Directive,
@@ -77,7 +76,7 @@ let uniqId = 0;
   template: `
     <mgl-layer
       [id]="layerId"
-      [source]="source"
+      [source]="source()"
       type="circle"
       [paint]="{ 'circle-radius': 0 }"
     ></mgl-layer>
@@ -104,16 +103,23 @@ let uniqId = 0;
 export class MarkersForClustersComponent {
   private readonly destroyRef = inject(DestroyRef);
   private readonly mapService = inject(MapService);
-  private readonly changeDetectorRef = inject(ChangeDetectorRef);
   private readonly ngZone = inject(NgZone);
 
   /** Init input */
   readonly source = input.required<string>();
 
   /** @hidden */
-  readonly pointTpl = contentChild(PointDirective, { read: TemplateRef });
+  readonly pointTpl = contentChild<PointDirective, TemplateRef<PointDirective>>(
+    PointDirective,
+    {
+      read: TemplateRef,
+    }
+  );
   /** @hidden */
-  readonly clusterPointTpl = contentChild(ClusterPointDirective, {
+  readonly clusterPointTpl = contentChild<
+    ClusterPointDirective,
+    TemplateRef<ClusterPointDirective>
+  >(ClusterPointDirective, {
     read: TemplateRef,
   });
 
@@ -157,11 +163,10 @@ export class MarkersForClustersComponent {
     this.clusterPoints.set(
       this.mapService.mapInstance.queryRenderedFeatures(params)
     );
-    this.changeDetectorRef.markForCheck();
   }
 
   getClusterParams(
-    pointTpl: TemplateRef<any> | undefined
+    pointTpl: TemplateRef<PointDirective> | undefined
   ): QueryRenderedFeaturesOptions {
     if (!pointTpl) {
       return { layers: [this.layerId], filter: ['==', 'cluster', true] };

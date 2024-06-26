@@ -50,7 +50,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   imports: [MatProgressSpinnerModule],
 })
 export class StackblitzEditComponent implements AfterViewInit, OnDestroy {
-  stackblitzContainer = viewChild.required<ElementRef>('container');
+  stackblitzContainer = viewChild.required<ElementRef<HTMLDivElement>>('container');
 
   loading = true;
 

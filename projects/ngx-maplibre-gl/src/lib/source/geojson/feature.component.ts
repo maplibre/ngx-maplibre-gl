@@ -22,7 +22,6 @@ import { GeoJSONSourceComponent } from './geojson-source.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-// GeoJSON.Feature<GeoJSON.GeometryObject>
 export class FeatureComponent implements OnInit, OnDestroy {
   /** Init injection */
   private readonly geoJSONSourceComponent = inject<GeoJSONSourceComponent>(
@@ -31,9 +30,7 @@ export class FeatureComponent implements OnInit, OnDestroy {
   /** Init input */
   readonly id = model<number>(); // FIXME number only for now https://github.com/mapbox/mapbox-gl-js/issues/2716
   readonly geometry = input.required<GeoJSON.GeometryObject>();
-  readonly properties = input<any>();
-
-  readonly type: 'Feature' = 'Feature';
+  readonly properties = input<GeoJSON.Feature<GeoJSON.GeometryObject>['properties']>();
 
   private feature: GeoJSON.Feature<GeoJSON.GeometryObject>;
 
@@ -42,10 +39,11 @@ export class FeatureComponent implements OnInit, OnDestroy {
     if (!id) {
       this.id.set(this.geoJSONSourceComponent._getNewFeatureId());
     }
+    const properties = this.properties();
     this.feature = {
-      type: this.type,
+      type: 'Feature',
       geometry: this.geometry(),
-      properties: this.properties ? this.properties : {},
+      properties: properties ?? {},
     };
     this.feature.id = this.id();
     this.geoJSONSourceComponent._addFeature(this.feature);

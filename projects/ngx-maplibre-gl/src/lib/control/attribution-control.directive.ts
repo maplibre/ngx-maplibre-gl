@@ -1,7 +1,11 @@
 import { Directive, afterNextRender, inject, input } from '@angular/core';
-import { AttributionControl } from 'maplibre-gl';
+import {
+  AttributionControl,
+  type AttributionControlOptions,
+} from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
+import { keepAvailableObjectValues } from '../shared/utils';
 
 /**
  * `mglAttribution` - an attribution control directive
@@ -32,19 +36,12 @@ export class AttributionControlDirective {
         if (this.controlComponent.control) {
           throw new Error('Another control is already set for this control');
         }
-        const options: {
-          compact?: boolean;
-          customAttribution?: string | string[];
-        } = {};
-        const compact = this.compact();
 
-        if (compact !== undefined) {
-          options.compact = compact;
-        }
-        const customAttribution = this.customAttribution();
-        if (customAttribution !== undefined) {
-          options.customAttribution = customAttribution;
-        }
+        const options = keepAvailableObjectValues<AttributionControlOptions>({
+          compact: this.compact(),
+          customAttribution: this.customAttribution(),
+        });
+
         this.controlComponent.control = new AttributionControl(options);
         this.mapService.addControl(
           this.controlComponent.control,

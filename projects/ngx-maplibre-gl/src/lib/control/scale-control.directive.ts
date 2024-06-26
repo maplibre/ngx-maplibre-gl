@@ -6,7 +6,7 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { ScaleControl,  type ScaleControlOptions } from 'maplibre-gl';
+import { ScaleControl, type Unit, type ScaleControlOptions } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
 
@@ -32,9 +32,7 @@ export class ScaleControlDirective implements OnChanges {
 
   /* Init inputs */
   readonly maxWidth = input<number>();
-
-  /* Dynamic inputs */
-  readonly unit = input<'imperial' | 'metric' | 'nautical'>();
+  readonly unit = input<Unit>();
 
   constructor() {
     afterNextRender(() => {

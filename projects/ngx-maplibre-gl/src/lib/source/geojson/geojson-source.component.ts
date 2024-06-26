@@ -57,8 +57,6 @@ export class GeoJSONSourceComponent implements OnInit, OnDestroy, OnChanges {
 
   /** Init input */
   readonly id = input.required<string>();
-
-  /** Dynamic input */
   readonly data = input<GeoJSONSourceSpecification['data']>({
     type: 'FeatureCollection',
     features: [],
@@ -79,9 +77,6 @@ export class GeoJSONSourceComponent implements OnInit, OnDestroy, OnChanges {
   readonly generateId = input<GeoJSONSourceSpecification['generateId']>();
   readonly promoteId = input<GeoJSONSourceSpecification['promoteId']>();
   readonly filter = input<GeoJSONSourceSpecification['filter']>();
-
-  /** @hidden */
-  readonly type: GeoJSONSourceSpecification['type'] = 'geojson';
 
   readonly updateFeatureData = new Subject();
 

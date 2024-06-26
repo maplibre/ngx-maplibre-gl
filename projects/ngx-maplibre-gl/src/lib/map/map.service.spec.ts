@@ -201,12 +201,4 @@ describe('MapService', () => {
       done();
     });
   });
-
-  // xit('should update zoom', (done: DoneFn) => inject([MapService], (service: MapService) => {
-  //   mapEvents.mapEvents.load.first().subscribe(() => {
-  //     service.prepareZoom(6);
-  //     service.startMoveIfNeeded
-  //     done();
-  //   });
-  // })());
 });

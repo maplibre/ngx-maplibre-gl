@@ -64,12 +64,10 @@ export class ControlComponent<T extends IControl> {
   private readonly destroyRef = inject(DestroyRef);
 
   /** Init input */
-  readonly position = input<
-    'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
-  >();
+  readonly position = input<ControlPosition>();
 
   /** @hidden */
-  readonly content = viewChild.required<ElementRef>('content');
+  readonly content = viewChild.required<ElementRef<HTMLDivElement>>('content');
 
   control: T | CustomControl;
 

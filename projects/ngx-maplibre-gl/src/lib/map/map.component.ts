@@ -77,14 +77,12 @@ import { firstValueFrom } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-// Omit<MapOptions, "bearing" | "container" | "pitch" | "zoom">,
 export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   /** Init injection */
   private readonly mapService = inject(MapService);
   private readonly elementRef = inject(ElementRef);
 
   /** Init input */
-
   readonly collectResourceTiming = input<MapOptions['collectResourceTiming']>();
   readonly crossSourceCollisions = input<MapOptions['crossSourceCollisions']>();
   readonly customMapboxApiUrl = input<string>();
@@ -110,7 +108,6 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   readonly locale = input<MapOptions['locale']>();
   readonly cooperativeGestures = input<MapOptions['cooperativeGestures']>();
 
-  /** Dynamic input */
   readonly minZoom = input<MapOptions['minZoom']>();
   readonly maxZoom = input<MapOptions['maxZoom']>();
   readonly minPitch = input<MapOptions['minPitch']>();
@@ -230,7 +227,7 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
     return this.mapService.mapInstance;
   }
 
-  readonly mapContainer = viewChild.required<ElementRef>('container');
+  readonly mapContainer = viewChild.required<ElementRef<HTMLDivElement>>('container');
 
   constructor() {
     afterNextRender(() => {

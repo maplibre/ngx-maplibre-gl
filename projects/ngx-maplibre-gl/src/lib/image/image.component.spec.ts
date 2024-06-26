@@ -54,13 +54,13 @@ describe('ImageComponent', () => {
     });
 
     it('should remove image on destroy', () => {
-      component.ngOnDestroy();
+      component.removeImage();
       expect(mapServiceStub.removeImage).toHaveBeenCalledWith('imageId');
     });
   });
 
   it('should not remove image on destroy if not added', () => {
-    component.ngOnDestroy();
+    component.removeImage();
     expect(mapServiceStub.removeImage).not.toHaveBeenCalled();
   });
 

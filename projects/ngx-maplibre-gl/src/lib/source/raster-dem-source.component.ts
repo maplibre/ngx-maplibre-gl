@@ -26,7 +26,6 @@ import { MapService } from '../map/map.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-// RasterDEMSourceSpecification
 export class RasterDemSourceComponent implements OnInit, OnDestroy, OnChanges {
   /** Init injection */
   private readonly mapService = inject(MapService);
@@ -34,7 +33,6 @@ export class RasterDemSourceComponent implements OnInit, OnDestroy, OnChanges {
   /** Init input */
   readonly id = input.required<string>();
 
-  /** Dynamic input */
   readonly url = input<RasterDEMSourceSpecification['url']>();
   readonly tiles = input<RasterDEMSourceSpecification['tiles']>();
   readonly bounds = input<RasterDEMSourceSpecification['bounds']>();
