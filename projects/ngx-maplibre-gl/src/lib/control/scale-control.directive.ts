@@ -9,6 +9,7 @@ import {
 import { ScaleControl, type Unit, type ScaleControlOptions } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
+import { keepAvailableObjectValues } from '../shared/utils';
 
 /**
  * `mglScale` - a scale control directive
@@ -32,6 +33,8 @@ export class ScaleControlDirective implements OnChanges {
 
   /* Init inputs */
   readonly maxWidth = input<number>();
+
+  /* Dynamic inputs */
   readonly unit = input<Unit>();
 
   constructor() {
@@ -40,16 +43,11 @@ export class ScaleControlDirective implements OnChanges {
         if (this.controlComponent.control) {
           throw new Error('Another control is already set for this control');
         }
-        const options: ScaleControlOptions = {};
-        const maxWidth = this.maxWidth();
-        if (maxWidth !== undefined) {
-          options.maxWidth = maxWidth;
-        }
-        const unit = this.unit();
+        const options = keepAvailableObjectValues<ScaleControlOptions>({
+          maxWidth: this.maxWidth(),
+          unit: this.unit(),
+        });
 
-        if (unit !== undefined) {
-          options.unit = unit;
-        }
         this.controlComponent.control = new ScaleControl(options);
         this.mapService.addControl(
           this.controlComponent.control,

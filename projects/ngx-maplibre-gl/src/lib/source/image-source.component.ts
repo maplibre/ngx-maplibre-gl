@@ -31,8 +31,10 @@ export class ImageSourceComponent implements OnInit, OnDestroy, OnChanges {
   private readonly destroyRef = inject(DestroyRef);
   private readonly mapService = inject(MapService);
 
-  /* Init inputs */
+  /** Init inputs */
   readonly id = input.required<string>();
+
+  /** Dynamic inputs */
   readonly url = input.required<ImageSourceSpecification['url']>();
   readonly coordinates =
     input.required<ImageSourceSpecification['coordinates']>();
@@ -44,7 +46,7 @@ export class ImageSourceComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit() {
     this.mapService.mapLoaded$
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => this.init());
+      .subscribe(() => this.addSource());
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -71,7 +73,7 @@ export class ImageSourceComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  private init() {
+  private addSource() {
     const imageSource: ImageSourceSpecification = {
       type: 'image',
       url: this.url(),

@@ -84,51 +84,92 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
 
   /** Init input */
   readonly collectResourceTiming = input<MapOptions['collectResourceTiming']>();
+  /** Init input */
   readonly crossSourceCollisions = input<MapOptions['crossSourceCollisions']>();
+  /** Init input */
   readonly customMapboxApiUrl = input<string>();
+  /** Init input */
   readonly fadeDuration = input<MapOptions['fadeDuration']>();
+  /** Init input */
   readonly hash = input<MapOptions['hash']>();
+  /** Init input */
   readonly refreshExpiredTiles = input<MapOptions['refreshExpiredTiles']>();
+  /** Init input */
   readonly failIfMajorPerformanceCaveat =
     input<MapOptions['failIfMajorPerformanceCaveat']>();
+  /** Init input */
   readonly bearingSnap = input<MapOptions['bearingSnap']>();
+  /** Init input */
   readonly interactive = input<MapOptions['interactive']>();
+  /** Init input */
   readonly pitchWithRotate = input<MapOptions['pitchWithRotate']>();
+  /** Init input */
   readonly clickTolerance = input<MapOptions['clickTolerance']>();
+  /** Init input */
   readonly attributionControl = input<MapOptions['attributionControl']>();
+  /** Init input */
   readonly logoPosition = input<MapOptions['logoPosition']>();
+  /** Init input */
   readonly maxTileCacheSize = input<MapOptions['maxTileCacheSize']>();
+  /** Init input */
   readonly localIdeographFontFamily =
     input<MapOptions['localIdeographFontFamily']>();
+  /** Init input */
   readonly preserveDrawingBuffer = input<MapOptions['preserveDrawingBuffer']>();
+  /** Init input */
   readonly trackResize = input<MapOptions['trackResize']>();
+  /** Init input */
   readonly transformRequest = input<MapOptions['transformRequest']>();
+  /** Init input */
   readonly bounds = input<MapOptions['bounds']>();
+  /** Init input */
   readonly antialias = input<MapOptions['antialias']>();
+  /** Init input */
   readonly locale = input<MapOptions['locale']>();
+  /** Init input */
   readonly cooperativeGestures = input<MapOptions['cooperativeGestures']>();
 
+  /** Dynamic input */
   readonly minZoom = input<MapOptions['minZoom']>();
+  /** Dynamic input */
   readonly maxZoom = input<MapOptions['maxZoom']>();
+  /** Dynamic input */
   readonly minPitch = input<MapOptions['minPitch']>();
+  /** Dynamic input */
   readonly maxPitch = input<MapOptions['maxPitch']>();
+  /** Dynamic input */
   readonly scrollZoom = input<MapOptions['scrollZoom']>();
+  /** Dynamic input */
   readonly dragRotate = input<MapOptions['dragRotate']>();
+  /** Dynamic input */
   readonly touchPitch = input<MapOptions['touchPitch']>();
+  /** Dynamic input */
   readonly touchZoomRotate = input<MapOptions['touchZoomRotate']>();
+  /** Dynamic input */
   readonly doubleClickZoom = input<MapOptions['doubleClickZoom']>();
+  /** Dynamic input */
   readonly keyboard = input<MapOptions['keyboard']>();
+  /** Dynamic input */
   readonly dragPan = input<MapOptions['dragPan']>();
+  /** Dynamic input */
   readonly boxZoom = input<MapOptions['boxZoom']>();
+  /** Dynamic input */
   readonly style = input.required<MapOptions['style']>();
+  /** Dynamic input */
   readonly center = input<MapOptions['center']>();
+  /** Dynamic input */
   readonly maxBounds = input<MapOptions['maxBounds']>();
+  /** Dynamic input */
   readonly zoom = input<[number]>();
+  /** Dynamic input */
   readonly bearing = input<[number]>();
+  /** Dynamic input */
   readonly pitch = input<[number]>();
+  /** Dynamic input */
   readonly fitBoundsOptions = input<MapOptions['fitBoundsOptions']>(); // First value goes to options.fitBoundsOptions. Subsequents changes are passed to fitBounds
+  /** Dynamic input */
   readonly renderWorldCopies = input<MapOptions['renderWorldCopies']>();
-
+  /** Dynamic input */
   readonly terrain = input<TerrainSpecification>();
 
   /** Added by ngx-mapbox-gl */

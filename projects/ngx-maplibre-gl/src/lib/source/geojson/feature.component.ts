@@ -29,7 +29,11 @@ export class FeatureComponent implements OnInit, OnDestroy {
   );
   /** Init input */
   readonly id = model<number>(); // FIXME number only for now https://github.com/mapbox/mapbox-gl-js/issues/2716
+ 
+  /** Init input */
   readonly geometry = input.required<GeoJSON.GeometryObject>();
+  
+  /** Init input */
   readonly properties = input<GeoJSON.Feature<GeoJSON.GeometryObject>['properties']>();
 
   private feature: GeoJSON.Feature<GeoJSON.GeometryObject>;
@@ -55,6 +59,6 @@ export class FeatureComponent implements OnInit, OnDestroy {
 
   updateCoordinates(coordinates: number[]) {
     (<GeoJSON.Point>this.feature.geometry).coordinates = coordinates;
-    this.geoJSONSourceComponent.updateFeatureData.next(undefined);
+    this.geoJSONSourceComponent.updateFeatureData();
   }
 }

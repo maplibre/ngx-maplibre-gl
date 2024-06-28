@@ -2,17 +2,13 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnChanges,
-  OnDestroy,
-  OnInit,
   SimpleChanges,
-  inject,
   input,
-  signal,
 } from '@angular/core';
 import type { VectorSourceSpecification, VectorTileSource } from 'maplibre-gl';
-import { fromEvent, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { MapService } from '../map/map.service';
+import { BaseSourceDirective } from './base-source.directive';
+import { tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
  * `mgl-vector-source` - a vector source component
@@ -26,12 +22,11 @@ import { MapService } from '../map/map.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class VectorSourceComponent implements OnInit, OnDestroy, OnChanges {
-  /* Init injection */
-  private readonly mapService = inject(MapService);
-
-  /* Init inputs */
-  readonly id = input.required<string>();
+export class VectorSourceComponent
+  extends BaseSourceDirective
+  implements OnChanges
+{
+  /** Dynamic inputs */
   readonly url = input<VectorSourceSpecification['url']>();
   readonly tiles = input<VectorSourceSpecification['tiles']>();
   readonly bounds = input<VectorSourceSpecification['bounds']>();
@@ -41,26 +36,19 @@ export class VectorSourceComponent implements OnInit, OnDestroy, OnChanges {
   readonly attribution = input<VectorSourceSpecification['attribution']>();
   readonly promoteId = input<VectorSourceSpecification['promoteId']>();
 
-  readonly type: VectorSourceSpecification['type'] = 'vector';
+  constructor() {
+    super();
 
-  private readonly sourceAdded = signal(false);
-  private sub = new Subscription();
-
-  ngOnInit() {
-    const sub1 = this.mapService.mapLoaded$.subscribe(() => {
-      this.init();
-      const sub = fromEvent(this.mapService.mapInstance, 'styledata')
-        .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id())))
-        .subscribe(() => {
-          this.init();
-        });
-      this.sub.add(sub);
-    });
-    this.sub.add(sub1);
+    this.loadSource$
+      .pipe(
+        tap(() => this.addSource()),
+        takeUntilDestroyed()
+      )
+      .subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.sourceAdded()) {
+    if (!this.sourceId()) {
       return;
     }
 
@@ -72,8 +60,7 @@ export class VectorSourceComponent implements OnInit, OnDestroy, OnChanges {
       (changes.attribution && !changes.attribution.isFirstChange()) ||
       (changes.promoteId && !changes.promoteId.isFirstChange())
     ) {
-      this.ngOnDestroy();
-      this.ngOnInit();
+      this.refresh();
     } else if (
       (changes.url && !changes.url.isFirstChange()) ||
       (changes.tiles && !changes.tiles.isFirstChange())
@@ -94,17 +81,9 @@ export class VectorSourceComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-    if (this.sourceAdded()) {
-      this.mapService.removeSource(this.id());
-      this.sourceAdded.set(false);
-    }
-  }
-
-  private init() {
+  addSource() {
     const source: VectorSourceSpecification = {
-      type: this.type,
+      type: 'vector',
       url: this.url(),
       tiles: this.tiles(),
       bounds: this.bounds(),
@@ -115,6 +94,6 @@ export class VectorSourceComponent implements OnInit, OnDestroy, OnChanges {
       promoteId: this.promoteId(),
     };
     this.mapService.addSource(this.id(), source);
-    this.sourceAdded.set(true);
+    this.sourceId.set(this.id());
   }
 }

@@ -58,15 +58,21 @@ export class PopupComponent implements OnChanges, OnInit {
   readonly maxWidth = input<PopupOptions['maxWidth']>();
 
   /**
+   * Dynamic input [ngx]
    * Mutually exclusive with `lngLat`
    */
   readonly feature = input<GeoJSON.Feature<GeoJSON.Point>>();
+
+  /** Dynamic input */
   readonly lngLat = input<LngLatLike>();
+
   /**
+   * Dynamic input [ngx]
    * The targeted marker
    */
   readonly marker = input<MarkerComponent>();
 
+  /** Dynamic input */
   readonly offset = input<Offset>();
 
   readonly popupClose = output<void>();

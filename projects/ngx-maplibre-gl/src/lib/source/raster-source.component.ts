@@ -2,17 +2,13 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnChanges,
-  OnDestroy,
-  OnInit,
   SimpleChanges,
-  inject,
   input,
-  signal,
 } from '@angular/core';
 import type { RasterSourceSpecification } from 'maplibre-gl';
-import { fromEvent, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { MapService } from '../map/map.service';
+import { BaseSourceDirective } from './base-source.directive';
+import { tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
  * `mgl-raster-source` - a raster source component
@@ -26,42 +22,45 @@ import { MapService } from '../map/map.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class RasterSourceComponent implements OnInit, OnDestroy, OnChanges {
-  /** Init injection */
-  private readonly mapService = inject(MapService);
-
-  /** Init input */
-  readonly id = input.required<string>();
+export class RasterSourceComponent
+  extends BaseSourceDirective
+  implements OnChanges
+{
+  /** Dynamic input */
   readonly url = input<RasterSourceSpecification['url']>();
+
+  /** Dynamic input */
   readonly tiles = input<RasterSourceSpecification['tiles']>();
+
+  /** Dynamic input */
   readonly bounds = input<RasterSourceSpecification['bounds']>();
+
+  /** Dynamic input */
   readonly scheme = input<RasterSourceSpecification['scheme']>();
+
+  /** Dynamic input */
   readonly minzoom = input<RasterSourceSpecification['minzoom']>();
+
+  /** Dynamic input */
   readonly maxzoom = input<RasterSourceSpecification['maxzoom']>();
+
+  /** Dynamic input */
   readonly tileSize = input<RasterSourceSpecification['tileSize']>();
+
+  /** Dynamic input */
   readonly attribution = input<RasterSourceSpecification['attribution']>();
 
-  /** @hidden */
-  readonly type: RasterSourceSpecification['type'] = 'raster';
+  constructor() {
+    super();
 
-  private readonly sourceAdded = signal(false);
-  private readonly sub = new Subscription();
-
-  ngOnInit() {
-    const sub1 = this.mapService.mapLoaded$.subscribe(() => {
-      this.init();
-      const sub = fromEvent(this.mapService.mapInstance, 'styledata')
-        .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id())))
-        .subscribe(() => {
-          this.init();
-        });
-      this.sub.add(sub);
-    });
-    this.sub.add(sub1);
+    this.loadSource$.pipe(
+      tap(() => this.addSource()),
+      takeUntilDestroyed()
+    ).subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.sourceAdded()) {
+    if (!this.sourceId()) {
       return;
     }
     if (
@@ -74,22 +73,13 @@ export class RasterSourceComponent implements OnInit, OnDestroy, OnChanges {
       (changes.scheme && !changes.scheme.isFirstChange()) ||
       (changes.attribution && !changes.attribution.isFirstChange())
     ) {
-      this.ngOnDestroy();
-      this.ngOnInit();
+      this.refresh();
     }
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-    if (this.sourceAdded()) {
-      this.mapService.removeSource(this.id());
-      this.sourceAdded.set(false);
-    }
-  }
-
-  private init() {
+  addSource() {
     const source: RasterSourceSpecification = {
-      type: this.type,
+      type: 'raster',
       url: this.url(),
       tiles: this.tiles(),
       bounds: this.bounds(),
@@ -100,6 +90,6 @@ export class RasterSourceComponent implements OnInit, OnDestroy, OnChanges {
       attribution: this.attribution(),
     };
     this.mapService.addSource(this.id(), source);
-    this.sourceAdded.set(true);
+    this.sourceId.set(this.id());
   }
 }

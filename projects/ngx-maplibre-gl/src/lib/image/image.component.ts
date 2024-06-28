@@ -63,8 +63,11 @@ export class ImageComponent implements OnInit, OnChanges {
   /** Init input */
   readonly id = input.required<string>();
 
+  /** Dynamic input */
   readonly data = input<MapImageData>();
+  /** Dynamic input */
   readonly options = input<MapImageOptions>();
+  /** Dynamic input */
   readonly url = input<string>();
 
   readonly imageError = output<{
@@ -95,7 +98,7 @@ export class ImageComponent implements OnInit, OnChanges {
         ),
         takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe(() => this.init());
+      .subscribe(() => this.addImage());
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -115,7 +118,7 @@ export class ImageComponent implements OnInit, OnChanges {
     }
   }
 
-  private async init() {
+  private async addImage() {
     this.isAdding.set(true);
     const data = this.data();
     const url = this.url();

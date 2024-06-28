@@ -46,15 +46,16 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   standalone: true,
 })
 export class MarkerComponent implements OnChanges, OnInit {
-  /* Init injection */
+  /** Init injection */
   private readonly mapService = inject(MapService);
   private readonly destroyRef = inject(DestroyRef);
 
-  /* Init input */
+  /** Init inputs */
   readonly offset = input<MarkerOptions['offset']>();
   readonly anchor = input<MarkerOptions['anchor']>();
   readonly clickTolerance = input<MarkerOptions['clickTolerance']>();
   readonly color = input<MarkerOptions['color']>();
+ /** Dynamic input */
   readonly feature = input<GeoJSON.Feature<GeoJSON.Point>>();
   readonly lngLat = input<LngLatLike>();
   readonly draggable = input<MarkerOptions['draggable']>();

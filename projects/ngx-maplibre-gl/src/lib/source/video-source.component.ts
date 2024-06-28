@@ -2,17 +2,13 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnChanges,
-  OnDestroy,
-  OnInit,
   SimpleChanges,
-  inject,
   input,
-  signal,
 } from '@angular/core';
 import type { VideoSource, VideoSourceSpecification } from 'maplibre-gl';
-import { fromEvent, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { MapService } from '../map/map.service';
+import { BaseSourceDirective } from './base-source.directive';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { tap } from 'rxjs';
 
 /**
  * `mgl-video-source` - a video source
@@ -26,43 +22,33 @@ import { MapService } from '../map/map.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class VideoSourceComponent implements OnInit, OnDestroy, OnChanges {
-  /** Init injection */
-  private readonly mapService = inject(MapService);
-
-  /** Init input */
-  readonly id = input.required<string>();
+export class VideoSourceComponent
+  extends BaseSourceDirective
+  implements OnChanges
+{
+  /** Dynamic input */
   readonly urls = input.required<VideoSourceSpecification['urls']>();
+
+  /** Dynamic input */
   readonly coordinates =
     input.required<VideoSourceSpecification['coordinates']>();
 
-  /** @hidden */
-  readonly type: VideoSourceSpecification['type'] = 'video';
+  constructor() {
+    super();
 
-  private readonly sourceAdded = signal(false);
-  private sub = new Subscription();
-
-  ngOnInit() {
-    const sub1 = this.mapService.mapLoaded$.subscribe(() => {
-      this.init();
-      const sub = fromEvent(this.mapService.mapInstance, 'styledata')
-        .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id())))
-        .subscribe(() => {
-          this.init();
-        });
-      this.sub.add(sub);
-    });
-    this.sub.add(sub1);
+    this.loadSource$.pipe(
+      tap(() => this.addSource()),
+      takeUntilDestroyed()
+    ).subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.sourceAdded()) {
+    if (!this.sourceId()) {
       return;
     }
 
     if (changes.urls && !changes.urls.isFirstChange()) {
-      this.ngOnDestroy();
-      this.ngOnInit();
+      this.refresh();
     } else if (changes.coordinates && !changes.coordinates.isFirstChange()) {
       const source = this.mapService.getSource<VideoSource>(this.id());
       if (source === undefined) {
@@ -72,21 +58,13 @@ export class VideoSourceComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-    if (this.sourceAdded()) {
-      this.mapService.removeSource(this.id());
-      this.sourceAdded.set(false);
-    }
-  }
-
-  private init() {
+  addSource() {
     const source: VideoSourceSpecification = {
       type: 'video',
       urls: this.urls(),
       coordinates: this.coordinates(),
     };
     this.mapService.addSource(this.id(), source);
-    this.sourceAdded.set(true);
+    this.sourceId.set(this.id());
   }
 }

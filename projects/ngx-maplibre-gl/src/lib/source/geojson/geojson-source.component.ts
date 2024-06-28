@@ -2,8 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnChanges,
-  OnDestroy,
-  OnInit,
   SimpleChanges,
   NgZone,
   inject,
@@ -11,9 +9,10 @@ import {
   signal,
 } from '@angular/core';
 import type { GeoJSONSource, GeoJSONSourceSpecification } from 'maplibre-gl';
-import { fromEvent, Subject, Subscription } from 'rxjs';
-import { debounceTime, filter } from 'rxjs/operators';
-import { MapService } from '../../map/map.service';
+import { Subject } from 'rxjs';
+import { debounceTime, switchMap, tap } from 'rxjs/operators';
+import { BaseSourceDirective } from '../base-source.directive';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
  * `mgl-geojson-source` - a geojson source component
@@ -50,55 +49,79 @@ import { MapService } from '../../map/map.service';
   standalone: true,
 })
 // GeoJSONSourceSpecification
-export class GeoJSONSourceComponent implements OnInit, OnDestroy, OnChanges {
+export class GeoJSONSourceComponent
+  extends BaseSourceDirective
+  implements OnChanges
+{
   /** Init injection */
-  private readonly mapService = inject(MapService);
   private readonly ngZone = inject(NgZone);
 
   /** Init input */
   readonly id = input.required<string>();
+
+  /** Dynamic input */
   readonly data = input<GeoJSONSourceSpecification['data']>({
     type: 'FeatureCollection',
     features: [],
   });
+
+  /** Dynamic input */
   readonly maxzoom = input<GeoJSONSourceSpecification['maxzoom']>();
+
+  /** Dynamic input */
   readonly attribution = input<GeoJSONSourceSpecification['attribution']>();
+
+  /** Dynamic input */
   readonly buffer = input<GeoJSONSourceSpecification['buffer']>();
+
+  /** Dynamic input */
   readonly tolerance = input<GeoJSONSourceSpecification['tolerance']>();
+
+  /** Dynamic input */
   readonly cluster = input<GeoJSONSourceSpecification['cluster']>();
+
+  /** Dynamic input */
   readonly clusterRadius = input<GeoJSONSourceSpecification['clusterRadius']>();
+
+  /** Dynamic input */
   readonly clusterMaxZoom =
     input<GeoJSONSourceSpecification['clusterMaxZoom']>();
+
+  /** Dynamic input */
   readonly clusterMinPoints =
     input<GeoJSONSourceSpecification['clusterMinPoints']>();
+
+  /** Dynamic input */
   readonly clusterProperties =
     input<GeoJSONSourceSpecification['clusterProperties']>();
+
+  /** Dynamic input */
   readonly lineMetrics = input<GeoJSONSourceSpecification['lineMetrics']>();
+
+  /** Dynamic input */
   readonly generateId = input<GeoJSONSourceSpecification['generateId']>();
+
+  /** Dynamic input */
   readonly promoteId = input<GeoJSONSourceSpecification['promoteId']>();
+
+  /** Dynamic input */
   readonly filter = input<GeoJSONSourceSpecification['filter']>();
 
-  readonly updateFeatureData = new Subject();
+  private readonly updateFeatureDataSubject = new Subject<void>();
 
-  private sub = new Subscription();
-  private readonly sourceAdded = signal(false);
   private readonly featureIdCounter = signal(0);
 
-  ngOnInit() {
-    const sub1 = this.mapService.mapLoaded$.subscribe(() => {
-      this.init();
-      const sub = fromEvent(this.mapService.mapInstance, 'styledata')
-        .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id())))
-        .subscribe(() => {
-          this.init();
-        });
-      this.sub.add(sub);
-    });
-    this.sub.add(sub1);
+  constructor() {
+    super();
+
+    this.loadSource$.pipe(
+      switchMap(() => this.addSource()),
+      takeUntilDestroyed()
+    ).subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.sourceAdded()) {
+    if (!this.sourceId()) {
       return;
     }
     if (
@@ -117,8 +140,7 @@ export class GeoJSONSourceComponent implements OnInit, OnDestroy, OnChanges {
       (changes.promoteId && !changes.promoteId.isFirstChange()) ||
       (changes.filter && !changes.filter.isFirstChange())
     ) {
-      this.ngOnDestroy();
-      this.ngOnInit();
+      this.refresh();
     }
     if (changes.data && !changes.data.isFirstChange()) {
       const source = this.mapService.getSource<GeoJSONSource>(this.id());
@@ -126,14 +148,6 @@ export class GeoJSONSourceComponent implements OnInit, OnDestroy, OnChanges {
         return;
       }
       source.setData(changes.data.currentValue);
-    }
-  }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-    if (this.sourceAdded()) {
-      this.mapService.removeSource(this.id());
-      this.sourceAdded.set(false);
     }
   }
 
@@ -177,7 +191,7 @@ export class GeoJSONSourceComponent implements OnInit, OnDestroy, OnChanges {
       this.data()
     );
     collection.features.push(feature);
-    this.updateFeatureData.next(undefined);
+    this.updateFeatureDataSubject.next();
   }
 
   _removeFeature(feature: GeoJSON.Feature<GeoJSON.GeometryObject>) {
@@ -188,7 +202,11 @@ export class GeoJSONSourceComponent implements OnInit, OnDestroy, OnChanges {
     if (index > -1) {
       collection.features.splice(index, 1);
     }
-    this.updateFeatureData.next(undefined);
+    this.updateFeatureDataSubject.next();
+  }
+
+  updateFeatureData() {
+    this.updateFeatureDataSubject.next();
   }
 
   _getNewFeatureId() {
@@ -196,7 +214,7 @@ export class GeoJSONSourceComponent implements OnInit, OnDestroy, OnChanges {
     return this.featureIdCounter();
   }
 
-  private init() {
+  private addSource() {
     const source: GeoJSONSourceSpecification = {
       type: 'geojson',
       data: this.data(),
@@ -214,15 +232,18 @@ export class GeoJSONSourceComponent implements OnInit, OnDestroy, OnChanges {
       promoteId: this.promoteId(),
       filter: this.filter(),
     };
+
     this.mapService.addSource(this.id(), source);
-    const sub = this.updateFeatureData.pipe(debounceTime(0)).subscribe(() => {
-      const source = this.mapService.getSource<GeoJSONSource>(this.id());
-      if (source === undefined) {
-        return;
-      }
-      source.setData(this.data()! as string | GeoJSON.GeoJSON);
-    });
-    this.sub.add(sub);
-    this.sourceAdded.set(true);
+    this.sourceId.set(this.id());
+
+    return this.updateFeatureDataSubject.pipe(debounceTime(0)).pipe(
+      tap(() => {
+        const source = this.mapService.getSource<GeoJSONSource>(this.id());
+        if (source === undefined) {
+          return;
+        }
+        source.setData(this.data()! as string | GeoJSON.GeoJSON);
+      })
+    );
   }
 }
