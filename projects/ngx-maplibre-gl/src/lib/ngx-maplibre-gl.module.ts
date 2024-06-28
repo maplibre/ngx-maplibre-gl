@@ -25,6 +25,7 @@ import { RasterDemSourceComponent } from './source/raster-dem-source.component';
 import { RasterSourceComponent } from './source/raster-source.component';
 import { VectorSourceComponent } from './source/vector-source.component';
 import { VideoSourceComponent } from './source/video-source.component';
+import { SourceDirective } from './source/source.directive';
 
 const componentsAndDirectives = [
   MapComponent,
@@ -51,6 +52,7 @@ const componentsAndDirectives = [
   ClusterPointDirective,
   MarkersForClustersComponent,
   TerrainControlDirective,
+  SourceDirective
 ];
 
 @NgModule({

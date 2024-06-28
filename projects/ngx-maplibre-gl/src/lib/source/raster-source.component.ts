@@ -3,10 +3,11 @@ import {
   Component,
   OnChanges,
   SimpleChanges,
+  inject,
   input,
 } from '@angular/core';
 import type { RasterSourceSpecification } from 'maplibre-gl';
-import { BaseSourceDirective } from './base-source.directive';
+import { SourceDirective } from './source.directive';
 import { tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -20,12 +21,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   selector: 'mgl-raster-source',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
   standalone: true,
 })
-export class RasterSourceComponent
-  extends BaseSourceDirective
-  implements OnChanges
-{
+export class RasterSourceComponent implements OnChanges {
+  /** Init injections */
+  private readonly sourceDirective = inject(SourceDirective);
+
   /** Dynamic input */
   readonly url = input<RasterSourceSpecification['url']>();
 
@@ -51,16 +53,18 @@ export class RasterSourceComponent
   readonly attribution = input<RasterSourceSpecification['attribution']>();
 
   constructor() {
-    super();
-
-    this.loadSource$.pipe(
-      tap(() => this.addSource()),
-      takeUntilDestroyed()
-    ).subscribe();
+    this.sourceDirective.loadSource$
+      .pipe(
+        tap(() =>
+          this.sourceDirective.addSource(this.getRasterSourceSpecification())
+        ),
+        takeUntilDestroyed()
+      )
+      .subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.sourceId()) {
+    if (!this.sourceDirective.sourceId()) {
       return;
     }
     if (
@@ -73,12 +77,12 @@ export class RasterSourceComponent
       (changes.scheme && !changes.scheme.isFirstChange()) ||
       (changes.attribution && !changes.attribution.isFirstChange())
     ) {
-      this.refresh();
+      this.sourceDirective.refresh();
     }
   }
 
-  addSource() {
-    const source: RasterSourceSpecification = {
+  getRasterSourceSpecification(): RasterSourceSpecification {
+    return {
       type: 'raster',
       url: this.url(),
       tiles: this.tiles(),
@@ -89,7 +93,5 @@ export class RasterSourceComponent
       scheme: this.scheme(),
       attribution: this.attribution(),
     };
-    this.mapService.addSource(this.id(), source);
-    this.sourceId.set(this.id());
   }
 }

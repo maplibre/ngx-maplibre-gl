@@ -10,6 +10,7 @@ import { Subject, fromEvent } from 'rxjs';
 import { filter, switchMap, tap } from 'rxjs/operators';
 import { MapService } from '../map/map.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Source, SourceSpecification } from 'maplibre-gl';
 
 /**
  * `mgl-canvas-source` - a canvas source component
@@ -20,7 +21,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Directive({
   standalone: true,
 })
-export class BaseSourceDirective implements OnInit {
+export class SourceDirective implements OnInit {
   /** Init injection */
   readonly mapService = inject(MapService);
   private readonly destroyRef = inject(DestroyRef);
@@ -61,5 +62,14 @@ export class BaseSourceDirective implements OnInit {
       this.mapService.removeSource(this.id());
       this.sourceId.set(null);
     }
+  }
+
+  addSource(source: SourceSpecification) {
+    this.mapService.addSource(this.id(), source);
+    this.sourceId.set(this.id());
+  }
+
+  getSource<T extends Source>(): T | undefined {
+    return this.mapService.getSource<T>(this.id());
   }
 }

@@ -6,7 +6,7 @@ import {
   input,
 } from '@angular/core';
 import type { VideoSource, VideoSourceSpecification } from 'maplibre-gl';
-import { BaseSourceDirective } from './base-source.directive';
+import { SourceDirective } from './source.directive';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
 
@@ -23,7 +23,7 @@ import { tap } from 'rxjs';
   standalone: true,
 })
 export class VideoSourceComponent
-  extends BaseSourceDirective
+  extends SourceDirective
   implements OnChanges
 {
   /** Dynamic input */
