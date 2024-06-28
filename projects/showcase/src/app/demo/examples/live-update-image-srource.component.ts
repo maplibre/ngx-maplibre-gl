@@ -59,7 +59,7 @@ export class LiveUpdateImageSourceComponent implements OnDestroy {
     this.coordinates = this.makeRectangle(this.center);
     afterNextRender(() => {
       const points = data.features[0].geometry!.coordinates;
-      const coordinates = points.map((c: any) => this.makeRectangle(c));
+      const coordinates = points.map((c: number[]) => this.makeRectangle(c));
 
       this.center = points[0];
       this.coordinates = coordinates[0];

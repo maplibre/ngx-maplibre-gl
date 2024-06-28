@@ -9,7 +9,7 @@ import {
 import { ScaleControl, type Unit, type ScaleControlOptions } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
-import { keepAvailableObjectValues } from '../shared/utils';
+import { keepAvailableObjectValues } from '../shared/utils/functions/object.fn';
 
 /**
  * `mglScale` - a scale control directive

@@ -28,8 +28,7 @@ export class FeatureComponent implements OnInit, OnDestroy {
     forwardRef(() => GeoJSONSourceComponent)
   );
   /** Init input */
-  readonly id = model<number>(); // FIXME number only for now https://github.com/mapbox/mapbox-gl-js/issues/2716
- 
+  readonly id = model<number>(); 
   /** Init input */
   readonly geometry = input.required<GeoJSON.GeometryObject>();
   

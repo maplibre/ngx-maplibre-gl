@@ -11,7 +11,7 @@ import {
 import type { GeoJSONSource, GeoJSONSourceSpecification } from 'maplibre-gl';
 import { Subject } from 'rxjs';
 import { debounceTime, switchMap, tap } from 'rxjs/operators';
-import { BaseSourceDirective } from '../base-source.directive';
+import { SourceDirective } from '../source.directive';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
@@ -46,18 +46,15 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   selector: 'mgl-geojson-source',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
   standalone: true,
 })
-// GeoJSONSourceSpecification
-export class GeoJSONSourceComponent
-  extends BaseSourceDirective
-  implements OnChanges
-{
+export class GeoJSONSourceComponent implements OnChanges {
+  /** Init injections */
+  private readonly sourceDirective = inject(SourceDirective);
+
   /** Init injection */
   private readonly ngZone = inject(NgZone);
-
-  /** Init input */
-  readonly id = input.required<string>();
 
   /** Dynamic input */
   readonly data = input<GeoJSONSourceSpecification['data']>({
@@ -112,16 +109,19 @@ export class GeoJSONSourceComponent
   private readonly featureIdCounter = signal(0);
 
   constructor() {
-    super();
-
-    this.loadSource$.pipe(
-      switchMap(() => this.addSource()),
-      takeUntilDestroyed()
-    ).subscribe();
+    this.sourceDirective.loadSource$
+      .pipe(
+        tap(() =>
+          this.sourceDirective.addSource(this.getGeoJSONSourceSpecification())
+        ),
+        switchMap(() => this.updateFeature()),
+        takeUntilDestroyed()
+      )
+      .subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.sourceId()) {
+    if (!this.sourceDirective.sourceId()) {
       return;
     }
     if (
@@ -140,10 +140,10 @@ export class GeoJSONSourceComponent
       (changes.promoteId && !changes.promoteId.isFirstChange()) ||
       (changes.filter && !changes.filter.isFirstChange())
     ) {
-      this.refresh();
+      this.sourceDirective.refresh();
     }
     if (changes.data && !changes.data.isFirstChange()) {
-      const source = this.mapService.getSource<GeoJSONSource>(this.id());
+      const source = this.sourceDirective.getSource<GeoJSONSource>();
       if (source === undefined) {
         return;
       }
@@ -156,7 +156,7 @@ export class GeoJSONSourceComponent
    * @param clusterId The value of the cluster's cluster_id property.
    */
   async getClusterExpansionZoom(clusterId: number) {
-    const source = this.mapService.getSource<GeoJSONSource>(this.id());
+    const source = this.sourceDirective.getSource<GeoJSONSource>()!;
     return this.ngZone.run(async () => {
       return source.getClusterExpansionZoom(clusterId);
     });
@@ -167,7 +167,7 @@ export class GeoJSONSourceComponent
    * @param clusterId The value of the cluster's cluster_id property.
    */
   async getClusterChildren(clusterId: number) {
-    const source = this.mapService.getSource<GeoJSONSource>(this.id());
+    const source = this.sourceDirective.getSource<GeoJSONSource>()!;
     return this.ngZone.run(async () => {
       return source.getClusterChildren(clusterId);
     });
@@ -180,7 +180,7 @@ export class GeoJSONSourceComponent
    * @param offset The number of features to skip (e.g. for pagination).
    */
   async getClusterLeaves(clusterId: number, limit: number, offset: number) {
-    const source = this.mapService.getSource<GeoJSONSource>(this.id());
+    const source = this.sourceDirective.getSource<GeoJSONSource>()!;
     return this.ngZone.run(async () => {
       return source.getClusterLeaves(clusterId, limit, offset);
     });
@@ -214,8 +214,8 @@ export class GeoJSONSourceComponent
     return this.featureIdCounter();
   }
 
-  private addSource() {
-    const source: GeoJSONSourceSpecification = {
+  private getGeoJSONSourceSpecification(): GeoJSONSourceSpecification {
+    return {
       type: 'geojson',
       data: this.data(),
       maxzoom: this.maxzoom(),
@@ -232,13 +232,12 @@ export class GeoJSONSourceComponent
       promoteId: this.promoteId(),
       filter: this.filter(),
     };
+  }
 
-    this.mapService.addSource(this.id(), source);
-    this.sourceId.set(this.id());
-
+  private updateFeature() {
     return this.updateFeatureDataSubject.pipe(debounceTime(0)).pipe(
       tap(() => {
-        const source = this.mapService.getSource<GeoJSONSource>(this.id());
+        const source = this.sourceDirective.getSource<GeoJSONSource>();
         if (source === undefined) {
           return;
         }

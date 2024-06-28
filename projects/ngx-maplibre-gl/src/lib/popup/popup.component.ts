@@ -50,11 +50,23 @@ export class PopupComponent implements OnChanges, OnInit {
 
   /** Init input */
   readonly closeButton = input<PopupOptions['closeButton']>();
+
+  /** Init input */
   readonly closeOnClick = input<PopupOptions['closeOnClick']>();
+
+  /** Init input */
   readonly closeOnMove = input<PopupOptions['closeOnMove']>();
+
+  /** Init input */
   readonly focusAfterOpen = input<PopupOptions['focusAfterOpen']>();
+
+  /** Init input */
   readonly anchor = input<PopupOptions['anchor']>();
+
+  /** Init input */
   readonly className = input<PopupOptions['className']>();
+
+  /** Init input */
   readonly maxWidth = input<PopupOptions['maxWidth']>();
 
   /**

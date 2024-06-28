@@ -3,11 +3,12 @@ import {
   Component,
   OnChanges,
   SimpleChanges,
+  inject,
   input,
 } from '@angular/core';
 import type { RasterDEMSourceSpecification } from 'maplibre-gl';
 import { tap } from 'rxjs/operators';
-import { BaseSourceDirective } from './base-source.directive';
+import { SourceDirective } from './source.directive';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
@@ -20,10 +21,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   selector: 'mgl-raster-dem-source',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
   standalone: true,
 })
-export class RasterDemSourceComponent extends BaseSourceDirective implements OnChanges {
-  
+export class RasterDemSourceComponent implements OnChanges {
+  /** Init injections */
+  private readonly sourceDirective = inject(SourceDirective);
+
   /** Dynamic input */
   readonly url = input<RasterDEMSourceSpecification['url']>();
 
@@ -49,16 +53,18 @@ export class RasterDemSourceComponent extends BaseSourceDirective implements OnC
   readonly encoding = input<RasterDEMSourceSpecification['encoding']>();
 
   constructor() {
-    super();
-
-    this.loadSource$.pipe(
-      tap(() => this.addSource()),
-      takeUntilDestroyed()
-    ).subscribe();
+    this.sourceDirective.loadSource$
+      .pipe(
+        tap(() =>
+          this.sourceDirective.addSource(this.getRasterDEMSourceSpecification())
+        ),
+        takeUntilDestroyed()
+      )
+      .subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.sourceId()) {
+    if (!this.sourceDirective.sourceId()) {
       return;
     }
     if (
@@ -71,12 +77,12 @@ export class RasterDemSourceComponent extends BaseSourceDirective implements OnC
       (changes.attribution && !changes.attribution.isFirstChange()) ||
       (changes.encoding && !changes.encoding.isFirstChange())
     ) {
-      this.refresh();
+      this.sourceDirective.refresh();
     }
   }
 
-  addSource() {
-    const source: RasterDEMSourceSpecification = {
+  getRasterDEMSourceSpecification(): RasterDEMSourceSpecification {
+    return {
       type: 'raster-dem',
       url: this.url(),
       tiles: this.tiles(),
@@ -87,7 +93,5 @@ export class RasterDemSourceComponent extends BaseSourceDirective implements OnC
       attribution: this.attribution(),
       encoding: this.encoding(),
     };
-    this.mapService.addSource(this.id(), source);
-    this.sourceId.set(this.id());
   }
 }

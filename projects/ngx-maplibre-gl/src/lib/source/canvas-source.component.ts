@@ -3,10 +3,11 @@ import {
   Component,
   OnChanges,
   SimpleChanges,
+  inject,
   input,
 } from '@angular/core';
 import type { CanvasSource, CanvasSourceSpecification } from 'maplibre-gl';
-import { BaseSourceDirective } from './base-source.directive';
+import { SourceDirective as SourceDirective } from './source.directive';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
 
@@ -20,12 +21,13 @@ import { tap } from 'rxjs';
   selector: 'mgl-canvas-source',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
   standalone: true,
 })
-export class CanvasSourceComponent
-  extends BaseSourceDirective
-  implements OnChanges
-{
+export class CanvasSourceComponent implements OnChanges {
+  /** Init injections */
+  private readonly sourceDirective = inject(SourceDirective);
+
   /** Dynamic input */
   readonly coordinates =
     input.required<CanvasSourceSpecification['coordinates']>();
@@ -37,27 +39,27 @@ export class CanvasSourceComponent
   readonly animate = input<CanvasSourceSpecification['animate']>();
 
   constructor() {
-    super();
-
-    this.loadSource$
+    this.sourceDirective.loadSource$
       .pipe(
-        tap(() => this.addSource()),
+        tap(() =>
+          this.sourceDirective.addSource(this.getCanvasSourceSpecification() as any)
+        ),
         takeUntilDestroyed()
       )
       .subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.sourceId()) {
+    if (!this.sourceDirective.sourceId()) {
       return;
     }
     if (
       (changes.canvas && !changes.canvas.isFirstChange()) ||
       (changes.animate && !changes.animate.isFirstChange())
     ) {
-      this.refresh();
+      this.sourceDirective.refresh();
     } else if (changes.coordinates && !changes.coordinates.isFirstChange()) {
-      const source = this.mapService.getSource<CanvasSource>(this.id());
+      const source = this.sourceDirective.getSource<CanvasSource>();
       if (source === undefined) {
         return;
       }
@@ -65,14 +67,12 @@ export class CanvasSourceComponent
     }
   }
 
-  addSource() {
-    const source: CanvasSourceSpecification = {
+  getCanvasSourceSpecification(): CanvasSourceSpecification {
+    return {
       type: 'canvas',
       coordinates: this.coordinates(),
       canvas: this.canvas(),
       animate: this.animate(),
     };
-    this.mapService.addSource(this.id(), source as any);
-    this.sourceId.set(this.id());
   }
 }

@@ -9,6 +9,7 @@ export * from './lib/control/control.component';
 export * from './lib/draggable/draggable.directive';
 export * from './lib/layer/layer.component';
 export * from './lib/image/image.component';
+export * from './lib/source/source.directive';
 export * from './lib/source/vector-source.component';
 export * from './lib/source/video-source.component';
 export * from './lib/source/canvas-source.component';

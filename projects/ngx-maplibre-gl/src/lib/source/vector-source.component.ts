@@ -3,10 +3,11 @@ import {
   Component,
   OnChanges,
   SimpleChanges,
+  inject,
   input,
 } from '@angular/core';
 import type { VectorSourceSpecification, VectorTileSource } from 'maplibre-gl';
-import { BaseSourceDirective } from './base-source.directive';
+import { SourceDirective } from './source.directive';
 import { tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -21,11 +22,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
+  hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
 })
-export class VectorSourceComponent
-  extends BaseSourceDirective
-  implements OnChanges
-{
+export class VectorSourceComponent implements OnChanges {
+  /** Init injections */
+  private readonly sourceDirective = inject(SourceDirective);
+
   /** Dynamic inputs */
   readonly url = input<VectorSourceSpecification['url']>();
   readonly tiles = input<VectorSourceSpecification['tiles']>();
@@ -37,18 +39,18 @@ export class VectorSourceComponent
   readonly promoteId = input<VectorSourceSpecification['promoteId']>();
 
   constructor() {
-    super();
-
-    this.loadSource$
+    this.sourceDirective.loadSource$
       .pipe(
-        tap(() => this.addSource()),
+        tap(() =>
+          this.sourceDirective.addSource(this.getVectorSourceSpecification())
+        ),
         takeUntilDestroyed()
       )
       .subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.sourceId()) {
+    if (!this.sourceDirective.sourceId()) {
       return;
     }
 
@@ -60,12 +62,12 @@ export class VectorSourceComponent
       (changes.attribution && !changes.attribution.isFirstChange()) ||
       (changes.promoteId && !changes.promoteId.isFirstChange())
     ) {
-      this.refresh();
+      this.sourceDirective.refresh();
     } else if (
       (changes.url && !changes.url.isFirstChange()) ||
       (changes.tiles && !changes.tiles.isFirstChange())
     ) {
-      const source = this.mapService.getSource<VectorTileSource>(this.id());
+      const source = this.sourceDirective.getSource<VectorTileSource>();
       if (source === undefined) {
         return;
       }
@@ -81,8 +83,8 @@ export class VectorSourceComponent
     }
   }
 
-  addSource() {
-    const source: VectorSourceSpecification = {
+  getVectorSourceSpecification(): VectorSourceSpecification {
+    return {
       type: 'vector',
       url: this.url(),
       tiles: this.tiles(),
@@ -93,7 +95,5 @@ export class VectorSourceComponent
       attribution: this.attribution(),
       promoteId: this.promoteId(),
     };
-    this.mapService.addSource(this.id(), source);
-    this.sourceId.set(this.id());
   }
 }

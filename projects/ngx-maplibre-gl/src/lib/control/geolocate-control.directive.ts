@@ -13,7 +13,7 @@ import {
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
 import type { Position } from '../map/map.types';
-import { keepAvailableObjectValues } from '../shared';
+import { keepAvailableObjectValues } from '../shared/utils/functions/object.fn';
 
 /**
  * `mglGeolocate` - a geolocate control directive
@@ -36,8 +36,11 @@ export class GeolocateControlDirective {
 
   /* Init inputs */
   readonly positionOptions = input<PositionOptions>();
+  /* Init inputs */
   readonly fitBoundsOptions = input<FitBoundsOptions>();
+  /* Init inputs */
   readonly trackUserLocation = input<boolean>();
+  /* Init inputs */
   readonly showUserLocation = input<boolean>();
 
   readonly geolocate = output<Position>();

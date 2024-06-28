@@ -44,7 +44,7 @@ import type {
   MapImageData,
   MapImageOptions,
 } from './map.types';
-import { keepAvailableObjectValues } from '../shared';
+import { keepAvailableObjectValues } from '../shared/utils/functions/object.fn';
 
 export interface SetupMap {
   mapOptions: Omit<MapOptions, 'bearing' | 'pitch' | 'zoom'> & {

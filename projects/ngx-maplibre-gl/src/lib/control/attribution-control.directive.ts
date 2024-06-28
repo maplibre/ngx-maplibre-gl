@@ -5,7 +5,7 @@ import {
 } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
-import { keepAvailableObjectValues } from '../shared/utils';
+import { keepAvailableObjectValues } from '../shared/utils/functions/object.fn';
 
 /**
  * `mglAttribution` - an attribution control directive
@@ -28,6 +28,7 @@ export class AttributionControlDirective {
 
   /** Init input */
   readonly compact = input<boolean>();
+  /** Init input */
   readonly customAttribution = input<string | string[]>();
 
   constructor() {

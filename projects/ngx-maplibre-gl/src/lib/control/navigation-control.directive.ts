@@ -2,7 +2,7 @@ import { Directive, afterNextRender, inject, input } from '@angular/core';
 import { NavigationControl, type NavigationControlOptions } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
-import { keepAvailableObjectValues } from '../shared';
+import { keepAvailableObjectValues } from '../shared/utils/functions/object.fn';
 
 /**
  * `mglNavigation` - a navigation control directive
@@ -25,7 +25,9 @@ export class NavigationControlDirective {
 
   /* Init inputs */
   readonly showCompass = input<boolean>();
+  /* Init inputs */
   readonly showZoom = input<boolean>();
+  /* Init inputs */
   readonly visualizePitch = input<boolean>();
 
   constructor() {
