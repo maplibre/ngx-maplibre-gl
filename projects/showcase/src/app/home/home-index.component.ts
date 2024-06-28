@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { AnimationOptions } from 'maplibre-gl';
 import { MatIconModule } from '@angular/material/icon';
 import { MapComponent } from '@maplibre/ngx-maplibre-gl';
@@ -8,7 +8,7 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
     <mgl-map
       [style]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[2]"
-      [center]="center"
+      [center]="center()"
       [centerWithPanTo]="true"
       [panToOptions]="panToOptions"
       [interactive]="false"
@@ -18,25 +18,29 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
   `,
   styleUrls: ['./home-index.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MapComponent, MatIconModule],
 })
 export class HomeIndexComponent {
-  center = [0, 0];
-  panToOptions: AnimationOptions = { duration: 10000, easing: (t) => t };
+  readonly center = signal<[number, number]>([0, 0]);
+  readonly panToOptions: AnimationOptions = {
+    duration: 10000,
+    easing: (t) => t,
+  };
 
   moveCenter() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return;
     }
-    const targetY = this.center[0];
+    const targetY = this.center()[0];
     if (targetY === 0) {
-      this.center = [90, 0];
+      this.center.set([90, 0]);
     } else if (targetY === 90) {
-      this.center = [180, 0];
+      this.center.set([180, 0]);
     } else if (targetY === 180) {
-      this.center = [-90, 0];
+      this.center.set([-90, 0]);
     } else if (targetY === -90) {
-      this.center = [0, 0];
+      this.center.set([0, 0]);
     }
   }
 }

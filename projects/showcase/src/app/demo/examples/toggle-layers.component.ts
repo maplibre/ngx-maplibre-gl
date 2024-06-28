@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import {
   LayerComponent,
   MapComponent,
   VectorSourceComponent,
 } from '@maplibre/ngx-maplibre-gl';
-import { LayerSpecification } from 'maplibre-gl';
+import type { LayerSpecification } from 'maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',
@@ -32,7 +32,7 @@ import { LayerSpecification } from 'maplibre-gl';
         id="countries-layer"
         type="line"
         source="countries"
-        [layout]="layouts['countries']"
+        [layout]="layouts()['countries']"
         [paint]="{
           'line-color': 'blue'
         }"
@@ -43,7 +43,7 @@ import { LayerSpecification } from 'maplibre-gl';
         id="names"
         type="symbol"
         source="everything"
-        [layout]="layouts['names']"
+        [layout]="layouts()['names']"
         sourceLayer="place"
       >
       </mgl-layer>
@@ -69,6 +69,7 @@ import { LayerSpecification } from 'maplibre-gl';
   `,
   styleUrls: ['./examples.css', './toggle-layers.component.css'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MapComponent,
     VectorSourceComponent,
@@ -77,7 +78,7 @@ import { LayerSpecification } from 'maplibre-gl';
   ],
 })
 export class ToggleLayersComponent {
-  layouts: { [key: string]: LayerSpecification['layout'] } = {
+  readonly layouts = signal<{ [key: string]: LayerSpecification['layout'] }>({
     countries: {
       visibility: 'none',
     },
@@ -88,15 +89,18 @@ export class ToggleLayersComponent {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       'text-size': 30,
     },
-  };
+  });
 
   toggleLayer(evt: { value: string }) {
-    this.layouts[evt.value] = {
-      ...this.layouts[evt.value],
-      visibility:
-        (this.layouts[evt.value] as any).visibility === 'visible'
-          ? 'none'
-          : 'visible',
-    };
+    this.layouts.update((layouts) => ({
+      ...layouts,
+      [evt.value]: {
+        ...layouts[evt.value],
+        visibility:
+          (layouts[evt.value] as any).visibility === 'visible'
+            ? 'none'
+            : 'visible',
+      },
+    }));
   }
 }

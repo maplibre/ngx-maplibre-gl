@@ -1,27 +1,29 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
-  EventEmitter,
-  Input,
   OnChanges,
-  OnDestroy,
   OnInit,
-  Output,
   SimpleChanges,
-  ViewChild,
   ViewEncapsulation,
+  afterNextRender,
+  inject,
+  input,
+  output,
+  signal,
+  viewChild,
 } from '@angular/core';
-import { LngLatLike, Marker, MarkerOptions } from 'maplibre-gl';
+import type { LngLatLike, Marker, MarkerOptions } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
  * `mgl-marker` - a marker component
  * @see [Marker](https://maplibre.org/maplibre-gl-js/docs/API/classes/Marker/)
- * 
+ *
  * @category Components
- * 
+ *
  * @example
  * ```html
  * ...
@@ -31,125 +33,125 @@ import { MapService } from '../map/map.service';
  *   </mgl-marker>
  * </mgl-map>
  * ```
- * 
+ *
  * Note: Only use this if you **really** need to use HTML/Angular component to render your symbol. These markers are slow compared to a `Layer` of symbol because they're not rendered using WebGL.
  */
 @Component({
   selector: 'mgl-marker',
-  template: '<div [class]="className" #content><ng-content></ng-content></div>',
+  template: `<div [class]="className()" #content>
+    <ng-content></ng-content>
+  </div>`,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class MarkerComponent
-  implements OnChanges, OnDestroy, AfterViewInit, OnInit {
-  /* Init input */
-  @Input() offset?: MarkerOptions['offset'];
-  @Input() anchor?: MarkerOptions['anchor'];
-  @Input() clickTolerance?: MarkerOptions['clickTolerance'];
-  @Input() color?: MarkerOptions['color'];
+export class MarkerComponent implements OnChanges, OnInit {
+  /** Init injection */
+  private readonly mapService = inject(MapService);
+  private readonly destroyRef = inject(DestroyRef);
 
-  /* Dynamic input */
-  @Input() feature?: GeoJSON.Feature<GeoJSON.Point>;
-  @Input() lngLat?: LngLatLike;
-  @Input() draggable?: MarkerOptions['draggable'];
-  @Input() popupShown?: boolean;
-  @Input() className: string;
-  @Input() pitchAlignment?: MarkerOptions['pitchAlignment'];
-  @Input() rotationAlignment?: MarkerOptions['rotationAlignment'];
-  @Input() rotation?: MarkerOptions['rotation'];
+  /** Init inputs */
+  readonly offset = input<MarkerOptions['offset']>();
+  readonly anchor = input<MarkerOptions['anchor']>();
+  readonly clickTolerance = input<MarkerOptions['clickTolerance']>();
+  readonly color = input<MarkerOptions['color']>();
+ /** Dynamic input */
+  readonly feature = input<GeoJSON.Feature<GeoJSON.Point>>();
+  readonly lngLat = input<LngLatLike>();
+  readonly draggable = input<MarkerOptions['draggable']>();
+  readonly popupShown = input<boolean>();
+  readonly className = input<string>();
+  readonly pitchAlignment = input<MarkerOptions['pitchAlignment']>();
+  readonly rotationAlignment = input<MarkerOptions['rotationAlignment']>();
+  readonly rotation = input<MarkerOptions['rotation']>();
 
-  @Output() markerDragStart = new EventEmitter<Marker>();
-  @Output() markerDragEnd = new EventEmitter<Marker>();
-  @Output() markerDrag = new EventEmitter<Marker>();
+  readonly markerDragStart = output<Marker>();
+  readonly markerDragEnd = output<Marker>();
+  readonly markerDrag = output<Marker>();
 
-  @ViewChild('content', { static: true }) content: ElementRef;
+  readonly content = viewChild.required<ElementRef<HTMLDivElement>>('content');
 
-  markerInstance?: Marker;
+  readonly markerInstance = signal<Marker | null>(null);
 
-  constructor(private mapService: MapService) {}
+  constructor() {
+    afterNextRender(() => {
+      this.mapService.mapCreated$
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(() => {
+          const marker = this.mapService.addMarker({
+            markersOptions: {
+              offset: this.offset(),
+              anchor: this.anchor(),
+              color: this.color(),
+              pitchAlignment: this.pitchAlignment(),
+              rotationAlignment: this.rotationAlignment(),
+              rotation: this.rotation(),
+              draggable: !!this.draggable(),
+              element: this.content().nativeElement,
+              feature: this.feature(),
+              lngLat: this.lngLat(),
+              clickTolerance: this.clickTolerance(),
+            },
+            markersEvents: {
+              markerDragStart: this.markerDragStart,
+              markerDrag: this.markerDrag,
+              markerDragEnd: this.markerDragEnd,
+            },
+          });
+        this.markerInstance.set(marker);
+        });
+    });
+
+    this.destroyRef.onDestroy(() => this.removeMarker());
+  }
 
   ngOnInit() {
-    if (this.feature && this.lngLat) {
+    if (this.feature() && this.lngLat()) {
       throw new Error('feature and lngLat input are mutually exclusive');
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    const markerInstance = this.markerInstance()!;
     if (changes.lngLat && !changes.lngLat.isFirstChange()) {
-      this.markerInstance!.setLngLat(this.lngLat!);
+      markerInstance.setLngLat(changes.lngLat.currentValue);
     }
+
     if (changes.feature && !changes.feature.isFirstChange()) {
-      this.markerInstance!.setLngLat(
-        <[number, number]>this.feature!.geometry!.coordinates
+      markerInstance.setLngLat(
+        changes.feature.currentValue.geometry.coordinates
       );
     }
     if (changes.draggable && !changes.draggable.isFirstChange()) {
-      this.markerInstance!.setDraggable(!!this.draggable);
+      markerInstance.setDraggable(!!changes.draggable.currentValue);
     }
     if (changes.popupShown && !changes.popupShown.isFirstChange()) {
       changes.popupShown.currentValue
-        ? this.markerInstance!.getPopup().addTo(this.mapService.mapInstance)
-        : this.markerInstance!.getPopup().remove();
+        ? markerInstance.getPopup().addTo(this.mapService.mapInstance)
+        : markerInstance.getPopup().remove();
     }
     if (changes.pitchAlignment && !changes.pitchAlignment.isFirstChange()) {
-      this.markerInstance!.setPitchAlignment(
-        changes.pitchAlignment.currentValue
-      );
+      markerInstance.setPitchAlignment(changes.pitchAlignment.currentValue);
     }
     if (
       changes.rotationAlignment &&
       !changes.rotationAlignment.isFirstChange()
     ) {
-      this.markerInstance!.setRotationAlignment(
+      markerInstance.setRotationAlignment(
         changes.rotationAlignment.currentValue
       );
     }
-    if (
-      changes.rotation &&
-      !changes.rotation.isFirstChange()
-    ) {
-      this.markerInstance!.setRotation(
-        changes.rotation.currentValue
-      );
+    if (changes.rotation && !changes.rotation.isFirstChange()) {
+      markerInstance.setRotation(changes.rotation.currentValue);
     }
   }
 
-  ngAfterViewInit() {
-    this.mapService.mapCreated$.subscribe(() => {
-      this.markerInstance = this.mapService.addMarker({
-        markersOptions: {
-          offset: this.offset,
-          anchor: this.anchor,
-          color: this.color,
-          pitchAlignment: this.pitchAlignment,
-          rotationAlignment: this.rotationAlignment,
-          rotation: this.rotation,
-          draggable: !!this.draggable,
-          element: this.content.nativeElement,
-          feature: this.feature,
-          lngLat: this.lngLat,
-          clickTolerance: this.clickTolerance,
-        },
-        markersEvents: {
-          markerDragStart: this.markerDragStart,
-          markerDrag: this.markerDrag,
-          markerDragEnd: this.markerDragEnd,
-        },
-      });
-    });
-  }
-
-  ngOnDestroy() {
-    this.mapService.removeMarker(this.markerInstance!);
-    this.markerInstance = undefined;
+  removeMarker() {
+    this.mapService.removeMarker(this.markerInstance()!);
+    this.markerInstance.set(null);
   }
 
   togglePopup() {
-    this.markerInstance!.togglePopup();
-  }
-
-  updateCoordinates(coordinates: number[]) {
-    this.markerInstance!.setLngLat(<[number, number]>coordinates);
+    this.markerInstance()!.togglePopup();
   }
 }

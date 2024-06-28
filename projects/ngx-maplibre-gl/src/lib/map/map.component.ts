@@ -2,16 +2,16 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  EventEmitter,
-  Input,
   OnChanges,
   OnDestroy,
-  Output,
   SimpleChanges,
-  ViewChild,
   afterNextRender,
+  inject,
+  input,
+  output,
+  viewChild,
 } from '@angular/core';
-import {
+import type {
   AnimationOptions,
   LngLatBoundsLike,
   Map,
@@ -28,9 +28,9 @@ import {
   PointLike,
   TerrainSpecification,
 } from 'maplibre-gl';
-import { MapService, MovingOptions } from './map.service';
-import { MapEvent, EventData } from './map.types';
-import { Subscription, firstValueFrom } from 'rxjs';
+import { MapService, type MovingOptions } from './map.service';
+import type { MapEvent, EventData } from './map.types';
+import { firstValueFrom } from 'rxjs';
 
 /**
  * `mgl-map` - The main map component
@@ -77,291 +77,281 @@ import { Subscription, firstValueFrom } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class MapComponent
-  implements
-    OnChanges,
-    OnDestroy,
-    Omit<MapOptions, 'bearing' | 'container' | 'pitch' | 'zoom'>,
-    MapEvent
-{
+export class MapComponent implements OnChanges, OnDestroy, MapEvent {
+  /** Init injection */
+  private readonly mapService = inject(MapService);
+  private readonly elementRef = inject(ElementRef);
+
   /** Init input */
-  @Input() collectResourceTiming?: MapOptions['collectResourceTiming'];
+  readonly collectResourceTiming = input<MapOptions['collectResourceTiming']>();
   /** Init input */
-  @Input() crossSourceCollisions?: MapOptions['crossSourceCollisions'];
+  readonly crossSourceCollisions = input<MapOptions['crossSourceCollisions']>();
   /** Init input */
-  @Input() customMapboxApiUrl?: string;
+  readonly customMapboxApiUrl = input<string>();
   /** Init input */
-  @Input() fadeDuration?: MapOptions['fadeDuration'];
+  readonly fadeDuration = input<MapOptions['fadeDuration']>();
   /** Init input */
-  @Input() hash?: MapOptions['hash'];
+  readonly hash = input<MapOptions['hash']>();
   /** Init input */
-  @Input() refreshExpiredTiles?: MapOptions['refreshExpiredTiles'];
+  readonly refreshExpiredTiles = input<MapOptions['refreshExpiredTiles']>();
   /** Init input */
-  @Input()
-  failIfMajorPerformanceCaveat?: MapOptions['failIfMajorPerformanceCaveat'];
+  readonly failIfMajorPerformanceCaveat =
+    input<MapOptions['failIfMajorPerformanceCaveat']>();
   /** Init input */
-  @Input() bearingSnap?: MapOptions['bearingSnap'];
+  readonly bearingSnap = input<MapOptions['bearingSnap']>();
   /** Init input */
-  @Input() interactive?: MapOptions['interactive'];
+  readonly interactive = input<MapOptions['interactive']>();
   /** Init input */
-  @Input() pitchWithRotate?: MapOptions['pitchWithRotate'];
+  readonly pitchWithRotate = input<MapOptions['pitchWithRotate']>();
   /** Init input */
-  @Input() clickTolerance?: MapOptions['clickTolerance'];
+  readonly clickTolerance = input<MapOptions['clickTolerance']>();
   /** Init input */
-  @Input() attributionControl?: MapOptions['attributionControl'];
+  readonly attributionControl = input<MapOptions['attributionControl']>();
   /** Init input */
-  @Input() logoPosition?: MapOptions['logoPosition'];
+  readonly logoPosition = input<MapOptions['logoPosition']>();
   /** Init input */
-  @Input() maxTileCacheSize?: MapOptions['maxTileCacheSize'];
+  readonly maxTileCacheSize = input<MapOptions['maxTileCacheSize']>();
   /** Init input */
-  @Input() localIdeographFontFamily?: MapOptions['localIdeographFontFamily'];
+  readonly localIdeographFontFamily =
+    input<MapOptions['localIdeographFontFamily']>();
   /** Init input */
-  @Input() preserveDrawingBuffer?: MapOptions['preserveDrawingBuffer'];
+  readonly preserveDrawingBuffer = input<MapOptions['preserveDrawingBuffer']>();
   /** Init input */
-  @Input() trackResize?: MapOptions['trackResize'];
+  readonly trackResize = input<MapOptions['trackResize']>();
   /** Init input */
-  @Input() transformRequest?: MapOptions['transformRequest'];
+  readonly transformRequest = input<MapOptions['transformRequest']>();
   /** Init input */
-  @Input() bounds?: MapOptions['bounds']; // Use fitBounds for dynamic input
+  readonly bounds = input<MapOptions['bounds']>();
   /** Init input */
-  @Input() antialias?: MapOptions['antialias'];
+  readonly antialias = input<MapOptions['antialias']>();
   /** Init input */
-  @Input() locale: MapOptions['locale'];
-  /** Init inputs */
-  @Input() cooperativeGestures?: MapOptions['cooperativeGestures'];
+  readonly locale = input<MapOptions['locale']>();
+  /** Init input */
+  readonly cooperativeGestures = input<MapOptions['cooperativeGestures']>();
 
   /** Dynamic input */
-  @Input() minZoom?: MapOptions['minZoom'];
+  readonly minZoom = input<MapOptions['minZoom']>();
   /** Dynamic input */
-  @Input() maxZoom?: MapOptions['maxZoom'];
+  readonly maxZoom = input<MapOptions['maxZoom']>();
   /** Dynamic input */
-  @Input() minPitch?: MapOptions['minPitch'];
+  readonly minPitch = input<MapOptions['minPitch']>();
   /** Dynamic input */
-  @Input() maxPitch?: MapOptions['maxPitch'];
+  readonly maxPitch = input<MapOptions['maxPitch']>();
   /** Dynamic input */
-  @Input() scrollZoom?: MapOptions['scrollZoom'];
+  readonly scrollZoom = input<MapOptions['scrollZoom']>();
   /** Dynamic input */
-  @Input() dragRotate?: MapOptions['dragRotate'];
+  readonly dragRotate = input<MapOptions['dragRotate']>();
   /** Dynamic input */
-  @Input() touchPitch?: MapOptions['touchPitch'];
+  readonly touchPitch = input<MapOptions['touchPitch']>();
   /** Dynamic input */
-  @Input() touchZoomRotate?: MapOptions['touchZoomRotate'];
+  readonly touchZoomRotate = input<MapOptions['touchZoomRotate']>();
   /** Dynamic input */
-  @Input() doubleClickZoom?: MapOptions['doubleClickZoom'];
+  readonly doubleClickZoom = input<MapOptions['doubleClickZoom']>();
   /** Dynamic input */
-  @Input() keyboard?: MapOptions['keyboard'];
+  readonly keyboard = input<MapOptions['keyboard']>();
   /** Dynamic input */
-  @Input() dragPan?: MapOptions['dragPan'];
+  readonly dragPan = input<MapOptions['dragPan']>();
   /** Dynamic input */
-  @Input() boxZoom?: MapOptions['boxZoom'];
+  readonly boxZoom = input<MapOptions['boxZoom']>();
   /** Dynamic input */
-  @Input() style: MapOptions['style'];
+  readonly style = input.required<MapOptions['style']>();
   /** Dynamic input */
-  @Input() center?: MapOptions['center'];
+  readonly center = input<MapOptions['center']>();
   /** Dynamic input */
-  @Input() maxBounds?: MapOptions['maxBounds'];
+  readonly maxBounds = input<MapOptions['maxBounds']>();
   /** Dynamic input */
-  @Input() zoom?: [number];
+  readonly zoom = input<[number]>();
   /** Dynamic input */
-  @Input() bearing?: [number];
+  readonly bearing = input<[number]>();
   /** Dynamic input */
-  @Input() pitch?: [number];
+  readonly pitch = input<[number]>();
   /** Dynamic input */
-  @Input() fitBoundsOptions?: MapOptions['fitBoundsOptions']; // First value goes to options.fitBoundsOptions. Subsequents changes are passed to fitBounds
+  readonly fitBoundsOptions = input<MapOptions['fitBoundsOptions']>(); // First value goes to options.fitBoundsOptions. Subsequents changes are passed to fitBounds
   /** Dynamic input */
-  @Input() renderWorldCopies?: MapOptions['renderWorldCopies'];
+  readonly renderWorldCopies = input<MapOptions['renderWorldCopies']>();
   /** Dynamic input */
-  @Input() terrain: TerrainSpecification;
+  readonly terrain = input<TerrainSpecification>();
 
   /** Added by ngx-mapbox-gl */
-  @Input() movingMethod: 'jumpTo' | 'easeTo' | 'flyTo' = 'flyTo';
-  /** Added by ngx-mapbox-gl */
-  @Input() movingOptions?: MovingOptions;
+  readonly movingMethod = input<'jumpTo' | 'easeTo' | 'flyTo'>('flyTo');
+  readonly movingOptions = input<MovingOptions>();
 
   // => First value is a alias to bounds input (since mapbox 0.53.0). Subsequents changes are passed to fitBounds
-  @Input() fitBounds?: LngLatBoundsLike;
-  @Input() fitScreenCoordinates?: [PointLike, PointLike];
-  @Input() centerWithPanTo?: boolean;
-  @Input() panToOptions?: AnimationOptions;
-  @Input() cursorStyle?: string;
+  readonly fitBounds = input<LngLatBoundsLike>();
+  readonly fitScreenCoordinates = input<[PointLike, PointLike]>();
+  readonly centerWithPanTo = input<boolean>();
+  readonly panToOptions = input<AnimationOptions>();
+  readonly cursorStyle = input<string>();
 
-  @Output() mapResize = new EventEmitter<MapLibreEvent & EventData>();
-  @Output() mapRemove = new EventEmitter<MapLibreEvent & EventData>();
-  @Output() mapMouseDown = new EventEmitter<MapMouseEvent & EventData>();
-  @Output() mapMouseUp = new EventEmitter<MapMouseEvent & EventData>();
-  @Output() mapMouseMove = new EventEmitter<MapMouseEvent & EventData>();
-  @Output() mapClick = new EventEmitter<MapMouseEvent & EventData>();
-  @Output() mapDblClick = new EventEmitter<MapMouseEvent & EventData>();
-  @Output() mapMouseOver = new EventEmitter<MapMouseEvent & EventData>();
-  @Output() mapMouseOut = new EventEmitter<MapMouseEvent & EventData>();
-  @Output() mapContextMenu = new EventEmitter<MapMouseEvent & EventData>();
-  @Output() mapTouchStart = new EventEmitter<MapTouchEvent & EventData>();
-  @Output() mapTouchEnd = new EventEmitter<MapTouchEvent & EventData>();
-  @Output() mapTouchMove = new EventEmitter<MapTouchEvent & EventData>();
-  @Output() mapTouchCancel = new EventEmitter<MapTouchEvent & EventData>();
-  @Output() mapWheel = new EventEmitter<MapWheelEvent & EventData>();
-  @Output() moveStart = new EventEmitter<
+  readonly mapResize = output<MapLibreEvent & EventData>();
+  readonly mapRemove = output<MapLibreEvent & EventData>();
+  readonly mapMouseDown = output<MapMouseEvent & EventData>();
+  readonly mapMouseUp = output<MapMouseEvent & EventData>();
+  readonly mapMouseMove = output<MapMouseEvent & EventData>();
+  readonly mapClick = output<MapMouseEvent & EventData>();
+  readonly mapDblClick = output<MapMouseEvent & EventData>();
+  readonly mapMouseOver = output<MapMouseEvent & EventData>();
+  readonly mapMouseOut = output<MapMouseEvent & EventData>();
+  readonly mapContextMenu = output<MapMouseEvent & EventData>();
+  readonly mapTouchStart = output<MapTouchEvent & EventData>();
+  readonly mapTouchEnd = output<MapTouchEvent & EventData>();
+  readonly mapTouchMove = output<MapTouchEvent & EventData>();
+  readonly mapTouchCancel = output<MapTouchEvent & EventData>();
+  readonly mapWheel = output<MapWheelEvent & EventData>();
+  readonly moveStart = output<
     MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
   >();
-  @Output() move = new EventEmitter<
+  readonly move = output<
     MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
   >();
-  @Output() moveEnd = new EventEmitter<
+  readonly moveEnd = output<
     MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
   >();
-  @Output() mapDragStart = new EventEmitter<
+  readonly mapDragStart = output<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >();
-  @Output() mapDrag = new EventEmitter<
+  readonly mapDrag = output<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >();
-  @Output() mapDragEnd = new EventEmitter<
+  readonly mapDragEnd = output<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >();
-  @Output() zoomStart = new EventEmitter<
+  readonly zoomStart = output<
     MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
   >();
-  @Output() zoomEvt = new EventEmitter<
+  readonly zoomEvt = output<
     MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
   >();
-  @Output() zoomEnd = new EventEmitter<
+  readonly zoomEnd = output<
     MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
   >();
-  @Output() rotateStart = new EventEmitter<
+  readonly rotateStart = output<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >();
-  @Output() rotate = new EventEmitter<
+  readonly rotate = output<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >();
-  @Output() rotateEnd = new EventEmitter<
+  readonly rotateEnd = output<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >();
-  @Output() pitchStart = new EventEmitter<
+  readonly pitchStart = output<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >();
-  @Output() pitchEvt = new EventEmitter<
+  readonly pitchEvt = output<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >();
-  @Output() pitchEnd = new EventEmitter<
+  readonly pitchEnd = output<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >();
-  @Output() boxZoomStart = new EventEmitter<MapLibreZoomEvent & EventData>();
-  @Output() boxZoomEnd = new EventEmitter<MapLibreZoomEvent & EventData>();
-  @Output() boxZoomCancel = new EventEmitter<MapLibreZoomEvent & EventData>();
-  @Output() webGlContextLost = new EventEmitter<MapContextEvent & EventData>();
-  @Output() webGlContextRestored = new EventEmitter<
-    MapContextEvent & EventData
+  readonly boxZoomStart = output<MapLibreZoomEvent & EventData>();
+  readonly boxZoomEnd = output<MapLibreZoomEvent & EventData>();
+  readonly boxZoomCancel = output<MapLibreZoomEvent & EventData>();
+  readonly webGlContextLost = output<MapContextEvent & EventData>();
+  readonly webGlContextRestored = output<MapContextEvent & EventData>();
+  readonly mapLoad = output<Map>();
+  readonly idle = output<MapLibreEvent & EventData>();
+  readonly render = output<MapLibreEvent & EventData>();
+  readonly mapError = output<ErrorEvent & EventData>();
+  readonly data = output<MapDataEvent & EventData>();
+  readonly styleData = output<MapStyleDataEvent & EventData>();
+  readonly sourceData = output<MapSourceDataEvent & EventData>();
+  readonly dataLoading = output<MapDataEvent & EventData>();
+  readonly styleDataLoading = output<MapStyleDataEvent & EventData>();
+  readonly sourceDataLoading = output<MapSourceDataEvent & EventData>();
+  readonly styleImageMissing = output<
+    {
+      id: string;
+    } & EventData
   >();
-  @Output() mapLoad = new EventEmitter<Map>();
-  @Output() idle = new EventEmitter<MapLibreEvent & EventData>();
-  @Output() render = new EventEmitter<MapLibreEvent & EventData>();
-  @Output() mapError = new EventEmitter<ErrorEvent & EventData>();
-  @Output() data = new EventEmitter<MapDataEvent & EventData>();
-  @Output() styleData = new EventEmitter<MapStyleDataEvent & EventData>();
-  @Output() sourceData = new EventEmitter<MapSourceDataEvent & EventData>();
-  @Output() dataLoading = new EventEmitter<MapDataEvent & EventData>();
-  @Output() styleDataLoading = new EventEmitter<
-    MapStyleDataEvent & EventData
-  >();
-  @Output() sourceDataLoading = new EventEmitter<
-    MapSourceDataEvent & EventData
-  >();
-  @Output() styleImageMissing = new EventEmitter<{ id: string } & EventData>();
 
   get mapInstance(): Map {
     return this.mapService.mapInstance;
   }
 
-  private subscriptions: Subscription[] = [];
+  readonly mapContainer = viewChild.required<ElementRef<HTMLDivElement>>('container');
 
-  @ViewChild('container', { static: true }) mapContainer: ElementRef;
-
-  constructor(private mapService: MapService, private elementRef: ElementRef) {
+  constructor() {
     afterNextRender(() => {
-      if (this.preserveDrawingBuffer) {
+      if (this.preserveDrawingBuffer()) {
         // This is to allow better interaction with the map state
         const htmlElement: HTMLElement = this.elementRef.nativeElement;
         htmlElement.setAttribute('data-cy', 'map');
-        this.subscriptions.push(
-          this.mapLoad.subscribe(() => {
-            htmlElement.setAttribute('data-loaded', 'true');
-          })
-        );
-        this.subscriptions.push(
-          this.idle.subscribe(() => {
-            htmlElement.setAttribute('data-idle', 'true');
-          })
-        );
-        this.subscriptions.push(
-          this.render.subscribe(() => {
-            htmlElement.removeAttribute('data-idle');
-          })
-        );
+        this.mapLoad.subscribe(() => {
+          htmlElement.setAttribute('data-loaded', 'true');
+        });
+        this.idle.subscribe(() => {
+          htmlElement.setAttribute('data-idle', 'true');
+        });
+        this.render.subscribe(() => {
+          htmlElement.removeAttribute('data-idle');
+        });
       }
-
       this.mapService.setup({
         mapOptions: {
-          collectResourceTiming: this.collectResourceTiming,
-          container: this.mapContainer.nativeElement,
-          crossSourceCollisions: this.crossSourceCollisions,
-          fadeDuration: this.fadeDuration,
-          minZoom: this.minZoom,
-          maxZoom: this.maxZoom,
-          minPitch: this.minPitch,
-          maxPitch: this.maxPitch,
-          style: this.style,
-          hash: this.hash,
-          interactive: this.interactive,
-          bearingSnap: this.bearingSnap,
-          pitchWithRotate: this.pitchWithRotate,
-          clickTolerance: this.clickTolerance,
-          attributionControl: this.attributionControl,
-          logoPosition: this.logoPosition,
-          failIfMajorPerformanceCaveat: this.failIfMajorPerformanceCaveat,
-          preserveDrawingBuffer: this.preserveDrawingBuffer,
-          refreshExpiredTiles: this.refreshExpiredTiles,
-          maxBounds: this.maxBounds,
-          scrollZoom: this.scrollZoom,
-          boxZoom: this.boxZoom,
-          dragRotate: this.dragRotate,
-          dragPan: this.dragPan,
-          keyboard: this.keyboard,
-          doubleClickZoom: this.doubleClickZoom,
-          touchPitch: this.touchPitch,
-          touchZoomRotate: this.touchZoomRotate,
-          trackResize: this.trackResize,
-          center: this.center,
-          zoom: this.zoom,
-          bearing: this.bearing,
-          pitch: this.pitch,
-          renderWorldCopies: this.renderWorldCopies,
-          maxTileCacheSize: this.maxTileCacheSize,
-          localIdeographFontFamily: this.localIdeographFontFamily,
-          transformRequest: this.transformRequest,
-          bounds: this.bounds ? this.bounds : this.fitBounds,
-          fitBoundsOptions: this.fitBoundsOptions,
-          antialias: this.antialias,
+          collectResourceTiming: this.collectResourceTiming(),
+          container: this.mapContainer().nativeElement,
+          crossSourceCollisions: this.crossSourceCollisions(),
+          fadeDuration: this.fadeDuration(),
+          minZoom: this.minZoom(),
+          maxZoom: this.maxZoom(),
+          minPitch: this.minPitch(),
+          maxPitch: this.maxPitch(),
+          style: this.style(),
+          hash: this.hash(),
+          interactive: this.interactive(),
+          bearingSnap: this.bearingSnap(),
+          pitchWithRotate: this.pitchWithRotate(),
+          clickTolerance: this.clickTolerance(),
+          attributionControl: this.attributionControl(),
+          logoPosition: this.logoPosition(),
+          failIfMajorPerformanceCaveat: this.failIfMajorPerformanceCaveat(),
+          preserveDrawingBuffer: this.preserveDrawingBuffer(),
+          refreshExpiredTiles: this.refreshExpiredTiles(),
+          maxBounds: this.maxBounds(),
+          scrollZoom: this.scrollZoom(),
+          boxZoom: this.boxZoom(),
+          dragRotate: this.dragRotate(),
+          dragPan: this.dragPan(),
+          keyboard: this.keyboard(),
+          doubleClickZoom: this.doubleClickZoom(),
+          touchPitch: this.touchPitch(),
+          touchZoomRotate: this.touchZoomRotate(),
+          trackResize: this.trackResize(),
+          center: this.center(),
+          zoom: this.zoom(),
+          bearing: this.bearing(),
+          pitch: this.pitch(),
+          renderWorldCopies: this.renderWorldCopies(),
+          maxTileCacheSize: this.maxTileCacheSize(),
+          localIdeographFontFamily: this.localIdeographFontFamily(),
+          transformRequest: this.transformRequest(),
+          bounds: this.bounds() ? this.bounds() : this.fitBounds(),
+          fitBoundsOptions: this.fitBoundsOptions(),
+          antialias: this.antialias(),
           locale: this.locale,
-          cooperativeGestures: this.cooperativeGestures,
-          terrain: this.terrain,
+          cooperativeGestures: this.cooperativeGestures(),
+          terrain: this.terrain(),
         },
         mapEvents: this,
       });
-      if (this.cursorStyle) {
-        this.mapService.changeCanvasCursor(this.cursorStyle);
+      const cursorStyle = this.cursorStyle();
+      if (cursorStyle) {
+        this.mapService.changeCanvasCursor(cursorStyle);
       }
     });
   }
 
   ngOnDestroy() {
     this.mapService.destroyMap();
-    for (const subscription of this.subscriptions) {
-      subscription.unsubscribe();
-    }
   }
 
   async ngOnChanges(changes: SimpleChanges) {
     await firstValueFrom(this.mapService.mapCreated$);
+    const zoom = this.zoom();
+    const bearing = this.bearing();
+    const pitch = this.pitch();
+    const center = this.center();
+
     if (changes.cursorStyle && !changes.cursorStyle.isFirstChange()) {
       this.mapService.changeCanvasCursor(changes.cursorStyle.currentValue);
     }
@@ -426,7 +416,7 @@ export class MapComponent
     ) {
       this.mapService.fitBounds(
         changes.fitBounds.currentValue,
-        this.fitBoundsOptions
+        this.fitBoundsOptions()
       );
     }
     if (
@@ -434,7 +424,7 @@ export class MapComponent
       changes.fitScreenCoordinates.currentValue
     ) {
       if (
-        (this.center || this.zoom || this.pitch || this.fitBounds) &&
+        (center || zoom || pitch || this.fitBounds()) &&
         changes.fitScreenCoordinates.isFirstChange()
       ) {
         console.warn(
@@ -443,19 +433,19 @@ export class MapComponent
       }
       this.mapService.fitScreenCoordinates(
         changes.fitScreenCoordinates.currentValue,
-        this.bearing ? this.bearing[0] : 0,
-        this.movingOptions
+        bearing ? bearing[0] : 0,
+        this.movingOptions()
       );
     }
     if (
-      this.centerWithPanTo &&
+      this.centerWithPanTo() &&
       changes.center &&
       !changes.center.isFirstChange() &&
       !changes.zoom &&
       !changes.bearing &&
       !changes.pitch
     ) {
-      this.mapService.panTo(this.center!, this.panToOptions);
+      this.mapService.panTo(this.center()!, this.panToOptions());
     } else if (
       (changes.center && !changes.center.isFirstChange()) ||
       (changes.zoom && !changes.zoom.isFirstChange()) ||
@@ -465,12 +455,12 @@ export class MapComponent
       (changes.pitch && !changes.pitch.isFirstChange())
     ) {
       this.mapService.move(
-        this.movingMethod,
-        this.movingOptions,
-        changes.zoom && this.zoom ? this.zoom[0] : undefined,
-        changes.center ? this.center : undefined,
-        changes.bearing && this.bearing ? this.bearing[0] : undefined,
-        changes.pitch && this.pitch ? this.pitch[0] : undefined
+        this.movingMethod(),
+        this.movingOptions(),
+        changes.zoom && zoom ? zoom[0] : undefined,
+        changes.center ? center : undefined,
+        changes.bearing && bearing ? bearing[0] : undefined,
+        changes.pitch && pitch ? pitch[0] : undefined
       );
     }
     if (changes.terrain && !changes.terrain.isFirstChange()) {

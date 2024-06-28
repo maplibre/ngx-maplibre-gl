@@ -1,25 +1,28 @@
 import {
+  ChangeDetectionStrategy,
   Component,
-  EventEmitter,
-  Input,
+  DestroyRef,
   NgZone,
   OnChanges,
-  OnDestroy,
   OnInit,
-  Output,
   SimpleChanges,
+  inject,
+  input,
+  output,
+  signal,
 } from '@angular/core';
-import { fromEvent, Subscription } from 'rxjs';
+import { fromEvent } from 'rxjs';
 import { filter, startWith, switchMap } from 'rxjs/operators';
 import { MapService } from '../map/map.service';
-import { MapImageData, MapImageOptions } from '../map/map.types';
+import type { MapImageData, MapImageOptions } from '../map/map.types';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
  * `mgl-image` - an image component
  * @see [addImage](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#addimage)
- * 
+ *
  * @category Components
- * 
+ *
  * @example
  * ```html
  * ...
@@ -49,41 +52,53 @@ import { MapImageData, MapImageOptions } from '../map/map.types';
   selector: 'mgl-image',
   template: '',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ImageComponent implements OnInit, OnDestroy, OnChanges {
+export class ImageComponent implements OnInit, OnChanges {
+  /** Init injection */
+  private readonly mapService = inject(MapService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly zone = inject(NgZone);
+
   /** Init input */
-  @Input() id: string;
+  readonly id = input.required<string>();
 
   /** Dynamic input */
-  @Input() data?: MapImageData;
+  readonly data = input<MapImageData>();
   /** Dynamic input */
-  @Input() options?: MapImageOptions;
+  readonly options = input<MapImageOptions>();
   /** Dynamic input */
-  @Input() url?: string;
+  readonly url = input<string>();
 
-  @Output() imageError = new EventEmitter<{ status: number }>();
-  @Output() imageLoaded = new EventEmitter<void>();
+  readonly imageError = output<{
+    status: number;
+  }>();
 
-  private isAdded = false;
-  private isAdding = false;
-  private sub: Subscription;
+  readonly imageLoaded = output<void>();
 
-  constructor(private mapService: MapService, private zone: NgZone) {}
+  private isAdded = signal(false);
+  private isAdding = signal(false);
+
+  constructor() {
+    this.destroyRef.onDestroy(() => this.removeImage());
+  }
 
   ngOnInit() {
-    this.sub = this.mapService.mapLoaded$
+    this.mapService.mapLoaded$
       .pipe(
         switchMap(() =>
           fromEvent(this.mapService.mapInstance, 'styledata').pipe(
             startWith(undefined),
             filter(
               () =>
-                !this.isAdding && !this.mapService.mapInstance.hasImage(this.id)
+                !this.isAdding() &&
+                !this.mapService.mapInstance.hasImage(this.id())
             )
           )
-        )
+        ),
+        takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe(() => this.init());
+      .subscribe(() => this.addImage());
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -92,31 +107,30 @@ export class ImageComponent implements OnInit, OnDestroy, OnChanges {
       (changes.options && !changes.options.isFirstChange()) ||
       (changes.url && !changes.url.isFirstChange())
     ) {
-      this.ngOnDestroy();
+      this.removeImage();
       this.ngOnInit();
     }
   }
 
-  ngOnDestroy() {
-    if (this.isAdded) {
-      this.mapService.removeImage(this.id);
-    }
-    if (this.sub) {
-      this.sub.unsubscribe();
+  removeImage() {
+    if (this.isAdded()) {
+      this.mapService.removeImage(this.id());
     }
   }
 
-  private async init() {
-    this.isAdding = true;
-    if (this.data) {
-      this.mapService.addImage(this.id, this.data, this.options);
-      this.isAdded = true;
-      this.isAdding = false;
-    } else if (this.url) {
+  private async addImage() {
+    this.isAdding.set(true);
+    const data = this.data();
+    const url = this.url();
+    if (data) {
+      this.mapService.addImage(this.id(), data, this.options());
+      this.isAdded.set(true);
+      this.isAdding.set(false);
+    } else if (url) {
       try {
-        await this.mapService.loadAndAddImage(this.id, this.url, this.options);
-        this.isAdded = true;
-        this.isAdding = false;
+        await this.mapService.loadAndAddImage(this.id(), url, this.options());
+        this.isAdded.set(true);
+        this.isAdding.set(false);
         this.zone.run(() => {
           this.imageLoaded.emit();
         });

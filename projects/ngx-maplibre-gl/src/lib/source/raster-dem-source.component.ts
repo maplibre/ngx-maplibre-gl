@@ -1,74 +1,70 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
   OnChanges,
-  OnDestroy,
-  OnInit,
   SimpleChanges,
+  inject,
+  input,
 } from '@angular/core';
-import { RasterDEMSourceSpecification } from 'maplibre-gl';
-import { fromEvent, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { MapService } from '../map/map.service';
+import type { RasterDEMSourceSpecification } from 'maplibre-gl';
+import { tap } from 'rxjs/operators';
+import { SourceDirective } from './source.directive';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
  * `mgl-raster-dem-source` - a raster DEM source
  * @see [raster DEM](https://maplibre.org/maplibre-style-spec/sources/#raster-dem)
- * 
+ *
  * @category Source Components
  */
 @Component({
   selector: 'mgl-raster-dem-source',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
   standalone: true,
 })
-export class RasterDemSourceComponent
-  implements OnInit, OnDestroy, OnChanges, RasterDEMSourceSpecification {
-  /** Init input */
-  @Input() id: string;
+export class RasterDemSourceComponent implements OnChanges {
+  /** Init injections */
+  private readonly sourceDirective = inject(SourceDirective);
 
   /** Dynamic input */
-  @Input() url?: RasterDEMSourceSpecification['url'];
-  /** Dynamic input */
-  @Input() tiles?: RasterDEMSourceSpecification['tiles'];
-  /** Dynamic input */
-  @Input() bounds?: RasterDEMSourceSpecification['bounds'];
-  /** Dynamic input */
-  @Input() minzoom?: RasterDEMSourceSpecification['minzoom'];
-  /** Dynamic input */
-  @Input() maxzoom?: RasterDEMSourceSpecification['maxzoom'];
-  /** Dynamic input */
-  @Input() tileSize?: RasterDEMSourceSpecification['tileSize'];
-  /** Dynamic input */
-  @Input() attribution?: RasterDEMSourceSpecification['attribution'];
-  /** Dynamic input */
-  @Input() encoding?: RasterDEMSourceSpecification['encoding'];
+  readonly url = input<RasterDEMSourceSpecification['url']>();
 
-  /** @hidden */
-  type: RasterDEMSourceSpecification['type'] = 'raster-dem';
+  /** Dynamic input */
+  readonly tiles = input<RasterDEMSourceSpecification['tiles']>();
 
-  private sourceAdded = false;
-  private sub = new Subscription();
+  /** Dynamic input */
+  readonly bounds = input<RasterDEMSourceSpecification['bounds']>();
 
-  constructor(private mapService: MapService) {}
+  /** Dynamic input */
+  readonly minzoom = input<RasterDEMSourceSpecification['minzoom']>();
 
-  ngOnInit() {
-    const sub1 = this.mapService.mapLoaded$.subscribe(() => {
-      this.init();
-      const sub = fromEvent(this.mapService.mapInstance, 'styledata')
-        .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id)))
-        .subscribe(() => {
-          this.init();
-        });
-      this.sub.add(sub);
-    });
-    this.sub.add(sub1);
+  /** Dynamic input */
+  readonly maxzoom = input<RasterDEMSourceSpecification['maxzoom']>();
+
+  /** Dynamic input */
+  readonly tileSize = input<RasterDEMSourceSpecification['tileSize']>();
+
+  /** Dynamic input */
+  readonly attribution = input<RasterDEMSourceSpecification['attribution']>();
+
+  /** Dynamic input */
+  readonly encoding = input<RasterDEMSourceSpecification['encoding']>();
+
+  constructor() {
+    this.sourceDirective.loadSource$
+      .pipe(
+        tap(() =>
+          this.sourceDirective.addSource(this.getRasterDEMSourceSpecification())
+        ),
+        takeUntilDestroyed()
+      )
+      .subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.sourceAdded) {
+    if (!this.sourceDirective.sourceId()) {
       return;
     }
     if (
@@ -81,32 +77,21 @@ export class RasterDemSourceComponent
       (changes.attribution && !changes.attribution.isFirstChange()) ||
       (changes.encoding && !changes.encoding.isFirstChange())
     ) {
-      this.ngOnDestroy();
-      this.ngOnInit();
+      this.sourceDirective.refresh();
     }
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-    if (this.sourceAdded) {
-      this.mapService.removeSource(this.id);
-      this.sourceAdded = false;
-    }
-  }
-
-  private init() {
-    const source: RasterDEMSourceSpecification = {
-      type: this.type,
-      url: this.url,
-      tiles: this.tiles,
-      bounds: this.bounds,
-      minzoom: this.minzoom,
-      maxzoom: this.maxzoom,
-      tileSize: this.tileSize,
-      attribution: this.attribution,
-      encoding: this.encoding,
+  getRasterDEMSourceSpecification(): RasterDEMSourceSpecification {
+    return {
+      type: 'raster-dem',
+      url: this.url(),
+      tiles: this.tiles(),
+      bounds: this.bounds(),
+      minzoom: this.minzoom(),
+      maxzoom: this.maxzoom(),
+      tileSize: this.tileSize(),
+      attribution: this.attribution(),
+      encoding: this.encoding(),
     };
-    this.mapService.addSource(this.id, source);
-    this.sourceAdded = true;
   }
 }

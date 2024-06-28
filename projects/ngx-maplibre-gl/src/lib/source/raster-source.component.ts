@@ -1,74 +1,70 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
   OnChanges,
-  OnDestroy,
-  OnInit,
   SimpleChanges,
+  inject,
+  input,
 } from '@angular/core';
-import { RasterSourceSpecification } from 'maplibre-gl';
-import { fromEvent, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { MapService } from '../map/map.service';
+import type { RasterSourceSpecification } from 'maplibre-gl';
+import { SourceDirective } from './source.directive';
+import { tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
  * `mgl-raster-source` - a raster source component
  * @see [raster](https://maplibre.org/maplibre-style-spec/sources/#raster)
- * 
+ *
  * @category Source Components
  */
 @Component({
   selector: 'mgl-raster-source',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
   standalone: true,
 })
-export class RasterSourceComponent
-  implements OnInit, OnDestroy, OnChanges, RasterSourceSpecification {
-  /** Init input */
-  @Input() id: string;
+export class RasterSourceComponent implements OnChanges {
+  /** Init injections */
+  private readonly sourceDirective = inject(SourceDirective);
 
   /** Dynamic input */
-  @Input() url?: RasterSourceSpecification['url'];
-  /** Dynamic input */
-  @Input() tiles?: RasterSourceSpecification['tiles'];
-  /** Dynamic input */
-  @Input() bounds?: RasterSourceSpecification['bounds'];
-  /** Dynamic input */
-  @Input() minzoom?: RasterSourceSpecification['minzoom'];
-  /** Dynamic input */
-  @Input() maxzoom?: RasterSourceSpecification['maxzoom'];
-  /** Dynamic input */
-  @Input() tileSize?: RasterSourceSpecification['tileSize'];
-  /** Dynamic input */
-  @Input() scheme?: RasterSourceSpecification['scheme'];
-  /** Dynamic input */
-  @Input() attribution?: RasterSourceSpecification['attribution'];
+  readonly url = input<RasterSourceSpecification['url']>();
 
-  /** @hidden */
-  type: RasterSourceSpecification['type'] = 'raster';
+  /** Dynamic input */
+  readonly tiles = input<RasterSourceSpecification['tiles']>();
 
-  private sourceAdded = false;
-  private sub = new Subscription();
+  /** Dynamic input */
+  readonly bounds = input<RasterSourceSpecification['bounds']>();
 
-  constructor(private mapService: MapService) {}
+  /** Dynamic input */
+  readonly scheme = input<RasterSourceSpecification['scheme']>();
 
-  ngOnInit() {
-    const sub1 = this.mapService.mapLoaded$.subscribe(() => {
-      this.init();
-      const sub = fromEvent(this.mapService.mapInstance, 'styledata')
-        .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id)))
-        .subscribe(() => {
-          this.init();
-        });
-      this.sub.add(sub);
-    });
-    this.sub.add(sub1);
+  /** Dynamic input */
+  readonly minzoom = input<RasterSourceSpecification['minzoom']>();
+
+  /** Dynamic input */
+  readonly maxzoom = input<RasterSourceSpecification['maxzoom']>();
+
+  /** Dynamic input */
+  readonly tileSize = input<RasterSourceSpecification['tileSize']>();
+
+  /** Dynamic input */
+  readonly attribution = input<RasterSourceSpecification['attribution']>();
+
+  constructor() {
+    this.sourceDirective.loadSource$
+      .pipe(
+        tap(() =>
+          this.sourceDirective.addSource(this.getRasterSourceSpecification())
+        ),
+        takeUntilDestroyed()
+      )
+      .subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.sourceAdded) {
+    if (!this.sourceDirective.sourceId()) {
       return;
     }
     if (
@@ -81,32 +77,21 @@ export class RasterSourceComponent
       (changes.scheme && !changes.scheme.isFirstChange()) ||
       (changes.attribution && !changes.attribution.isFirstChange())
     ) {
-      this.ngOnDestroy();
-      this.ngOnInit();
+      this.sourceDirective.refresh();
     }
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-    if (this.sourceAdded) {
-      this.mapService.removeSource(this.id);
-      this.sourceAdded = false;
-    }
-  }
-
-  private init() {
-    const source: RasterSourceSpecification = {
-      type: this.type,
-      url: this.url,
-      tiles: this.tiles,
-      bounds: this.bounds,
-      minzoom: this.minzoom,
-      maxzoom: this.maxzoom,
-      tileSize: this.tileSize,
-      scheme: this.scheme,
-      attribution: this.attribution,
+  getRasterSourceSpecification(): RasterSourceSpecification {
+    return {
+      type: 'raster',
+      url: this.url(),
+      tiles: this.tiles(),
+      bounds: this.bounds(),
+      minzoom: this.minzoom(),
+      maxzoom: this.maxzoom(),
+      tileSize: this.tileSize(),
+      scheme: this.scheme(),
+      attribution: this.attribution(),
     };
-    this.mapService.addSource(this.id, source);
-    this.sourceAdded = true;
   }
 }

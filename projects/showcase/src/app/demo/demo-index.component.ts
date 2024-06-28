@@ -3,9 +3,9 @@ import {
   ElementRef,
   NgZone,
   OnInit,
-  QueryList,
-  ViewChildren,
   afterNextRender,
+  inject,
+  viewChildren,
 } from '@angular/core';
 import {
   MatSlideToggleChange,
@@ -56,6 +56,10 @@ type RoutesByCategory = { [P in Category]: Routes };
   ],
 })
 export class DemoIndexComponent implements OnInit {
+  private readonly zone = inject(NgZone);
+  private readonly router = inject(Router);
+  private readonly activatedRoute = inject(ActivatedRoute);
+
   routes: RoutesByCategory;
   originalRoutes: RoutesByCategory;
   categories: Category[];
@@ -63,14 +67,11 @@ export class DemoIndexComponent implements OnInit {
   sidenavIsOpen = true;
   isEditMode = !!this.activatedRoute.snapshot.firstChild!.params.demoUrl;
 
-  @ViewChildren('exampleLink', { read: ElementRef })
-  exampleLinks: QueryList<ElementRef>;
+  readonly exampleLinks = viewChildren<string, ElementRef>('exampleLink', {
+    read: ElementRef,
+  });
 
-  constructor(
-    private zone: NgZone,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
-  ) {
+  constructor() {
     this.originalRoutes = <RoutesByCategory>(
       (<any>(
         groupBy(DEMO_ROUTES[0].children, (route) =>
@@ -136,7 +137,7 @@ export class DemoIndexComponent implements OnInit {
 
   private scrollInToActiveExampleLink() {
     this.zone.onStable.pipe(first()).subscribe(() => {
-      const activeLink = this.exampleLinks.find((elm) =>
+      const activeLink = this.exampleLinks().find((elm) =>
         (<HTMLElement>elm.nativeElement).classList.contains('active')
       );
       if (activeLink) {

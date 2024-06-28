@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import {
   MapComponent,
   MapImageData,
@@ -16,8 +16,8 @@ import {
       (styleImageMissing)="generateImage($event)"
       [preserveDrawingBuffer]="true"
     >
-      @for (imageData of imagesData; track trackByImage($index, imageData)) {
-        <mgl-image [id]="imageData.id" [data]="imageData"></mgl-image>
+      @for (imageData of imagesData(); track imageData.id) {
+      <mgl-image [id]="imageData.id" [data]="imageData"></mgl-image>
       }
       <mgl-layer
         id="points"
@@ -69,10 +69,11 @@ import {
   `,
   styleUrls: ['./examples.css'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MapComponent, ImageComponent, LayerComponent],
 })
 export class AddImageMissingGeneratedComponent {
-  imagesData: (MapImageData & { id: string })[] = [];
+  readonly imagesData = signal<(MapImageData & { id: string })[]>([]);
 
   generateImage({ id }: { id: string }) {
     // check if this missing icon is one this function can generate
@@ -103,10 +104,6 @@ export class AddImageMissingGeneratedComponent {
       height: width,
       data,
     };
-    this.imagesData = [...this.imagesData, imageData];
-  }
-
-  trackByImage(_idx: number, image: { id: string }) {
-    return image.id;
+    this.imagesData.update((imagesData) => [...imagesData, imageData]);
   }
 }

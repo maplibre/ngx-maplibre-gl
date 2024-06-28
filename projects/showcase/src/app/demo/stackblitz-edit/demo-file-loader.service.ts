@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { forkJoin, Observable, of } from 'rxjs';
 import { map, shareReplay, switchMap } from 'rxjs/operators';
 
@@ -7,9 +7,10 @@ const FILES_PATH = 'app/demo/examples/';
 
 @Injectable({ providedIn: 'root' })
 export class DemoFileLoaderService {
+  private readonly http = inject(HttpClient);
   private fileCache = new Map<string, Observable<Record<string, string>>>();
 
-  constructor(private http: HttpClient) {
+  constructor() {
     // Preload this file since it's used in every demos
     this.loadFile('example.css');
   }

@@ -3,11 +3,12 @@ import {
   ApplicationRef,
   Component,
   ComponentFactoryResolver,
+  DestroyRef,
   Injector,
-  Input,
-  OnDestroy,
-  ViewChild,
-  afterNextRender
+  afterNextRender,
+  inject,
+  input,
+  viewChild,
 } from '@angular/core';
 
 @Component({
@@ -20,21 +21,22 @@ import {
   standalone: true,
   imports: [PortalModule],
 })
-export class LayoutToolbarMenuComponent implements OnDestroy {
-  @Input() position: 'left' | 'right';
+export class LayoutToolbarMenuComponent {
+  private readonly componentFactoryResolver = inject(ComponentFactoryResolver);
+  private readonly injector = inject(Injector);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly appRef = inject(ApplicationRef);
+
+  readonly position = input<'left' | 'right'>();
 
   private portalOutlet: DomPortalOutlet;
-  @ViewChild(CdkPortal) portal: CdkPortal;
+  readonly portal = viewChild.required(CdkPortal);
 
-  constructor(
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private injector: Injector,
-    private appRef: ApplicationRef
-  ) {
+  constructor() {
     afterNextRender(() => {
       this.portalOutlet = new DomPortalOutlet(
         document.querySelector(
-          this.position === 'left'
+          this.position() === 'left'
             ? '#layout-left-custom-items'
             : '#layout-right-custom-items'
         )!,
@@ -42,11 +44,9 @@ export class LayoutToolbarMenuComponent implements OnDestroy {
         this.appRef,
         this.injector
       );
-      this.portalOutlet.attach(this.portal);
+      this.portalOutlet.attach(this.portal());
     });
-  }
 
-  ngOnDestroy() {
-    this.portalOutlet?.detach();
+    this.destroyRef.onDestroy(() => this.portalOutlet?.detach());
   }
 }
