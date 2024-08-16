@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -21,7 +20,7 @@ import {
       "
       [preserveDrawingBuffer]="true"
     >
-      <ng-container *ngIf="visible">
+      @if (visible) {
         <mgl-control>
           <button
             mat-fab
@@ -42,7 +41,7 @@ import {
         ></mgl-control>
         <mgl-control mglNavigation position="top-right"></mgl-control>
         <mgl-control mglScale position="top-right"></mgl-control>
-      </ng-container>
+      }
 
       <mgl-control position="bottom-right">
         <button
@@ -60,7 +59,6 @@ import {
   standalone: true,
   imports: [
     MapComponent,
-    NgIf,
     ControlComponent,
     MatButtonModule,
     AttributionControlDirective,

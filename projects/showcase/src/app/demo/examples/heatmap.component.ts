@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { CircleLayerSpecification, LayerSpecification } from 'maplibre-gl';
+import { CircleLayerSpecification } from 'maplibre-gl';
 import {
   MapComponent,
   GeoJSONSourceComponent,
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
-import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'showcase-demo',
@@ -18,7 +17,7 @@ import { NgIf, NgFor } from '@angular/common';
       [center]="[-103.59179687498357, 40.66995747013945]"
       [preserveDrawingBuffer]="true"
     >
-      <ng-container *ngIf="earthquakes">
+      @if (earthquakes) {
         <mgl-geojson-source
           id="earthquakes"
           [data]="earthquakes"
@@ -26,14 +25,15 @@ import { NgIf, NgFor } from '@angular/common';
           [clusterMaxZoom]="15"
           [clusterRadius]="20"
         ></mgl-geojson-source>
-        <mgl-layer
-          *ngFor="let layer of clusterLayers"
-          [id]="layer.id"
-          [type]="layer.type"
-          source="earthquakes"
-          [filter]="layer.filter"
-          [paint]="layer.paint"
-        ></mgl-layer>
+        @for (layer of clusterLayers; track layer) {
+          <mgl-layer
+            [id]="layer.id"
+            [type]="layer.type"
+            source="earthquakes"
+            [filter]="layer.filter"
+            [paint]="layer.paint"
+          ></mgl-layer>
+        }
         <mgl-layer
           id="unclustered-point"
           type="circle"
@@ -45,16 +45,16 @@ import { NgIf, NgFor } from '@angular/common';
             'circle-blur': 1
           }"
         ></mgl-layer>
-      </ng-container>
+      }
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
   standalone: true,
-  imports: [MapComponent, NgIf, GeoJSONSourceComponent, NgFor, LayerComponent],
+  imports: [MapComponent, GeoJSONSourceComponent, LayerComponent],
 })
 export class HeatMapComponent implements OnInit {
   earthquakes: object;
-  clusterLayers: LayerSpecification[];
+  clusterLayers: CircleLayerSpecification[];
 
   async ngOnInit() {
     this.earthquakes = await import('./earthquakes.geo.json');

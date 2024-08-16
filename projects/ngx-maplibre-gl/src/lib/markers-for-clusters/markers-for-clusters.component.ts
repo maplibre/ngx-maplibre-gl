@@ -15,7 +15,7 @@ import { fromEvent, merge, Subscription } from 'rxjs';
 import { filter, startWith, switchMap } from 'rxjs/operators';
 import { MapService } from '../map/map.service';
 import { MarkerComponent } from '../marker/marker.component';
-import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import { LayerComponent } from '../layer/layer.component';
 
 /**
@@ -73,29 +73,26 @@ let uniqId = 0;
       type="circle"
       [paint]="{ 'circle-radius': 0 }"
     ></mgl-layer>
-    <ng-container
-      *ngFor="let feature of clusterPoints; trackBy: trackByClusterPoint"
-    >
-      <ng-container *ngIf="feature.properties.cluster">
+    @for (feature of clusterPoints; track feature.id) {
+      @if (feature.properties.cluster) {
         <mgl-marker [feature]="feature">
           <ng-container
             *ngTemplateOutlet="clusterPointTpl; context: { $implicit: feature }"
           ></ng-container>
         </mgl-marker>
-      </ng-container>
-      <ng-container *ngIf="!feature.properties.cluster">
+      } @else {
         <mgl-marker [feature]="feature">
           <ng-container
             *ngTemplateOutlet="pointTpl; context: { $implicit: feature }"
           ></ng-container>
         </mgl-marker>
-      </ng-container>
-    </ng-container>
-  `,
+      }
+    }
+    `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
   standalone: true,
-  imports: [LayerComponent, NgFor, NgIf, MarkerComponent, NgTemplateOutlet],
+  imports: [LayerComponent, MarkerComponent, NgTemplateOutlet],
 })
 export class MarkersForClustersComponent
   implements OnDestroy, AfterContentInit {
@@ -152,10 +149,6 @@ export class MarkersForClustersComponent
 
   ngOnDestroy() {
     this.sub.unsubscribe();
-  }
-
-  trackByClusterPoint(_index: number, clusterPoint: { id: number }) {
-    return clusterPoint.id;
   }
 
   private updateCluster() {

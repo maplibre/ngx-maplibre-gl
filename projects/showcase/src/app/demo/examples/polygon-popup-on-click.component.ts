@@ -6,7 +6,6 @@ import {
   PopupComponent,
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'showcase-demo',
@@ -36,18 +35,16 @@ import { NgIf } from '@angular/common';
         (layerMouseLeave)="cursorStyle = ''"
         (layerClick)="onClick($event)"
       ></mgl-layer>
-      <mgl-popup
-        *ngIf="selectedElement && selectedLngLat"
-        [lngLat]="selectedLngLat"
-        [closeOnClick]="false"
-      >
-        <span [innerHTML]="selectedElement?.name"></span>
-      </mgl-popup>
+      @if (selectedElement && selectedLngLat) {
+        <mgl-popup [lngLat]="selectedLngLat" [closeOnClick]="false">
+          <span [innerHTML]="selectedElement?.name"></span>
+        </mgl-popup>
+      }
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
   standalone: true,
-  imports: [MapComponent, LayerComponent, NgIf, PopupComponent],
+  imports: [MapComponent, LayerComponent, PopupComponent],
 })
 export class PolygonPopupOnClickComponent {
   selectedElement: GeoJsonProperties | null;

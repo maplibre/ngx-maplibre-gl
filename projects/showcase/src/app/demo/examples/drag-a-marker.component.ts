@@ -6,7 +6,6 @@ import {
   ControlComponent,
   MarkerComponent,
 } from '@maplibre/ngx-maplibre-gl';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'showcase-demo',
@@ -24,23 +23,19 @@ import { NgIf } from '@angular/common';
         [draggable]="true"
         (markerDragEnd)="onDragEnd($event)"
       ></mgl-marker>
-      <mgl-control *ngIf="coordinates" position="bottom-left">
-        <mat-card appearance="outlined">
-          <div>Longitude:&nbsp;{{ coordinates[0] }}</div>
-          <div>Latitude:&nbsp;{{ coordinates[1] }}</div>
-        </mat-card>
-      </mgl-control>
+      @if (coordinates) {
+        <mgl-control position="bottom-left">
+          <mat-card appearance="outlined">
+            <div>Longitude:&nbsp;{{ coordinates[0] }}</div>
+            <div>Latitude:&nbsp;{{ coordinates[1] }}</div>
+          </mat-card>
+        </mgl-control>
+      }
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
   standalone: true,
-  imports: [
-    MapComponent,
-    MarkerComponent,
-    NgIf,
-    ControlComponent,
-    MatCardModule,
-  ],
+  imports: [MapComponent, MarkerComponent, ControlComponent, MatCardModule],
 })
 export class DragAMarkerComponent {
   coordinates: number[];

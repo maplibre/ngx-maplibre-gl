@@ -4,7 +4,6 @@ import {
   ImageComponent,
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'showcase-demo',
@@ -21,33 +20,34 @@ import { NgIf } from '@angular/common';
         (imageLoaded)="imageLoaded = true"
       >
       </mgl-image>
-      <mgl-layer
-        *ngIf="imageLoaded"
-        id="points"
-        type="symbol"
-        [source]="{
-          type: 'geojson',
-          data: {
-            type: 'FeatureCollection',
-            features: [
-              {
-                type: 'Feature',
-                geometry: {
-                  type: 'Point',
-                  coordinates: [0, 0]
-                }
-              }
-            ]
-          }
-        }"
-        [layout]="{ 'icon-image': 'cat', 'icon-size': 0.25 }"
-      >
-      </mgl-layer>
+      @if (imageLoaded) {
+        <mgl-layer
+          id="points"
+          type="symbol"
+          [source]="{
+            type: 'geojson',
+            data: {
+              type: 'FeatureCollection',
+              features: [
+                {
+                  type: 'Feature',
+                  geometry: {
+                    type: 'Point',
+                    coordinates: [0, 0],
+                  },
+                },
+              ],
+            },
+          }"
+          [layout]="{ 'icon-image': 'cat', 'icon-size': 0.25 }"
+        >
+        </mgl-layer>
+      }
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
   standalone: true,
-  imports: [MapComponent, ImageComponent, NgIf, LayerComponent],
+  imports: [MapComponent, ImageComponent, LayerComponent],
 })
 export class AddImageComponent {
   imageLoaded = false;
