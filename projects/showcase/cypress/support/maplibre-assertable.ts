@@ -45,5 +45,5 @@ export class MapLibreAssertable<T> extends Assertable<T> {
       height: number;
       width: number;
     }>
-  ) => this.compareSnapshots(snapshot).shouldBeGreaterThen(0);
+  ) => this.compareSnapshots(snapshot).shouldBeGreaterThan(0);
 }

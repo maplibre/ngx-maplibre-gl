@@ -13,14 +13,23 @@ import { MapService } from '../map/map.service';
 export class CustomControl implements IControl {
   constructor(private container: HTMLElement) {}
 
+  /**
+   * @returns HTMLElement
+   */
   onAdd() {
     return this.container;
   }
 
+  /**
+   * @returns HTMLElement
+   */
   onRemove() {
     return this.container.parentNode!.removeChild(this.container);
   }
 
+  /**
+   * @returns ControlPosition
+   */
   getDefaultPosition(): ControlPosition {
     return 'top-right';
   }
