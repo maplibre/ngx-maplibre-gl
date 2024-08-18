@@ -6,9 +6,7 @@ import {
   Component,
   ElementRef,
   NgZone,
-  OnDestroy,
-  ViewChild,
-} from '@angular/core';
+  OnDestroy, viewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import StackBlitzSDK, { VM } from '@stackblitz/sdk';
 import { Subscription, forkJoin, from, of } from 'rxjs';
@@ -52,7 +50,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   imports: [MatProgressSpinnerModule],
 })
 export class StackblitzEditComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('container') stackblitzContainer: ElementRef;
+  stackblitzContainer = viewChild.required<ElementRef<HTMLDivElement>>('container');
 
   loading = true;
 
@@ -126,7 +124,7 @@ export class StackblitzEditComponent implements AfterViewInit, OnDestroy {
     );
     await this.zone.runOutsideAngular(async () => {
       this.vm = await StackBlitzSDK.embedProject(
-        this.stackblitzContainer.nativeElement,
+        this.stackblitzContainer().nativeElement,
         project,
         {
           hideExplorer: true,

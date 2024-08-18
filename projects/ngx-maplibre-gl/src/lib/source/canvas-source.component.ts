@@ -1,95 +1,78 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
   OnChanges,
-  OnDestroy,
-  OnInit,
   SimpleChanges,
+  inject,
+  input,
 } from '@angular/core';
-import { CanvasSource, CanvasSourceSpecification } from 'maplibre-gl';
-import { fromEvent, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { MapService } from '../map/map.service';
+import type { CanvasSource, CanvasSourceSpecification } from 'maplibre-gl';
+import { SourceDirective as SourceDirective } from './source.directive';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { tap } from 'rxjs';
 
 /**
  * `mgl-canvas-source` - a canvas source component
  * @see [canvas](https://maplibre.org/maplibre-style-spec/sources/#canvas)
- * 
+ *
  * @category Source Components
  */
 @Component({
   selector: 'mgl-canvas-source',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
   standalone: true,
 })
-export class CanvasSourceComponent
-  implements OnInit, OnDestroy, OnChanges, CanvasSourceSpecification {
-  /**  Init input */
-  @Input() id: string;
+export class CanvasSourceComponent implements OnChanges {
+  /** Init injections */
+  private readonly sourceDirective = inject(SourceDirective);
 
   /** Dynamic input */
-  @Input() coordinates: CanvasSourceSpecification['coordinates'];
+  readonly coordinates =
+    input.required<CanvasSourceSpecification['coordinates']>();
+
   /** Dynamic input */
-  @Input() canvas: CanvasSourceSpecification['canvas'];
+  readonly canvas = input.required<CanvasSourceSpecification['canvas']>();
+
   /** Dynamic input */
-  @Input() animate?: CanvasSourceSpecification['animate'];
+  readonly animate = input<CanvasSourceSpecification['animate']>();
 
-  type: CanvasSourceSpecification['type'] = 'canvas';
-  private sourceAdded = false;
-  private sub = new Subscription();
-
-  constructor(private mapService: MapService) {}
-
-  ngOnInit() {
-    const sub1 = this.mapService.mapLoaded$.subscribe(() => {
-      this.init();
-      const sub = fromEvent(this.mapService.mapInstance, 'styledata')
-        .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id)))
-        .subscribe(() => {
-          this.init();
-        });
-      this.sub.add(sub);
-    });
-    this.sub.add(sub1);
+  constructor() {
+    this.sourceDirective.loadSource$
+      .pipe(
+        tap(() =>
+          this.sourceDirective.addSource(this.getCanvasSourceSpecification() as any)
+        ),
+        takeUntilDestroyed()
+      )
+      .subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.sourceAdded) {
+    if (!this.sourceDirective.sourceId()) {
       return;
     }
     if (
       (changes.canvas && !changes.canvas.isFirstChange()) ||
       (changes.animate && !changes.animate.isFirstChange())
     ) {
-      this.ngOnDestroy();
-      this.ngOnInit();
+      this.sourceDirective.refresh();
     } else if (changes.coordinates && !changes.coordinates.isFirstChange()) {
-      const source = this.mapService.getSource<CanvasSource>(this.id);
+      const source = this.sourceDirective.getSource<CanvasSource>();
       if (source === undefined) {
         return;
       }
-      source.setCoordinates(this.coordinates);
+      source.setCoordinates(changes.coordinates.currentValue);
     }
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-    if (this.sourceAdded) {
-      this.mapService.removeSource(this.id);
-      this.sourceAdded = false;
-    }
-  }
-
-  private init() {
-    const source: CanvasSourceSpecification = {
+  getCanvasSourceSpecification(): CanvasSourceSpecification {
+    return {
       type: 'canvas',
-      coordinates: this.coordinates,
-      canvas: this.canvas,
-      animate: this.animate,
+      coordinates: this.coordinates(),
+      canvas: this.canvas(),
+      animate: this.animate(),
     };
-    this.mapService.addSource(this.id, source as any);
-    this.sourceAdded = true;
   }
 }

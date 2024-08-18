@@ -1,53 +1,54 @@
 import {
   Component,
   forwardRef,
-  Inject,
-  Input,
   OnDestroy,
   OnInit,
   ChangeDetectionStrategy,
+  input,
+  model,
+  inject,
 } from '@angular/core';
 import { GeoJSONSourceComponent } from './geojson-source.component';
 
 /**
  * `mgl-feature` - a feature component
  * [ngx] inside {@link GeoJSONSourceComponent} only
- * 
+ *
  * @category Source Components
  */
 @Component({
-    selector: 'mgl-feature',
-    template: '',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
+  selector: 'mgl-feature',
+  template: '',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
-export class FeatureComponent
-  implements OnInit, OnDestroy, GeoJSON.Feature<GeoJSON.GeometryObject> {
+export class FeatureComponent implements OnInit, OnDestroy {
+  /** Init injection */
+  private readonly geoJSONSourceComponent = inject<GeoJSONSourceComponent>(
+    forwardRef(() => GeoJSONSourceComponent)
+  );
   /** Init input */
-  @Input() id?: number; // FIXME number only for now https://github.com/mapbox/mapbox-gl-js/issues/2716
+  readonly id = model<number>(); 
   /** Init input */
-  @Input() geometry: GeoJSON.GeometryObject;
+  readonly geometry = input.required<GeoJSON.GeometryObject>();
+  
   /** Init input */
-  @Input() properties: any;
-  type: 'Feature' = 'Feature';
+  readonly properties = input<GeoJSON.Feature<GeoJSON.GeometryObject>['properties']>();
 
   private feature: GeoJSON.Feature<GeoJSON.GeometryObject>;
 
-  constructor(
-    @Inject(forwardRef(() => GeoJSONSourceComponent))
-    private geoJSONSourceComponent: GeoJSONSourceComponent
-  ) {}
-
   ngOnInit() {
-    if (!this.id) {
-      this.id = this.geoJSONSourceComponent._getNewFeatureId();
+    const id = this.id();
+    if (!id) {
+      this.id.set(this.geoJSONSourceComponent._getNewFeatureId());
     }
+    const properties = this.properties();
     this.feature = {
-      type: this.type,
-      geometry: this.geometry,
-      properties: this.properties ? this.properties : {},
+      type: 'Feature',
+      geometry: this.geometry(),
+      properties: properties ?? {},
     };
-    this.feature.id = this.id;
+    this.feature.id = this.id();
     this.geoJSONSourceComponent._addFeature(this.feature);
   }
 
@@ -57,6 +58,6 @@ export class FeatureComponent
 
   updateCoordinates(coordinates: number[]) {
     (<GeoJSON.Point>this.feature.geometry).coordinates = coordinates;
-    this.geoJSONSourceComponent.updateFeatureData.next(undefined);
+    this.geoJSONSourceComponent.updateFeatureData();
   }
 }

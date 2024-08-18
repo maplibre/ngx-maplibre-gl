@@ -1,20 +1,23 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
+  DestroyRef,
   OnChanges,
   OnDestroy,
   OnInit,
   SimpleChanges,
+  inject,
+  input,
+  signal,
 } from '@angular/core';
-import { ImageSourceSpecification, ImageSource } from 'maplibre-gl';
-import { Subscription } from 'rxjs';
+import type { ImageSourceSpecification, ImageSource } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
  * `mgl-image-source` - an image source component
  * @see [image](https://maplibre.org/maplibre-style-spec/sources/#image)
- * 
+ *
  * @category Source Components
  */
 @Component({
@@ -23,59 +26,60 @@ import { MapService } from '../map/map.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class ImageSourceComponent
-  implements OnInit, OnDestroy, OnChanges, ImageSourceSpecification {
-  /* Init inputs */
-  @Input() id: string;
+export class ImageSourceComponent implements OnInit, OnDestroy, OnChanges {
+  /** Init injection */
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly mapService = inject(MapService);
 
-  /* Dynamic inputs */
-  @Input() url: ImageSourceSpecification['url'];
-  @Input() coordinates: ImageSourceSpecification['coordinates'];
+  /** Init inputs */
+  readonly id = input.required<string>();
 
-  type: ImageSourceSpecification['type'] = 'image';
+  /** Dynamic inputs */
+  readonly url = input.required<ImageSourceSpecification['url']>();
+  readonly coordinates =
+    input.required<ImageSourceSpecification['coordinates']>();
 
-  private sub: Subscription;
-  private sourceId?: string;
+  readonly type: ImageSourceSpecification['type'] = 'image';
 
-  constructor(private mapService: MapService) {}
+  private readonly sourceId = signal<string | null>(null);
 
   ngOnInit() {
-    this.sub = this.mapService.mapLoaded$.subscribe(() => this.init());
+    this.mapService.mapLoaded$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.addSource());
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.sourceId === undefined) {
+    const sourceId = this.sourceId();
+    if (sourceId === null) {
       return;
     }
-    const source = this.mapService.getSource<ImageSource>(this.sourceId);
+    const source = this.mapService.getSource<ImageSource>(sourceId);
     if (source === undefined) {
       return;
     }
     source.updateImage({
-      url: changes.url === undefined ? (undefined as any) : this.url,
+      url: changes.url === undefined ? (undefined as any) : this.url(),
       coordinates:
-        changes.coordinates === undefined ? undefined : this.coordinates,
+        changes.coordinates === undefined ? undefined : this.coordinates(),
     });
   }
 
   ngOnDestroy() {
-    if (this.sub !== undefined) {
-      this.sub.unsubscribe();
-    }
-
-    if (this.sourceId !== undefined) {
-      this.mapService.removeSource(this.sourceId);
-      this.sourceId = undefined;
+    const sourceId = this.sourceId();
+    if (sourceId !== null) {
+      this.mapService.removeSource(sourceId);
+      this.sourceId.set(null);
     }
   }
 
-  private init() {
+  private addSource() {
     const imageSource: ImageSourceSpecification = {
       type: 'image',
-      url: this.url,
-      coordinates: this.coordinates,
+      url: this.url(),
+      coordinates: this.coordinates(),
     };
-    this.mapService.addSource(this.id, imageSource);
-    this.sourceId = this.id;
+    this.mapService.addSource(this.id(), imageSource);
+    this.sourceId.set(this.id());
   }
 }

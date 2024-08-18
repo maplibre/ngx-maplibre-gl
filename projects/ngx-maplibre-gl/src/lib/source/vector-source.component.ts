@@ -1,21 +1,20 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
   OnChanges,
-  OnDestroy,
-  OnInit,
   SimpleChanges,
+  inject,
+  input,
 } from '@angular/core';
-import { VectorSourceSpecification, VectorTileSource } from 'maplibre-gl';
-import { fromEvent, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { MapService } from '../map/map.service';
+import type { VectorSourceSpecification, VectorTileSource } from 'maplibre-gl';
+import { SourceDirective } from './source.directive';
+import { tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
  * `mgl-vector-source` - a vector source component
  * @see [vector](https://maplibre.org/maplibre-style-spec/sources/#vector)
- * 
+ *
  * @category Source Components
  */
 @Component({
@@ -23,44 +22,35 @@ import { MapService } from '../map/map.service';
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
+  hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
 })
-export class VectorSourceComponent
-  implements OnInit, OnDestroy, OnChanges, VectorSourceSpecification {
-  /* Init inputs */
-  @Input() id: string;
+export class VectorSourceComponent implements OnChanges {
+  /** Init injections */
+  private readonly sourceDirective = inject(SourceDirective);
 
-  /* Dynamic inputs */
-  @Input() url?: VectorSourceSpecification['url'];
-  @Input() tiles?: VectorSourceSpecification['tiles'];
-  @Input() bounds?: VectorSourceSpecification['bounds'];
-  @Input() scheme?: VectorSourceSpecification['scheme'];
-  @Input() minzoom?: VectorSourceSpecification['minzoom'];
-  @Input() maxzoom?: VectorSourceSpecification['maxzoom'];
-  @Input() attribution?: VectorSourceSpecification['attribution'];
-  @Input() promoteId?: VectorSourceSpecification['promoteId'];
+  /** Dynamic inputs */
+  readonly url = input<VectorSourceSpecification['url']>();
+  readonly tiles = input<VectorSourceSpecification['tiles']>();
+  readonly bounds = input<VectorSourceSpecification['bounds']>();
+  readonly scheme = input<VectorSourceSpecification['scheme']>();
+  readonly minzoom = input<VectorSourceSpecification['minzoom']>();
+  readonly maxzoom = input<VectorSourceSpecification['maxzoom']>();
+  readonly attribution = input<VectorSourceSpecification['attribution']>();
+  readonly promoteId = input<VectorSourceSpecification['promoteId']>();
 
-  type: VectorSourceSpecification['type'] = 'vector';
-
-  private sourceAdded = false;
-  private sub = new Subscription();
-
-  constructor(private mapService: MapService) {}
-
-  ngOnInit() {
-    const sub1 = this.mapService.mapLoaded$.subscribe(() => {
-      this.init();
-      const sub = fromEvent(this.mapService.mapInstance, 'styledata')
-        .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id)))
-        .subscribe(() => {
-          this.init();
-        });
-      this.sub.add(sub);
-    });
-    this.sub.add(sub1);
+  constructor() {
+    this.sourceDirective.loadSource$
+      .pipe(
+        tap(() =>
+          this.sourceDirective.addSource(this.getVectorSourceSpecification())
+        ),
+        takeUntilDestroyed()
+      )
+      .subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.sourceAdded) {
+    if (!this.sourceDirective.sourceId()) {
       return;
     }
 
@@ -72,47 +62,38 @@ export class VectorSourceComponent
       (changes.attribution && !changes.attribution.isFirstChange()) ||
       (changes.promoteId && !changes.promoteId.isFirstChange())
     ) {
-      this.ngOnDestroy();
-      this.ngOnInit();
+      this.sourceDirective.refresh();
     } else if (
       (changes.url && !changes.url.isFirstChange()) ||
       (changes.tiles && !changes.tiles.isFirstChange())
     ) {
-      const source = this.mapService.getSource<VectorTileSource>(this.id);
+      const source = this.sourceDirective.getSource<VectorTileSource>();
       if (source === undefined) {
         return;
       }
-      if (changes.url && this.url) {
-        source.setUrl(this.url);
+      const url = this.url();
+      if (changes.url && url) {
+        source.setUrl(url);
       }
 
-      if (changes.tiles && this.tiles) {
-        source.setTiles(this.tiles);
+      const tiles = this.tiles();
+      if (changes.tiles && tiles) {
+        source.setTiles(tiles);
       }
     }
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-    if (this.sourceAdded) {
-      this.mapService.removeSource(this.id);
-      this.sourceAdded = false;
-    }
-  }
-
-  private init() {
-    const source: VectorSourceSpecification = {
-      type: this.type,
-      url: this.url,
-      tiles: this.tiles,
-      bounds: this.bounds,
-      scheme: this.scheme,
-      minzoom: this.minzoom,
-      maxzoom: this.maxzoom,
-      attribution: this.attribution,
-      promoteId: this.promoteId,
+  getVectorSourceSpecification(): VectorSourceSpecification {
+    return {
+      type: 'vector',
+      url: this.url(),
+      tiles: this.tiles(),
+      bounds: this.bounds(),
+      scheme: this.scheme(),
+      minzoom: this.minzoom(),
+      maxzoom: this.maxzoom(),
+      attribution: this.attribution(),
+      promoteId: this.promoteId(),
     };
-    this.mapService.addSource(this.id, source);
-    this.sourceAdded = true;
   }
 }

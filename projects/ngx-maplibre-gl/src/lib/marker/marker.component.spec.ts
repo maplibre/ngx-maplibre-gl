@@ -5,6 +5,17 @@ import { of } from 'rxjs';
 import { MapService } from '../map/map.service';
 import { MarkerComponent } from './marker.component';
 
+const getMapServiceStub = () =>
+  jasmine.createSpyObj(
+    [
+      'addMarker',
+      'removeMarker',
+    ],
+    {
+      mapCreated$: of(true),
+    }
+  );
+
 @Component({
   template: `
     <mgl-marker [offset]="offset" [lngLat]="lngLat" [className]="className">
@@ -21,23 +32,19 @@ class MarkerTestComponent {
 }
 
 describe('MarkerComponent', () => {
-  class MapServiceSpy {
-    addMarker = jasmine.createSpy('addMarker');
-    removeMarker = jasmine.createSpy('removeMarker');
-    mapCreated$ = of(undefined);
-  }
-
-  let msSpy: MapServiceSpy;
+  let mapServiceStub: jasmine.SpyObj<MapService>;
   let component: MarkerTestComponent;
   let fixture: ComponentFixture<MarkerTestComponent>;
 
   beforeEach(waitForAsync(() => {
+    mapServiceStub = getMapServiceStub();
+
     TestBed.configureTestingModule({
       imports: [MarkerTestComponent],
     })
       .overrideComponent(MarkerTestComponent, {
         set: {
-          providers: [{ provide: MapService, useClass: MapServiceSpy }],
+          providers: [{ provide: MapService, useValue: mapServiceStub }],
         },
       })
       .compileComponents();
@@ -46,19 +53,18 @@ describe('MarkerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MarkerTestComponent);
     component = fixture.componentInstance;
-    msSpy = fixture.debugElement.injector.get<MapService>(MapService) as any;
   });
 
   describe('Init/Destroy tests', () => {
     it('should init with custom inputs', () => {
       component.lngLat = [-61, -15];
       fixture.detectChanges();
-      expect(msSpy.addMarker).toHaveBeenCalled();
+      expect(mapServiceStub.addMarker).toHaveBeenCalled();
     });
 
     it('should remove marker on destroy', () => {
       fixture.destroy();
-      expect(msSpy.removeMarker).toHaveBeenCalled();
+      expect(mapServiceStub.removeMarker).toHaveBeenCalled();
     });
 
     it('should apply classes', () => {

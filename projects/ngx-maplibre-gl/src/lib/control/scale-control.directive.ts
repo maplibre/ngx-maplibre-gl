@@ -1,20 +1,21 @@
 import {
-  AfterContentInit,
   Directive,
-  Host,
-  Input,
   OnChanges,
   SimpleChanges,
+  afterNextRender,
+  inject,
+  input,
 } from '@angular/core';
-import { ScaleControl, ScaleControlOptions } from 'maplibre-gl';
+import { ScaleControl, type Unit, type ScaleControlOptions } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
+import { keepAvailableObjectValues } from '../shared/utils/functions/object.fn';
 
 /**
  * `mglScale` - a scale control directive
- * 
+ *
  * @category Directives
- * 
+ *
  * @see [Scale](https://maplibre.org/ngx-maplibre-gl/demo/ngx-scale-control)
  * @see [ScaleControl](https://maplibre.org/maplibre-gl-js/docs/API/classes/ScaleControl)
  */
@@ -22,17 +23,39 @@ import { ControlComponent } from './control.component';
   selector: '[mglScale]',
   standalone: true,
 })
-export class ScaleControlDirective implements AfterContentInit, OnChanges {
+export class ScaleControlDirective implements OnChanges {
+  /* Init injection */
+  private readonly mapService = inject(MapService);
+  private readonly controlComponent = inject<ControlComponent<ScaleControl>>(
+    ControlComponent,
+    { host: true }
+  );
+
   /* Init inputs */
-  @Input() maxWidth?: number;
+  readonly maxWidth = input<number>();
 
   /* Dynamic inputs */
-  @Input() unit?: 'imperial' | 'metric' | 'nautical';
+  readonly unit = input<Unit>();
 
-  constructor(
-    private mapService: MapService,
-    @Host() private controlComponent: ControlComponent<ScaleControl>
-  ) {}
+  constructor() {
+    afterNextRender(() => {
+      this.mapService.mapCreated$.subscribe(() => {
+        if (this.controlComponent.control) {
+          throw new Error('Another control is already set for this control');
+        }
+        const options = keepAvailableObjectValues<ScaleControlOptions>({
+          maxWidth: this.maxWidth(),
+          unit: this.unit(),
+        });
+
+        this.controlComponent.control = new ScaleControl(options);
+        this.mapService.addControl(
+          this.controlComponent.control,
+          this.controlComponent.position()
+        );
+      });
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.unit && !changes.unit.isFirstChange()) {
@@ -40,25 +63,5 @@ export class ScaleControlDirective implements AfterContentInit, OnChanges {
         changes.unit.currentValue
       );
     }
-  }
-
-  ngAfterContentInit() {
-    this.mapService.mapCreated$.subscribe(() => {
-      if (this.controlComponent.control) {
-        throw new Error('Another control is already set for this control');
-      }
-      const options: ScaleControlOptions = {};
-      if (this.maxWidth !== undefined) {
-        options.maxWidth = this.maxWidth;
-      }
-      if (this.unit !== undefined) {
-        options.unit = this.unit;
-      }
-      this.controlComponent.control = new ScaleControl(options);
-      this.mapService.addControl(
-        this.controlComponent.control,
-        this.controlComponent.position
-      );
-    });
   }
 }

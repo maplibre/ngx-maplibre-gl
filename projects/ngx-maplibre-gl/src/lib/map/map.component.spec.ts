@@ -1,4 +1,10 @@
-import { ApplicationRef, createComponent, EnvironmentInjector, SimpleChange } from '@angular/core';
+import {
+  ApplicationRef,
+  ComponentRef,
+  EnvironmentInjector,
+  SimpleChange,
+  createComponent,
+} from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
@@ -6,31 +12,39 @@ import {
   TestBed,
   waitForAsync,
 } from '@angular/core/testing';
-import { ReplaySubject } from 'rxjs';
+import { of } from 'rxjs';
 import { MapComponent } from './map.component';
 import { MapService } from './map.service';
 
-describe('MapComponent', () => {
-  class MapServiceSpy {
-    setup = jasmine.createSpy('setup');
-    updateMinZoom = jasmine.createSpy('updateMinZoom');
-    updateMaxPitch = jasmine.createSpy('updateMaxPitch');
-    updateMinPitch = jasmine.createSpy('updateMinPitch');
-    destroyMap = jasmine.createSpy('destroyMap');
-    mapCreated$ = new ReplaySubject(1);
-  }
+const getMapServiceStub = () =>
+  jasmine.createSpyObj(
+    [
+      'setup',
+      'updateMinZoom',
+      'updateMaxPitch',
+      'updateMinPitch',
+      'destroyMap',
+    ],
+    {
+      mapCreated$: of(true),
+    }
+  );
 
-  let msSpy: MapServiceSpy;
+describe('MapComponent', () => {
+  let mapServiceStub: jasmine.SpyObj<MapService>;
   let component: MapComponent;
+  let componentRef: ComponentRef<MapComponent>;
   let fixture: ComponentFixture<MapComponent>;
 
   beforeEach(waitForAsync(() => {
+    mapServiceStub = getMapServiceStub();
+
     TestBed.configureTestingModule({
       imports: [MapComponent],
     })
       .overrideComponent(MapComponent, {
         set: {
-          providers: [{ provide: MapService, useClass: MapServiceSpy }],
+          providers: [{ provide: MapService, useValue: mapServiceStub }],
         },
       })
       .compileComponents();
@@ -39,62 +53,61 @@ describe('MapComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MapComponent);
     component = fixture.debugElement.componentInstance;
-    msSpy = fixture.debugElement.injector.get<MapService>(MapService) as any;
+    componentRef = fixture.componentRef;
+    componentRef.setInput('style', 'style');
+    fixture.detectChanges();
   });
 
   describe('Init tests', () => {
-    it('should init', () => {
-      fixture.detectChanges();
-      expect(msSpy.setup.calls.count()).toBe(1);
-    });
-
     it('should init with custom inputs', () => {
       // Since we don't want to trigger afterNextRender, we need to create the component in a different way
       const componentRef = createComponent(MapComponent, {
         environmentInjector: TestBed.inject(EnvironmentInjector),
       });
-      msSpy = componentRef.injector.get<MapService>(MapService) as any;
-      componentRef.instance.style = 'style';
+      componentRef.setInput('style', 'style');
       TestBed.inject(ApplicationRef).attachView(componentRef.hostView);
-      expect(msSpy.setup.calls.count()).toBe(0);
+      expect(mapServiceStub.setup.calls.count()).toBe(0);
       TestBed.inject(ApplicationRef).tick();
-      expect(msSpy.setup.calls.count()).toBe(1);
-      expect(msSpy.setup.calls.first().args[0].mapOptions.style).toEqual('style');
+      expect(mapServiceStub.setup.calls.count()).toBe(1);
+      expect(
+        mapServiceStub.setup.calls.first().args[0].mapOptions.style
+      ).toEqual('style');
     });
   });
 
   describe('Change tests', () => {
     it('should update minzoom', fakeAsync(() => {
-      msSpy.mapCreated$.next(undefined);
-      msSpy.mapCreated$.complete();
-      component.minZoom = 6;
+      componentRef.setInput('minZoom', 6);
+
+      fixture.detectChanges();
+
       component.ngOnChanges({
-        minZoom: new SimpleChange(null, component.minZoom, false),
+        minZoom: new SimpleChange(null, component.minZoom(), false),
       });
       flushMicrotasks();
-      expect(msSpy.updateMinZoom).toHaveBeenCalledWith(6);
+      expect(mapServiceStub.updateMinZoom).toHaveBeenCalledWith(6);
     }));
 
     it('should update minpitch', fakeAsync(() => {
-      msSpy.mapCreated$.next(undefined);
-      msSpy.mapCreated$.complete();
-      component.minPitch = 15;
+      componentRef.setInput('minPitch', 15);
+      fixture.detectChanges();
+
       component.ngOnChanges({
-        minPitch: new SimpleChange(null, component.minPitch, false),
+        minPitch: new SimpleChange(null, component.minPitch(), false),
       });
       flushMicrotasks();
-      expect(msSpy.updateMinPitch).toHaveBeenCalledWith(15);
+      expect(mapServiceStub.updateMinPitch).toHaveBeenCalledWith(15);
     }));
 
     it('should update maxpitch', fakeAsync(() => {
-      msSpy.mapCreated$.next(undefined);
-      msSpy.mapCreated$.complete();
-      component.maxPitch = 25;
+      componentRef.setInput('maxPitch', 25);
+      fixture.detectChanges();
+
       component.ngOnChanges({
-        maxPitch: new SimpleChange(null, component.maxPitch, false),
+        maxPitch: new SimpleChange(null, component.maxPitch(), false),
       });
       flushMicrotasks();
-      expect(msSpy.updateMaxPitch).toHaveBeenCalledWith(25);
+      expect(mapServiceStub.updateMaxPitch).toHaveBeenCalledWith(25);
     }));
   });
 });

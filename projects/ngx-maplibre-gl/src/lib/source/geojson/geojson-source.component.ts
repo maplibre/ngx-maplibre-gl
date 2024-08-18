@@ -1,24 +1,25 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
   OnChanges,
-  OnDestroy,
-  OnInit,
   SimpleChanges,
   NgZone,
+  inject,
+  input,
+  signal,
 } from '@angular/core';
-import { GeoJSONSource, GeoJSONSourceSpecification } from 'maplibre-gl';
-import { fromEvent, Subject, Subscription } from 'rxjs';
-import { debounceTime, filter } from 'rxjs/operators';
-import { MapService } from '../../map/map.service';
+import type { GeoJSONSource, GeoJSONSourceSpecification } from 'maplibre-gl';
+import { Subject } from 'rxjs';
+import { debounceTime, switchMap, tap } from 'rxjs/operators';
+import { SourceDirective } from '../source.directive';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
- * `mgl-geojson-source` - a geojson source component 
+ * `mgl-geojson-source` - a geojson source component
  * @see [geojson](https://maplibre.org/maplibre-gl-js/docs/API/classes/maplibregl.GeoJSONSource/)
- * 
+ *
  * @category Source Components
- * 
+ *
  * @example
  * ```html
  * ...
@@ -38,81 +39,89 @@ import { MapService } from '../../map/map.service';
  *     [clusterRadius]="50"
  *   ></mgl-geojson-source>
  * </mgl-map>
- * 
+ *
  * ```
  */
 @Component({
-    selector: 'mgl-geojson-source',
-    template: '',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
+  selector: 'mgl-geojson-source',
+  template: '',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
+  standalone: true,
 })
-export class GeoJSONSourceComponent
-  implements OnInit, OnDestroy, OnChanges, GeoJSONSourceSpecification {
-  /** Init input */
-  @Input() id: string;
+export class GeoJSONSourceComponent implements OnChanges {
+  /** Init injections */
+  private readonly sourceDirective = inject(SourceDirective);
+
+  /** Init injection */
+  private readonly ngZone = inject(NgZone);
 
   /** Dynamic input */
-  @Input() data: GeoJSONSourceSpecification['data'];
-  /** Dynamic input */
-  @Input() maxzoom?: GeoJSONSourceSpecification['maxzoom'];
-  /** Dynamic input */
-  @Input() attribution?: GeoJSONSourceSpecification['attribution'];
-  /** Dynamic input */
-  @Input() buffer?: GeoJSONSourceSpecification['buffer'];
-  /** Dynamic input */
-  @Input() tolerance?: GeoJSONSourceSpecification['tolerance'];
-  /** Dynamic input */
-  @Input() cluster?: GeoJSONSourceSpecification['cluster'];
-  /** Dynamic input */
-  @Input() clusterRadius?: GeoJSONSourceSpecification['clusterRadius'];
-  /** Dynamic input */
-  @Input() clusterMaxZoom?: GeoJSONSourceSpecification['clusterMaxZoom'];
-  /** Dynamic input */
-  @Input() clusterMinPoints?: GeoJSONSourceSpecification['clusterMinPoints'];
-  /** Dynamic input */
-  @Input() clusterProperties?: GeoJSONSourceSpecification['clusterProperties'];
-  /** Dynamic input */
-  @Input() lineMetrics?: GeoJSONSourceSpecification['lineMetrics'];
-  /** Dynamic input */
-  @Input() generateId?: GeoJSONSourceSpecification['generateId'];
-  /** Dynamic input */
-  @Input() promoteId?: GeoJSONSourceSpecification['promoteId'];
-  /** Dynamic input */
-  @Input() filter?: GeoJSONSourceSpecification['filter'];
+  readonly data = input<GeoJSONSourceSpecification['data']>({
+    type: 'FeatureCollection',
+    features: [],
+  });
 
-  /** @hidden */
-  type: GeoJSONSourceSpecification['type'] = 'geojson';
+  /** Dynamic input */
+  readonly maxzoom = input<GeoJSONSourceSpecification['maxzoom']>();
 
-  updateFeatureData = new Subject();
+  /** Dynamic input */
+  readonly attribution = input<GeoJSONSourceSpecification['attribution']>();
 
-  private sub = new Subscription();
-  private sourceAdded = false;
-  private featureIdCounter = 0;
+  /** Dynamic input */
+  readonly buffer = input<GeoJSONSourceSpecification['buffer']>();
 
-  constructor(private mapService: MapService, private zone: NgZone) {}
+  /** Dynamic input */
+  readonly tolerance = input<GeoJSONSourceSpecification['tolerance']>();
 
-  ngOnInit() {
-    if (!this.data) {
-      this.data = {
-        type: 'FeatureCollection',
-        features: [],
-      };
-    }
-    const sub1 = this.mapService.mapLoaded$.subscribe(() => {
-      this.init();
-      const sub = fromEvent(this.mapService.mapInstance, 'styledata')
-        .pipe(filter(() => !this.mapService.mapInstance.getSource(this.id)))
-        .subscribe(() => {
-          this.init();
-        });
-      this.sub.add(sub);
-    });
-    this.sub.add(sub1);
+  /** Dynamic input */
+  readonly cluster = input<GeoJSONSourceSpecification['cluster']>();
+
+  /** Dynamic input */
+  readonly clusterRadius = input<GeoJSONSourceSpecification['clusterRadius']>();
+
+  /** Dynamic input */
+  readonly clusterMaxZoom =
+    input<GeoJSONSourceSpecification['clusterMaxZoom']>();
+
+  /** Dynamic input */
+  readonly clusterMinPoints =
+    input<GeoJSONSourceSpecification['clusterMinPoints']>();
+
+  /** Dynamic input */
+  readonly clusterProperties =
+    input<GeoJSONSourceSpecification['clusterProperties']>();
+
+  /** Dynamic input */
+  readonly lineMetrics = input<GeoJSONSourceSpecification['lineMetrics']>();
+
+  /** Dynamic input */
+  readonly generateId = input<GeoJSONSourceSpecification['generateId']>();
+
+  /** Dynamic input */
+  readonly promoteId = input<GeoJSONSourceSpecification['promoteId']>();
+
+  /** Dynamic input */
+  readonly filter = input<GeoJSONSourceSpecification['filter']>();
+
+  private readonly updateFeatureDataSubject = new Subject<void>();
+
+  private readonly featureIdCounter = signal(0);
+
+  constructor() {
+    this.sourceDirective.loadSource$
+      .pipe(
+        tap(() =>
+          this.sourceDirective.addSource(this.getGeoJSONSourceSpecification())
+        ),
+        switchMap(() => this.updateFeature()),
+        takeUntilDestroyed()
+      )
+      .subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.sourceAdded) {
+    if (!this.sourceDirective.sourceId()) {
       return;
     }
     if (
@@ -131,23 +140,14 @@ export class GeoJSONSourceComponent
       (changes.promoteId && !changes.promoteId.isFirstChange()) ||
       (changes.filter && !changes.filter.isFirstChange())
     ) {
-      this.ngOnDestroy();
-      this.ngOnInit();
+      this.sourceDirective.refresh();
     }
     if (changes.data && !changes.data.isFirstChange()) {
-      const source = this.mapService.getSource<GeoJSONSource>(this.id);
+      const source = this.sourceDirective.getSource<GeoJSONSource>();
       if (source === undefined) {
         return;
       }
-      source.setData(this.data! as string | GeoJSON.GeoJSON);
-    }
-  }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-    if (this.sourceAdded) {
-      this.mapService.removeSource(this.id);
-      this.sourceAdded = false;
+      source.setData(changes.data.currentValue);
     }
   }
 
@@ -156,8 +156,8 @@ export class GeoJSONSourceComponent
    * @param clusterId The value of the cluster's cluster_id property.
    */
   async getClusterExpansionZoom(clusterId: number) {
-    const source = this.mapService.getSource<GeoJSONSource>(this.id);
-    return this.zone.run(async () => {
+    const source = this.sourceDirective.getSource<GeoJSONSource>()!;
+    return this.ngZone.run(async () => {
       return source.getClusterExpansionZoom(clusterId);
     });
   }
@@ -167,8 +167,8 @@ export class GeoJSONSourceComponent
    * @param clusterId The value of the cluster's cluster_id property.
    */
   async getClusterChildren(clusterId: number) {
-    const source = this.mapService.getSource<GeoJSONSource>(this.id);
-    return this.zone.run(async () => {
+    const source = this.sourceDirective.getSource<GeoJSONSource>()!;
+    return this.ngZone.run(async () => {
       return source.getClusterChildren(clusterId);
     });
   }
@@ -180,66 +180,69 @@ export class GeoJSONSourceComponent
    * @param offset The number of features to skip (e.g. for pagination).
    */
   async getClusterLeaves(clusterId: number, limit: number, offset: number) {
-    const source = this.mapService.getSource<GeoJSONSource>(this.id);
-    return this.zone.run(async () => {
-      return source.getClusterLeaves(
-        clusterId,
-        limit,
-        offset,
-      );
+    const source = this.sourceDirective.getSource<GeoJSONSource>()!;
+    return this.ngZone.run(async () => {
+      return source.getClusterLeaves(clusterId, limit, offset);
     });
   }
 
   _addFeature(feature: GeoJSON.Feature<GeoJSON.GeometryObject>) {
     const collection = <GeoJSON.FeatureCollection<GeoJSON.GeometryObject>>(
-      this.data
+      this.data()
     );
     collection.features.push(feature);
-    this.updateFeatureData.next(undefined);
+    this.updateFeatureDataSubject.next();
   }
 
   _removeFeature(feature: GeoJSON.Feature<GeoJSON.GeometryObject>) {
     const collection = <GeoJSON.FeatureCollection<GeoJSON.GeometryObject>>(
-      this.data
+      this.data()
     );
     const index = collection.features.indexOf(feature);
     if (index > -1) {
       collection.features.splice(index, 1);
     }
-    this.updateFeatureData.next(undefined);
+    this.updateFeatureDataSubject.next();
+  }
+
+  updateFeatureData() {
+    this.updateFeatureDataSubject.next();
   }
 
   _getNewFeatureId() {
-    return ++this.featureIdCounter;
+    this.featureIdCounter.update((featureIdCounter) => ++featureIdCounter);
+    return this.featureIdCounter();
   }
 
-  private init() {
-    const source: GeoJSONSourceSpecification = {
+  private getGeoJSONSourceSpecification(): GeoJSONSourceSpecification {
+    return {
       type: 'geojson',
-      data: this.data,
-      maxzoom: this.maxzoom,
-      attribution: this.attribution,
-      buffer: this.buffer,
-      tolerance: this.tolerance,
-      cluster: this.cluster,
-      clusterRadius: this.clusterRadius,
-      clusterMaxZoom: this.clusterMaxZoom,
-      clusterMinPoints: this.clusterMinPoints,
-      clusterProperties: this.clusterProperties,
-      lineMetrics: this.lineMetrics,
-      generateId: this.generateId,
-      promoteId: this.promoteId,
-      filter: this.filter,
+      data: this.data(),
+      maxzoom: this.maxzoom(),
+      attribution: this.attribution(),
+      buffer: this.buffer(),
+      tolerance: this.tolerance(),
+      cluster: this.cluster(),
+      clusterRadius: this.clusterRadius(),
+      clusterMaxZoom: this.clusterMaxZoom(),
+      clusterMinPoints: this.clusterMinPoints(),
+      clusterProperties: this.clusterProperties(),
+      lineMetrics: this.lineMetrics(),
+      generateId: this.generateId(),
+      promoteId: this.promoteId(),
+      filter: this.filter(),
     };
-    this.mapService.addSource(this.id, source);
-    const sub = this.updateFeatureData.pipe(debounceTime(0)).subscribe(() => {
-      const source = this.mapService.getSource<GeoJSONSource>(this.id);
-      if (source === undefined) {
-        return;
-      }
-      source.setData(this.data! as string | GeoJSON.GeoJSON);
-    });
-    this.sub.add(sub);
-    this.sourceAdded = true;
+  }
+
+  private updateFeature() {
+    return this.updateFeatureDataSubject.pipe(debounceTime(0)).pipe(
+      tap(() => {
+        const source = this.sourceDirective.getSource<GeoJSONSource>();
+        if (source === undefined) {
+          return;
+        }
+        source.setData(this.data()! as string | GeoJSON.GeoJSON);
+      })
+    );
   }
 }

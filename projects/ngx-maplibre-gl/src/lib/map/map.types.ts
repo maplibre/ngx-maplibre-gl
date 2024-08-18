@@ -1,6 +1,6 @@
 // Can't use MapEvent interface because some event name are changed (eg zoomChange)
-import { EventEmitter } from '@angular/core';
-import {
+import { OutputEmitterRef } from '@angular/core';
+import type {
   GeolocateControl,
   Map,
   MapLibreEvent,
@@ -21,98 +21,98 @@ export interface EventData {
 }
 
 export interface MapEvent {
-  mapResize: EventEmitter<MapLibreEvent & EventData>;
-  mapRemove: EventEmitter<MapLibreEvent & EventData>;
-  mapMouseDown: EventEmitter<MapMouseEvent & EventData>;
-  mapMouseUp: EventEmitter<MapMouseEvent & EventData>;
-  mapMouseMove: EventEmitter<MapMouseEvent & EventData>;
-  mapClick: EventEmitter<MapMouseEvent & EventData>;
-  mapDblClick: EventEmitter<MapMouseEvent & EventData>;
-  mapMouseOver: EventEmitter<MapMouseEvent & EventData>;
-  mapMouseOut: EventEmitter<MapMouseEvent & EventData>;
-  mapContextMenu: EventEmitter<MapMouseEvent & EventData>;
-  mapTouchStart: EventEmitter<MapTouchEvent & EventData>;
-  mapTouchEnd: EventEmitter<MapTouchEvent & EventData>;
-  mapTouchMove: EventEmitter<MapTouchEvent & EventData>;
-  mapTouchCancel: EventEmitter<MapTouchEvent & EventData>;
-  mapWheel: EventEmitter<MapWheelEvent & EventData>;
-  moveStart: EventEmitter<
+  mapResize: OutputEmitterRef<MapLibreEvent & EventData>;
+  mapRemove: OutputEmitterRef<MapLibreEvent & EventData>;
+  mapMouseDown: OutputEmitterRef<MapMouseEvent & EventData>;
+  mapMouseUp: OutputEmitterRef<MapMouseEvent & EventData>;
+  mapMouseMove: OutputEmitterRef<MapMouseEvent & EventData>;
+  mapClick: OutputEmitterRef<MapMouseEvent & EventData>;
+  mapDblClick: OutputEmitterRef<MapMouseEvent & EventData>;
+  mapMouseOver: OutputEmitterRef<MapMouseEvent & EventData>;
+  mapMouseOut: OutputEmitterRef<MapMouseEvent & EventData>;
+  mapContextMenu: OutputEmitterRef<MapMouseEvent & EventData>;
+  mapTouchStart: OutputEmitterRef<MapTouchEvent & EventData>;
+  mapTouchEnd: OutputEmitterRef<MapTouchEvent & EventData>;
+  mapTouchMove: OutputEmitterRef<MapTouchEvent & EventData>;
+  mapTouchCancel: OutputEmitterRef<MapTouchEvent & EventData>;
+  mapWheel: OutputEmitterRef<MapWheelEvent & EventData>;
+  moveStart: OutputEmitterRef<
     MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
   >;
-  move: EventEmitter<
+  move: OutputEmitterRef<
     MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
   >;
-  moveEnd: EventEmitter<
+  moveEnd: OutputEmitterRef<
     MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
   >;
-  mapDragStart: EventEmitter<
+  mapDragStart: OutputEmitterRef<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >;
-  mapDrag: EventEmitter<
+  mapDrag: OutputEmitterRef<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >;
-  mapDragEnd: EventEmitter<
+  mapDragEnd: OutputEmitterRef<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >;
-  zoomStart: EventEmitter<
+  zoomStart: OutputEmitterRef<
     MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
   >;
-  zoomEvt: EventEmitter<
+  zoomEvt: OutputEmitterRef<
     MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
   >;
-  zoomEnd: EventEmitter<
+  zoomEnd: OutputEmitterRef<
     MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined> & EventData
   >;
-  rotateStart: EventEmitter<
+  rotateStart: OutputEmitterRef<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >;
-  rotate: EventEmitter<
+  rotate: OutputEmitterRef<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >;
-  rotateEnd: EventEmitter<
+  rotateEnd: OutputEmitterRef<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >;
-  pitchStart: EventEmitter<
+  pitchStart: OutputEmitterRef<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >;
-  pitchEvt: EventEmitter<
+  pitchEvt: OutputEmitterRef<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >;
-  pitchEnd: EventEmitter<
+  pitchEnd: OutputEmitterRef<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >;
-  boxZoomStart: EventEmitter<MapLibreZoomEvent & EventData>;
-  boxZoomEnd: EventEmitter<MapLibreZoomEvent & EventData>;
-  boxZoomCancel: EventEmitter<MapLibreZoomEvent & EventData>;
-  webGlContextLost: EventEmitter<MapContextEvent & EventData>;
-  webGlContextRestored: EventEmitter<MapContextEvent & EventData>;
-  mapLoad: EventEmitter<Map>; // Consider emitting MapLibreEvent for consistency (breaking change).
-  render: EventEmitter<MapLibreEvent & EventData>;
-  mapError: EventEmitter<ErrorEvent & EventData>;
-  data: EventEmitter<MapDataEvent & EventData>;
-  styleData: EventEmitter<MapStyleDataEvent & EventData>;
-  sourceData: EventEmitter<MapSourceDataEvent & EventData>;
-  dataLoading: EventEmitter<MapDataEvent & EventData>;
-  styleDataLoading: EventEmitter<MapStyleDataEvent & EventData>;
-  sourceDataLoading: EventEmitter<MapSourceDataEvent & EventData>;
-  styleImageMissing: EventEmitter<{ id: string } & EventData>;
-  idle: EventEmitter<MapLibreEvent & EventData>;
+  boxZoomStart: OutputEmitterRef<MapLibreZoomEvent & EventData>;
+  boxZoomEnd: OutputEmitterRef<MapLibreZoomEvent & EventData>;
+  boxZoomCancel: OutputEmitterRef<MapLibreZoomEvent & EventData>;
+  webGlContextLost: OutputEmitterRef<MapContextEvent & EventData>;
+  webGlContextRestored: OutputEmitterRef<MapContextEvent & EventData>;
+  mapLoad: OutputEmitterRef<Map>; // Consider emitting MapLibreEvent for consistency (breaking change).
+  render: OutputEmitterRef<MapLibreEvent & EventData>;
+  mapError: OutputEmitterRef<ErrorEvent & EventData>;
+  data: OutputEmitterRef<MapDataEvent & EventData>;
+  styleData: OutputEmitterRef<MapStyleDataEvent & EventData>;
+  sourceData: OutputEmitterRef<MapSourceDataEvent & EventData>;
+  dataLoading: OutputEmitterRef<MapDataEvent & EventData>;
+  styleDataLoading: OutputEmitterRef<MapStyleDataEvent & EventData>;
+  sourceDataLoading: OutputEmitterRef<MapSourceDataEvent & EventData>;
+  styleImageMissing: OutputEmitterRef<{ id: string } & EventData>;
+  idle: OutputEmitterRef<MapLibreEvent & EventData>;
 }
 
 export interface LayerEvents {
-  layerClick: EventEmitter<MapLayerMouseEvent & EventData>;
-  layerDblClick: EventEmitter<MapLayerMouseEvent & EventData>;
-  layerMouseDown: EventEmitter<MapLayerMouseEvent & EventData>;
-  layerMouseUp: EventEmitter<MapLayerMouseEvent & EventData>;
-  layerMouseEnter: EventEmitter<MapLayerMouseEvent & EventData>;
-  layerMouseLeave: EventEmitter<MapLayerMouseEvent & EventData>;
-  layerMouseMove: EventEmitter<MapLayerMouseEvent & EventData>;
-  layerMouseOver: EventEmitter<MapLayerMouseEvent & EventData>;
-  layerMouseOut: EventEmitter<MapLayerMouseEvent & EventData>;
-  layerContextMenu: EventEmitter<MapLayerMouseEvent & EventData>;
-  layerTouchStart: EventEmitter<MapLayerTouchEvent & EventData>;
-  layerTouchEnd: EventEmitter<MapLayerTouchEvent & EventData>;
-  layerTouchCancel: EventEmitter<MapLayerTouchEvent & EventData>;
+  layerClick: OutputEmitterRef<MapLayerMouseEvent & EventData>;
+  layerDblClick: OutputEmitterRef<MapLayerMouseEvent & EventData>;
+  layerMouseDown: OutputEmitterRef<MapLayerMouseEvent & EventData>;
+  layerMouseUp: OutputEmitterRef<MapLayerMouseEvent & EventData>;
+  layerMouseEnter: OutputEmitterRef<MapLayerMouseEvent & EventData>;
+  layerMouseLeave: OutputEmitterRef<MapLayerMouseEvent & EventData>;
+  layerMouseMove: OutputEmitterRef<MapLayerMouseEvent & EventData>;
+  layerMouseOver: OutputEmitterRef<MapLayerMouseEvent & EventData>;
+  layerMouseOut: OutputEmitterRef<MapLayerMouseEvent & EventData>;
+  layerContextMenu: OutputEmitterRef<MapLayerMouseEvent & EventData>;
+  layerTouchStart: OutputEmitterRef<MapLayerTouchEvent & EventData>;
+  layerTouchEnd: OutputEmitterRef<MapLayerTouchEvent & EventData>;
+  layerTouchCancel: OutputEmitterRef<MapLayerTouchEvent & EventData>;
 }
 
 /**

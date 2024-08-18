@@ -1,13 +1,14 @@
-import { AfterContentInit, Directive, Host, Input } from '@angular/core';
-import { NavigationControl } from 'maplibre-gl';
+import { Directive, afterNextRender, inject, input } from '@angular/core';
+import { NavigationControl, type NavigationControlOptions } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
+import { keepAvailableObjectValues } from '../shared/utils/functions/object.fn';
 
 /**
  * `mglNavigation` - a navigation control directive
- * 
+ *
  * @category Directives
- * 
+ *
  * @see [Navigation](https://maplibre.org/ngx-maplibre-gl/demo/navigation)
  * @see [NavigationControl](https://maplibre.org/maplibre-gl-js/docs/API/classes/NavigationControl)
  */
@@ -15,46 +16,37 @@ import { ControlComponent } from './control.component';
   selector: '[mglNavigation]',
   standalone: true,
 })
-export class NavigationControlDirective implements AfterContentInit {
+export class NavigationControlDirective {
+  /* Init injection */
+  private readonly mapService = inject(MapService);
+  private readonly controlComponent = inject<
+    ControlComponent<NavigationControl>
+  >(ControlComponent, { host: true });
+
   /* Init inputs */
-  @Input() showCompass?: boolean;
-  @Input() showZoom?: boolean;
-  @Input() visualizePitch?: boolean;
+  readonly showCompass = input<boolean>();
+  /* Init inputs */
+  readonly showZoom = input<boolean>();
+  /* Init inputs */
+  readonly visualizePitch = input<boolean>();
 
-  constructor(
-    private mapService: MapService,
-    @Host() private controlComponent: ControlComponent<NavigationControl>
-  ) {}
-
-  ngAfterContentInit() {
-    this.mapService.mapCreated$.subscribe(() => {
-      if (this.controlComponent.control) {
-        throw new Error('Another control is already set for this control');
-      }
-
-      const options: {
-        showCompass?: boolean;
-        showZoom?: boolean;
-        visualizePitch?: boolean;
-      } = {};
-
-      if (this.showCompass !== undefined) {
-        options.showCompass = this.showCompass;
-      }
-
-      if (this.showZoom !== undefined) {
-        options.showZoom = this.showZoom;
-      }
-
-      if (this.visualizePitch != undefined) {
-        options.visualizePitch = this.visualizePitch;
-      }
-
-      this.controlComponent.control = new NavigationControl(options);
-      this.mapService.addControl(
-        this.controlComponent.control,
-        this.controlComponent.position
-      );
+  constructor() {
+    afterNextRender(() => {
+      this.mapService.mapCreated$.subscribe(() => {
+        if (this.controlComponent.control) {
+          throw new Error('Another control is already set for this control');
+        }
+        const options = keepAvailableObjectValues<NavigationControlOptions>({
+          showCompass: this.showCompass(),
+          showZoom: this.showZoom(),
+          visualizePitch: this.visualizePitch(),
+        });
+        this.controlComponent.control = new NavigationControl(options);
+        this.mapService.addControl(
+          this.controlComponent.control,
+          this.controlComponent.position()
+        );
+      });
     });
   }
 }

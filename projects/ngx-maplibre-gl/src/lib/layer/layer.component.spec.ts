@@ -1,35 +1,49 @@
-import { SimpleChange } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentRef, SimpleChange } from '@angular/core';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  waitForAsync,
+} from '@angular/core/testing';
 import { of } from 'rxjs';
-import { MapService, SetupLayer } from '../map/map.service';
+import { MapService } from '../map/map.service';
 import { LayerComponent } from './layer.component';
 
-describe('LayerComponent', () => {
-  class MapServiceSpy {
-    addLayer = jasmine.createSpy('addLayer');
-    removeLayer = jasmine.createSpy('removeLayer');
-    removeSource = jasmine.createSpy('removeSource');
-    getSource = jasmine.createSpy('getSource');
-    setAllLayerPaintProperty = jasmine.createSpy('setAllPaintProperty');
-    mapLoaded$ = of(undefined);
-    mapInstance = new (class {
-      on() {}
-      off() {}
-      getLayer() {}
-    })();
-  }
+const getMapServiceStub = () =>
+  jasmine.createSpyObj(
+    [
+      'addLayer',
+      'removeLayer',
+      'removeSource',
+      'getSource',
+      'setLayerZoomRange',
+    ],
+    {
+      mapLoaded$: of(true),
+      mapInstance: new (class {
+        on() {}
+        off() {}
+        getLayer() {}
+      })(),
+    }
+  );
 
-  let msSpy: MapServiceSpy;
+describe('LayerComponent', () => {
+  let mapServiceStub: jasmine.SpyObj<MapService>;
   let component: LayerComponent;
+  let componentRef: ComponentRef<LayerComponent>;
   let fixture: ComponentFixture<LayerComponent>;
 
   beforeEach(waitForAsync(() => {
+    mapServiceStub = getMapServiceStub();
+
     TestBed.configureTestingModule({
       imports: [LayerComponent],
+      providers: [{ provide: MapService, useValue: mapServiceStub }],
     })
       .overrideComponent(LayerComponent, {
         set: {
-          providers: [{ provide: MapService, useClass: MapServiceSpy }],
+          providers: [{ provide: MapService, useValue: mapServiceStub }],
         },
       })
       .compileComponents();
@@ -38,66 +52,94 @@ describe('LayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LayerComponent);
     component = fixture.componentInstance;
-    msSpy = fixture.debugElement.injector.get<MapService>(MapService) as any;
-    component.id = 'layerId';
+    componentRef = fixture.componentRef;
   });
 
-  describe('Init/Destroy tests', () => {
-    it('should init with custom inputs', (done: DoneFn) => {
+  describe('Init/Destroy tests without Source', () => {
+    beforeEach(() => {
+      componentRef.setInput('id', 'layerId');
+      componentRef.setInput('type', 'background');
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      component.paint = { 'background-color': 'green' };
-      component.type = 'background';
-      msSpy.addLayer.and.callFake((options: SetupLayer) => {
-        expect(options.layerOptions.id).toEqual(component.id);
-        expect((options.layerOptions as any).paint['background-color']).toEqual(
-          'green'
-        );
-        done();
-      });
+      componentRef.setInput('paint', { 'background-color': 'green' });
       fixture.detectChanges();
+    });
+
+    it('should init with custom inputs', () => {
+      fixture.detectChanges();
+
+      expect(mapServiceStub.addLayer).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          layerOptions: {
+            type: 'background',
+            id: 'layerId',
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            paint: { 'background-color': 'green' },
+            source: undefined,
+            metadata: undefined,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            'source-layer': undefined,
+            minzoom: undefined,
+            maxzoom: undefined,
+            filter: undefined,
+            layout: undefined,
+          },
+          layerEvents: jasmine.anything(),
+        }),
+        true,
+        undefined
+      );
     });
 
     it('should remove layer on destroy', () => {
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      component.paint = { 'background-color': 'green' };
-      fixture.detectChanges();
       component.ngOnDestroy();
-      expect(msSpy.removeLayer).toHaveBeenCalledWith(component.id);
-    });
-
-    it('should remove layer and source on destroy', () => {
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      component.paint = { 'background-color': 'green' };
-      component.removeSource = true;
-      msSpy.getSource.and.returnValues(undefined, component.id, {});
-      fixture.detectChanges();
-      component.ngOnDestroy();
-      expect(msSpy.removeLayer).toHaveBeenCalledWith(component.id);
-      expect(msSpy.removeSource).toHaveBeenCalledWith(component.id);
-    });
-
-    it('should not remove layer on destroy if not added', () => {
-      component.ngOnDestroy();
-      expect(msSpy.removeLayer).not.toHaveBeenCalled();
+      expect(mapServiceStub.removeLayer).toHaveBeenCalledWith(component.id());
     });
   });
 
-  describe('Change tests', () => {
-    it('should update paint', () => {
-      component.id = 'layerId';
-      component.paint = {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        'background-color': 'green',
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        'background-opacity': 0.5,
-      };
+  describe('Destroy tests with source', () => {
+    beforeEach(() => {
+      componentRef.setInput('id', 'layerId');
+      componentRef.setInput('type', 'background');
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      componentRef.setInput('paint', { 'background-color': 'green' });
+      componentRef.setInput('removeSource', true);
+      mapServiceStub.getSource.and.returnValues(
+        undefined as any,
+        component.id() as any,
+        {} as any
+      );
       fixture.detectChanges();
+    });
+
+    it('should remove layer and source on destroy', fakeAsync(() => {
+      fixture.detectChanges();
+      component.ngOnDestroy();
+      expect(mapServiceStub.removeLayer).toHaveBeenCalledWith(component.id());
+      expect(mapServiceStub.removeSource).toHaveBeenCalled();
+    }));
+  });
+
+  it('should not remove layer on destroy if not added', () => {
+    component.ngOnDestroy();
+    expect(mapServiceStub.removeLayer).not.toHaveBeenCalled();
+  });
+
+  describe('Change tests', () => {
+    beforeEach(() => {
+      componentRef.setInput('id', 'layerId');
+      componentRef.setInput('type', 'background');
+      componentRef.setInput('minzoom', 10);
+      fixture.detectChanges();
+    });
+
+    it('should update minzoom', () => {
       component.ngOnChanges({
-        paint: new SimpleChange(null, component.paint, false),
+        minzoom: new SimpleChange(null, component.minzoom(), false),
       });
-      expect(msSpy.setAllLayerPaintProperty).toHaveBeenCalledWith(
-        component.id,
-        component.paint
+      expect(mapServiceStub.setLayerZoomRange).toHaveBeenCalledWith(
+        component.id(),
+        component.minzoom(),
+        undefined
       );
     });
   });
