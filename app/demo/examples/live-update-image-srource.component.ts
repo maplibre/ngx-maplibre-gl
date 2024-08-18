@@ -1,4 +1,10 @@
-import { Component, NgZone, OnDestroy, afterNextRender } from '@angular/core';
+import {
+  Component,
+  NgZone,
+  OnDestroy,
+  afterNextRender,
+  inject,
+} from '@angular/core';
 import {
   MapComponent,
   ImageSourceComponent,
@@ -39,6 +45,8 @@ import data from './hike.geo.json';
   imports: [MapComponent, ImageSourceComponent, LayerComponent],
 })
 export class LiveUpdateImageSourceComponent implements OnDestroy {
+  private readonly ngZone = inject(NgZone);
+
   private timer: ReturnType<typeof setInterval>;
   private readonly size = 0.001;
 
@@ -46,12 +54,12 @@ export class LiveUpdateImageSourceComponent implements OnDestroy {
   url = 'assets/red.png';
   coordinates: number[][];
 
-  constructor(private ngZone: NgZone) {
+  constructor() {
     this.center = data.features[0].geometry!.coordinates[0];
     this.coordinates = this.makeRectangle(this.center);
     afterNextRender(() => {
       const points = data.features[0].geometry!.coordinates;
-      const coordinates = points.map((c) => this.makeRectangle(c));
+      const coordinates = points.map((c: number[]) => this.makeRectangle(c));
 
       this.center = points[0];
       this.coordinates = coordinates[0];
