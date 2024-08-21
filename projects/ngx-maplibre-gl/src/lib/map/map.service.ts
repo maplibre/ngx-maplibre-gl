@@ -37,7 +37,6 @@ import {
   type ControlPosition,
 } from 'maplibre-gl';
 import { AsyncSubject, Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
 import type {
   LayerEvents,
   MapEvent,
@@ -113,21 +112,18 @@ export class MapService {
   readonly mapLoaded$ = this.mapLoaded.asObservable();
 
   setup(options: SetupMap) {
-    // Need onStable to wait for a potential @angular/route transition to end
-    this.zone.onStable.pipe(first()).subscribe(() => {
-      // Workaround rollup issue
-      this.createMap(options.mapOptions as MapOptions);
-      this.hookEvents(options.mapEvents);
-      this.mapEvents = options.mapEvents;
-      this.mapCreated.next(undefined);
-      this.mapCreated.complete();
+    // Workaround rollup issue
+    this.createMap(options.mapOptions as MapOptions);
+    this.hookEvents(options.mapEvents);
+    this.mapEvents = options.mapEvents;
+    this.mapCreated.next(undefined);
+    this.mapCreated.complete();
 
-      if (options.mapOptions.terrain) {
-        this.mapInstance.on('load', () => {
-          this.updateTerrain(options.mapOptions.terrain!);
-        });
-      }
-    });
+    if (options.mapOptions.terrain) {
+      this.mapInstance.on('load', () => {
+        this.updateTerrain(options.mapOptions.terrain!);
+      });
+    }
   }
 
   destroyMap() {
@@ -648,9 +644,7 @@ export class MapService {
       this.mapInstance.setStyle(options.style!);
     }
 
-    this.subscription.add(
-      this.zone.onMicrotaskEmpty.subscribe(() => this.applyChanges())
-    );
+    this.subscription.add(this.applyChanges());
   }
 
   private removeMarkers() {
