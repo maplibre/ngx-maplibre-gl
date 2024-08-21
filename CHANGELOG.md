@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-### [18.1.0](https://github.com/maplibre/ngx-maplibre-gl/compare/v17.4.3...v18.0.0) (2024-08-21)
+### [18.1.0](https://github.com/maplibre/ngx-maplibre-gl/compare/v18.0.0...v18.1.0) (2024-08-21)
 
 - Migrate to use signals and to better prepare for zoneless usage
 
