@@ -80,21 +80,21 @@ let uniqId = 0;
       type="circle"
       [paint]="{ 'circle-radius': 0 }"
     ></mgl-layer>
-    @for (feature of clusterPoints(); track feature.id) { @if
-    (feature.properties.cluster) {
-    <mgl-marker [feature]="feature">
-      <ng-container
-        *ngTemplateOutlet="clusterPointTpl(); context: { $implicit: feature }"
-      ></ng-container>
-    </mgl-marker>
-    } @else {
-    <mgl-marker [feature]="feature">
-      <ng-container
-        *ngTemplateOutlet="pointTpl(); context: { $implicit: feature }"
-      ></ng-container>
-    </mgl-marker>
-    } }
-  `,
+    @for (feature of clusterPoints(); track $index) { 
+      @if (feature.properties.cluster) {
+        <mgl-marker [feature]="feature">
+          <ng-container
+            *ngTemplateOutlet="clusterPointTpl(); context: { $implicit: feature }"
+          ></ng-container>
+        </mgl-marker>
+      } @else {
+        <mgl-marker [feature]="feature">
+          <ng-container
+            *ngTemplateOutlet="pointTpl(); context: { $implicit: feature }"
+          ></ng-container>
+        </mgl-marker>
+      } 
+    }`,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
   standalone: true,
