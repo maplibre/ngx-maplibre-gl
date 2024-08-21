@@ -55,7 +55,11 @@ export class MarkerComponent implements OnChanges, OnInit {
   readonly anchor = input<MarkerOptions['anchor']>();
   readonly clickTolerance = input<MarkerOptions['clickTolerance']>();
   readonly color = input<MarkerOptions['color']>();
- /** Dynamic input */
+  readonly scale = input<MarkerOptions['scale']>();
+  readonly opacity = input<MarkerOptions['opacity']>();
+  readonly opacityWhenCovered = input<MarkerOptions['opacityWhenCovered']>();
+  readonly subpixelPositioning = input<MarkerOptions['subpixelPositioning']>();
+  /** Dynamic input */
   readonly feature = input<GeoJSON.Feature<GeoJSON.Point>>();
   readonly lngLat = input<LngLatLike>();
   readonly draggable = input<MarkerOptions['draggable']>();
@@ -80,17 +84,21 @@ export class MarkerComponent implements OnChanges, OnInit {
         .subscribe(() => {
           const marker = this.mapService.addMarker({
             markersOptions: {
-              offset: this.offset(),
-              anchor: this.anchor(),
-              color: this.color(),
-              pitchAlignment: this.pitchAlignment(),
-              rotationAlignment: this.rotationAlignment(),
-              rotation: this.rotation(),
-              draggable: !!this.draggable(),
               element: this.content().nativeElement,
               feature: this.feature(),
               lngLat: this.lngLat(),
+              offset: this.offset(),
+              anchor: this.anchor(),
+              color: this.color(),
+              scale: this.scale(),
+              draggable: !!this.draggable(),
               clickTolerance: this.clickTolerance(),
+              rotation: this.rotation(),
+              rotationAlignment: this.rotationAlignment(),
+              pitchAlignment: this.pitchAlignment(),
+              opacity: this.opacity(),
+              opacityWhenCovered: this.opacityWhenCovered(),
+              subpixelPositioning: this.subpixelPositioning(),
             },
             markersEvents: {
               markerDragStart: this.markerDragStart,
@@ -98,7 +106,7 @@ export class MarkerComponent implements OnChanges, OnInit {
               markerDragEnd: this.markerDragEnd,
             },
           });
-        this.markerInstance.set(marker);
+          this.markerInstance.set(marker);
         });
     });
 

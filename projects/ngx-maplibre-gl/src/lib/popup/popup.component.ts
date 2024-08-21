@@ -69,6 +69,9 @@ export class PopupComponent implements OnChanges, OnInit {
   /** Init input */
   readonly maxWidth = input<PopupOptions['maxWidth']>();
 
+  /** Init input */
+  readonly subpixelPositioning = input<PopupOptions['subpixelPositioning']>();
+
   /**
    * Dynamic input [ngx]
    * Mutually exclusive with `lngLat`
@@ -167,6 +170,7 @@ export class PopupComponent implements OnChanges, OnInit {
           offset: this.offset(),
           className: this.className(),
           maxWidth: this.maxWidth(),
+          subpixelPositioning: this.subpixelPositioning(),
         },
         popupEvents: {
           popupOpen: this.popupOpen,

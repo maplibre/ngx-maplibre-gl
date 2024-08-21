@@ -69,20 +69,14 @@ export interface SetupPopup {
   };
 }
 
+export interface SetupMarkerOptions extends MarkerOptions {
+  element: HTMLElement;
+  feature?: GeoJSON.Feature<GeoJSON.Point>;
+  lngLat?: LngLatLike;
+}
+
 export interface SetupMarker {
-  markersOptions: {
-    pitchAlignment?: MarkerOptions['pitchAlignment'];
-    rotationAlignment?: MarkerOptions['rotationAlignment'];
-    rotation?: MarkerOptions['rotation'];
-    offset?: MarkerOptions['offset'];
-    anchor?: MarkerOptions['anchor'];
-    color?: MarkerOptions['color'];
-    draggable?: MarkerOptions['draggable'];
-    element: HTMLElement;
-    feature?: GeoJSON.Feature<GeoJSON.Point>;
-    lngLat?: LngLatLike;
-    clickTolerance?: MarkerOptions['clickTolerance'];
-  };
+  markersOptions: SetupMarkerOptions;
   markersEvents: {
     markerDragStart: OutputEmitterRef<Marker>;
     markerDrag: OutputEmitterRef<Marker>;
@@ -390,6 +384,7 @@ export class MapService {
       offset: marker.markersOptions.offset,
       anchor: marker.markersOptions.anchor,
       color: marker.markersOptions.color,
+      scale: marker.markersOptions.scale,
       draggable: !!marker.markersOptions.draggable,
       rotationAlignment: marker.markersOptions.rotationAlignment,
       rotation: marker.markersOptions.rotation,
@@ -399,6 +394,9 @@ export class MapService {
         marker.markersOptions.element.childNodes.length > 0
           ? marker.markersOptions.element
           : undefined,
+      opacity: marker.markersOptions.opacity,
+      opacityWhenCovered: marker.markersOptions.opacityWhenCovered,
+      subpixelPositioning: marker.markersOptions.subpixelPositioning,
     };
 
     const markerInstance = new Marker(options);
