@@ -642,7 +642,9 @@ export class MapService {
       this.mapInstance.setStyle(options.style!);
     }
 
-    this.subscription.add(this.applyChanges());
+    this.subscription.add(
+      this.zone.onMicrotaskEmpty.subscribe(() => this.applyChanges())
+    );
   }
 
   private removeMarkers() {
