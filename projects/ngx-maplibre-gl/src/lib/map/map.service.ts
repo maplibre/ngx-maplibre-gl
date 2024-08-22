@@ -1,4 +1,5 @@
 import {
+  DestroyRef,
   Injectable,
   NgZone,
   OutputEmitterRef,
@@ -44,6 +45,7 @@ import type {
   MapImageOptions,
 } from './map.types';
 import { keepAvailableObjectValues } from '../shared/utils/functions/object.fn';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export interface SetupMap {
   mapOptions: Omit<MapOptions, 'bearing' | 'pitch' | 'zoom'> & {
@@ -91,6 +93,7 @@ export type MovingOptions =
 @Injectable()
 export class MapService {
   private readonly zone = inject(NgZone);
+  private readonly destroyRef = inject(DestroyRef);
 
   mapInstance: Map;
   mapEvents: MapEvent;
@@ -643,7 +646,9 @@ export class MapService {
     }
 
     this.subscription.add(
-      this.zone.onMicrotaskEmpty.subscribe(() => this.applyChanges())
+      this.zone.onMicrotaskEmpty
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(() => this.applyChanges())
     );
   }
 
