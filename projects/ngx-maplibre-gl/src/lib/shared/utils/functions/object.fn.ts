@@ -1,4 +1,4 @@
-export const keepAvailableObjectValues = <T extends {}>(object: T): Required<T> => {
+export const keepAvailableObjectValues = <T extends object>(object: T): Required<T> => {
   return Object.keys(object).reduce((acc, curr) => {
     const tKey = curr as keyof T;
     if (object[tKey] === undefined) {

@@ -17,7 +17,7 @@ import { MapService } from './map.service';
 import { MapEvent, EventData } from './map.types';
 import { MockNgZone } from './mock-ng-zone';
 
-const countries = require('./countries.geo.json');
+import countries from './countries.geo.json';
 
 const geoJSONStyle: StyleSpecification = {
   sources: {
