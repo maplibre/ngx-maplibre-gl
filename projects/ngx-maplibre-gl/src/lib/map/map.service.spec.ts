@@ -17,7 +17,7 @@ import { MapService } from './map.service';
 import { MapEvent, EventData } from './map.types';
 import { MockNgZone } from './mock-ng-zone';
 
-import countries from './countries.geo.json';
+const countries = require('./countries.geo.json'); // eslint-disable-line @typescript-eslint/no-require-imports
 
 const geoJSONStyle: StyleSpecification = {
   sources: {
