@@ -619,7 +619,7 @@ export class MapService {
     });
   }
 
-  applyChanges() {
+  clearMapElements() {
     this.zone.runOutsideAngular(() => {
       this.removeMarkers();
       this.removePopups();

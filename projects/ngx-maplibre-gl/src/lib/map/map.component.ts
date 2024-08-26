@@ -343,7 +343,7 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
     });
 
     afterRender(() => {
-      this.mapService.applyChanges();
+      this.mapService.clearMapElements();
     });
   }
 
