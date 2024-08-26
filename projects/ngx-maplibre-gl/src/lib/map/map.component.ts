@@ -6,6 +6,7 @@ import {
   OnDestroy,
   SimpleChanges,
   afterNextRender,
+  afterRender,
   inject,
   input,
   output,
@@ -268,7 +269,8 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
     return this.mapService.mapInstance;
   }
 
-  readonly mapContainer = viewChild.required<ElementRef<HTMLDivElement>>('container');
+  readonly mapContainer =
+    viewChild.required<ElementRef<HTMLDivElement>>('container');
 
   constructor() {
     afterNextRender(() => {
@@ -338,6 +340,10 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
       if (cursorStyle) {
         this.mapService.changeCanvasCursor(cursorStyle);
       }
+    });
+
+    afterRender(() => {
+      this.mapService.applyChanges();
     });
   }
 

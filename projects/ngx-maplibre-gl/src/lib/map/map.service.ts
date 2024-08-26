@@ -36,7 +36,7 @@ import {
   type QueryRenderedFeaturesOptions,
   type ControlPosition,
 } from 'maplibre-gl';
-import { AsyncSubject, Subscription } from 'rxjs';
+import { AsyncSubject } from 'rxjs';
 import type {
   LayerEvents,
   MapEvent,
@@ -100,7 +100,6 @@ export class MapService {
   private readonly markersToRemove = signal<Marker[]>([]);
   private readonly popupsToRemove = signal<Popup[]>([]);
   private readonly imageIdsToRemove = signal<string[]>([]);
-  private readonly subscription = new Subscription();
 
   readonly mapCreated$ = this.mapCreated.asObservable();
   readonly mapLoaded$ = this.mapLoaded.asObservable();
@@ -122,7 +121,6 @@ export class MapService {
 
   destroyMap() {
     if (this.mapInstance) {
-      this.subscription.unsubscribe();
       this.mapInstance.remove();
     }
   }
@@ -641,10 +639,6 @@ export class MapService {
     if (isIEorEdge) {
       this.mapInstance.setStyle(options.style!);
     }
-
-    this.subscription.add(
-      this.zone.onMicrotaskEmpty.subscribe(() => this.applyChanges())
-    );
   }
 
   private removeMarkers() {
