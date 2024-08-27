@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import {
   MapComponent,
   LayerComponent,
   FeatureComponent,
   GeoJSONSourceComponent,
-} from '@maplibre/ngx-maplibre-gl';
+} from "@maplibre/ngx-maplibre-gl";
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
       [style]="
@@ -36,7 +36,7 @@ import {
       </mgl-layer>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+  styleUrls: ["./examples.css"],
   standalone: true,
   imports: [
     MapComponent,
@@ -44,10 +44,11 @@ import {
     FeatureComponent,
     LayerComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgxGeoJSONLineComponent {
-  geometry = {
-    type: 'LineString',
+  readonly geometry = {
+    type: "LineString",
     coordinates: [
       [-122.48369693756104, 37.83381888486939],
       [-122.48348236083984, 37.83317489144141],

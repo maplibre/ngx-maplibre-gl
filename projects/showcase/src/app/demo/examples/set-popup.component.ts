@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import {
   MapComponent,
   PopupComponent,
   MarkerComponent,
-} from '@maplibre/ngx-maplibre-gl';
-import { NgStyle } from '@angular/common';
+} from "@maplibre/ngx-maplibre-gl";
+import { NgStyle } from "@angular/common";
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
       [style]="'https://demotiles.maplibre.org/style.json'"
@@ -33,8 +33,9 @@ import { NgStyle } from '@angular/common';
       </mgl-popup>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+  styleUrls: ["./examples.css"],
   standalone: true,
   imports: [MapComponent, MarkerComponent, NgStyle, PopupComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SetPopupComponent {}

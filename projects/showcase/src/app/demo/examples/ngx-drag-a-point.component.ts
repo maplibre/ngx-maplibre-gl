@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { MapMouseEvent } from 'maplibre-gl';
-import { MatCardModule } from '@angular/material/card';
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import { MapMouseEvent } from "maplibre-gl";
+import { MatCardModule } from "@angular/material/card";
 import {
   MapComponent,
   ControlComponent,
@@ -8,10 +8,10 @@ import {
   DraggableDirective,
   FeatureComponent,
   GeoJSONSourceComponent,
-} from '@maplibre/ngx-maplibre-gl';
+} from "@maplibre/ngx-maplibre-gl";
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
       [style]="
@@ -39,19 +39,19 @@ import {
         id="point"
         type="circle"
         source="point"
-        [paint]="layerPaint"
+        [paint]="layerPaint()"
         (layerMouseEnter)="changeColor('#3bb2d0')"
         (layerMouseLeave)="changeColor('#3887be')"
       ></mgl-layer>
       <mgl-control position="bottom-left">
         <mat-card appearance="outlined">
-          <div>Longitude:&nbsp;{{ coordinates[0] }}</div>
-          <div>Latitude:&nbsp;{{ coordinates[1] }}</div>
+          <div>Longitude:&nbsp;{{ coordinates()[0] }}</div>
+          <div>Latitude:&nbsp;{{ coordinates()[1] }}</div>
         </mat-card>
       </mgl-control>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+  styleUrls: ["./examples.css"],
   standalone: true,
   imports: [
     MapComponent,
@@ -62,32 +62,33 @@ import {
     ControlComponent,
     MatCardModule,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgxDragAPointComponent {
-  layerPaint = {
+  readonly layerPaint = signal({
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    'circle-radius': 10,
+    "circle-radius": 10,
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    'circle-color': '#3887be',
-  };
+    "circle-color": "#3887be",
+  });
 
-  coordinates = [0, 0];
+  readonly coordinates = signal([0, 0]);
 
   onDragStart(event: MapMouseEvent) {
-    console.log('onDragStart', event);
+    console.log("onDragStart", event);
   }
 
   onDragEnd(event: MapMouseEvent) {
-    console.log('onDragEnd', event);
+    console.log("onDragEnd", event);
   }
 
   onDrag(event: MapMouseEvent) {
-    console.log('onDrag', event);
-    this.coordinates = event.lngLat.toArray();
+    console.log("onDrag", event);
+    this.coordinates.set(event.lngLat.toArray());
   }
 
   changeColor(color: string) {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    this.layerPaint = { ...this.layerPaint, 'circle-color': color };
+    this.layerPaint.update((paint) => ({ ...paint, "circle-color": color }));
   }
 }

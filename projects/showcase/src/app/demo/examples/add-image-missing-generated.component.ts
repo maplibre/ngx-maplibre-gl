@@ -1,24 +1,22 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import {
   MapComponent,
-  MapImageData,
   ImageComponent,
   LayerComponent,
-} from '@maplibre/ngx-maplibre-gl';
+} from "@maplibre/ngx-maplibre-gl";
+import { Map } from "maplibre-gl";
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
+      #mapComp
       [style]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
       "
-      (styleImageMissing)="generateImage($event)"
+      (styleImageMissing)="generateImage($event, mapComp.mapInstance)"
       [preserveDrawingBuffer]="true"
     >
-      @for (imageData of imagesData(); track imageData.id) {
-      <mgl-image [id]="imageData.id" [data]="imageData"></mgl-image>
-      }
       <mgl-layer
         id="points"
         type="symbol"
@@ -67,23 +65,21 @@ import {
       </mgl-layer>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+  styleUrls: ["./examples.css"],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MapComponent, ImageComponent, LayerComponent],
 })
 export class AddImageMissingGeneratedComponent {
-  readonly imagesData = signal<(MapImageData & { id: string })[]>([]);
-
-  generateImage({ id }: { id: string }) {
+  generateImage({ id }: { id: string }, map: Map) {
     // check if this missing icon is one this function can generate
-    const prefix = 'square-rgb-';
+    const prefix = "square-rgb-";
     if (id.indexOf(prefix) !== 0) {
       return;
     }
 
     // extract the color from the id
-    const rgb = id.replace(prefix, '').split(',').map(Number);
+    const rgb = id.replace(prefix, "").split(",").map(Number);
 
     const width = 64; // The image will be 64 pixels square
     const bytesPerPixel = 4; // Each pixel is represented by 4 bytes: red, green, blue, and alpha.
@@ -99,11 +95,10 @@ export class AddImageMissingGeneratedComponent {
       }
     }
     const imageData = {
-      id,
       width,
       height: width,
       data,
     };
-    this.imagesData.update((imagesData) => [...imagesData, imageData]);
+    map.addImage(id, imageData);
   }
 }

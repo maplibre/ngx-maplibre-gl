@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import {
   MapComponent,
   ControlComponent,
   FullscreenControlDirective,
-} from '@maplibre/ngx-maplibre-gl';
+} from "@maplibre/ngx-maplibre-gl";
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
       [style]="
@@ -19,8 +19,9 @@ import {
       <mgl-control mglFullscreen></mgl-control>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+  styleUrls: ["./examples.css"],
   standalone: true,
   imports: [MapComponent, ControlComponent, FullscreenControlDirective],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FullscreenComponent {}

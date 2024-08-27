@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
+import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { MapComponent, MarkerComponent } from "@maplibre/ngx-maplibre-gl";
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
       [style]="
@@ -35,9 +35,10 @@ import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
       </mgl-marker>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css', './custom-marker-icons.component.css'],
+  styleUrls: ["./examples.css", "./custom-marker-icons.component.css"],
   standalone: true,
   imports: [MapComponent, MarkerComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgxCustomMarkerIconsComponent {
   alert(message: string) {

@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 import {
   MapComponent,
   ImageComponent,
   LayerComponent,
-} from '@maplibre/ngx-maplibre-gl';
+} from "@maplibre/ngx-maplibre-gl";
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
       [style]="
@@ -17,14 +17,14 @@ import {
       <mgl-image
         id="cat"
         url="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Cat_silhouette.svg/400px-Cat_silhouette.svg.png"
-        (imageLoaded)="imageLoaded = true"
+        (imageLoaded)="imageLoaded.set(true)"
       >
       </mgl-image>
-      @if (imageLoaded) {
-        <mgl-layer
-          id="points"
-          type="symbol"
-          [source]="{
+      @if (imageLoaded()) {
+      <mgl-layer
+        id="points"
+        type="symbol"
+        [source]="{
             type: 'geojson',
             data: {
               type: 'FeatureCollection',
@@ -39,16 +39,17 @@ import {
               ],
             },
           }"
-          [layout]="{ 'icon-image': 'cat', 'icon-size': 0.25 }"
-        >
-        </mgl-layer>
+        [layout]="{ 'icon-image': 'cat', 'icon-size': 0.25 }"
+      >
+      </mgl-layer>
       }
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+  styleUrls: ["./examples.css"],
   standalone: true,
   imports: [MapComponent, ImageComponent, LayerComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddImageComponent {
-  imageLoaded = false;
+  readonly imageLoaded = signal(false);
 }

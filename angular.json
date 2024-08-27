@@ -51,6 +51,9 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "optimization": false,
+            "sourceMap": true,
+            "namedChunks": true,
             "allowedCommonJsDependencies": [
               "@mapbox/mapbox-sdk",
               "suggestions",
@@ -60,7 +63,6 @@
             "outputPath": "dist/showcase",
             "index": "projects/showcase/src/index.html",
             "browser": "projects/showcase/src/main.ts",
-            "polyfills": ["zone.js"],
             "tsConfig": "projects/showcase/tsconfig.app.json",
             "assets": [
               "projects/showcase/src/favicon.ico",

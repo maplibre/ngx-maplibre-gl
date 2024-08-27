@@ -16,8 +16,7 @@
   <mat-sidenav
     #sidenav
     mode="side"
-    [opened]="sidenavIsOpen"
-    (openedChange)="onSidenavChange()"
+    [opened]="sidenavIsOpen()"
   >
     <mat-form-field class="search">
       <input
@@ -27,7 +26,7 @@
         [(ngModel)]="searchTerm"
         (ngModelChange)="search()"
       />
-      @if (searchTerm) {
+      @if (searchTerm()) {
         <button
           matSuffix
           mat-icon-button
@@ -41,7 +40,7 @@
     <mat-nav-list>
       @for (cat of categories; track cat) {
         <h3 matSubheader>{{ cat }}</h3>
-        @for (route of $any(routes)[cat]; track route) {
+        @for (route of routes()[cat]; track route) {
           @if (route) {
             <a
               mat-list-item
@@ -54,7 +53,7 @@
               }"
               #exampleLink
             >
-              {{ route.data.label }}
+              {{ route?.data?.label }}
             </a>
           }
         }
