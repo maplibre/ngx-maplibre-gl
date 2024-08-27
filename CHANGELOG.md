@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+### [18.1.1](https://github.com/maplibre/ngx-maplibre-gl/compare/v18.1.0...v18.1.1) (2024-08-27)
+
+- Fix an issue related to clustering caused by the signals migration: [#188](https://github.com/maplibre/ngx-maplibre-gl/issues/188)
+
 ### [18.1.0](https://github.com/maplibre/ngx-maplibre-gl/compare/v18.0.0...v18.1.0) (2024-08-21)
 
 - Migrate to use signals and to better prepare for zoneless usage
