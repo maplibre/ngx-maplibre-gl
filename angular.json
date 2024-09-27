@@ -51,9 +51,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "optimization": false,
-            "sourceMap": true,
-            "namedChunks": true,
             "allowedCommonJsDependencies": [
               "@mapbox/mapbox-sdk",
               "suggestions",
