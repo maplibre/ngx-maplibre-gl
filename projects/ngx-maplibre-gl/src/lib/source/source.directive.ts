@@ -32,7 +32,7 @@ export class SourceDirective implements OnInit {
   readonly loadSource$ = this.loadSourceSubject.asObservable();
 
   constructor() {
-    this.destroyRef.onDestroy(() => this.removeSource());
+    this.destroyRef.onDestroy(() => this.removeSource.bind(this));
   }
 
   ngOnInit() {
