@@ -1,6 +1,10 @@
 {
   "name": "ngx-maplibre-gl-srcs",
   "version": "18.1.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maplibre/ngx-maplibre-gl.git"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve showcase",
@@ -13,7 +17,8 @@
     "e2e": "ng run showcase:cypress-run",
     "cypress:open": "ng run showcase:cypress-open",
     "docs": "typedoc",
-    "serve:ssr:showcase": "node dist/showcase/server/server.mjs"
+    "serve:ssr:showcase": "node dist/showcase/server/server.mjs",
+    "changelog": "auto-changelog --unreleased-only"
   },
   "private": true,
   "engines": {
@@ -63,6 +68,7 @@
     "@typescript-eslint/eslint-plugin": "^8.2.0",
     "@typescript-eslint/parser": "^8.2.0",
     "angular-cli-ghpages": "^2.0.1",
+    "auto-changelog": "^2.5.0",
     "commitizen": "^4.3.0",
     "cypress": "^13.13.3",
     "eslint": "^8.57.0",

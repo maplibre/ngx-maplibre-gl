@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
+<!-- auto-changelog-above -->
+
 ### [18.1.1](https://github.com/maplibre/ngx-maplibre-gl/compare/v18.1.0...v18.1.1) (2024-08-27)
 
 - Fix an issue related to clustering caused by the signals migration: [#188](https://github.com/maplibre/ngx-maplibre-gl/issues/188)
