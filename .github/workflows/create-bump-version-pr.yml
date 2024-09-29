@@ -31,6 +31,7 @@ jobs:
 
       - name: Update CHANGELOG.md
         run: |
+          npm ci
           npm run changelog
 
       - name: Create Pull Request
