@@ -1,92 +1,126 @@
-import { Component, OnInit, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+  signal,
+} from "@angular/core";
 import type {
   CircleLayerSpecification,
   SymbolLayerSpecification,
   ExpressionSpecification,
   GeoJSONSourceSpecification,
-  MapGeoJSONFeature
-} from 'maplibre-gl';
-import { NgStyle } from '@angular/common';
+  MapGeoJSONFeature,
+} from "maplibre-gl";
+import { NgStyle } from "@angular/common";
 import {
   MapComponent,
   LayerComponent,
   MarkersForClustersComponent,
   GeoJSONSourceComponent,
-  ClusterPointDirective
-} from '@maplibre/ngx-maplibre-gl';
+  ClusterPointDirective,
+} from "@maplibre/ngx-maplibre-gl";
 
 @Component({
-  selector: 'showcase-cluster-point',
+  selector: "showcase-cluster-point",
   template: `
     <svg
-      [attr.width]="w"
-      [attr.height]="w"
-      [attr.viewbox]="viewbox"
+      [attr.width]="w()"
+      [attr.height]="w()"
+      [attr.viewbox]="viewbox()"
       text-anchor="middle"
-      [ngStyle]="{ font: font }"
+      [ngStyle]="{ font: font() }"
     >
-      @for (segment of segments; track segment) {
+      @for (segment of segments(); track segment) {
       <path [attr.d]="segment.d" [ngStyle]="{ fill: segment.fill }" />
       }
-      <circle [attr.cx]="r" [attr.cy]="r" [attr.r]="r0" fill="white" />
-      <text dominant-baseline="central" [attr.transform]="textTransform">
-        {{ totalString }}
+      <circle [attr.cx]="r()" [attr.cy]="r()" [attr.r]="r0()" fill="white" />
+      <text dominant-baseline="central" [attr.transform]="textTransform()">
+        {{ totalString() }}
       </text>
     </svg>
   `,
   standalone: true,
   imports: [NgStyle],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClusterPointComponent implements OnInit {
-  readonly properties = input<MapGeoJSONFeature['properties']>();
-
-  w: number;
-  r: number;
-  r0: number;
-  viewbox: string;
-  font: string;
-  segments: { d: string; fill: string }[];
-  textTransform: string;
-  totalString: string;
-
-  ngOnInit() {
-    const offsets = [];
+export class ClusterPointComponent {
+  readonly properties = input<MapGeoJSONFeature["properties"]>();
+  readonly counts = computed(() => {
     const properties = this.properties();
 
-    const counts = [
+    return [
       properties?.mag1,
       properties?.mag2,
       properties?.mag3,
       properties?.mag4,
       properties?.mag5,
     ];
+  });
+
+  readonly totalOffsets = computed(() => {
+    const counts = this.counts();
+    const offsets = [];
     let total = 0;
+
     for (let i = 0; i < counts.length; i++) {
       offsets.push(total);
       total += counts[i];
     }
-    const fontSize =
-      total >= 1000 ? 22 : total >= 100 ? 20 : total >= 10 ? 18 : 16;
-    this.font = `${fontSize}px sans-serif`;
-    this.r = total >= 1000 ? 50 : total >= 100 ? 32 : total >= 10 ? 24 : 18;
-    this.r0 = Math.round(this.r * 0.6);
-    this.w = this.r * 2;
-    this.viewbox = `0 0 ${this.w} ${this.w}`;
-    this.textTransform = `translate(${this.r}, ${this.r})`;
-    this.segments = [];
+    return { total, offsets };
+  });
+
+  readonly fontSize = computed(() => {
+    const { total } = this.totalOffsets();
+    return total >= 1000 ? 22 : total >= 100 ? 20 : total >= 10 ? 18 : 16;
+  });
+
+  readonly font = computed(() => `${this.fontSize()}px sans-serif`);
+
+  readonly r = computed(() => {
+    const { total } = this.totalOffsets();
+    return total >= 1000 ? 50 : total >= 100 ? 32 : total >= 10 ? 24 : 18;
+  });
+
+  readonly r0 = computed(() => Math.round(this.r() * 0.6));
+
+  readonly w = computed(() => this.r() * 2);
+
+  readonly viewbox = computed(() => `0 0 ${this.w()} ${this.w()}`);
+
+  readonly textTransform = computed(
+    () => `translate(${this.r()}, ${this.r()})`
+  );
+
+  readonly segments = computed(() => {
+    const segments: { d: string; fill: string }[] = [];
+    const { total, offsets } = this.totalOffsets();
+    const counts = this.counts();
     for (let i = 0; i < counts.length; i++) {
-      this.segments.push(
+      segments.push(
         this.donutSegment(
           offsets[i] / total,
           (offsets[i] + counts[i]) / total,
-          COLORS[i]
+          COLORS[i],
+          this.r(),
+          this.r0()
         )
       );
     }
-    this.totalString = total.toLocaleString();
-  }
+    return segments;
+  });
 
-  private donutSegment(start: number, end: number, color: string) {
+  readonly totalString = computed(() =>
+    this.totalOffsets().total.toLocaleString()
+  );
+
+  private donutSegment(
+    start: number,
+    end: number,
+    color: string,
+    r: number,
+    r0: number
+  ) {
     if (end - start === 1) {
       end -= 0.00001;
     }
@@ -98,15 +132,13 @@ export class ClusterPointComponent implements OnInit {
       y1 = Math.sin(a1);
     const largeArc = end - start > 0.5 ? 1 : 0;
     return {
-      d: `M ${this.r + this.r0 * x0} ${this.r + this.r0 * y0} L ${
-        this.r + this.r * x0
-      } ${this.r + this.r * y0} A ${this.r} ${this.r} 0 ${largeArc} 1 ${
-        this.r + this.r * x1
-      } ${this.r + this.r * y1} L ${this.r + this.r0 * x1} ${
-        this.r + this.r0 * y1
-      } A ${this.r0} ${this.r0} 0 ${largeArc} 0 ${this.r + this.r0 * x0} ${
-        this.r + this.r0 * y0
-      }`,
+      d: `M ${r + r0 * x0} ${r + r0 * y0} L ${r + r * x0} ${
+        r + r * y0
+      } A ${r} ${r} 0 ${largeArc} 1 ${r + r * x1} ${
+        this.r() + this.r() * y1
+      } L ${r + r0 * x1} ${r + r0 * y1} A ${r0} ${r0} 0 ${largeArc} 0 ${
+        r + r0 * x0
+      } ${r + r0 * y0}`,
       fill: color,
     };
   }
@@ -121,10 +153,29 @@ export class ClusterPointComponent implements OnInit {
  */
 
 // colors to use for the categories
-const COLORS = ['#fed976', '#feb24c', '#fd8d3c', '#fc4e2a', '#e31a1c'];
+const COLORS = ["#fed976", "#feb24c", "#fd8d3c", "#fc4e2a", "#e31a1c"];
+
+// filters for classifying earthquakes into five categories based on magnitude
+const MAG_1 = ["<", ["get", "mag"], 2] as ExpressionSpecification;
+const MAG_2 = [
+  "all",
+  [">=", ["get", "mag"], 2],
+  ["<", ["get", "mag"], 3],
+] as ExpressionSpecification;
+const MAG_3 = [
+  "all",
+  [">=", ["get", "mag"], 3],
+  ["<", ["get", "mag"], 4],
+] as ExpressionSpecification;
+const MAG_4 = [
+  "all",
+  [">=", ["get", "mag"], 4],
+  ["<", ["get", "mag"], 5],
+] as ExpressionSpecification;
+const MAG_5 = [">=", ["get", "mag"], 5];
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
       [style]="
@@ -139,8 +190,9 @@ const COLORS = ['#fed976', '#feb24c', '#fd8d3c', '#fc4e2a', '#e31a1c'];
         data="https://maplibre.org/maplibre-gl-js/docs/assets/earthquakes.geojson"
         [cluster]="true"
         [clusterRadius]="80"
-        [clusterProperties]="clusterProperties"
+        [clusterProperties]="clusterProperties()"
       ></mgl-geojson-source>
+
       <mgl-markers-for-clusters source="earthquakes">
         <ng-template mglClusterPoint let-feature>
           <showcase-cluster-point
@@ -153,19 +205,19 @@ const COLORS = ['#fed976', '#feb24c', '#fd8d3c', '#fc4e2a', '#e31a1c'];
         type="circle"
         source="earthquakes"
         [filter]="['!=', 'cluster', true]"
-        [paint]="circlePaint"
+        [paint]="circlePaint()"
       ></mgl-layer>
       <mgl-layer
         id="earthquake_label"
         type="symbol"
         source="earthquakes"
         [filter]="['!=', 'cluster', true]"
-        [layout]="labelLayout"
-        [paint]="labelPaint"
+        [layout]="labelLayout()"
+        [paint]="labelPaint()"
       ></mgl-layer>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+  styleUrls: ["./examples.css"],
   standalone: true,
   imports: [
     MapComponent,
@@ -175,77 +227,55 @@ const COLORS = ['#fed976', '#feb24c', '#fd8d3c', '#fc4e2a', '#e31a1c'];
     ClusterPointComponent,
     LayerComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClusterHtmlComponent {
-  clusterProperties: GeoJSONSourceSpecification['clusterProperties'];
-  circlePaint: CircleLayerSpecification['paint'];
-  labelLayout: SymbolLayerSpecification['layout'];
-  labelPaint: SymbolLayerSpecification['paint'];
+  readonly clusterProperties = signal<
+    GeoJSONSourceSpecification["clusterProperties"]
+  >({
+    // keep separate counts for each magnitude category in a cluster
+    mag1: ["+", ["case", MAG_1, 1, 0]],
+    mag2: ["+", ["case", MAG_2, 1, 0]],
+    mag3: ["+", ["case", MAG_3, 1, 0]],
+    mag4: ["+", ["case", MAG_4, 1, 0]],
+    mag5: ["+", ["case", MAG_5, 1, 0]],
+  });
+  readonly circlePaint = signal<CircleLayerSpecification["paint"]>({
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    "circle-color": [
+      "case",
+      MAG_1,
+      COLORS[0],
+      MAG_2,
+      COLORS[1],
+      MAG_3,
+      COLORS[2],
+      MAG_4,
+      COLORS[3],
+      COLORS[4],
+    ],
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    "circle-opacity": 0.6,
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    "circle-radius": 12,
+  });
 
-  constructor() {
-    // filters for classifying earthquakes into five categories based on magnitude
-    const mag1 = ['<', ['get', 'mag'], 2] as ExpressionSpecification;
-    const mag2 = [
-      'all',
-      ['>=', ['get', 'mag'], 2],
-      ['<', ['get', 'mag'], 3],
-    ] as ExpressionSpecification;
-    const mag3 = [
-      'all',
-      ['>=', ['get', 'mag'], 3],
-      ['<', ['get', 'mag'], 4],
-    ] as ExpressionSpecification;
-    const mag4 = [
-      'all',
-      ['>=', ['get', 'mag'], 4],
-      ['<', ['get', 'mag'], 5],
-    ] as ExpressionSpecification;
-    const mag5 = ['>=', ['get', 'mag'], 5];
+  readonly labelLayout = signal<SymbolLayerSpecification["layout"]>({
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    "text-field": [
+      "number-format",
+      ["get", "mag"],
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      { "min-fraction-digits": 1, "max-fraction-digits": 1 },
+    ],
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    "text-size": 10,
+  });
 
-    this.clusterProperties = {
-      // keep separate counts for each magnitude category in a cluster
-      mag1: ['+', ['case', mag1, 1, 0]],
-      mag2: ['+', ['case', mag2, 1, 0]],
-      mag3: ['+', ['case', mag3, 1, 0]],
-      mag4: ['+', ['case', mag4, 1, 0]],
-      mag5: ['+', ['case', mag5, 1, 0]],
-    };
-    this.circlePaint = {
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      'circle-color': [
-        'case',
-        mag1,
-        COLORS[0],
-        mag2,
-        COLORS[1],
-        mag3,
-        COLORS[2],
-        mag4,
-        COLORS[3],
-        COLORS[4],
-      ],
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      'circle-opacity': 0.6,
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      'circle-radius': 12,
-    };
-    this.labelLayout = {
-      // typings issue
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      'text-field': [
-        'number-format',
-        ['get', 'mag'],
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        { 'min-fraction-digits': 1, 'max-fraction-digits': 1 },
-      ],
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      'text-size': 10,
-    };
-    this.labelPaint = {
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      'text-color': ['case', ['<', ['get', 'mag'], 3], 'black', 'white'],
-    };
-  }
+  readonly labelPaint = signal<SymbolLayerSpecification["paint"]>({
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    "text-color": ["case", ["<", ["get", "mag"], 3], "black", "white"],
+  });
 }

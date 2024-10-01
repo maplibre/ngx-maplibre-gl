@@ -1,8 +1,14 @@
-import { Component, OnDestroy, afterNextRender } from '@angular/core';
-import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  afterNextRender,
+  signal,
+} from "@angular/core";
+import { MapComponent, MarkerComponent } from "@maplibre/ngx-maplibre-gl";
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
       [interactive]="false"
@@ -10,8 +16,8 @@ import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
       [style]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
       "
-      [pitch]="[pitch]"
-      [bearing]="[bearing]"
+      [pitch]="[pitch()]"
+      [bearing]="[bearing()]"
       [zoom]="[17]"
       [center]="[4.577979, 51.038189]"
       [preserveDrawingBuffer]="true"
@@ -40,13 +46,14 @@ import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
       </mgl-marker>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css', './marker-alignment.component.css'],
+  styleUrls: ["./examples.css", "./marker-alignment.component.css"],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MapComponent, MarkerComponent],
 })
 export class MarkerAlignmentComponent implements OnDestroy {
-  pitch = 50;
-  bearing = -97;
+  readonly pitch = signal(50);
+  readonly bearing = signal(-97);
   timer: ReturnType<typeof setInterval>;
 
   constructor() {
@@ -57,10 +64,10 @@ export class MarkerAlignmentComponent implements OnDestroy {
         if (angle === 1) {
           angle = 0;
         }
-        this.pitch = 45 + 15 * Math.cos(angle);
-        this.bearing = -103 + 20 * Math.sin(angle);
+        this.pitch.set(45 + 15 * Math.cos(angle));
+        this.bearing.set(-103 + 20 * Math.sin(angle));
       }, 20);
-    })
+    });
   }
 
   ngOnDestroy() {
@@ -69,4 +76,3 @@ export class MarkerAlignmentComponent implements OnDestroy {
     }
   }
 }
-

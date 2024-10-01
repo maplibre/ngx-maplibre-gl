@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-import { TerrainSpecification } from 'maplibre-gl';
+import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { TerrainSpecification } from "maplibre-gl";
 import {
   MapComponent,
   RasterDemSourceComponent,
-} from '@maplibre/ngx-maplibre-gl';
+} from "@maplibre/ngx-maplibre-gl";
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
       [style]="mapLibreExampleSource"
@@ -23,16 +23,17 @@ import {
       ></mgl-raster-dem-source>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+  styleUrls: ["./examples.css"],
   standalone: true,
   imports: [MapComponent, RasterDemSourceComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TerrainMapComponent {
-  mapLibreExampleSource: string =
-    'https://api.maptiler.com/maps/hybrid/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL';
+  readonly mapLibreExampleSource: string =
+    "https://api.maptiler.com/maps/hybrid/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL";
 
-  terrainSpec: TerrainSpecification = {
-    source: 'terrainSource',
+  readonly terrainSpec: TerrainSpecification = {
+    source: "terrainSource",
     exaggeration: 1,
   };
 }

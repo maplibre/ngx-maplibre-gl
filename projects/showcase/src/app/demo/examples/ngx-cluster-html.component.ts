@@ -2,18 +2,16 @@ import {
   Component,
   OnChanges,
   SimpleChanges,
-  afterNextRender,
   viewChild,
   input,
   signal,
-  inject,
-  DestroyRef,
-} from '@angular/core';
+  ChangeDetectionStrategy,
+} from "@angular/core";
 import {
   MatPaginator,
   PageEvent,
   MatPaginatorModule,
-} from '@angular/material/paginator';
+} from "@angular/material/paginator";
 import {
   MapComponent,
   GeoJSONSourceComponent,
@@ -21,11 +19,13 @@ import {
   MarkersForClustersComponent,
   PointDirective,
   ClusterPointDirective,
-} from '@maplibre/ngx-maplibre-gl';
-import { MatListModule } from '@angular/material/list';
+} from "@maplibre/ngx-maplibre-gl";
+import { MatListModule } from "@angular/material/list";
+
+import earthquakesData from "./earthquakes.geo.json";
 
 @Component({
-  selector: 'showcase-cluster-popup',
+  selector: "showcase-cluster-popup",
   template: `
     <mat-list>
       @for (leaf of leaves(); track leaf) {
@@ -86,7 +86,7 @@ export class ClusterPopupComponent implements OnChanges {
  */
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
       [style]="
@@ -96,11 +96,10 @@ export class ClusterPopupComponent implements OnChanges {
       [center]="[-103.59179687498357, 40.66995747013945]"
       [preserveDrawingBuffer]="true"
     >
-      @if (earthquakes(); as earthquakesValue) {
       <mgl-geojson-source
         #clusterComponent
         id="earthquakes"
-        [data]="earthquakesValue"
+        [data]="earthquakes()"
         [cluster]="true"
         [clusterRadius]="50"
         [clusterMaxZoom]="14"
@@ -124,10 +123,10 @@ export class ClusterPopupComponent implements OnChanges {
           [selectedCluster]="selectedClusterValue"
         ></showcase-cluster-popup>
       </mgl-popup>
-      } }
+      }
     </mgl-map>
   `,
-  styleUrls: ['./examples.css', './ngx-cluster-html.component.css'],
+  styleUrls: ["./examples.css", "./ngx-cluster-html.component.css"],
   standalone: true,
   imports: [
     MapComponent,
@@ -138,30 +137,24 @@ export class ClusterPopupComponent implements OnChanges {
     PopupComponent,
     ClusterPopupComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgxClusterHtmlComponent {
-  private destroyRef = inject(DestroyRef);
-  readonly earthquakes = signal<GeoJSON.FeatureCollection | null>(null);
+  readonly earthquakes = signal<GeoJSON.FeatureCollection>(
+    this.getEarthquakes()
+  );
 
   readonly selectedCluster = signal<{
     geometry: GeoJSON.Point;
     properties: any;
   } | null>(null);
 
-  constructor() {
-    let timer: ReturnType<typeof setInterval>;
-    afterNextRender(async () => {
-      const earthquakes: GeoJSON.FeatureCollection = (await import(
-        './earthquakes.geo.json'
-      )) as any;
-      timer = setInterval(() => {
-        if (earthquakes.features.length) {
-          earthquakes.features.pop();
-        }
-        this.earthquakes.set({ ...earthquakes });
-      }, 500);
-    });
-    this.destroyRef.onDestroy(() => clearInterval(timer));
+  getEarthquakes() {
+    const earthquakes = earthquakesData as GeoJSON.FeatureCollection;
+    if (earthquakes.features.length) {
+      earthquakes.features.pop();
+    }
+    return earthquakes;
   }
 
   selectCluster(event: MouseEvent, feature: any) {

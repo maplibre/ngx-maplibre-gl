@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
-import { LngLat, MapLayerMouseEvent } from 'maplibre-gl';
-import { GeoJsonProperties } from 'geojson';
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import { LngLat, MapLayerMouseEvent } from "maplibre-gl";
+import { GeoJsonProperties } from "geojson";
 import {
   MapComponent,
   PopupComponent,
   LayerComponent,
-} from '@maplibre/ngx-maplibre-gl';
+} from "@maplibre/ngx-maplibre-gl";
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
       [style]="
@@ -31,32 +31,37 @@ import {
           'fill-color': 'rgba(200, 100, 240, 0.4)',
           'fill-outline-color': 'rgba(200, 100, 240, 1)'
         }"
-        (layerMouseEnter)="cursorStyle = 'pointer'"
-        (layerMouseLeave)="cursorStyle = ''"
+        (layerMouseEnter)="cursorStyle.set('pointer')"
+        (layerMouseLeave)="cursorStyle.set('')"
         (layerClick)="onClick($event)"
-      ></mgl-layer>
-      @if (selectedElement && selectedLngLat) {
-        <mgl-popup [lngLat]="selectedLngLat" [closeOnClick]="false">
-          <span [innerHTML]="selectedElement?.name"></span>
-        </mgl-popup>
+        (click)="$event.stopPropagation()"
+      />
+
+      @if (selectedLngLat(); as selectedLngLatValue) {
+      <mgl-popup [lngLat]="selectedLngLatValue" [closeOnClick]="false">
+        @if(selectedElement(); as selectedElementValue){
+        <span [innerHTML]="selectedElementValue?.name"></span>
+        }
+      </mgl-popup>
       }
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+  styleUrls: ["./examples.css"],
   standalone: true,
   imports: [MapComponent, LayerComponent, PopupComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PolygonPopupOnClickComponent {
-  selectedElement: GeoJsonProperties | null;
-  selectedLngLat: LngLat;
-  cursorStyle: string;
+  readonly selectedElement = signal<GeoJsonProperties | null>(null);
+  readonly selectedLngLat = signal<LngLat | null>(null);
+  readonly cursorStyle = signal("");
 
   onClick(evt: MapLayerMouseEvent) {
-    this.selectedLngLat = evt.lngLat;
-    this.selectedElement = evt.features![0].properties;
+    this.selectedLngLat.set(evt.lngLat);
+    this.selectedElement.set(evt.features![0].properties);
   }
 
   onMapClick() {
-    this.selectedElement = null;
+    this.selectedElement.set(null);
   }
 }

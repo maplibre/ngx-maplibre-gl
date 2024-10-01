@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import { MatButtonModule } from "@angular/material/button";
 import {
   AttributionControlDirective,
   ControlComponent,
@@ -9,10 +9,10 @@ import {
   NavigationControlDirective,
   Position,
   ScaleControlDirective,
-} from '@maplibre/ngx-maplibre-gl';
+} from "@maplibre/ngx-maplibre-gl";
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
       [style]="
@@ -20,27 +20,27 @@ import {
       "
       [preserveDrawingBuffer]="true"
     >
-      @if (visible) {
-        <mgl-control>
-          <button
-            mat-fab
-            color="primary"
-            class="custom-control"
-            data-cy="custom-control"
-            (click)="alert('Hello')"
-          >
-            Hello
-          </button>
-        </mgl-control>
-        <mgl-control mglAttribution position="top-right"></mgl-control>
-        <mgl-control mglFullscreen position="top-right"></mgl-control>
-        <mgl-control
-          mglGeolocate
-          position="top-right"
-          (geolocate)="onGeolocate($event)"
-        ></mgl-control>
-        <mgl-control mglNavigation position="top-right"></mgl-control>
-        <mgl-control mglScale position="top-right"></mgl-control>
+      @if (visible(); as visibleValue) {
+      <mgl-control>
+        <button
+          mat-fab
+          color="primary"
+          class="custom-control"
+          data-cy="custom-control"
+          (click)="alert('Hello')"
+        >
+          Hello
+        </button>
+      </mgl-control>
+      <mgl-control mglAttribution position="top-right"></mgl-control>
+      <mgl-control mglFullscreen position="top-right"></mgl-control>
+      <mgl-control
+        mglGeolocate
+        position="top-right"
+        (geolocate)="onGeolocate($event)"
+      ></mgl-control>
+      <mgl-control mglNavigation position="top-right"></mgl-control>
+      <mgl-control mglScale position="top-right"></mgl-control>
       }
 
       <mgl-control position="bottom-right">
@@ -50,13 +50,14 @@ import {
           (click)="toggleControls()"
           data-cy="toggle-show-controls"
         >
-          {{ visible ? 'Hide Controls' : 'Show Controls' }}
+          {{ visible() ? "Hide Controls" : "Show Controls" }}
         </button>
       </mgl-control>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+  styleUrls: ["./examples.css"],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MapComponent,
     ControlComponent,
@@ -69,15 +70,15 @@ import {
   ],
 })
 export class NgxCustomControlComponent {
-  visible = true;
+  readonly visible = signal(true);
 
   alert(message: string) {
     alert(message);
   }
   onGeolocate(position: Position) {
-    console.log('geolocate', position);
+    console.log("geolocate", position);
   }
   toggleControls() {
-    this.visible = !this.visible;
+    this.visible.update((isVisible) => !isVisible);
   }
 }

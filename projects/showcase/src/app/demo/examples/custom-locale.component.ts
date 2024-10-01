@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import {
   MapComponent,
   ControlComponent,
@@ -6,10 +6,10 @@ import {
   GeolocateControlDirective,
   NavigationControlDirective,
   ScaleControlDirective,
-} from '@maplibre/ngx-maplibre-gl';
+} from "@maplibre/ngx-maplibre-gl";
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
       [style]="
@@ -26,7 +26,7 @@ import {
       <mgl-control mglScale></mgl-control>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+  styleUrls: ["./examples.css"],
   standalone: true,
   imports: [
     MapComponent,
@@ -36,23 +36,24 @@ import {
     NavigationControlDirective,
     ScaleControlDirective,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomLocaleComponent {
   /* eslint-disable @typescript-eslint/naming-convention */
   readonly locale = {
-    'FullscreenControl.Enter': 'Перейти в повноекранний режим',
-    'FullscreenControl.Exit': 'Вийти з повноекранного режиму',
-    'GeolocateControl.FindMyLocation': 'Знайти моє місцеположення',
-    'GeolocateControl.LocationNotAvailable': 'Місцеположення недоступне',
-    'LogoControl.Title': 'Лого Mapbox',
-    'NavigationControl.ResetBearing': 'Cкинути компас',
-    'NavigationControl.ZoomIn': 'Наблизити',
-    'NavigationControl.ZoomOut': 'Віддалити',
-    'ScaleControl.Feet': 'ф',
-    'ScaleControl.Meters': 'м',
-    'ScaleControl.Kilometers': 'км',
-    'ScaleControl.Miles': 'ми',
-    'ScaleControl.NauticalMiles': 'нм',
+    "FullscreenControl.Enter": "Перейти в повноекранний режим",
+    "FullscreenControl.Exit": "Вийти з повноекранного режиму",
+    "GeolocateControl.FindMyLocation": "Знайти моє місцеположення",
+    "GeolocateControl.LocationNotAvailable": "Місцеположення недоступне",
+    "LogoControl.Title": "Лого Mapbox",
+    "NavigationControl.ResetBearing": "Cкинути компас",
+    "NavigationControl.ZoomIn": "Наблизити",
+    "NavigationControl.ZoomOut": "Віддалити",
+    "ScaleControl.Feet": "ф",
+    "ScaleControl.Meters": "м",
+    "ScaleControl.Kilometers": "км",
+    "ScaleControl.Miles": "ми",
+    "ScaleControl.NauticalMiles": "нм",
   };
   /* eslint-enable @typescript-eslint/naming-convention */
 }

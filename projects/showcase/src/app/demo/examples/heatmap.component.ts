@@ -1,13 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { CircleLayerSpecification } from 'maplibre-gl';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  signal,
+} from "@angular/core";
+import { CircleLayerSpecification } from "maplibre-gl";
 import {
   MapComponent,
   GeoJSONSourceComponent,
   LayerComponent,
-} from '@maplibre/ngx-maplibre-gl';
+} from "@maplibre/ngx-maplibre-gl";
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
       [style]="
@@ -17,71 +22,78 @@ import {
       [center]="[-103.59179687498357, 40.66995747013945]"
       [preserveDrawingBuffer]="true"
     >
-      @if (earthquakes) {
-        <mgl-geojson-source
-          id="earthquakes"
-          [data]="earthquakes"
-          [cluster]="true"
-          [clusterMaxZoom]="15"
-          [clusterRadius]="20"
-        ></mgl-geojson-source>
-        @for (layer of clusterLayers; track layer) {
-          <mgl-layer
-            [id]="layer.id"
-            [type]="layer.type"
-            source="earthquakes"
-            [filter]="layer.filter"
-            [paint]="layer.paint"
-          ></mgl-layer>
-        }
-        <mgl-layer
-          id="unclustered-point"
-          type="circle"
-          source="earthquakes"
-          [filter]="['!=', 'cluster', true]"
-          [paint]="{
-            'circle-color': 'rgba(0,255,0,0.5)',
-            'circle-radius': 20,
-            'circle-blur': 1
-          }"
-        ></mgl-layer>
+      @if (earthquakes(); as earthquakesValue) {
+      <mgl-geojson-source
+        id="earthquakes"
+        [data]="earthquakesValue"
+        [cluster]="true"
+        [clusterMaxZoom]="15"
+        [clusterRadius]="20"
+      />
+      @for (layer of clusterLayers(); track layer) {
+      <mgl-layer
+        [id]="layer.id"
+        [type]="layer.type"
+        source="earthquakes"
+        [filter]="layer.filter"
+        [paint]="layer.paint"
+      />
+      }
+      <mgl-layer
+        id="unclustered-point"
+        type="circle"
+        source="earthquakes"
+        [filter]="['!=', 'cluster', true]"
+        [paint]="{
+          'circle-color': 'rgba(0,255,0,0.5)',
+          'circle-radius': 20,
+          'circle-blur': 1
+        }"
+      />
       }
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+  styleUrls: ["./examples.css"],
   standalone: true,
   imports: [MapComponent, GeoJSONSourceComponent, LayerComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeatMapComponent implements OnInit {
-  earthquakes: object;
-  clusterLayers: CircleLayerSpecification[];
+  readonly earthquakes = signal<GeoJSON.FeatureCollection | null>(null);
+  readonly clusterLayers = signal<CircleLayerSpecification[]>(
+    this.getClusterLayers()
+  );
 
   async ngOnInit() {
-    this.earthquakes = await import('./earthquakes.geo.json');
+    this.earthquakes.set((await import("./earthquakes.geo.json")) as any);
+  }
+
+  getClusterLayers() {
     const layersData: [number, string][] = [
-      [0, 'green'],
-      [20, 'orange'],
-      [200, 'red'],
+      [0, "green"],
+      [20, "orange"],
+      [200, "red"],
     ];
-    this.clusterLayers = layersData.map(
+
+    return layersData.map(
       (data, index) =>
         ({
-          type: 'circle',
+          type: "circle",
           id: `cluster-${index}`,
           paint: {
             /* eslint-disable @typescript-eslint/naming-convention */
-            'circle-color': data[1],
-            'circle-radius': 70,
-            'circle-blur': 1,
+            "circle-color": data[1],
+            "circle-radius": 70,
+            "circle-blur": 1,
             /* eslint-enable @typescript-eslint/naming-convention */
           },
           filter:
             index === layersData.length - 1
-              ? ['>=', 'point_count', data[0]]
+              ? [">=", "point_count", data[0]]
               : [
-                  'all',
-                  ['>=', 'point_count', data[0]],
-                  ['<', 'point_count', layersData[index + 1][0]],
+                  "all",
+                  [">=", "point_count", data[0]],
+                  ["<", "point_count", layersData[index + 1][0]],
                 ],
         } as CircleLayerSpecification)
     );

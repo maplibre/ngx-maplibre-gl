@@ -1,18 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { MatRadioModule } from '@angular/material/radio';
-import { MapComponent } from '@maplibre/ngx-maplibre-gl';
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { MatRadioModule } from "@angular/material/radio";
+import { MapComponent } from "@maplibre/ngx-maplibre-gl";
 import {
   RasterLayerSpecification,
   RasterSourceSpecification,
-  StyleSpecification,
-} from 'maplibre-gl';
+} from "maplibre-gl";
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
-      [style]="style"
+      [style]="style()"
       [zoom]="[13]"
       [center]="[4.899, 52.372]"
       [preserveDrawingBuffer]="true"
@@ -33,50 +32,51 @@ import {
       >
     </mat-radio-group>
   `,
-  styleUrls: ['./examples.css', './set-style.component.css'],
+  styleUrls: ["./examples.css", "./set-style.component.css"],
   standalone: true,
   imports: [MapComponent, MatRadioModule, FormsModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SetStyleComponent implements OnInit {
-  layerId = 'streets';
-  style: string | StyleSpecification;
+export class SetStyleComponent {
+  readonly layerId = "streets";
+  readonly style = signal(this.getStyle(this.layerId));
 
-  ngOnInit() {
-    this.changeStyle(this.layerId);
+  changeStyle(layerId: "streets" | "code") {
+    this.style.set(this.getStyle(layerId));
   }
 
-  changeStyle(layerId: string) {
-    if (layerId === 'streets') {
-      this.style = `https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL`;
-    } else {
-      const source = {
-        type: 'raster',
-        tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
-        minzoom: 0,
-        maxzoom: 15,
-        scheme: 'xyz',
-        tileSize: 256,
-      } as RasterSourceSpecification;
-      const layer = {
-        id: 'some-raster-layer-id',
-        type: 'raster',
-        source: 'raster',
-        layout: {
-          visibility: 'visible',
-        },
-        paint: {
-          //eslint-disable-next-line @typescript-eslint/naming-convention
-          'raster-opacity': 1.0,
-        },
-      } as RasterLayerSpecification;
-
-      this.style = {
-        version: 8,
-        sources: {
-          raster: source,
-        },
-        layers: [layer],
-      };
+  getStyle(styleName: "streets" | "code") {
+    if (styleName === "streets") {
+      return `https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL`;
     }
+
+    const source = {
+      type: "raster",
+      tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+      minzoom: 0,
+      maxzoom: 15,
+      scheme: "xyz",
+      tileSize: 256,
+    } as RasterSourceSpecification;
+    const layer = {
+      id: "some-raster-layer-id",
+      type: "raster",
+      source: "raster",
+      layout: {
+        visibility: "visible",
+      },
+      paint: {
+        //eslint-disable-next-line @typescript-eslint/naming-convention
+        "raster-opacity": 1.0,
+      },
+    } as RasterLayerSpecification;
+
+    return {
+      version: 8,
+      sources: {
+        raster: source,
+      },
+      layers: [layer],
+    };
   }
 }

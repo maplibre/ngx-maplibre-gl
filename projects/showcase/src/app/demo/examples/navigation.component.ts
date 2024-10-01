@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import {
   MapComponent,
   ControlComponent,
   NavigationControlDirective,
-} from '@maplibre/ngx-maplibre-gl';
+} from "@maplibre/ngx-maplibre-gl";
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
       [style]="
@@ -19,8 +19,9 @@ import {
       <mgl-control mglNavigation></mgl-control>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+  styleUrls: ["./examples.css"],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MapComponent, ControlComponent, NavigationControlDirective],
 })
 export class NavigationComponent {}

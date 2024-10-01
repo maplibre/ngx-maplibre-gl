@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import {
   MapComponent,
   ControlComponent,
   NavigationControlDirective,
   TerrainControlDirective,
   RasterDemSourceComponent,
-} from '@maplibre/ngx-maplibre-gl';
+} from "@maplibre/ngx-maplibre-gl";
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
       [style]="
@@ -38,7 +38,7 @@ import {
       ></mgl-control>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+  styleUrls: ["./examples.css"],
   preserveWhitespaces: false,
   standalone: true,
   imports: [
@@ -48,5 +48,6 @@ import {
     NavigationControlDirective,
     TerrainControlDirective,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgxTerrainSourceComponent {}

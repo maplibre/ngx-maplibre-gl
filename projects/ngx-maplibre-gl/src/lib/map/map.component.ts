@@ -273,6 +273,8 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
     viewChild.required<ElementRef<HTMLDivElement>>('container');
 
   constructor() {
+    afterRender(() => this.mapService.clearMapElements());
+    
     afterNextRender(() => {
       if (this.preserveDrawingBuffer()) {
         // This is to allow better interaction with the map state
@@ -340,10 +342,6 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
       if (cursorStyle) {
         this.mapService.changeCanvasCursor(cursorStyle);
       }
-    });
-
-    afterRender(() => {
-      this.mapService.clearMapElements();
     });
   }
 

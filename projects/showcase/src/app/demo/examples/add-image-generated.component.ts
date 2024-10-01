@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 import {
   MapComponent,
   ImageComponent,
   LayerComponent,
-} from '@maplibre/ngx-maplibre-gl';
+} from "@maplibre/ngx-maplibre-gl";
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
       [style]="
@@ -19,10 +19,9 @@ import {
         [data]="{
           width: 64,
           height: 64,
-          data: imageData
+          data: imageData()
         }"
-      >
-      </mgl-image>
+      />
       <mgl-layer
         id="points"
         type="symbol"
@@ -46,16 +45,13 @@ import {
       </mgl-layer>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+  styleUrls: ["./examples.css"],
   standalone: true,
   imports: [MapComponent, ImageComponent, LayerComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddImageGeneratedComponent implements OnInit {
-  imageData: Uint8Array;
-
-  ngOnInit() {
-    this.imageData = this.generateImage();
-  }
+export class AddImageGeneratedComponent {
+  readonly imageData = signal(this.generateImage());
 
   private generateImage() {
     const width = 64; // The image will be 64 pixels square

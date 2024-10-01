@@ -7,12 +7,12 @@ import {
   inject,
   input,
   signal,
-} from '@angular/core';
-import type { GeoJSONSource, GeoJSONSourceSpecification } from 'maplibre-gl';
-import { Subject } from 'rxjs';
-import { debounceTime, switchMap, tap } from 'rxjs/operators';
-import { SourceDirective } from '../source.directive';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+} from "@angular/core";
+import type { GeoJSONSource, GeoJSONSourceSpecification } from "maplibre-gl";
+import { Subject } from "rxjs";
+import { debounceTime, switchMap, tap } from "rxjs/operators";
+import { SourceDirective } from "../source.directive";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 /**
  * `mgl-geojson-source` - a geojson source component
@@ -43,10 +43,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
  * ```
  */
 @Component({
-  selector: 'mgl-geojson-source',
-  template: '',
+  selector: "mgl-geojson-source",
+  template: "",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
+  hostDirectives: [{ directive: SourceDirective, inputs: ["id"] }],
   standalone: true,
 })
 export class GeoJSONSourceComponent implements OnChanges {
@@ -57,52 +57,52 @@ export class GeoJSONSourceComponent implements OnChanges {
   private readonly ngZone = inject(NgZone);
 
   /** Dynamic input */
-  readonly data = input<GeoJSONSourceSpecification['data']>({
-    type: 'FeatureCollection',
+  readonly data = input<GeoJSONSourceSpecification["data"]>({
+    type: "FeatureCollection",
     features: [],
   });
 
   /** Dynamic input */
-  readonly maxzoom = input<GeoJSONSourceSpecification['maxzoom']>();
+  readonly maxzoom = input<GeoJSONSourceSpecification["maxzoom"]>();
 
   /** Dynamic input */
-  readonly attribution = input<GeoJSONSourceSpecification['attribution']>();
+  readonly attribution = input<GeoJSONSourceSpecification["attribution"]>();
 
   /** Dynamic input */
-  readonly buffer = input<GeoJSONSourceSpecification['buffer']>();
+  readonly buffer = input<GeoJSONSourceSpecification["buffer"]>();
 
   /** Dynamic input */
-  readonly tolerance = input<GeoJSONSourceSpecification['tolerance']>();
+  readonly tolerance = input<GeoJSONSourceSpecification["tolerance"]>();
 
   /** Dynamic input */
-  readonly cluster = input<GeoJSONSourceSpecification['cluster']>();
+  readonly cluster = input<GeoJSONSourceSpecification["cluster"]>();
 
   /** Dynamic input */
-  readonly clusterRadius = input<GeoJSONSourceSpecification['clusterRadius']>();
+  readonly clusterRadius = input<GeoJSONSourceSpecification["clusterRadius"]>();
 
   /** Dynamic input */
   readonly clusterMaxZoom =
-    input<GeoJSONSourceSpecification['clusterMaxZoom']>();
+    input<GeoJSONSourceSpecification["clusterMaxZoom"]>();
 
   /** Dynamic input */
   readonly clusterMinPoints =
-    input<GeoJSONSourceSpecification['clusterMinPoints']>();
+    input<GeoJSONSourceSpecification["clusterMinPoints"]>();
 
   /** Dynamic input */
   readonly clusterProperties =
-    input<GeoJSONSourceSpecification['clusterProperties']>();
+    input<GeoJSONSourceSpecification["clusterProperties"]>();
 
   /** Dynamic input */
-  readonly lineMetrics = input<GeoJSONSourceSpecification['lineMetrics']>();
+  readonly lineMetrics = input<GeoJSONSourceSpecification["lineMetrics"]>();
 
   /** Dynamic input */
-  readonly generateId = input<GeoJSONSourceSpecification['generateId']>();
+  readonly generateId = input<GeoJSONSourceSpecification["generateId"]>();
 
   /** Dynamic input */
-  readonly promoteId = input<GeoJSONSourceSpecification['promoteId']>();
+  readonly promoteId = input<GeoJSONSourceSpecification["promoteId"]>();
 
   /** Dynamic input */
-  readonly filter = input<GeoJSONSourceSpecification['filter']>();
+  readonly filter = input<GeoJSONSourceSpecification["filter"]>();
 
   private readonly updateFeatureDataSubject = new Subject<void>();
 
@@ -216,7 +216,7 @@ export class GeoJSONSourceComponent implements OnChanges {
 
   private getGeoJSONSourceSpecification(): GeoJSONSourceSpecification {
     return {
-      type: 'geojson',
+      type: "geojson",
       data: this.data(),
       maxzoom: this.maxzoom(),
       attribution: this.attribution(),

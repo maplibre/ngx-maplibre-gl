@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 import {
   MapComponent,
   GeoJSONSourceComponent,
   LayerComponent,
-} from '@maplibre/ngx-maplibre-gl';
+} from "@maplibre/ngx-maplibre-gl";
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
       [style]="
@@ -51,23 +51,24 @@ import {
           'fill-color': '#627BC1',
           'fill-opacity': 1
         }"
-        [filter]="hoverFilter"
+        [filter]="hoverFilter()"
       >
       </mgl-layer>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+  styleUrls: ["./examples.css"],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MapComponent, GeoJSONSourceComponent, LayerComponent],
 })
 export class HoverStylesComponent {
-  hoverFilter = ['==', 'name', ''];
+  readonly hoverFilter = signal(["==", "name", ""]);
 
   activateHoverOn(evt: any) {
-    this.hoverFilter = ['==', 'name', evt.features[0].properties.name];
+    this.hoverFilter.set(["==", "name", evt.features[0].properties.name]);
   }
 
   disableHover() {
-    this.hoverFilter = ['==', 'name', ''];
+    this.hoverFilter.set(["==", "name", ""]);
   }
 }

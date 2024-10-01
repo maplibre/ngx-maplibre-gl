@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { Map, SymbolLayerSpecification } from 'maplibre-gl';
-import { MapComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import { Map, SymbolLayerSpecification } from "maplibre-gl";
+import { MapComponent, LayerComponent } from "@maplibre/ngx-maplibre-gl";
 
 @Component({
-  selector: 'showcase-demo',
+  selector: "showcase-demo",
   template: `
     <mgl-map
       [style]="
@@ -45,26 +45,27 @@ import { MapComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
           ],
           'fill-extrusion-opacity': 0.6
         }"
-        [before]="labelLayerId"
+        [before]="labelLayerId()"
       ></mgl-layer>
     </mgl-map>
   `,
-  styleUrls: ['./examples.css'],
+  styleUrls: ["./examples.css"],
   standalone: true,
   imports: [MapComponent, LayerComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Display3dBuildingsComponent {
-  labelLayerId: string;
+  readonly labelLayerId = signal<string | undefined>(undefined);
 
   onLoad(mapInstance: Map) {
     const layers = mapInstance.getStyle().layers!;
 
     for (let i = 0; i < layers.length; i++) {
       if (
-        layers[i].type === 'symbol' &&
-        (<SymbolLayerSpecification>layers[i]).layout!['text-field']
+        layers[i].type === "symbol" &&
+        (<SymbolLayerSpecification>layers[i]).layout!["text-field"]
       ) {
-        this.labelLayerId = layers[i].id;
+        this.labelLayerId.set(layers[i].id);
         break;
       }
     }

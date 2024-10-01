@@ -1,16 +1,17 @@
-import { Component, inject } from '@angular/core';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
-import { RouterOutlet } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
+import { MatIconRegistry } from "@angular/material/icon";
+import { DomSanitizer } from "@angular/platform-browser";
+import { RouterOutlet } from "@angular/router";
 
-import github from '../assets/github.svg';
-import logo from '../assets/ngx-maplibre-gl.svg';
+import github from "../assets/github.svg";
+import logo from "../assets/ngx-maplibre-gl.svg";
 
 @Component({
-  selector: 'showcase-root',
+  selector: "showcase-root",
   template: `<router-outlet></router-outlet>`,
   standalone: true,
   imports: [RouterOutlet],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
   private readonly iconRegistry = inject(MatIconRegistry);
@@ -18,11 +19,11 @@ export class AppComponent {
 
   constructor() {
     this.iconRegistry.addSvgIconLiteral(
-      'ngx-maplibre-gl',
+      "ngx-maplibre-gl",
       this.sanitizer.bypassSecurityTrustHtml(logo)
     );
     this.iconRegistry.addSvgIconLiteral(
-      'github',
+      "github",
       this.sanitizer.bypassSecurityTrustHtml(github)
     );
   }
