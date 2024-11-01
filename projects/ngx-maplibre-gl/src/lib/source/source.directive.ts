@@ -56,8 +56,9 @@ export class SourceDirective implements OnInit {
   }
 
   removeSource() {
-    if (this.sourceId()) {
-      this.mapService.removeSource(this.id());
+    const currentId = this.sourceId();
+    if (currentId) {
+      this.mapService.removeSource(currentId);
       this.sourceId.set(null);
     }
   }
