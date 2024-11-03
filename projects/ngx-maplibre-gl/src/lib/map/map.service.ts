@@ -838,7 +838,6 @@ export class MapService {
   private createSubscriptionForPopup(popup: Popup, event: "open" | "close", emitter: OutputEmitterRef<any>): Subscription {
     const handler = (evt: any) => {
       this.zone.run(() => {
-        console.log("emitting", event, evt, emitter);
         emitter.emit(evt);
       });
     }

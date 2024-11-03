@@ -201,4 +201,20 @@ describe('MapService', () => {
       done();
     });
   });
+
+  it('should unsubscribe from events on destroy', async () => {
+    let container = document.createElement('div');
+    let popupEvents = {
+      popupOpen: { emit: jasmine.createSpy() },
+      popupClose: { emit: jasmine.createSpy() },
+    } as any;
+    let popup = mapService.createPopup({ 
+      popupOptions: {}, 
+      popupEvents
+    }, container);
+    mapService.addPopupToMap(popup, [0, 0]);
+    mapService.removePopupFromMap(popup);
+    popup.fire('close');
+    expect(popupEvents.popupClose.emit).not.toHaveBeenCalled();
+  });
 });
