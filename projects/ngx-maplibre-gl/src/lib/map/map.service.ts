@@ -302,7 +302,7 @@ export class MapService {
       if (!bindEvents) {
         return;
       }
-      let subscriptions: Subscription[] = [];
+      const subscriptions: Subscription[] = [];
       subscriptions.push(this.createSubscriptionForLayer(layer.layerOptions.id, 'click', layer.layerEvents.layerClick));
       subscriptions.push(this.createSubscriptionForLayer(layer.layerOptions.id, 'dblclick', layer.layerEvents.layerDblClick));
       subscriptions.push(this.createSubscriptionForLayer(layer.layerOptions.id, 'mousedown', layer.layerEvents.layerMouseDown));
@@ -328,7 +328,7 @@ export class MapService {
       const layerInstance = this.mapInstance.getLayer(layerId);
       if (layerInstance != null) {
         const subscriptions = this.subscriptionsPerInstance.get(layerInstance) || [];
-        for (let subscription of subscriptions) {
+        for (const subscription of subscriptions) {
           subscription.unsubscribe();
         }
         this.subscriptionsPerInstance.delete(layerInstance);
@@ -398,7 +398,7 @@ export class MapService {
       const popupOptions = keepAvailableObjectValues(popup.popupOptions);
       const popupInstance = new Popup(popupOptions);
       popupInstance.setDOMContent(element);
-      let subscriptions: Subscription[] = [];
+      const subscriptions: Subscription[] = [];
       subscriptions.push(this.createSubscriptionForPopup(popupInstance, 'open', popup.popupEvents.popupOpen));
       subscriptions.push(this.createSubscriptionForPopup(popupInstance, 'close', popup.popupEvents.popupClose));
       this.subscriptionsPerInstance.set(popupInstance, subscriptions);
@@ -422,7 +422,7 @@ export class MapService {
   removePopupFromMap(popup: Popup) {
     if (this.subscriptionsPerInstance.has(popup)) {
       const subscriptions = this.subscriptionsPerInstance.get(popup) || [];
-      for (let subscription of subscriptions) {
+      for (const subscription of subscriptions) {
         subscription.unsubscribe();
       }
       this.subscriptionsPerInstance.delete(popup);
@@ -435,7 +435,7 @@ export class MapService {
       const popup = marker.getPopup();
       if (this.subscriptionsPerInstance.has(popup)) {
         const subscriptions = this.subscriptionsPerInstance.get(popup) || [];
-        for (let subscription of subscriptions) {
+        for (const subscription of subscriptions) {
           subscription.unsubscribe();
         }
         this.subscriptionsPerInstance.delete(popup);

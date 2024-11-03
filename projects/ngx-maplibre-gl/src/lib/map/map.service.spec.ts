@@ -203,12 +203,12 @@ describe('MapService', () => {
   });
 
   it('should unsubscribe from events on destroy', async () => {
-    let container = document.createElement('div');
-    let popupEvents = {
+    const container = document.createElement('div');
+    const popupEvents = {
       popupOpen: { emit: jasmine.createSpy() },
       popupClose: { emit: jasmine.createSpy() },
     } as any;
-    let popup = mapService.createPopup({ 
+    const popup = mapService.createPopup({ 
       popupOptions: {}, 
       popupEvents
     }, container);
