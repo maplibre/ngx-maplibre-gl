@@ -12,9 +12,10 @@ import {
   type MapOptions,
   type MarkerOptions,
   type PopupOptions,
-  Map,
+  Map as MaplibreMap,
   Marker,
   Popup,
+  type Evented,
   type AnimationOptions,
   type LayerSpecification,
   type StyleSpecification,
@@ -35,6 +36,8 @@ import {
   type TerrainSpecification,
   type QueryRenderedFeaturesOptions,
   type ControlPosition,
+  type Subscription,
+  MapLayerEventType
 } from 'maplibre-gl';
 import { AsyncSubject } from 'rxjs';
 import type {
@@ -92,8 +95,9 @@ export type MovingOptions =
 export class MapService {
   private readonly zone = inject(NgZone);
 
-  mapInstance: Map;
+  mapInstance: MaplibreMap;
   mapEvents: MapEvent;
+  private readonly subscriptionsPerInstance = new Map<Evented, Subscription[]>();
 
   private readonly mapCreated = new AsyncSubject<void>();
   private readonly mapLoaded = new AsyncSubject<void>();
@@ -295,79 +299,39 @@ export class MapService {
         layer.layerOptions as LayerSpecification,
         before
       );
-      if (bindEvents) {
-        this.mapInstance.on('click', layer.layerOptions.id, (evt) => {
-          this.zone.run(() => {
-            layer.layerEvents.layerClick.emit(evt);
-          });
-        });
-        this.mapInstance.on('dblclick', layer.layerOptions.id, (evt) => {
-          this.zone.run(() => {
-            layer.layerEvents.layerDblClick.emit(evt);
-          });
-        });
-        this.mapInstance.on('mousedown', layer.layerOptions.id, (evt) => {
-          this.zone.run(() => {
-            layer.layerEvents.layerMouseDown.emit(evt);
-          });
-        });
-        this.mapInstance.on('mouseup', layer.layerOptions.id, (evt) => {
-          this.zone.run(() => {
-            layer.layerEvents.layerMouseUp.emit(evt);
-          });
-        });
-        this.mapInstance.on('mouseenter', layer.layerOptions.id, (evt) => {
-          this.zone.run(() => {
-            layer.layerEvents.layerMouseEnter.emit(evt);
-          });
-        });
-        this.mapInstance.on('mouseleave', layer.layerOptions.id, (evt) => {
-          this.zone.run(() => {
-            layer.layerEvents.layerMouseLeave.emit(evt);
-          });
-        });
-        this.mapInstance.on('mousemove', layer.layerOptions.id, (evt) => {
-          this.zone.run(() => {
-            layer.layerEvents.layerMouseMove.emit(evt);
-          });
-        });
-        this.mapInstance.on('mouseover', layer.layerOptions.id, (evt) => {
-          this.zone.run(() => {
-            layer.layerEvents.layerMouseOver.emit(evt);
-          });
-        });
-        this.mapInstance.on('mouseout', layer.layerOptions.id, (evt) => {
-          this.zone.run(() => {
-            layer.layerEvents.layerMouseOut.emit(evt);
-          });
-        });
-        this.mapInstance.on('contextmenu', layer.layerOptions.id, (evt) => {
-          this.zone.run(() => {
-            layer.layerEvents.layerContextMenu.emit(evt);
-          });
-        });
-        this.mapInstance.on('touchstart', layer.layerOptions.id, (evt) => {
-          this.zone.run(() => {
-            layer.layerEvents.layerTouchStart.emit(evt);
-          });
-        });
-        this.mapInstance.on('touchend', layer.layerOptions.id, (evt) => {
-          this.zone.run(() => {
-            layer.layerEvents.layerTouchEnd.emit(evt);
-          });
-        });
-        this.mapInstance.on('touchcancel', layer.layerOptions.id, (evt) => {
-          this.zone.run(() => {
-            layer.layerEvents.layerTouchCancel.emit(evt);
-          });
-        });
+      if (!bindEvents) {
+        return;
+      }
+      let subscriptions: Subscription[] = [];
+      subscriptions.push(this.createSubscriptionForLayer(layer.layerOptions.id, 'click', layer.layerEvents.layerClick));
+      subscriptions.push(this.createSubscriptionForLayer(layer.layerOptions.id, 'dblclick', layer.layerEvents.layerDblClick));
+      subscriptions.push(this.createSubscriptionForLayer(layer.layerOptions.id, 'mousedown', layer.layerEvents.layerMouseDown));
+      subscriptions.push(this.createSubscriptionForLayer(layer.layerOptions.id, 'mouseup', layer.layerEvents.layerMouseUp));
+      subscriptions.push(this.createSubscriptionForLayer(layer.layerOptions.id, 'mouseenter', layer.layerEvents.layerMouseEnter));
+      subscriptions.push(this.createSubscriptionForLayer(layer.layerOptions.id, 'mouseleave', layer.layerEvents.layerMouseLeave));
+      subscriptions.push(this.createSubscriptionForLayer(layer.layerOptions.id, 'mousemove', layer.layerEvents.layerMouseMove));
+      subscriptions.push(this.createSubscriptionForLayer(layer.layerOptions.id, 'mouseover', layer.layerEvents.layerMouseOver));
+      subscriptions.push(this.createSubscriptionForLayer(layer.layerOptions.id, 'mouseout', layer.layerEvents.layerMouseOut));
+      subscriptions.push(this.createSubscriptionForLayer(layer.layerOptions.id, 'contextmenu', layer.layerEvents.layerContextMenu));
+      subscriptions.push(this.createSubscriptionForLayer(layer.layerOptions.id, 'touchstart', layer.layerEvents.layerTouchStart));
+      subscriptions.push(this.createSubscriptionForLayer(layer.layerOptions.id, 'touchend', layer.layerEvents.layerTouchEnd));
+      subscriptions.push(this.createSubscriptionForLayer(layer.layerOptions.id, 'touchcancel', layer.layerEvents.layerTouchCancel));
+      const layerInstance = this.mapInstance.getLayer(layer.layerOptions.id);
+      if (layerInstance) {
+        this.subscriptionsPerInstance.set(layerInstance, subscriptions);
       }
     });
   }
 
   removeLayer(layerId: string) {
     this.zone.runOutsideAngular(() => {
-      if (this.mapInstance.getLayer(layerId) != null) {
+      const layerInstance = this.mapInstance.getLayer(layerId);
+      if (layerInstance != null) {
+        const subscriptions = this.subscriptionsPerInstance.get(layerInstance) || [];
+        for (let subscription of subscriptions) {
+          subscription.unsubscribe();
+        }
+        this.subscriptionsPerInstance.delete(layerInstance);
         this.mapInstance.removeLayer(layerId);
       }
     });
@@ -402,9 +366,7 @@ export class MapService {
         });
       }
     });
-    /*
 
-     */
     markerInstance.on('drag', (event: { target: Marker }) => {
       if (event) {
         const { target } = event;
@@ -436,25 +398,16 @@ export class MapService {
       const popupOptions = keepAvailableObjectValues(popup.popupOptions);
       const popupInstance = new Popup(popupOptions);
       popupInstance.setDOMContent(element);
-      popupInstance.on('close', () => {
-        this.zone.run(() => {
-          popup.popupEvents.popupClose.emit();
-        });
-      });
-      popupInstance.on('open', () => {
-        this.zone.run(() => {
-          popup.popupEvents.popupOpen.emit();
-        });
-      });
+      let subscriptions: Subscription[] = [];
+      subscriptions.push(this.createSubscriptionForPopup(popupInstance, 'open', popup.popupEvents.popupOpen));
+      subscriptions.push(this.createSubscriptionForPopup(popupInstance, 'close', popup.popupEvents.popupClose));
+      this.subscriptionsPerInstance.set(popupInstance, subscriptions);
       return popupInstance;
     });
   }
 
-  addPopupToMap(popup: Popup, lngLat: LngLatLike, skipOpenEvent = false) {
+  addPopupToMap(popup: Popup, lngLat: LngLatLike) {
     return this.zone.runOutsideAngular(() => {
-      if (skipOpenEvent && popup._listeners) {
-        delete popup._listeners['open'];
-      }
       popup.setLngLat(lngLat);
       popup.addTo(this.mapInstance);
     });
@@ -466,15 +419,27 @@ export class MapService {
     });
   }
 
-  removePopupFromMap(popup: Popup, skipCloseEvent = false) {
-    if (skipCloseEvent && popup._listeners) {
-      delete popup._listeners['close'];
+  removePopupFromMap(popup: Popup) {
+    if (this.subscriptionsPerInstance.has(popup)) {
+      const subscriptions = this.subscriptionsPerInstance.get(popup) || [];
+      for (let subscription of subscriptions) {
+        subscription.unsubscribe();
+      }
+      this.subscriptionsPerInstance.delete(popup);
     }
     this.popupsToRemove.update((popups) => [...popups, popup]);
   }
 
   removePopupFromMarker(marker: Marker) {
     return this.zone.runOutsideAngular(() => {
+      const popup = marker.getPopup();
+      if (this.subscriptionsPerInstance.has(popup)) {
+        const subscriptions = this.subscriptionsPerInstance.get(popup) || [];
+        for (let subscription of subscriptions) {
+          subscription.unsubscribe();
+        }
+        this.subscriptionsPerInstance.delete(popup);
+      }
       marker.setPopup(undefined);
     });
   }
@@ -632,7 +597,7 @@ export class MapService {
 
     const mapOptions = keepAvailableObjectValues<MapOptions>(options);
 
-    this.mapInstance = new Map(mapOptions);
+    this.mapInstance = new MaplibreMap(mapOptions);
 
     const isIEorEdge =
       window && /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
@@ -854,5 +819,34 @@ export class MapService {
     this.mapInstance.on('idle', (evt) =>
       this.zone.run(() => events.idle.emit(evt))
     );
+  }
+
+  private createSubscriptionForLayer(layerId: string, event: keyof MapLayerEventType, emitter: OutputEmitterRef<any>): Subscription {
+    const handler = (evt: any) => {
+      this.zone.run(() => {
+        emitter.emit(evt);
+      });
+    }
+    this.mapInstance.on(event, layerId, handler);
+    return {
+      unsubscribe: () => {
+        this.mapInstance.off(event, layerId, handler);
+      },
+    }
+  }
+
+  private createSubscriptionForPopup(popup: Popup, event: "open" | "close", emitter: OutputEmitterRef<any>): Subscription {
+    const handler = (evt: any) => {
+      this.zone.run(() => {
+        console.log("emitting", event, evt, emitter);
+        emitter.emit(evt);
+      });
+    }
+    popup.on(event, handler);
+    return {
+      unsubscribe: () => {
+        popup.off(event, handler);
+      },
+    }
   }
 }
