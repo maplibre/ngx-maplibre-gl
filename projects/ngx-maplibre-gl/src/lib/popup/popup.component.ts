@@ -101,7 +101,7 @@ export class PopupComponent implements OnChanges, OnInit {
   constructor() {
     afterNextRender(() => {
       this.popupInstance = this.createPopup();
-      this.addPopup(this.popupInstance as Popup)
+      this.addPopup(this.popupInstance)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe();
     });
@@ -122,12 +122,11 @@ export class PopupComponent implements OnChanges, OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.feature && !changes.feature.isFirstChange()) {
       const newlngLat = this.getLngLat(this.lngLat(), this.feature());
-      this.mapService.removePopupFromMap(this.popupInstance!, true);
+      this.mapService.removePopupFromMap(this.popupInstance!);
       const popupInstanceTmp = this.createPopup();
       this.mapService.addPopupToMap(
         popupInstanceTmp,
-        newlngLat,
-        this.popupInstance!.isOpen()
+        newlngLat
       );
       this.popupInstance = popupInstanceTmp;
     }
@@ -204,7 +203,7 @@ export class PopupComponent implements OnChanges, OnInit {
     if (this.popupInstance) {
       const markerInstance = this.marker()?.markerInstance();
       if (this.lngLat() || this.feature()) {
-        this.mapService.removePopupFromMap(this.popupInstance, true);
+        this.mapService.removePopupFromMap(this.popupInstance);
       } else if (markerInstance) {
         this.mapService.removePopupFromMarker(markerInstance);
       }
