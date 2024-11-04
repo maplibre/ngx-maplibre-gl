@@ -21,7 +21,7 @@ import { Source, SourceSpecification } from 'maplibre-gl';
 })
 export class SourceDirective implements OnInit {
   /** Init injection */
-  private readonly mapService = inject(MapService);
+  readonly mapService = inject(MapService);
   private readonly destroyRef = inject(DestroyRef);
 
   /**  Init input */
@@ -31,7 +31,7 @@ export class SourceDirective implements OnInit {
    * @internal
    * Used to store the current source id and make sure removeSource is only called once.
    */
-  private readonly sourceId = signal<string | null>(null);
+  readonly sourceId = signal<string | null>(null);
   private readonly loadSourceSubject = new Subject<void>();
   readonly loadSource$ = this.loadSourceSubject.asObservable();
 
