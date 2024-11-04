@@ -7,7 +7,7 @@ import {
   input,
 } from '@angular/core';
 import type { CanvasSource, CanvasSourceSpecification } from 'maplibre-gl';
-import { SourceDirective as SourceDirective } from './source.directive';
+import { SourceDirective } from './source.directive';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
 

@@ -13,15 +13,15 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Source, SourceSpecification } from 'maplibre-gl';
 
 /**
- *
- * @category Source Components
+ * @internal
+ * A composition object for the source components
  */
 @Directive({
   standalone: true,
 })
 export class SourceDirective implements OnInit {
   /** Init injection */
-  readonly mapService = inject(MapService);
+  private readonly mapService = inject(MapService);
   private readonly destroyRef = inject(DestroyRef);
 
   /**  Init input */
