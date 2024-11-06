@@ -6,7 +6,7 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { VideoSource, VideoSourceSpecification } from 'maplibre-gl';
+import type { VideoSource, VideoSourceSpecification } from 'maplibre-gl';
 import { SourceDirective } from './source.directive';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
