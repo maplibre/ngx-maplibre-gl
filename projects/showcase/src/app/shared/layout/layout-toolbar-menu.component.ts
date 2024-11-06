@@ -3,8 +3,8 @@ import {
   ApplicationRef,
   Component,
   ComponentFactoryResolver,
-  DestroyRef,
   Injector,
+  OnDestroy,
   afterNextRender,
   inject,
   input,
@@ -21,10 +21,9 @@ import {
   standalone: true,
   imports: [PortalModule],
 })
-export class LayoutToolbarMenuComponent {
+export class LayoutToolbarMenuComponent implements OnDestroy {
   private readonly componentFactoryResolver = inject(ComponentFactoryResolver);
   private readonly injector = inject(Injector);
-  private readonly destroyRef = inject(DestroyRef);
   private readonly appRef = inject(ApplicationRef);
 
   readonly position = input<'left' | 'right'>();
@@ -46,7 +45,9 @@ export class LayoutToolbarMenuComponent {
       );
       this.portalOutlet.attach(this.portal());
     });
+  }
 
-    this.destroyRef.onDestroy(() => this.portalOutlet?.detach());
+  ngOnDestroy(): void {
+    this.portalOutlet?.detach()
   }
 }

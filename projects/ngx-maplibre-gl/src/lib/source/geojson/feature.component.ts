@@ -52,7 +52,7 @@ export class FeatureComponent implements OnInit, OnDestroy {
     this.geoJSONSourceComponent._addFeature(this.feature);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.geoJSONSourceComponent._removeFeature(this.feature);
   }
 

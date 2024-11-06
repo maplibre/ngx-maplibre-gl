@@ -6,8 +6,7 @@ import {
   viewChild,
   input,
   signal,
-  inject,
-  DestroyRef,
+  OnDestroy,
 } from '@angular/core';
 import {
   MatPaginator,
@@ -139,8 +138,8 @@ export class ClusterPopupComponent implements OnChanges {
     ClusterPopupComponent,
   ],
 })
-export class NgxClusterHtmlComponent {
-  private destroyRef = inject(DestroyRef);
+export class NgxClusterHtmlComponent implements OnDestroy {
+  private timer: ReturnType<typeof setInterval>;
   readonly earthquakes = signal<GeoJSON.FeatureCollection | null>(null);
 
   readonly selectedCluster = signal<{
@@ -149,19 +148,20 @@ export class NgxClusterHtmlComponent {
   } | null>(null);
 
   constructor() {
-    let timer: ReturnType<typeof setInterval>;
     afterNextRender(async () => {
       const earthquakes: GeoJSON.FeatureCollection = (await import(
         './earthquakes.geo.json'
       )) as any;
-      timer = setInterval(() => {
+      this.timer = setInterval(() => {
         if (earthquakes.features.length) {
           earthquakes.features.pop();
         }
         this.earthquakes.set({ ...earthquakes });
       }, 500);
     });
-    this.destroyRef.onDestroy(() => clearInterval(timer));
+  }
+  ngOnDestroy(): void {
+    clearInterval(this.timer)
   }
 
   selectCluster(event: MouseEvent, feature: any) {
