@@ -25,9 +25,13 @@ export class SourceDirective implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
 
   /**  Init input */
-  readonly id = input.required<string>();
-  readonly sourceId = signal<string | null>(null);
+  public readonly id = input.required<string>();
 
+  /** 
+   * @internal
+   * Used to store the current source id and make sure removeSource is only called once.
+   */
+  readonly sourceId = signal<string | null>(null);
   private readonly loadSourceSubject = new Subject<void>();
   readonly loadSource$ = this.loadSourceSubject.asObservable();
 
@@ -56,8 +60,9 @@ export class SourceDirective implements OnInit {
   }
 
   removeSource() {
-    if (this.sourceId()) {
-      this.mapService.removeSource(this.id());
+    const currentId = this.sourceId();
+    if (currentId) {
+      this.mapService.removeSource(currentId);
       this.sourceId.set(null);
     }
   }
