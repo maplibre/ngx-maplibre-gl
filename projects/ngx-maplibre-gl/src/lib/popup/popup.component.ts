@@ -209,6 +209,8 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
         this.mapService.removePopupFromMap(this.popupInstance);
       } else if (markerInstance) {
         this.mapService.removePopupFromMarker(markerInstance);
+      } else {
+        this.mapService.removePopupFromMap(this.popupInstance);
       }
     }
     this.popupInstance = null;
