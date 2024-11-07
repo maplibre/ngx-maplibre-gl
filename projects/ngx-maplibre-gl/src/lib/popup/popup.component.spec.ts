@@ -35,9 +35,6 @@ const getMapServiceStub = () =>
 })
 class MarkerPopupTestComponent {
     show = true;
-    public toggle() {
-        this.show = !this.show;
-    }
 }
 
 describe('PopupComponent', () => {
