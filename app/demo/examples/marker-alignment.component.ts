@@ -63,7 +63,7 @@ export class MarkerAlignmentComponent implements OnDestroy {
     })
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.timer) {
       clearInterval(this.timer);
     }
