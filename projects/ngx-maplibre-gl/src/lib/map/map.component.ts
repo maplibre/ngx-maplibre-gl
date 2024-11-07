@@ -347,7 +347,7 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.mapService.destroyMap();
   }
 

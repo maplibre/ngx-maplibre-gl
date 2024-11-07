@@ -76,7 +76,7 @@ export class LiveUpdateImageSourceComponent implements OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.timer !== undefined) {
       clearInterval(this.timer);
     }

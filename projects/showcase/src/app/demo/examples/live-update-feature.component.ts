@@ -69,7 +69,7 @@ export class LiveUpdateFeatureComponent implements OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.timer) {
       clearInterval(this.timer);
     }
