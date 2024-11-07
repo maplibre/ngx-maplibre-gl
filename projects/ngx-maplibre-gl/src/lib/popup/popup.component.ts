@@ -4,6 +4,7 @@ import {
   DestroyRef,
   ElementRef,
   OnChanges,
+  OnDestroy,
   OnInit,
   SimpleChanges,
   afterNextRender,
@@ -43,7 +44,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class PopupComponent implements OnChanges, OnInit {
+export class PopupComponent implements OnChanges, OnInit, OnDestroy {
   /** Init injection */
   private readonly destroyRef = inject(DestroyRef);
   private readonly mapService = inject(MapService);
@@ -105,8 +106,6 @@ export class PopupComponent implements OnChanges, OnInit {
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe();
     });
-
-    this.destroyRef.onDestroy(() => this.removePopupFromMarker());
   }
 
   ngOnInit() {
@@ -155,6 +154,10 @@ export class PopupComponent implements OnChanges, OnInit {
     ) {
       this.popupInstance.setOffset(changes.offset.currentValue);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.removePopupFromMarker();
   }
 
   private createPopup() {

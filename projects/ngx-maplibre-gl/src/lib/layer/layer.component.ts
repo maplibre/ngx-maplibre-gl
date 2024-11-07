@@ -145,7 +145,7 @@ export class LayerComponent
     }
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.layerAdded()) {
       const sourceIdAdded = this.sourceIdAdded();
       this.mapService.removeLayer(this.id());

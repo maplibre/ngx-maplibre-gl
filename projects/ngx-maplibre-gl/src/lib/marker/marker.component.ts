@@ -4,6 +4,7 @@ import {
   DestroyRef,
   ElementRef,
   OnChanges,
+  OnDestroy,
   OnInit,
   SimpleChanges,
   ViewEncapsulation,
@@ -45,7 +46,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class MarkerComponent implements OnChanges, OnInit {
+export class MarkerComponent implements OnChanges, OnInit, OnDestroy {
   /** Init injection */
   private readonly mapService = inject(MapService);
   private readonly destroyRef = inject(DestroyRef);
@@ -109,8 +110,10 @@ export class MarkerComponent implements OnChanges, OnInit {
           this.markerInstance.set(marker);
         });
     });
+  }
 
-    this.destroyRef.onDestroy(() => this.removeMarker());
+  ngOnDestroy(): void {
+    this.removeMarker();
   }
 
   ngOnInit() {

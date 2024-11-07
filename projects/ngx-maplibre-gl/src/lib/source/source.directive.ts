@@ -1,6 +1,7 @@
 import {
   DestroyRef,
   Directive,
+  OnDestroy,
   OnInit,
   inject,
   input,
@@ -19,7 +20,7 @@ import { Source, SourceSpecification } from 'maplibre-gl';
 @Directive({
   standalone: true,
 })
-export class SourceDirective implements OnInit {
+export class SourceDirective implements OnInit, OnDestroy {
   /** Init injection */
   readonly mapService = inject(MapService);
   private readonly destroyRef = inject(DestroyRef);
@@ -35,10 +36,6 @@ export class SourceDirective implements OnInit {
   private readonly loadSourceSubject = new Subject<void>();
   readonly loadSource$ = this.loadSourceSubject.asObservable();
 
-  constructor() {
-    this.destroyRef.onDestroy(() => this.removeSource());
-  }
-
   ngOnInit() {
     this.mapService.mapLoaded$
       .pipe(
@@ -52,6 +49,10 @@ export class SourceDirective implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.removeSource();
   }
 
   refresh() {

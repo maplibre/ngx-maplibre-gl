@@ -73,7 +73,7 @@ export class StackblitzEditComponent implements AfterViewInit, OnDestroy {
     private changeDetectorRef: ChangeDetectorRef
   ) {}
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.sub) {
       this.sub.unsubscribe();
     }

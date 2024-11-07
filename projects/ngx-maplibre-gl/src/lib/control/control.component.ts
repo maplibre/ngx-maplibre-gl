@@ -1,8 +1,8 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
   ElementRef,
+  OnDestroy,
   afterNextRender,
   inject,
   input,
@@ -61,10 +61,9 @@ export class CustomControl implements IControl {
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class ControlComponent<T extends IControl> {
+export class ControlComponent<T extends IControl> implements OnDestroy {
   /** Init injection */
   private readonly mapService = inject(MapService);
-  private readonly destroyRef = inject(DestroyRef);
 
   /** Init input */
   readonly position = input<ControlPosition>();
@@ -83,11 +82,11 @@ export class ControlComponent<T extends IControl> {
         });
       }
     });
+  }
 
-    this.destroyRef.onDestroy(() => {
-      if (this.mapService?.mapInstance?.hasControl(this.control)) {
-        this.mapService.removeControl(this.control);
-      }
-    });
+  ngOnDestroy(): void {
+    if (this.mapService?.mapInstance?.hasControl(this.control)) {
+      this.mapService.removeControl(this.control);
+    }
   }
 }
