@@ -3,6 +3,7 @@ import {
   Component,
   OnChanges,
   SimpleChanges,
+  inject,
   input,
 } from '@angular/core';
 import type { VideoSource, VideoSourceSpecification } from 'maplibre-gl';
@@ -21,11 +22,13 @@ import { tap } from 'rxjs';
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
+  hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
 })
 export class VideoSourceComponent
-  extends SourceDirective
   implements OnChanges
 {
+  private readonly sourceDirective = inject(SourceDirective);
+
   /** Dynamic input */
   readonly urls = input.required<VideoSourceSpecification['urls']>();
 
@@ -34,23 +37,22 @@ export class VideoSourceComponent
     input.required<VideoSourceSpecification['coordinates']>();
 
   constructor() {
-    super();
 
-    this.loadSource$.pipe(
+    this.sourceDirective.loadSource$.pipe(
       tap(() => this.addSource()),
       takeUntilDestroyed()
     ).subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.sourceId()) {
+    if (!this.sourceDirective.sourceId()) {
       return;
     }
 
     if (changes.urls && !changes.urls.isFirstChange()) {
-      this.refresh();
+      this.sourceDirective.refresh();
     } else if (changes.coordinates && !changes.coordinates.isFirstChange()) {
-      const source = this.mapService.getSource<VideoSource>(this.id());
+      const source = this.sourceDirective.getSource<VideoSource>();
       if (source === undefined) {
         return;
       }
@@ -64,7 +66,6 @@ export class VideoSourceComponent
       urls: this.urls(),
       coordinates: this.coordinates(),
     };
-    this.mapService.addSource(this.id(), source);
-    this.sourceId.set(this.id());
+    this.sourceDirective.addSource(source);
   }
 }
