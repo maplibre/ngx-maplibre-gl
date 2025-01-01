@@ -22,7 +22,7 @@ import {
 import { cloneDeep, groupBy } from 'lodash-es';
 import { first } from 'rxjs/operators';
 import scrollIntoView from 'scroll-into-view-if-needed';
-import { Category, DEMO_ROUTES } from './routes';
+import { CATEGORIES, DEMO_ROUTES } from './routes';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
@@ -33,7 +33,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { LayoutToolbarMenuComponent } from '../shared/layout/layout-toolbar-menu.component';
 
-type RoutesByCategory = { [key: string]: Routes };
+interface RoutesByCategory { [key: string]: Routes }
 
 @Component({
   templateUrl: './demo-index.component.html',
@@ -79,7 +79,7 @@ export class DemoIndexComponent implements OnInit {
         )
       ))
     );
-    this.categories = Object.values(Category);
+    this.categories = Object.values(CATEGORIES);
 
     afterNextRender(() => {
       this.scrollInToActiveExampleLink();

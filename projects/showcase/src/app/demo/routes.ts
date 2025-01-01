@@ -1,15 +1,15 @@
 import { Routes } from '@angular/router';
 import { StackblitzEditGuard } from './stackblitz-edit/stackblitz-edit-guard.service';
 
-export const Category = {
-  STYLES: 'Styles',
-  LAYERS: 'Layers',
-  SOURCES: 'Sources',
-  USER_INTERACTION: 'User interaction',
-  CAMERA: 'Camera',
-  CONTROLS_AND_OVERLAYS: 'Controls and overlays',
-  TERRAIN: '3D Terrain',
-  GLOBE: 'Globe'
+export const CATEGORIES = {
+  styles: 'Styles',
+  layers: 'Layers',
+  sources: 'Sources',
+  unserInteraction: 'User interaction',
+  camera: 'Camera',
+  constrolsAndOverlays: 'Controls and overlays',
+  terrain: '3D Terrain',
+  globe: 'Globe'
 }
 
 export const DEMO_ROUTES: Routes = [
@@ -32,7 +32,7 @@ export const DEMO_ROUTES: Routes = [
           import('./examples/display-map.component').then(
             (m) => m.DisplayMapComponent
           ),
-        data: { label: 'Display a map', cat: Category.STYLES },
+        data: { label: 'Display a map', cat: CATEGORIES.styles },
       },
       {
         path: 'custom-style-id',
@@ -42,7 +42,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: 'Display a map with a custom style',
-          cat: Category.STYLES,
+          cat: CATEGORIES.styles,
         },
       },
       {
@@ -51,7 +51,7 @@ export const DEMO_ROUTES: Routes = [
           import('./examples/set-style.component').then(
             (m) => m.SetStyleComponent
           ),
-        data: { label: 'Change a map\'s style', cat: Category.STYLES },
+        data: { label: 'Change a map\'s style', cat: CATEGORIES.styles },
       },
       {
         path: 'satellite-map',
@@ -59,7 +59,7 @@ export const DEMO_ROUTES: Routes = [
           import('./examples/satellite-map.component').then(
             (m) => m.SatelliteMapComponent
           ),
-        data: { label: 'Display a satellite map', cat: Category.STYLES },
+        data: { label: 'Display a satellite map', cat: CATEGORIES.styles },
       },
       {
         path: 'add-image-generated',
@@ -69,7 +69,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: 'Add a generated icon to the map',
-          cat: Category.LAYERS,
+          cat: CATEGORIES.layers,
         },
       },
       {
@@ -78,7 +78,7 @@ export const DEMO_ROUTES: Routes = [
           import('./examples/add-image.component').then(
             (m) => m.AddImageComponent
           ),
-        data: { label: 'Add an icon to the map', cat: Category.LAYERS },
+        data: { label: 'Add an icon to the map', cat: CATEGORIES.layers },
       },
       {
         path: 'toggle-layers',
@@ -86,7 +86,7 @@ export const DEMO_ROUTES: Routes = [
           import('./examples/toggle-layers.component').then(
             (m) => m.ToggleLayersComponent
           ),
-        data: { label: 'Show and hide layers', cat: Category.LAYERS },
+        data: { label: 'Show and hide layers', cat: CATEGORIES.layers },
       },
       {
         path: '3d-buildings',
@@ -94,7 +94,7 @@ export const DEMO_ROUTES: Routes = [
           import('./examples/3d-buildings.component').then(
             (m) => m.Display3dBuildingsComponent
           ),
-        data: { label: 'Display 3d buildings', cat: Category.LAYERS },
+        data: { label: 'Display 3d buildings', cat: CATEGORIES.layers },
       },
       {
         path: 'cluster',
@@ -102,7 +102,7 @@ export const DEMO_ROUTES: Routes = [
           import('./examples/cluster.component').then(
             (m) => m.ClusterComponent
           ),
-        data: { label: 'Create and style clusters', cat: Category.LAYERS },
+        data: { label: 'Create and style clusters', cat: CATEGORIES.layers },
       },
       {
         path: 'heatmap',
@@ -110,7 +110,7 @@ export const DEMO_ROUTES: Routes = [
           import('./examples/heatmap.component').then(
             (m) => m.HeatMapComponent
           ),
-        data: { label: 'Create a heatmap layer', cat: Category.LAYERS },
+        data: { label: 'Create a heatmap layer', cat: CATEGORIES.layers },
       },
       {
         path: 'geojson-line',
@@ -118,7 +118,7 @@ export const DEMO_ROUTES: Routes = [
           import('./examples/geojson-line.component').then(
             (m) => m.GeoJSONLineComponent
           ),
-        data: { label: 'Add a GeoJSON line', cat: Category.LAYERS },
+        data: { label: 'Add a GeoJSON line', cat: CATEGORIES.layers },
       },
       {
         path: 'ngx-geojson-line',
@@ -126,7 +126,7 @@ export const DEMO_ROUTES: Routes = [
           import('./examples/ngx-geojson-line.component').then(
             (m) => m.NgxGeoJSONLineComponent
           ),
-        data: { label: '[NGX] Add a GeoJSON line', cat: Category.LAYERS },
+        data: { label: '[NGX] Add a GeoJSON line', cat: CATEGORIES.layers },
       },
       {
         path: 'custom-marker-icons',
@@ -136,7 +136,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: 'Add custom icons with Markers',
-          cat: Category.CONTROLS_AND_OVERLAYS,
+          cat: CATEGORIES.constrolsAndOverlays,
         },
       },
       {
@@ -147,7 +147,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: '[NGX] Add custom icons with Markers',
-          cat: Category.CONTROLS_AND_OVERLAYS,
+          cat: CATEGORIES.constrolsAndOverlays,
         },
       },
       {
@@ -158,7 +158,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: '[NGX] Add marker and rotate it',
-          cat: Category.CONTROLS_AND_OVERLAYS,
+          cat: CATEGORIES.constrolsAndOverlays,
         },
       },
       {
@@ -167,7 +167,7 @@ export const DEMO_ROUTES: Routes = [
           import('./examples/live-update-feature.component').then(
             (m) => m.LiveUpdateFeatureComponent
           ),
-        data: { label: 'Update a feature in realtime', cat: Category.SOURCES },
+        data: { label: 'Update a feature in realtime', cat: CATEGORIES.sources },
       },
       {
         path: 'live-update-image-source',
@@ -177,14 +177,14 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: 'Update an image source in realtime',
-          cat: Category.SOURCES,
+          cat: CATEGORIES.sources,
         },
       },
       {
         path: 'popup',
         loadComponent: () =>
           import('./examples/popup.component').then((m) => m.PopupComponent),
-        data: { label: 'Display a popup', cat: Category.CONTROLS_AND_OVERLAYS },
+        data: { label: 'Display a popup', cat: CATEGORIES.constrolsAndOverlays },
       },
       {
         path: 'set-popup',
@@ -194,7 +194,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: 'Attach a popup to a marker instance',
-          cat: Category.CONTROLS_AND_OVERLAYS,
+          cat: CATEGORIES.constrolsAndOverlays,
         },
       },
       {
@@ -205,7 +205,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: 'View a fullscreen map',
-          cat: Category.CONTROLS_AND_OVERLAYS,
+          cat: CATEGORIES.constrolsAndOverlays,
         },
       },
       {
@@ -216,7 +216,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: 'Display map navigation controls',
-          cat: Category.CONTROLS_AND_OVERLAYS,
+          cat: CATEGORIES.constrolsAndOverlays,
         },
       },
       {
@@ -225,7 +225,7 @@ export const DEMO_ROUTES: Routes = [
           import('./examples/locate-user.component').then(
             (m) => m.LocateUserComponent
           ),
-        data: { label: 'Locate the user', cat: Category.CONTROLS_AND_OVERLAYS },
+        data: { label: 'Locate the user', cat: CATEGORIES.constrolsAndOverlays },
       },
       {
         path: 'attribution-position',
@@ -235,7 +235,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: 'Change the default position for attribution',
-          cat: Category.CONTROLS_AND_OVERLAYS,
+          cat: CATEGORIES.constrolsAndOverlays,
         },
       },
       {
@@ -246,7 +246,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: '[NGX] Show scale information',
-          cat: Category.CONTROLS_AND_OVERLAYS,
+          cat: CATEGORIES.constrolsAndOverlays,
         },
       },
       {
@@ -257,7 +257,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: '[NGX] Add a custom control',
-          cat: Category.CONTROLS_AND_OVERLAYS,
+          cat: CATEGORIES.constrolsAndOverlays,
         },
       },
       {
@@ -268,7 +268,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: 'Display a non-interactive map',
-          cat: Category.USER_INTERACTION,
+          cat: CATEGORIES.unserInteraction,
         },
       },
       {
@@ -279,7 +279,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: 'Change a map\'s language',
-          cat: Category.USER_INTERACTION,
+          cat: CATEGORIES.unserInteraction,
         },
       },
       {
@@ -290,7 +290,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: 'Center the map on a clicked symbol',
-          cat: Category.USER_INTERACTION,
+          cat: CATEGORIES.unserInteraction,
         },
       },
       {
@@ -301,7 +301,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: '[NGX] Create a draggable point',
-          cat: Category.USER_INTERACTION,
+          cat: CATEGORIES.unserInteraction,
         },
       },
       {
@@ -312,7 +312,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: 'Create a draggable marker',
-          cat: Category.USER_INTERACTION,
+          cat: CATEGORIES.unserInteraction,
         },
       },
       {
@@ -323,7 +323,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: 'Create a hover effect',
-          cat: Category.USER_INTERACTION,
+          cat: CATEGORIES.unserInteraction,
         },
       },
       {
@@ -334,7 +334,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: 'Display a popup on click',
-          cat: Category.CONTROLS_AND_OVERLAYS,
+          cat: CATEGORIES.constrolsAndOverlays,
         },
       },
       {
@@ -345,7 +345,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: 'Fit to the bounds of a LineString',
-          cat: Category.USER_INTERACTION,
+          cat: CATEGORIES.unserInteraction,
         },
       },
       {
@@ -356,7 +356,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: 'Display HTML clusters with custom properties',
-          cat: Category.LAYERS,
+          cat: CATEGORIES.layers,
         },
       },
       {
@@ -367,7 +367,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: '[NGX] Display HTML clusters with custom properties',
-          cat: Category.LAYERS,
+          cat: CATEGORIES.layers,
         },
       },
       {
@@ -378,7 +378,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: 'Show polygon information on click',
-          cat: Category.CONTROLS_AND_OVERLAYS,
+          cat: CATEGORIES.constrolsAndOverlays,
         },
       },
       {
@@ -389,7 +389,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: 'Generate and add a missing icon to the map',
-          cat: Category.STYLES,
+          cat: CATEGORIES.styles,
         },
       },
       {
@@ -400,7 +400,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: 'Add custom attributions',
-          cat: Category.CONTROLS_AND_OVERLAYS,
+          cat: CATEGORIES.constrolsAndOverlays,
         },
       },
       {
@@ -411,7 +411,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: 'Add custom localization for controls',
-          cat: Category.CONTROLS_AND_OVERLAYS,
+          cat: CATEGORIES.constrolsAndOverlays,
         },
       },
       {
@@ -420,7 +420,7 @@ export const DEMO_ROUTES: Routes = [
           import('./examples/marker-alignment.component').then(
             (m) => m.MarkerAlignmentComponent
           ),
-        data: { label: 'Marker alignment options', cat: Category.CAMERA },
+        data: { label: 'Marker alignment options', cat: CATEGORIES.camera },
       },
       {
         path: 'terrain-style',
@@ -430,7 +430,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: 'Initialize 3D Terrain using style',
-          cat: Category.TERRAIN,
+          cat: CATEGORIES.terrain,
         },
       },
       {
@@ -441,7 +441,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: 'Terrain Control',
-          cat: Category.TERRAIN,
+          cat: CATEGORIES.terrain,
         },
       },
       {
@@ -452,7 +452,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: '[NGX] Initialize 3D Terrain declaratively',
-          cat: Category.TERRAIN,
+          cat: CATEGORIES.terrain,
         },
       },
       {
@@ -463,7 +463,7 @@ export const DEMO_ROUTES: Routes = [
           ),
         data: {
           label: '[NGX] Initialize Globe Projection declaratively',
-          cat: Category.GLOBE,
+          cat: CATEGORIES.globe,
         },
       },
       { path: '**', redirectTo: 'display-map' },
