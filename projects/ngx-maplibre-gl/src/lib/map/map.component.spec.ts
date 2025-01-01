@@ -24,6 +24,7 @@ const getMapServiceStub = () =>
       'updateMaxPitch',
       'updateMinPitch',
       'destroyMap',
+      'clearMapElements'
     ],
     {
       mapCreated$: of(true),
