@@ -28,6 +28,7 @@ import type {
   MapWheelEvent,
   PointLike,
   TerrainSpecification,
+  ProjectionSpecification,
 } from 'maplibre-gl';
 import { MapService, type MovingOptions } from './map.service';
 import type { MapEvent, EventData } from './map.types';
@@ -184,10 +185,11 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   /** Dynamic input */
   readonly renderWorldCopies = input<MapOptions['renderWorldCopies']>();
   /** Dynamic input */
-  readonly terrain = input<TerrainSpecification>();
-  /** Dynamic input */
   readonly elevation = input<MapOptions['elevation']>();
-
+  /** Dynamic input that is not part of the `MapOptions` object */
+  readonly terrain = input<TerrainSpecification>();
+  /** Dynamic input that is not part of the `MapOptions` object  */
+  readonly projection = input<ProjectionSpecification>();
 
   /** Added by ngx-mapbox-gl */
   readonly movingMethod = input<'jumpTo' | 'easeTo' | 'flyTo'>('flyTo');
@@ -347,7 +349,6 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
           fitBoundsOptions: this.fitBoundsOptions(),
           locale: this.locale,
           cooperativeGestures: this.cooperativeGestures(),
-          terrain: this.terrain(),
           cancelPendingTileRequestsWhileZooming: this.cancelPendingTileRequestsWhileZooming(),
           centerClampedToGround: this.centerClampedToGround(),
           elevation: this.elevation(),
@@ -357,7 +358,10 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
           pixelRatio: this.pixelRatio(),
           rollEnabled: this.rollEnabled(),
           transformCameraUpdate: this.transformCameraUpdate(),
-          validateStyle: this.validateStyle()
+          validateStyle: this.validateStyle(),
+
+          terrain: this.terrain(),
+          projection: this.projection(),
         },
         mapEvents: this,
       });
@@ -496,7 +500,10 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
       );
     }
     if (changes.terrain && !changes.terrain.isFirstChange()) {
-      this.mapService.updateTerrain(changes.terrain.currentValue);
+      this.mapService.setTerrain(changes.terrain.currentValue);
+    }
+    if (changes.projection && !changes.projection.isFirstChange()) {
+      this.mapService.setProjection(changes.projection.currentValue);
     }
     if (changes.elevation && !changes.elevation.isFirstChange()) {
       this.mapService.setCenterElevation(changes.elevation.currentValue);
