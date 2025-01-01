@@ -1,14 +1,15 @@
 import { Routes } from '@angular/router';
 import { StackblitzEditGuard } from './stackblitz-edit/stackblitz-edit-guard.service';
 
-export enum Category {
-  STYLES = 'Styles',
-  LAYERS = 'Layers',
-  SOURCES = 'Sources',
-  USER_INTERACTION = 'User interaction',
-  CAMERA = 'Camera',
-  CONTROLS_AND_OVERLAYS = 'Controls and overlays',
-  TERRAIN = '3D Terrain',
+export const Category = {
+  STYLES: 'Styles',
+  LAYERS: 'Layers',
+  SOURCES: 'Sources',
+  USER_INTERACTION: 'User interaction',
+  CAMERA: 'Camera',
+  CONTROLS_AND_OVERLAYS: 'Controls and overlays',
+  TERRAIN: '3D Terrain',
+  GLOBE: 'Globe'
 }
 
 export const DEMO_ROUTES: Routes = [
@@ -452,6 +453,17 @@ export const DEMO_ROUTES: Routes = [
         data: {
           label: '[NGX] Initialize 3D Terrain declaratively',
           cat: Category.TERRAIN,
+        },
+      },
+      {
+        path: 'globe',
+        loadComponent: () =>
+          import('./examples/globe.component').then(
+            (m) => m.GlobeComponent
+          ),
+        data: {
+          label: '[NGX] Initialize Globe Projection declaratively',
+          cat: Category.GLOBE,
         },
       },
       { path: '**', redirectTo: 'display-map' },

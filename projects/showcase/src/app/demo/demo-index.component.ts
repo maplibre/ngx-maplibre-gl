@@ -33,7 +33,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { LayoutToolbarMenuComponent } from '../shared/layout/layout-toolbar-menu.component';
 
-type RoutesByCategory = { [P in Category]: Routes };
+type RoutesByCategory = { [key: string]: Routes };
 
 @Component({
   templateUrl: './demo-index.component.html',
@@ -62,7 +62,7 @@ export class DemoIndexComponent implements OnInit {
 
   routes: RoutesByCategory;
   originalRoutes: RoutesByCategory;
-  categories: Category[];
+  categories: string[];
   searchTerm: string;
   sidenavIsOpen = true;
   isEditMode = !!this.activatedRoute.snapshot.firstChild!.params.demoUrl;
@@ -79,15 +79,7 @@ export class DemoIndexComponent implements OnInit {
         )
       ))
     );
-    this.categories = [
-      Category.STYLES,
-      Category.LAYERS,
-      Category.SOURCES,
-      Category.USER_INTERACTION,
-      Category.CAMERA,
-      Category.CONTROLS_AND_OVERLAYS,
-      Category.TERRAIN,
-    ];
+    this.categories = Object.values(Category);
 
     afterNextRender(() => {
       this.scrollInToActiveExampleLink();
