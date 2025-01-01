@@ -14,7 +14,7 @@ import {
       "
       [zoom]="[9]"
       [center]="[-74.5, 40]"
-      [preserveDrawingBuffer]="true"
+      [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       <mgl-control mglNavigation></mgl-control>
     </mgl-map>

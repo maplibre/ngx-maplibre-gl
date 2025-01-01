@@ -247,6 +247,12 @@ export class MapService {
     });
   }
 
+  setCenterElevation(elevation: number) {
+    return this.zone.runOutsideAngular(() => {
+      this.mapInstance.setCenterElevation(elevation);
+    });
+  }
+
   changeCanvasCursor(cursor: string) {
     const canvas = this.mapInstance.getCanvasContainer();
     canvas.style.cursor = cursor;
@@ -274,7 +280,8 @@ export class MapService {
     zoom?: number,
     center?: LngLatLike,
     bearing?: number,
-    pitch?: number
+    pitch?: number,
+    roll?: number
   ) {
     return this.zone.runOutsideAngular(() => {
       (this.mapInstance[movingMethod] as any)({
@@ -283,6 +290,7 @@ export class MapService {
         center: center != null ? center : this.mapInstance.getCenter(),
         bearing: bearing != null ? bearing : this.mapInstance.getBearing(),
         pitch: pitch != null ? pitch : this.mapInstance.getPitch(),
+        roll: roll != null ? roll : this.mapInstance.getRoll(),
       });
     });
   }

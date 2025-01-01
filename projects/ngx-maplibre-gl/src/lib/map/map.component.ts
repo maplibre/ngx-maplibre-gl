@@ -79,7 +79,6 @@ import { firstValueFrom } from 'rxjs';
   standalone: true,
 })
 export class MapComponent implements OnChanges, OnDestroy, MapEvent {
-  /** Init injection */
   private readonly mapService = inject(MapService);
   private readonly elementRef = inject(ElementRef);
 
@@ -96,8 +95,7 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   /** Init input */
   readonly refreshExpiredTiles = input<MapOptions['refreshExpiredTiles']>();
   /** Init input */
-  readonly failIfMajorPerformanceCaveat =
-    input<MapOptions['failIfMajorPerformanceCaveat']>();
+  readonly canvasContextAttributes = input<MapOptions['canvasContextAttributes']>();
   /** Init input */
   readonly bearingSnap = input<MapOptions['bearingSnap']>();
   /** Init input */
@@ -113,10 +111,7 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   /** Init input */
   readonly maxTileCacheSize = input<MapOptions['maxTileCacheSize']>();
   /** Init input */
-  readonly localIdeographFontFamily =
-    input<MapOptions['localIdeographFontFamily']>();
-  /** Init input */
-  readonly preserveDrawingBuffer = input<MapOptions['preserveDrawingBuffer']>();
+  readonly localIdeographFontFamily = input<MapOptions['localIdeographFontFamily']>();
   /** Init input */
   readonly trackResize = input<MapOptions['trackResize']>();
   /** Init input */
@@ -124,11 +119,27 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   /** Init input */
   readonly bounds = input<MapOptions['bounds']>();
   /** Init input */
-  readonly antialias = input<MapOptions['antialias']>();
-  /** Init input */
   readonly locale = input<MapOptions['locale']>();
   /** Init input */
   readonly cooperativeGestures = input<MapOptions['cooperativeGestures']>();
+  /** Init input */
+  readonly cancelPendingTileRequestsWhileZooming = input<MapOptions['cancelPendingTileRequestsWhileZooming']>();
+  /** Init input */
+  readonly centerClampedToGround = input<MapOptions['centerClampedToGround']>();
+  /** Init input */
+  readonly maplibreLogo = input<MapOptions['maplibreLogo']>();
+  /** Init input */
+  readonly maxCanvasSize = input<MapOptions['maxCanvasSize']>();
+  /** Init input */
+  readonly maxTileCacheZoomLevels = input<MapOptions['maxTileCacheZoomLevels']>();
+  /** Init input */
+  readonly pixelRatio = input<MapOptions['pixelRatio']>();
+  /** Init input */
+  readonly rollEnabled = input<MapOptions['rollEnabled']>();
+  /** Init input */
+  readonly transformCameraUpdate = input<MapOptions['transformCameraUpdate']>();
+  /** Init input */
+  readonly validateStyle = input<MapOptions['validateStyle']>();
 
   /** Dynamic input */
   readonly minZoom = input<MapOptions['minZoom']>();
@@ -167,11 +178,16 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   /** Dynamic input */
   readonly pitch = input<[number]>();
   /** Dynamic input */
+  readonly roll = input<MapOptions['roll']>();
+  /** Dynamic input */
   readonly fitBoundsOptions = input<MapOptions['fitBoundsOptions']>(); // First value goes to options.fitBoundsOptions. Subsequents changes are passed to fitBounds
   /** Dynamic input */
   readonly renderWorldCopies = input<MapOptions['renderWorldCopies']>();
   /** Dynamic input */
   readonly terrain = input<TerrainSpecification>();
+  /** Dynamic input */
+  readonly elevation = input<MapOptions['elevation']>();
+
 
   /** Added by ngx-mapbox-gl */
   readonly movingMethod = input<'jumpTo' | 'easeTo' | 'flyTo'>('flyTo');
@@ -274,7 +290,7 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
 
   constructor() {
     afterNextRender(() => {
-      if (this.preserveDrawingBuffer()) {
+      if (this.canvasContextAttributes()?.preserveDrawingBuffer) {
         // This is to allow better interaction with the map state
         const htmlElement: HTMLElement = this.elementRef.nativeElement;
         htmlElement.setAttribute('data-cy', 'map');
@@ -306,8 +322,7 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
           clickTolerance: this.clickTolerance(),
           attributionControl: this.attributionControl(),
           logoPosition: this.logoPosition(),
-          failIfMajorPerformanceCaveat: this.failIfMajorPerformanceCaveat(),
-          preserveDrawingBuffer: this.preserveDrawingBuffer(),
+          canvasContextAttributes: this.canvasContextAttributes(),
           refreshExpiredTiles: this.refreshExpiredTiles(),
           maxBounds: this.maxBounds(),
           scrollZoom: this.scrollZoom(),
@@ -323,16 +338,26 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
           zoom: this.zoom(),
           bearing: this.bearing(),
           pitch: this.pitch(),
+          roll: this.roll(),
           renderWorldCopies: this.renderWorldCopies(),
           maxTileCacheSize: this.maxTileCacheSize(),
           localIdeographFontFamily: this.localIdeographFontFamily(),
           transformRequest: this.transformRequest(),
           bounds: this.bounds() ? this.bounds() : this.fitBounds(),
           fitBoundsOptions: this.fitBoundsOptions(),
-          antialias: this.antialias(),
           locale: this.locale,
           cooperativeGestures: this.cooperativeGestures(),
           terrain: this.terrain(),
+          cancelPendingTileRequestsWhileZooming: this.cancelPendingTileRequestsWhileZooming(),
+          centerClampedToGround: this.centerClampedToGround(),
+          elevation: this.elevation(),
+          maplibreLogo: this.maplibreLogo(),
+          maxCanvasSize: this.maxCanvasSize(),
+          maxTileCacheZoomLevels: this.maxTileCacheZoomLevels(),
+          pixelRatio: this.pixelRatio(),
+          rollEnabled: this.rollEnabled(),
+          transformCameraUpdate: this.transformCameraUpdate(),
+          validateStyle: this.validateStyle()
         },
         mapEvents: this,
       });
@@ -449,16 +474,16 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
       !changes.center.isFirstChange() &&
       !changes.zoom &&
       !changes.bearing &&
-      !changes.pitch
+      !changes.pitch &&
+      !changes.roll
     ) {
       this.mapService.panTo(this.center()!, this.panToOptions());
     } else if (
       (changes.center && !changes.center.isFirstChange()) ||
       (changes.zoom && !changes.zoom.isFirstChange()) ||
-      (changes.bearing &&
-        !changes.bearing.isFirstChange() &&
-        !changes.fitScreenCoordinates) ||
-      (changes.pitch && !changes.pitch.isFirstChange())
+      (changes.bearing && !changes.bearing.isFirstChange() && !changes.fitScreenCoordinates) ||
+      (changes.pitch && !changes.pitch.isFirstChange()) ||
+      (changes.roll && !changes.roll.isFirstChange())
     ) {
       this.mapService.move(
         this.movingMethod(),
@@ -466,11 +491,15 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
         changes.zoom && zoom ? zoom[0] : undefined,
         changes.center ? center : undefined,
         changes.bearing && bearing ? bearing[0] : undefined,
-        changes.pitch && pitch ? pitch[0] : undefined
+        changes.pitch && pitch ? pitch[0] : undefined,
+        changes.roll ? changes.roll.currentValue : undefined
       );
     }
     if (changes.terrain && !changes.terrain.isFirstChange()) {
       this.mapService.updateTerrain(changes.terrain.currentValue);
+    }
+    if (changes.elevation && !changes.elevation.isFirstChange()) {
+      this.mapService.setCenterElevation(changes.elevation.currentValue);
     }
   }
 }

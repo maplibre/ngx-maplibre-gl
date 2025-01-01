@@ -13,7 +13,7 @@ import { NgStyle } from '@angular/common';
       [style]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[15]"
       [center]="[-77.0353, 38.8895]"
-      [preserveDrawingBuffer]="true"
+      [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       <mgl-marker #myMarker [lngLat]="[-77.0353, 38.8895]">
         <div

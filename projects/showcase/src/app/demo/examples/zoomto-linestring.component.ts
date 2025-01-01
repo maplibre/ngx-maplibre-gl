@@ -18,7 +18,7 @@ import { LngLatBounds } from 'maplibre-gl';
       [fitBoundsOptions]="{
         padding: 20
       }"
-      [preserveDrawingBuffer]="true"
+      [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       <mgl-control>
         <button

@@ -15,7 +15,7 @@ import {
       [style]="style"
       [zoom]="[13]"
       [center]="[4.899, 52.372]"
-      [preserveDrawingBuffer]="true"
+      [canvasContextAttributes]="{preserveDrawingBuffer: true}"
       data-cy="mgl-map"
     >
     </mgl-map>

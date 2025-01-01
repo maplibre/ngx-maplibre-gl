@@ -18,7 +18,7 @@ import {
       [center]="center"
       [cursorStyle]="cursorStyle"
       (mapLoad)="map = $event"
-      [preserveDrawingBuffer]="true"
+      [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       <mgl-geojson-source id="symbols-source">
         @for (geometry of geometries; track geometry) {

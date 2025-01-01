@@ -13,7 +13,7 @@ import { Map } from 'maplibre-gl';
       [zoom]="[2.9]"
       [center]="[16.05, 48]"
       (mapLoad)="mapLoaded($event)"
-      [preserveDrawingBuffer]="true"
+      [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       <mgl-control>
         <button

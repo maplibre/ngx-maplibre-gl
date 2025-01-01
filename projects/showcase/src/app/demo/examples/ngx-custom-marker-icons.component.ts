@@ -10,7 +10,7 @@ import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
       "
       [zoom]="[5]"
       [center]="[-65.017, -16.457]"
-      [preserveDrawingBuffer]="true"
+      [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       <mgl-marker [lngLat]="[-66.324462890625, -16.024695711685304]">
         <div

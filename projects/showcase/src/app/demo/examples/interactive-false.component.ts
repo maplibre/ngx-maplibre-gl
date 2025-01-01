@@ -11,7 +11,7 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
       [zoom]="[9]"
       [center]="[-74.5, 40]"
       [interactive]="false"
-      [preserveDrawingBuffer]="true"
+      [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
     </mgl-map>
   `,
