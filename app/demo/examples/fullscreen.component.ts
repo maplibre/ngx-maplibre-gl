@@ -14,7 +14,7 @@ import {
       "
       [zoom]="[13]"
       [center]="[11.255, 43.77]"
-      [preserveDrawingBuffer]="true"
+      [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       <mgl-control mglFullscreen></mgl-control>
     </mgl-map>

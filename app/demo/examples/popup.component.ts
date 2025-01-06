@@ -13,7 +13,7 @@ import {
       "
       [zoom]="[3]"
       [center]="[-96, 37.8]"
-      [preserveDrawingBuffer]="true"
+      [canvasContextAttributes]="{preserveDrawingBuffer: true}"
       data-cy="mgl-map"
     >
       <mgl-popup

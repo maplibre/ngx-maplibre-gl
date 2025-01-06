@@ -22,7 +22,7 @@ import data from './hike.geo.json';
       [center]="center"
       [zoom]="[14]"
       movingMethod="jumpTo"
-      [preserveDrawingBuffer]="true"
+      [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       <mgl-image-source
         id="test_source"

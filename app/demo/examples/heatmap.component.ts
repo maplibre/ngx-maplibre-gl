@@ -15,7 +15,7 @@ import {
       "
       [zoom]="[3]"
       [center]="[-103.59179687498357, 40.66995747013945]"
-      [preserveDrawingBuffer]="true"
+      [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       @if (earthquakes) {
         <mgl-geojson-source

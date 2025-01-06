@@ -14,7 +14,7 @@ import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
       [bearing]="[bearing]"
       [zoom]="[17]"
       [center]="[4.577979, 51.038189]"
-      [preserveDrawingBuffer]="true"
+      [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       <mgl-marker
         [lngLat]="[4.577979, 51.03816]"
