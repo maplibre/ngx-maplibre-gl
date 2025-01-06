@@ -16,7 +16,7 @@ import type { LayerSpecification } from 'maplibre-gl';
       "
       [zoom]="[3]"
       [center]="[-71.97722138410576, -13.517379300798098]"
-      [preserveDrawingBuffer]="true"
+      [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       <mgl-vector-source
         id="countries"

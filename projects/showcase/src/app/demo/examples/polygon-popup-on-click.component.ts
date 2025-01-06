@@ -18,7 +18,7 @@ import {
       [center]="[-100.04, 38.907]"
       [cursorStyle]="cursorStyle"
       (mapClick)="onMapClick()"
-      [preserveDrawingBuffer]="true"
+      [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       <mgl-layer
         id="states-layer"

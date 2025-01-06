@@ -14,7 +14,7 @@ import {
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
       "
       (styleImageMissing)="generateImage($event)"
-      [preserveDrawingBuffer]="true"
+      [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       @for (imageData of imagesData(); track imageData.id) {
       <mgl-image [id]="imageData.id" [data]="imageData"></mgl-image>

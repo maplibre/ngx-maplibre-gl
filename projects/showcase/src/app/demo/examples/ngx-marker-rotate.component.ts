@@ -10,7 +10,7 @@ import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
       "
       [zoom]="[5]"
       [center]="[144.946457, -37.840935]"
-      [preserveDrawingBuffer]="true"
+      [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       <mgl-marker [lngLat]="[144.946457, -38.440935]" [rotation]="180"></mgl-marker>
     </mgl-map>

@@ -37,7 +37,8 @@ import {
   type QueryRenderedFeaturesOptions,
   type ControlPosition,
   type Subscription,
-  MapLayerEventType
+  type MapLayerEventType,
+  type ProjectionSpecification
 } from 'maplibre-gl';
 import { AsyncSubject } from 'rxjs';
 import type {
@@ -54,6 +55,7 @@ export interface SetupMap {
     pitch?: [number];
     zoom?: [number];
     terrain?: TerrainSpecification;
+    projection?: ProjectionSpecification;
   };
   mapEvents: MapEvent;
 }
@@ -116,9 +118,14 @@ export class MapService {
     this.mapCreated.next(undefined);
     this.mapCreated.complete();
 
-    if (options.mapOptions.terrain) {
+    if (options.mapOptions.terrain || options.mapOptions.projection) {
       this.mapInstance.on('load', () => {
-        this.updateTerrain(options.mapOptions.terrain!);
+        if (options.mapOptions.projection) {
+          this.setProjection(options.mapOptions.projection!);
+        }
+        if (options.mapOptions.terrain) {
+          this.setTerrain(options.mapOptions.terrain!);
+        }
       });
     }
   }
@@ -235,7 +242,13 @@ export class MapService {
     });
   }
 
-  updateTerrain(options: TerrainSpecification) {
+  setProjection(options: ProjectionSpecification) {
+    return this.zone.runOutsideAngular(() => {
+      this.mapInstance.setProjection(options);
+    });
+  }
+
+  setTerrain(options: TerrainSpecification) {
     return this.zone.runOutsideAngular(() => {
       this.mapInstance.setTerrain(options);
     });
@@ -244,6 +257,12 @@ export class MapService {
   getTerrain(): TerrainSpecification | null {
     return this.zone.runOutsideAngular(() => {
       return this.mapInstance.getTerrain();
+    });
+  }
+
+  setCenterElevation(elevation: number) {
+    return this.zone.runOutsideAngular(() => {
+      this.mapInstance.setCenterElevation(elevation);
     });
   }
 
@@ -274,7 +293,8 @@ export class MapService {
     zoom?: number,
     center?: LngLatLike,
     bearing?: number,
-    pitch?: number
+    pitch?: number,
+    roll?: number
   ) {
     return this.zone.runOutsideAngular(() => {
       (this.mapInstance[movingMethod] as any)({
@@ -283,6 +303,7 @@ export class MapService {
         center: center != null ? center : this.mapInstance.getCenter(),
         bearing: bearing != null ? bearing : this.mapInstance.getBearing(),
         pitch: pitch != null ? pitch : this.mapInstance.getPitch(),
+        roll: roll != null ? roll : this.mapInstance.getRoll(),
       });
     });
   }

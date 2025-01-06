@@ -18,7 +18,7 @@ import data from './hike.geo.json';
       [centerWithPanTo]="true"
       [pitch]="pitch"
       movingMethod="jumpTo"
-      [preserveDrawingBuffer]="true"
+      [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       @if (data) {
         <mgl-geojson-source id="trace" [data]="data"> </mgl-geojson-source>

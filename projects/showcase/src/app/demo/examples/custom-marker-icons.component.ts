@@ -11,7 +11,7 @@ import { NgStyle } from '@angular/common';
       "
       [zoom]="[5]"
       [center]="[-65.017, -16.457]"
-      [preserveDrawingBuffer]="true"
+      [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       @for (feature of geojson.features; track feature) {
         <mgl-marker [feature]="feature">

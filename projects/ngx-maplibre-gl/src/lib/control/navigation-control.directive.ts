@@ -29,6 +29,8 @@ export class NavigationControlDirective {
   readonly showZoom = input<boolean>();
   /* Init inputs */
   readonly visualizePitch = input<boolean>();
+  /* Init inputs */
+  readonly visualizeRoll = input<boolean>();
 
   constructor() {
     afterNextRender(() => {
@@ -40,6 +42,7 @@ export class NavigationControlDirective {
           showCompass: this.showCompass(),
           showZoom: this.showZoom(),
           visualizePitch: this.visualizePitch(),
+          visualizeRoll: this.visualizeRoll(),
         });
         this.controlComponent.control = new NavigationControl(options);
         this.mapService.addControl(
