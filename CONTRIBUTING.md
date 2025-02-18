@@ -37,3 +37,25 @@ Run the create-bump-version-PR workflow to update the version and changelog.
 Manually edit `CHANGELOG.md` to add the new version name and release data, also edit the version content if needed.
 
 Once merged to main, a new version should be created automatically.
+
+## Upgrade Guide
+
+Follow the steps to upgrade `maplibre-gl` and/or Angular.
+
+After the upgrade, test the map using the showcase app:
+
+```bash
+npm run start
+```
+
+### maplibre-gl
+
+1. Update `maplibre-gl` dependency [package.json](./package.json)
+2. Update code in ngx-maplibre-gl/showcase to support any breaking changes from `maplibre-gl`  
+2. If there are breaking changes/new options, change the `peerDependencies` of [ngx-maplibre-gl](./projects/ngx-maplibre-gl/package.json)
+
+### Angular
+
+1. Upgrade Angular and Angular Material (follow [Angular Update Guide](https://angular.dev/update-guide))
+2. Update `peerDependencies` of [ngx-maplibre-gl](./projects/ngx-maplibre-gl/package.json)
+3. Update [Stackblitz Angular version](./projects//showcase/src/app/demo/stackblitz-edit/create-stackblitz-project.ts)
