@@ -47,7 +47,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
-  standalone: true,
 })
 export class GeoJSONSourceComponent implements OnChanges {
   /** Init injections */

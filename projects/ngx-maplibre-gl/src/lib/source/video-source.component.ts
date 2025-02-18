@@ -21,7 +21,6 @@ import { tap } from 'rxjs';
   selector: 'mgl-video-source',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
 })
 export class VideoSourceComponent

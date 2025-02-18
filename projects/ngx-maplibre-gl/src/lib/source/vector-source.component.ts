@@ -21,7 +21,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   selector: 'mgl-vector-source',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
 })
 export class VectorSourceComponent implements OnChanges {

@@ -13,7 +13,6 @@ import { ControlComponent } from './control.component';
  */
 @Directive({
   selector: '[mglGlobe]',
-  standalone: true,
 })
 export class GlobeControlDirective {
 

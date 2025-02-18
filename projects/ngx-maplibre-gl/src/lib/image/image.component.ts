@@ -52,7 +52,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'mgl-image',
   template: '',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageComponent implements OnInit, OnChanges, OnDestroy {

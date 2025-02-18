@@ -14,7 +14,6 @@ import { keepAvailableObjectValues } from '../shared/utils/functions/object.fn';
  */
 @Directive({
   selector: '[mglNavigation]',
-  standalone: true,
 })
 export class NavigationControlDirective {
   /* Init injection */

@@ -22,7 +22,6 @@ import { tap } from 'rxjs';
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
-  standalone: true,
 })
 export class CanvasSourceComponent implements OnChanges {
   /** Init injections */

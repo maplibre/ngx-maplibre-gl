@@ -13,7 +13,6 @@ import { ControlComponent } from './control.component';
  */
 @Directive({
   selector: '[mglTerrain]',
-  standalone: true,
 })
 export class TerrainControlDirective {
   /* Init injection */

@@ -44,7 +44,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   </div>`,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
 })
 export class MarkerComponent implements OnChanges, OnInit, OnDestroy {
   /** Init injection */

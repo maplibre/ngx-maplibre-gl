@@ -25,7 +25,6 @@ const destroyRefStub = () => jasmine.createSpyObj(['onDestroy']);
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
-  standalone: true,
 })
 export class TestSourceComponent implements OnChanges {
   public readonly sourceDirective = inject(SourceDirective);

@@ -25,7 +25,6 @@ import { keepAvailableObjectValues } from '../shared/utils/functions/object.fn';
  */
 @Directive({
   selector: '[mglGeolocate]',
-  standalone: true,
 })
 export class GeolocateControlDirective {
   /* Init injection */

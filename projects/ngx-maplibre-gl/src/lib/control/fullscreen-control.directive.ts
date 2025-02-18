@@ -10,7 +10,6 @@ import { ControlComponent } from './control.component';
  */
 @Directive({
   selector: '[mglFullscreen]',
-  standalone: true,
   host: {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     '(window:webkitfullscreenchange)': 'onFullscreen()',
