@@ -22,7 +22,6 @@ const getMapServiceStub = () =>
       ...
     </mgl-marker>
   `,
-  standalone: true,
   imports: [MarkerComponent]
 })
 class MarkerTestComponent {

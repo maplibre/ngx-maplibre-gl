@@ -17,7 +17,6 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
     ></mgl-map>
   `,
   styleUrls: ['./home-index.component.scss'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MapComponent, MatIconModule],
 })

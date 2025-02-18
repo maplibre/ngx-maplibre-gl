@@ -38,7 +38,6 @@ interface RoutesByCategory { [key: string]: Routes }
 @Component({
   templateUrl: './demo-index.component.html',
   styleUrls: ['./demo-index.component.scss'],
-  standalone: true,
   imports: [
     LayoutToolbarMenuComponent,
     MatButtonModule,

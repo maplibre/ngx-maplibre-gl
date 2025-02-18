@@ -28,7 +28,6 @@ import {
     </mgl-map>
   `,
   styleUrls: ['./examples.css', './popup.component.css'],
-  standalone: true,
   imports: [MapComponent, MglPopupComponent],
 })
 export class PopupComponent {}

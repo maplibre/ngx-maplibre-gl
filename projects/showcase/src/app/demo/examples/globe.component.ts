@@ -20,7 +20,6 @@ import { NgStyle } from '@angular/common';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
-  standalone: true,
   imports: [MapComponent, NgStyle, ControlComponent, GlobeControlDirective],
 })
 export class GlobeComponent {}

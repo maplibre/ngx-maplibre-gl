@@ -46,7 +46,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [MatProgressSpinnerModule],
 })
 export class StackblitzEditComponent implements AfterViewInit, OnDestroy {

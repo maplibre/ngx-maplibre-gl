@@ -50,7 +50,6 @@ import { MapComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
-  standalone: true,
   imports: [MapComponent, LayerComponent],
 })
 export class Display3dBuildingsComponent {

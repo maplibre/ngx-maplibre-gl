@@ -18,7 +18,6 @@ import {
       <ng-content></ng-content>
     </ng-template>
   `,
-  standalone: true,
   imports: [PortalModule],
 })
 export class LayoutToolbarMenuComponent implements OnDestroy {

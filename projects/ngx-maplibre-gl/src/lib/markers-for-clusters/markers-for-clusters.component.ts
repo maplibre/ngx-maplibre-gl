@@ -72,7 +72,6 @@ let uniqId = 0;
  */
 @Component({
   selector: 'mgl-markers-for-clusters',
-
   template: `
     <mgl-layer
       [id]="layerId"
@@ -97,7 +96,6 @@ let uniqId = 0;
     }`,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
-  standalone: true,
   imports: [LayerComponent, MarkerComponent, NgTemplateOutlet],
 })
 export class MarkersForClustersComponent {

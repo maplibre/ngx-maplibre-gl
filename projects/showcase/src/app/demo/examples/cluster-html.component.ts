@@ -34,7 +34,6 @@ import {
       </text>
     </svg>
   `,
-  standalone: true,
   imports: [NgStyle],
 })
 export class ClusterPointComponent implements OnInit {
@@ -166,7 +165,6 @@ const COLORS = ['#fed976', '#feb24c', '#fd8d3c', '#fc4e2a', '#e31a1c'];
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
-  standalone: true,
   imports: [
     MapComponent,
     GeoJSONSourceComponent,

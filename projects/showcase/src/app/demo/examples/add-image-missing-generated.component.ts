@@ -68,7 +68,6 @@ import {
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MapComponent, ImageComponent, LayerComponent],
 })

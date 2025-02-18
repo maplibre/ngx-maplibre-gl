@@ -29,7 +29,6 @@ import { NgStyle } from '@angular/common';
     </mgl-map>
   `,
   styleUrls: ['./examples.css', './custom-marker-icons.component.css'],
-  standalone: true,
   imports: [MapComponent, MarkerComponent, NgStyle],
 })
 export class CustomMarkerIconsComponent {
