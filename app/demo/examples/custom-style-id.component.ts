@@ -15,7 +15,6 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
-  standalone: true,
   imports: [MapComponent],
 })
 export class CustomStyleIdComponent {}

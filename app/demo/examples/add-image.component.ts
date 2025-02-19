@@ -46,7 +46,6 @@ import {
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
-  standalone: true,
   imports: [MapComponent, ImageComponent, LayerComponent],
 })
 export class AddImageComponent {

@@ -68,7 +68,6 @@ import type { LayerSpecification } from 'maplibre-gl';
     </div>
   `,
   styleUrls: ['./examples.css', './toggle-layers.component.css'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MapComponent,

@@ -36,7 +36,6 @@ import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
     </mgl-map>
   `,
   styleUrls: ['./examples.css', './custom-marker-icons.component.css'],
-  standalone: true,
   imports: [MapComponent, MarkerComponent],
 })
 export class NgxCustomMarkerIconsComponent {

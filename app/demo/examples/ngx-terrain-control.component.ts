@@ -40,7 +40,6 @@ import {
   `,
   styleUrls: ['./examples.css'],
   preserveWhitespaces: false,
-  standalone: true,
   imports: [
     MapComponent,
     RasterDemSourceComponent,

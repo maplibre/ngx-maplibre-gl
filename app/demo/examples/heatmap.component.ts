@@ -49,7 +49,6 @@ import {
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
-  standalone: true,
   imports: [MapComponent, GeoJSONSourceComponent, LayerComponent],
 })
 export class HeatMapComponent implements OnInit {

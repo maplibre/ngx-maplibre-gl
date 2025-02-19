@@ -43,7 +43,6 @@ import {
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
-  standalone: true,
   imports: [MapComponent, LayerComponent, PopupComponent],
 })
 export class PolygonPopupOnClickComponent {

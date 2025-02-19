@@ -28,7 +28,6 @@ import {
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
-  standalone: true,
   imports: [MapComponent, ControlComponent, AttributionControlDirective],
 })
 export class CustomAttributionComponent {}

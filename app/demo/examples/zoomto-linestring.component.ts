@@ -47,7 +47,6 @@ import { LngLatBounds } from 'maplibre-gl';
   `,
   styleUrls: ['./examples.css'],
   preserveWhitespaces: false,
-  standalone: true,
   imports: [MapComponent, ControlComponent, MatButtonModule, LayerComponent],
 })
 export class ZoomtoLinestringComponent {
