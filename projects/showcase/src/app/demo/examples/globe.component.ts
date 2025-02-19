@@ -4,7 +4,6 @@ import {
   GlobeControlDirective,
   ControlComponent,
 } from '@maplibre/ngx-maplibre-gl';
-import { NgStyle } from '@angular/common';
 
 @Component({
   selector: 'showcase-demo',
@@ -20,7 +19,6 @@ import { NgStyle } from '@angular/common';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
-  standalone: true,
-  imports: [MapComponent, NgStyle, ControlComponent, GlobeControlDirective],
+  imports: [MapComponent, ControlComponent, GlobeControlDirective],
 })
 export class GlobeComponent {}

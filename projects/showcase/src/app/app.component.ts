@@ -9,7 +9,6 @@ import logo from '../assets/ngx-maplibre-gl.svg';
 @Component({
   selector: 'showcase-root',
   template: `<router-outlet></router-outlet>`,
-  standalone: true,
   imports: [RouterOutlet],
 })
 export class AppComponent {

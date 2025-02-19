@@ -34,7 +34,6 @@ import { NgStyle } from '@angular/common';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
-  standalone: true,
   imports: [MapComponent, MarkerComponent, NgStyle, PopupComponent],
 })
 export class SetPopupComponent {}

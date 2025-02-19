@@ -31,7 +31,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
  */
 @Directive({
   selector: 'ng-template[mglPoint]',
-  standalone: true,
 })
 export class PointDirective {}
 
@@ -42,7 +41,6 @@ export class PointDirective {}
  */
 @Directive({
   selector: 'ng-template[mglClusterPoint]',
-  standalone: true,
 })
 export class ClusterPointDirective {}
 
@@ -72,7 +70,6 @@ let uniqId = 0;
  */
 @Component({
   selector: 'mgl-markers-for-clusters',
-
   template: `
     <mgl-layer
       [id]="layerId"
@@ -97,7 +94,6 @@ let uniqId = 0;
     }`,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
-  standalone: true,
   imports: [LayerComponent, MarkerComponent, NgTemplateOutlet],
 })
 export class MarkersForClustersComponent {

@@ -34,7 +34,6 @@ import {
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
-  standalone: true,
   imports: [MapComponent, MarkerComponent, ControlComponent, MatCardModule],
 })
 export class DragAMarkerComponent {

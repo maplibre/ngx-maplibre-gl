@@ -20,7 +20,6 @@ import { GeoJSONSourceComponent } from './geojson-source.component';
   selector: 'mgl-feature',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
 })
 export class FeatureComponent implements OnInit, OnDestroy {
   /** Init injection */

@@ -17,9 +17,7 @@ import { Source, SourceSpecification } from 'maplibre-gl';
  * @internal
  * A composition object for the source components
  */
-@Directive({
-  standalone: true,
-})
+@Directive({})
 export class SourceDirective implements OnInit, OnDestroy {
   /** Init injection */
   private readonly mapService = inject(MapService);

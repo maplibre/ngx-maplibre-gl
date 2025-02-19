@@ -17,7 +17,6 @@ import { keepAvailableObjectValues } from '../shared/utils/functions/object.fn';
  */
 @Directive({
   selector: '[mglAttribution]',
-  standalone: true,
 })
 export class AttributionControlDirective {
   /* Init injection */

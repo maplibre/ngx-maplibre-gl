@@ -37,7 +37,6 @@ import data from './hike.geo.json';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
-  standalone: true,
   imports: [MapComponent, GeoJSONSourceComponent, LayerComponent],
 })
 export class LiveUpdateFeatureComponent implements OnDestroy {

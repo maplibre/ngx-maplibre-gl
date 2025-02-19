@@ -26,7 +26,6 @@ const getMapServiceStub = () =>
             <mgl-geojson-source id="123"></mgl-geojson-source>
         }
     `,
-    standalone: true,
     imports: [GeoJSONSourceComponent]
 })
 class GeoJSONSourceTestComponent {

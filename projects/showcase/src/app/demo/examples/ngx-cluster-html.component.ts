@@ -39,7 +39,6 @@ import { MatListModule } from '@angular/material/list';
       (page)="changePage($event)"
     ></mat-paginator>
   `,
-  standalone: true,
   imports: [MatListModule, MatPaginatorModule],
 })
 export class ClusterPopupComponent implements OnChanges {
@@ -127,7 +126,6 @@ export class ClusterPopupComponent implements OnChanges {
     </mgl-map>
   `,
   styleUrls: ['./examples.css', './ngx-cluster-html.component.css'],
-  standalone: true,
   imports: [
     MapComponent,
     GeoJSONSourceComponent,

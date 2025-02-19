@@ -48,7 +48,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'mgl-layer',
   template: '',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayerComponent

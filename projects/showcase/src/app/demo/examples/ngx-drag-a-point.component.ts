@@ -52,7 +52,6 @@ import {
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
-  standalone: true,
   imports: [
     MapComponent,
     GeoJSONSourceComponent,

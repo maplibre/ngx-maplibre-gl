@@ -21,7 +21,6 @@ import { keepAvailableObjectValues } from '../shared/utils/functions/object.fn';
  */
 @Directive({
   selector: '[mglScale]',
-  standalone: true,
 })
 export class ScaleControlDirective implements OnChanges {
   /* Init injection */

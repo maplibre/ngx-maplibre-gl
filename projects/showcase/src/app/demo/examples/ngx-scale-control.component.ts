@@ -18,7 +18,6 @@ import {
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
-  standalone: true,
   imports: [MapComponent, ControlComponent, ScaleControlDirective],
 })
 export class NgxScaleControlComponent {}

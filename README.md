@@ -80,7 +80,6 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
       }
     `,
   ],
-  standalone: true,
   imports: [MapComponent],
 })
 export class AppComponent {}

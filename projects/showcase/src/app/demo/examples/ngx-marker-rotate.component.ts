@@ -16,7 +16,6 @@ import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
-  standalone: true,
   imports: [MapComponent, MarkerComponent],
 })
 export class NgxMarkerRotateComponent {}

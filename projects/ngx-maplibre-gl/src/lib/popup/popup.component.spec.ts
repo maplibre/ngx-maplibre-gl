@@ -30,7 +30,6 @@ const getMapServiceStub = () =>
     </mgl-popup>
     }
   `,
-  standalone: true,
   imports: [MarkerComponent, PopupComponent]
 })
 class MarkerPopupTestComponent {

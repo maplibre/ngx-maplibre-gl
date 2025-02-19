@@ -100,7 +100,6 @@ import { MatMenuModule } from '@angular/material/menu';
       }
     `,
   ],
-  standalone: true,
   imports: [
     MatToolbarModule,
     MatButtonModule,

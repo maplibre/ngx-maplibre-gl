@@ -34,7 +34,6 @@ import {
     </mat-radio-group>
   `,
   styleUrls: ['./examples.css', './set-style.component.css'],
-  standalone: true,
   imports: [MapComponent, MatRadioModule, FormsModule],
 })
 export class SetStyleComponent implements OnInit {
