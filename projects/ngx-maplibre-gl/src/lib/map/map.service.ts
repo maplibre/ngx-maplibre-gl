@@ -38,7 +38,8 @@ import {
   type ControlPosition,
   type Subscription,
   type MapLayerEventType,
-  type ProjectionSpecification
+  type ProjectionSpecification,
+  FeatureIdentifier
 } from 'maplibre-gl';
 import { AsyncSubject } from 'rxjs';
 import type {
@@ -582,6 +583,24 @@ export class MapService {
         maxZoom ? maxZoom : 20
       );
     });
+  }
+
+  setFeatureState(feature: FeatureIdentifier, state: any) {
+    return this.zone.runOutsideAngular(() => {
+      this.mapInstance.setFeatureState(feature, state);
+    });
+  }
+
+  removeFeatureState(target: FeatureIdentifier, key?: string) {
+    return this.zone.runOutsideAngular(() => {
+      this.mapInstance.removeFeatureState(target, key);
+    });
+  }
+
+  getFeatureState(feature: FeatureIdentifier): any {
+    return this.zone.runOutsideAngular(() => (
+      this.mapInstance.getFeatureState(feature)
+    ));
   }
 
   fitBounds(bounds: LngLatBoundsLike, options?: FitBoundsOptions) {

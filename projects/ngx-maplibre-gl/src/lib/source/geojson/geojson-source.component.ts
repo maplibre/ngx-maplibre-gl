@@ -8,7 +8,7 @@ import {
   input,
   signal,
 } from '@angular/core';
-import type { GeoJSONSource, GeoJSONSourceSpecification } from 'maplibre-gl';
+import type { FeatureIdentifier, GeoJSONSource, GeoJSONSourceSpecification } from 'maplibre-gl';
 import { Subject } from 'rxjs';
 import { debounceTime, switchMap, tap } from 'rxjs/operators';
 import { SourceDirective } from '../source.directive';
@@ -183,6 +183,18 @@ export class GeoJSONSourceComponent implements OnChanges {
     return this.ngZone.run(async () => {
       return source.getClusterLeaves(clusterId, limit, offset);
     });
+  }
+
+  setFeatureState(feature: Partial<FeatureIdentifier>, state: any) {
+    this.sourceDirective.setFeatureState(feature, state);
+  }
+
+  removeFeatureState(target: Partial<FeatureIdentifier>, key?: string) {
+    this.sourceDirective.removeFeatureState(target, key);
+  }
+
+  getFeatureState(feature: Partial<FeatureIdentifier>): any {
+    return this.sourceDirective.getFeatureState(feature);
   }
 
   _addFeature(feature: GeoJSON.Feature<GeoJSON.GeometryObject>) {

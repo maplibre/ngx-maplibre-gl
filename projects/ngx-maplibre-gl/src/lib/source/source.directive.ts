@@ -11,7 +11,7 @@ import { Subject, fromEvent } from 'rxjs';
 import { filter, switchMap, tap } from 'rxjs/operators';
 import { MapService } from '../map/map.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Source, SourceSpecification } from 'maplibre-gl';
+import { FeatureIdentifier, Source, SourceSpecification } from 'maplibre-gl';
 
 /**
  * @internal
@@ -73,5 +73,26 @@ export class SourceDirective implements OnInit, OnDestroy {
 
   getSource<T extends Source>(): T | undefined {
     return this.mapService.getSource<T>(this.id());
+  }
+
+  setFeatureState(feature: Partial<FeatureIdentifier>, state: any) {
+    this.mapService.setFeatureState({
+      source: this.id(),
+      ...feature,
+    }, state);
+  }
+
+  removeFeatureState(target: Partial<FeatureIdentifier>, key?: string) {
+    this.mapService.removeFeatureState({
+      source: this.id(),
+      ...target,
+    }, key);
+  }
+
+  getFeatureState(feature: Partial<FeatureIdentifier>): any {
+    return this.mapService.getFeatureState({
+      source: this.id(),
+      ...feature,
+    });
   }
 }
