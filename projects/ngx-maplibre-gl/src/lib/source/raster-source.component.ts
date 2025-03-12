@@ -10,6 +10,7 @@ import type { RasterSourceSpecification } from 'maplibre-gl';
 import { SourceDirective } from './source.directive';
 import { tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Source } from './source';
 
 /**
  * `mgl-raster-source` - a raster source component
@@ -23,9 +24,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
 })
-export class RasterSourceComponent implements OnChanges {
+export class RasterSourceComponent extends Source implements OnChanges {
   /** Init injections */
-  private readonly sourceDirective = inject(SourceDirective);
+  protected readonly sourceDirective = inject(SourceDirective);
 
   /** Dynamic input */
   readonly url = input<RasterSourceSpecification['url']>();
@@ -52,6 +53,7 @@ export class RasterSourceComponent implements OnChanges {
   readonly attribution = input<RasterSourceSpecification['attribution']>();
 
   constructor() {
+    super();
     this.sourceDirective.loadSource$
       .pipe(
         tap(() =>

@@ -10,6 +10,7 @@ import type { VectorSourceSpecification, VectorTileSource } from 'maplibre-gl';
 import { SourceDirective } from './source.directive';
 import { tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Source } from './source';
 
 /**
  * `mgl-vector-source` - a vector source component
@@ -23,9 +24,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
 })
-export class VectorSourceComponent implements OnChanges {
+export class VectorSourceComponent extends Source implements OnChanges {
   /** Init injections */
-  private readonly sourceDirective = inject(SourceDirective);
+  protected readonly sourceDirective = inject(SourceDirective);
 
   /** Dynamic inputs */
   readonly url = input<VectorSourceSpecification['url']>();
@@ -38,6 +39,7 @@ export class VectorSourceComponent implements OnChanges {
   readonly promoteId = input<VectorSourceSpecification['promoteId']>();
 
   constructor() {
+    super();
     this.sourceDirective.loadSource$
       .pipe(
         tap(() =>

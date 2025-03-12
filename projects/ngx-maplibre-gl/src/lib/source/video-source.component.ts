@@ -10,6 +10,7 @@ import type { VideoSource, VideoSourceSpecification } from 'maplibre-gl';
 import { SourceDirective } from './source.directive';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
+import { Source } from './source';
 
 /**
  * `mgl-video-source` - a video source
@@ -23,10 +24,10 @@ import { tap } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
 })
-export class VideoSourceComponent
+export class VideoSourceComponent extends Source
   implements OnChanges
 {
-  private readonly sourceDirective = inject(SourceDirective);
+  protected readonly sourceDirective = inject(SourceDirective);
 
   /** Dynamic input */
   readonly urls = input.required<VideoSourceSpecification['urls']>();
@@ -36,7 +37,7 @@ export class VideoSourceComponent
     input.required<VideoSourceSpecification['coordinates']>();
 
   constructor() {
-
+    super();
     this.sourceDirective.loadSource$.pipe(
       tap(() => this.addSource()),
       takeUntilDestroyed()

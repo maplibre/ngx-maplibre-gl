@@ -8,11 +8,12 @@ import {
   input,
   signal,
 } from '@angular/core';
-import type { FeatureIdentifier, GeoJSONSource, GeoJSONSourceSpecification } from 'maplibre-gl';
+import type { GeoJSONSource, GeoJSONSourceSpecification } from 'maplibre-gl';
 import { Subject } from 'rxjs';
 import { debounceTime, switchMap, tap } from 'rxjs/operators';
 import { SourceDirective } from '../source.directive';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Source } from '../source';
 
 /**
  * `mgl-geojson-source` - a geojson source component
@@ -48,9 +49,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
 })
-export class GeoJSONSourceComponent implements OnChanges {
+export class GeoJSONSourceComponent extends Source implements OnChanges {
   /** Init injections */
-  private readonly sourceDirective = inject(SourceDirective);
+  protected readonly sourceDirective = inject(SourceDirective);
 
   /** Init injection */
   private readonly ngZone = inject(NgZone);
@@ -108,6 +109,7 @@ export class GeoJSONSourceComponent implements OnChanges {
   private readonly featureIdCounter = signal(0);
 
   constructor() {
+    super();
     this.sourceDirective.loadSource$
       .pipe(
         tap(() =>
@@ -183,18 +185,6 @@ export class GeoJSONSourceComponent implements OnChanges {
     return this.ngZone.run(async () => {
       return source.getClusterLeaves(clusterId, limit, offset);
     });
-  }
-
-  setFeatureState(feature: Partial<FeatureIdentifier>, state: any) {
-    this.sourceDirective.setFeatureState(feature, state);
-  }
-
-  removeFeatureState(target: Partial<FeatureIdentifier>, key?: string) {
-    this.sourceDirective.removeFeatureState(target, key);
-  }
-
-  getFeatureState(feature: Partial<FeatureIdentifier>): any {
-    return this.sourceDirective.getFeatureState(feature);
   }
 
   _addFeature(feature: GeoJSON.Feature<GeoJSON.GeometryObject>) {

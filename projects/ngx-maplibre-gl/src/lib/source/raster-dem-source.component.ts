@@ -10,6 +10,7 @@ import type { RasterDEMSourceSpecification } from 'maplibre-gl';
 import { tap } from 'rxjs/operators';
 import { SourceDirective } from './source.directive';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Source } from './source';
 
 /**
  * `mgl-raster-dem-source` - a raster DEM source
@@ -23,9 +24,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
 })
-export class RasterDemSourceComponent implements OnChanges {
+export class RasterDemSourceComponent extends Source implements OnChanges {
   /** Init injections */
-  private readonly sourceDirective = inject(SourceDirective);
+  protected readonly sourceDirective = inject(SourceDirective);
 
   /** Dynamic input */
   readonly url = input<RasterDEMSourceSpecification['url']>();
@@ -52,6 +53,7 @@ export class RasterDemSourceComponent implements OnChanges {
   readonly encoding = input<RasterDEMSourceSpecification['encoding']>();
 
   constructor() {
+    super();
     this.sourceDirective.loadSource$
       .pipe(
         tap(() =>

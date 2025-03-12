@@ -10,6 +10,7 @@ import type { CanvasSource, CanvasSourceSpecification } from 'maplibre-gl';
 import { SourceDirective } from './source.directive';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
+import { Source } from './source';
 
 /**
  * `mgl-canvas-source` - a canvas source component
@@ -23,9 +24,9 @@ import { tap } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
 })
-export class CanvasSourceComponent implements OnChanges {
+export class CanvasSourceComponent extends Source implements OnChanges {
   /** Init injections */
-  private readonly sourceDirective = inject(SourceDirective);
+  protected readonly sourceDirective = inject(SourceDirective);
 
   /** Dynamic input */
   readonly coordinates =
@@ -38,6 +39,7 @@ export class CanvasSourceComponent implements OnChanges {
   readonly animate = input<CanvasSourceSpecification['animate']>();
 
   constructor() {
+    super();
     this.sourceDirective.loadSource$
       .pipe(
         tap(() =>
