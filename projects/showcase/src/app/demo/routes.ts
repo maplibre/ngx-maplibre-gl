@@ -327,6 +327,17 @@ export const DEMO_ROUTES: Routes = [
         },
       },
       {
+        path: 'select-features',
+        loadComponent: () =>
+          import('./examples/select-features.component').then(
+            (m) => m.SelectFeaturesComponent,
+          ),
+        data: {
+          label: 'Select features',
+          cat: CATEGORIES.unserInteraction,
+        },
+      },
+      {
         path: 'popup-on-click',
         loadComponent: () =>
           import('./examples/popup-on-click.component').then(

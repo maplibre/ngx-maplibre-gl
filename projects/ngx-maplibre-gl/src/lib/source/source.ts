@@ -13,7 +13,7 @@ export abstract class Source {
    * 
    * @see [maplibre-gl-js' Docs](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#setfeaturestate)
    */
-  setFeatureState(feature: Partial<FeatureIdentifier>, state: any) {
+  public setFeatureState(feature: Partial<FeatureIdentifier>, state: any) {
     this.sourceDirective.setFeatureState(feature, state);
   }
 
