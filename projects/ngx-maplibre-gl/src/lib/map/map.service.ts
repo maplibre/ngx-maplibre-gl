@@ -39,7 +39,7 @@ import {
   type Subscription,
   type MapLayerEventType,
   type ProjectionSpecification,
-  FeatureIdentifier
+  type FeatureIdentifier
 } from 'maplibre-gl';
 import { AsyncSubject } from 'rxjs';
 import type {
