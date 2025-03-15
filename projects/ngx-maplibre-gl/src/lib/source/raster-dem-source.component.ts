@@ -6,11 +6,10 @@ import {
   inject,
   input,
 } from '@angular/core';
-import type { RasterDEMSourceSpecification } from 'maplibre-gl';
+import type { FeatureIdentifier, RasterDEMSourceSpecification } from 'maplibre-gl';
 import { tap } from 'rxjs/operators';
 import { SourceDirective } from './source.directive';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Source } from './source';
 
 /**
  * `mgl-raster-dem-source` - a raster DEM source
@@ -24,9 +23,9 @@ import { Source } from './source';
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
 })
-export class RasterDemSourceComponent extends Source implements OnChanges {
+export class RasterDemSourceComponent implements OnChanges {
   /** Init injections */
-  protected readonly sourceDirective = inject(SourceDirective);
+  private readonly sourceDirective = inject(SourceDirective);
 
   /** Dynamic input */
   readonly url = input<RasterDEMSourceSpecification['url']>();
@@ -53,7 +52,6 @@ export class RasterDemSourceComponent extends Source implements OnChanges {
   readonly encoding = input<RasterDEMSourceSpecification['encoding']>();
 
   constructor() {
-    super();
     this.sourceDirective.loadSource$
       .pipe(
         tap(() =>
@@ -94,5 +92,41 @@ export class RasterDemSourceComponent extends Source implements OnChanges {
       attribution: this.attribution(),
       encoding: this.encoding(),
     };
+  }
+
+  /**
+   * Sets the `state` of a feature.
+   * 
+   * @param feature Feature identifier. `source` may be omitted, will use this source id.
+   * @param state A set of key-value pairs. The values should be valid JSON types.
+   * 
+   * @see [maplibre-gl-js' Docs](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#setfeaturestate)
+   */
+  public setFeatureState(feature: Partial<FeatureIdentifier>, state: any) {
+    this.sourceDirective.setFeatureState(feature, state);
+  }
+
+  /**
+   * Removes the `state` of a feature, setting it back to the default behavior.
+   * 
+   * @param target Feature identifier. `source` may be omitted, will use this source id.
+   * @param key The key in the feature state to reset.
+   * 
+   * @see [maplibre-gl-js' Docs](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#removeFeatureState)
+   */
+  removeFeatureState(target: Partial<FeatureIdentifier>, key?: string) {
+    this.sourceDirective.removeFeatureState(target, key);
+  }
+
+  /**
+   * Gets the `state` of a feature.
+   * 
+   * @param feature Feature identifier. `source` may be omitted, will use this source id.
+   * @returns The state of the feature: a set of key-value pairs that was assigned to the feature at runtime.
+   * 
+   * @see [maplibre-gl-js' Docs](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#getFeatureState)
+   */
+  getFeatureState(feature: Partial<FeatureIdentifier>): any {
+    return this.sourceDirective.getFeatureState(feature);
   }
 }

@@ -8,12 +8,11 @@ import {
   input,
   signal,
 } from '@angular/core';
-import type { GeoJSONSource, GeoJSONSourceSpecification } from 'maplibre-gl';
+import type { FeatureIdentifier, GeoJSONSource, GeoJSONSourceSpecification } from 'maplibre-gl';
 import { Subject } from 'rxjs';
 import { debounceTime, switchMap, tap } from 'rxjs/operators';
 import { SourceDirective } from '../source.directive';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Source } from '../source';
 
 /**
  * `mgl-geojson-source` - a geojson source component
@@ -49,9 +48,9 @@ import { Source } from '../source';
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
 })
-export class GeoJSONSourceComponent extends Source implements OnChanges {
+export class GeoJSONSourceComponent implements OnChanges {
   /** Init injections */
-  protected readonly sourceDirective = inject(SourceDirective);
+  private readonly sourceDirective = inject(SourceDirective);
 
   /** Init injection */
   private readonly ngZone = inject(NgZone);
@@ -109,7 +108,6 @@ export class GeoJSONSourceComponent extends Source implements OnChanges {
   private readonly featureIdCounter = signal(0);
 
   constructor() {
-    super();
     this.sourceDirective.loadSource$
       .pipe(
         tap(() =>
@@ -245,5 +243,41 @@ export class GeoJSONSourceComponent extends Source implements OnChanges {
         source.setData(this.data()! as string | GeoJSON.GeoJSON);
       })
     );
+  }
+
+  /**
+   * Sets the `state` of a feature.
+   * 
+   * @param feature Feature identifier. `source` may be omitted, will use this source id.
+   * @param state A set of key-value pairs. The values should be valid JSON types.
+   * 
+   * @see [maplibre-gl-js' Docs](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#setfeaturestate)
+   */
+  public setFeatureState(feature: Partial<FeatureIdentifier>, state: any) {
+    this.sourceDirective.setFeatureState(feature, state);
+  }
+
+  /**
+   * Removes the `state` of a feature, setting it back to the default behavior.
+   * 
+   * @param target Feature identifier. `source` may be omitted, will use this source id.
+   * @param key The key in the feature state to reset.
+   * 
+   * @see [maplibre-gl-js' Docs](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#removeFeatureState)
+   */
+  removeFeatureState(target: Partial<FeatureIdentifier>, key?: string) {
+    this.sourceDirective.removeFeatureState(target, key);
+  }
+
+  /**
+   * Gets the `state` of a feature.
+   * 
+   * @param feature Feature identifier. `source` may be omitted, will use this source id.
+   * @returns The state of the feature: a set of key-value pairs that was assigned to the feature at runtime.
+   * 
+   * @see [maplibre-gl-js' Docs](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#getFeatureState)
+   */
+  getFeatureState(feature: Partial<FeatureIdentifier>): any {
+    return this.sourceDirective.getFeatureState(feature);
   }
 }
