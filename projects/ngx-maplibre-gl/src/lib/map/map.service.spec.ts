@@ -16,6 +16,7 @@ import {
 import { MapService } from './map.service';
 import { MapEvent, EventData } from './map.types';
 import { MockNgZone } from './mock-ng-zone';
+import type { FeatureCollection } from 'geojson';
 
 const countries = require('./countries.geo.json'); // eslint-disable-line @typescript-eslint/no-require-imports
 
@@ -216,5 +217,71 @@ describe('MapService', () => {
     mapService.removePopupFromMap(popup);
     popup.fire('close');
     expect(popupEvents.popupClose.emit).not.toHaveBeenCalled();
+  });
+
+  const geoJsonData = {
+    type: 'FeatureCollection',
+    features: [
+      { type: 'Feature', id: 1, geometry: { type: 'Point', coordinates: [0, 0] }, properties: {} },
+      { type: 'Feature', id: 2, geometry: { type: 'Point', coordinates: [1, 1] }, properties: {} }
+    ]
+  } as FeatureCollection;
+
+  function makeSourceId() {
+    const id = `world-${Math.random().toString(36).slice(2, 9)}`;
+    return {
+      sourceId: id,
+      feature1: {source: id, id: 1},
+      feature2: {source: id, id: 2},
+    }
+  }
+
+  it('should set feature state for a single feature', (done: DoneFn) => {
+    mapEvents.mapLoad.subscribe(() => {
+      const state = { selected: true };
+      
+      const {sourceId, feature1, feature2} = makeSourceId();
+      mapService.addSource(sourceId, { type: 'geojson', data: geoJsonData });
+      
+      mapService.setFeatureState(feature1, state);
+      
+      expect(mapService.getFeatureState(feature1)).toEqual(state);
+      expect(mapService.getFeatureState(feature2)).toEqual({}); // ensure other feature remains unchanged
+      done();
+    });
+  });
+
+  it('should remove specific feature state key', (done: DoneFn) => {
+    mapEvents.mapLoad.subscribe(() => {
+      const {sourceId, feature1, feature2} = makeSourceId();
+
+      mapService.addSource(sourceId, { type: 'geojson', data: geoJsonData });
+      
+      mapService.setFeatureState(feature1, { selected: true, highlighted: true });
+      mapService.setFeatureState(feature2, { selected: false });
+      
+      mapService.removeFeatureState(feature1, 'selected');
+      
+      expect(mapService.getFeatureState(feature1)).toEqual({ highlighted: true });
+      expect(mapService.getFeatureState(feature2)).toEqual({ selected: false }); // ensure other feature remains unchanged
+      done();
+    });
+  });
+
+  it('should remove entire feature state', (done: DoneFn) => {
+    mapEvents.mapLoad.subscribe(() => {
+      const {sourceId, feature1, feature2} = makeSourceId();
+
+      mapService.addSource(sourceId, { type: 'geojson', data: geoJsonData });
+      
+      mapService.setFeatureState(feature1, { selected: true, highlighted: true });
+      mapService.setFeatureState(feature2, { selected: false, hovered: true });
+      
+      mapService.removeFeatureState(feature1);
+      
+      expect(mapService.getFeatureState(feature1)).toEqual({});
+      expect(mapService.getFeatureState(feature2)).toEqual({ selected: false, hovered: true }); // ensure other feature remains unchanged
+      done();
+    });
   });
 });
