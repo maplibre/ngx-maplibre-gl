@@ -16,7 +16,8 @@ import {
 import { MapService, SetupLayer } from './map.service';
 import { MapEvent, EventData, type LayerEvents } from './map.types';
 import { MockNgZone } from './mock-ng-zone';
-import { FeatureCollection } from "geojson";
+import { firstValueFrom, ReplaySubject } from "rxjs";
+import { tap } from "rxjs/operators";
 
 const countries = require('./countries.geo.json'); // eslint-disable-line @typescript-eslint/no-require-imports
 
@@ -220,82 +221,53 @@ describe('MapService', () => {
   });
 
   describe('layer handling', () => {
-    let layerEvents1: LayerEvents;
-    let layerEvents2: LayerEvents;
-    beforeEach(() => {
-      TestBed.runInInjectionContext(() => {
-        layerEvents1 = {
-          layerClick: { emit: jasmine.createSpy() } as any,
-          layerDblClick: new OutputEmitterRef<MapMouseEvent & EventData>(),
-          layerMouseOver: new OutputEmitterRef<MapMouseEvent & EventData>(),
-          layerMouseOut: new OutputEmitterRef<MapMouseEvent & EventData>(),
-          layerMouseDown: new OutputEmitterRef<MapMouseEvent & EventData>(),
-          layerMouseUp: new OutputEmitterRef<MapMouseEvent & EventData>(),
-          layerMouseEnter: new OutputEmitterRef<MapMouseEvent & EventData>(),
-          layerMouseLeave: new OutputEmitterRef<MapMouseEvent & EventData>(),
-          layerMouseMove: new OutputEmitterRef<MapMouseEvent & EventData>(),
-          layerContextMenu: new OutputEmitterRef<MapMouseEvent & EventData>(),
-          layerTouchStart: new OutputEmitterRef<MapTouchEvent & EventData>(),
-          layerTouchEnd: new OutputEmitterRef<MapTouchEvent & EventData>(),
-          layerTouchCancel: new OutputEmitterRef<MapTouchEvent & EventData>(),
-        };
-        layerEvents2 = {
-          layerClick: new OutputEmitterRef<MapMouseEvent & EventData>(),
-          layerDblClick: new OutputEmitterRef<MapMouseEvent & EventData>(),
-          layerMouseOver: new OutputEmitterRef<MapMouseEvent & EventData>(),
-          layerMouseOut: new OutputEmitterRef<MapMouseEvent & EventData>(),
-          layerMouseDown: new OutputEmitterRef<MapMouseEvent & EventData>(),
-          layerMouseUp: new OutputEmitterRef<MapMouseEvent & EventData>(),
-          layerMouseEnter: new OutputEmitterRef<MapMouseEvent & EventData>(),
-          layerMouseLeave: new OutputEmitterRef<MapMouseEvent & EventData>(),
-          layerMouseMove: new OutputEmitterRef<MapMouseEvent & EventData>(),
-          layerContextMenu: new OutputEmitterRef<MapMouseEvent & EventData>(),
-          layerTouchStart: new OutputEmitterRef<MapTouchEvent & EventData>(),
-          layerTouchEnd: new OutputEmitterRef<MapTouchEvent & EventData>(),
-          layerTouchCancel: new OutputEmitterRef<MapTouchEvent & EventData>(),
-        };
-      });
-    });
-    it('should unsubscribe from events on removeLayer via source', (done: DoneFn) => {
+    it('should unsubscribe from events on removeLayer via source', async () => {
       spyOn(mapService.mapInstance, 'queryRenderedFeatures').and.returnValue([{} as MapGeoJSONFeature]);
-      const emptyGeoJson: FeatureCollection = {
-        "type": "FeatureCollection",
-        "features": []
-      };
+
       const sourceData: SourceSpecification = {
         "type": "geojson",
-        "data": emptyGeoJson
+        "data": {
+          "type": "FeatureCollection",
+          "features": []
+        }
       }
+      const layerEventThatShouldNotEmit = {
+        ...createLayerEvents(),
+        layerClick: { emit: jasmine.createSpy() } as any,
+      };
       const layer: SetupLayer = {
         layerOptions: {
           type: 'fill',
           id: 'layerId',
           source: "sourceId",
-          paint: {
-          },
+          paint: {},
         },
-        layerEvents: layerEvents1,
+        layerEvents: layerEventThatShouldNotEmit,
       };
       const layer2: SetupLayer = {
         layerOptions: {
           type: 'fill',
           id: 'layerId',
           source: "sourceId",
-          paint: {
-          },
+          paint: {},
         },
-        layerEvents: layerEvents2,
+        layerEvents: createLayerEvents(),
       };
+      const mapLoaded = new ReplaySubject(1);
       mapEvents.mapLoad.subscribe(() => {
-        mapService.addSource("sourceId", sourceData);
-        mapService.addLayer(layer, true);
-        mapService.removeSource("sourceId");
-        mapService.addSource("sourceId", sourceData);
-        mapService.addLayer(layer2, true);
-        click(mapService.mapInstance.getCanvas());
-        expect(layer.layerEvents.layerClick.emit).not.toHaveBeenCalled();
-        done();
+        mapLoaded.next(true);
       });
+      await firstValueFrom(
+        mapLoaded.pipe(
+          tap(() => {
+            mapService.addSource("sourceId", sourceData);
+            mapService.addLayer(layer, true);
+            mapService.removeSource("sourceId");
+            mapService.addSource("sourceId", sourceData);
+            mapService.addLayer(layer2, true);
+            click(mapService.mapInstance.getCanvas());
+            expect(layer.layerEvents.layerClick.emit).not.toHaveBeenCalled();
+      })));
     });
   });
 });
@@ -305,4 +277,23 @@ function click(target: HTMLElement | Window | Element) {
   target.dispatchEvent(new MouseEvent('mousedown', options));
   target.dispatchEvent(new MouseEvent('mouseup', options));
   target.dispatchEvent(new MouseEvent('click', options));
+}
+
+function createLayerEvents(): LayerEvents {
+  const mockEmit = { emit: () => {return;}};
+  return  {
+    layerClick: mockEmit as any,
+    layerDblClick: mockEmit as any,
+    layerMouseOver: mockEmit as any,
+    layerMouseOut: mockEmit as any,
+    layerMouseDown: mockEmit as any,
+    layerMouseUp: mockEmit as any,
+    layerMouseEnter: mockEmit as any,
+    layerMouseLeave: mockEmit as any,
+    layerMouseMove: mockEmit as any,
+    layerContextMenu: mockEmit as any,
+    layerTouchStart: mockEmit as any,
+    layerTouchEnd: mockEmit as any,
+    layerTouchCancel: mockEmit as any,
+  };
 }
