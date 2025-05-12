@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { PointLike } from 'maplibre-gl';
 import { of } from 'rxjs';
@@ -22,7 +22,8 @@ const getMapServiceStub = () =>
       ...
     </mgl-marker>
   `,
-  imports: [MarkerComponent]
+  imports: [MarkerComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class MarkerTestComponent {
   offset: PointLike;

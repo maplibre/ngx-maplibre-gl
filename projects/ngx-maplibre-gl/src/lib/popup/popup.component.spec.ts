@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { MapService } from '../map/map.service';
@@ -12,7 +12,7 @@ const getMapServiceStub = () =>
       'removeMarker',
       'removePopupFromMap',
       'createPopup',
-      'addPopupToMarker'
+      'addPopupToMarker',
     ],
     {
       mapCreated$: of(true),
@@ -21,19 +21,16 @@ const getMapServiceStub = () =>
 
 @Component({
   template: `
-    @if (show) {
-    <mgl-marker [lngLat]="[0,0]" #myMarker>
-      ...
-    </mgl-marker>
-    <mgl-popup [marker]="myMarker">
-        Hello from marker!
-    </mgl-popup>
+    @if (show()) {
+      <mgl-marker [lngLat]="[0, 0]" #myMarker> ... </mgl-marker>
+      <mgl-popup [marker]="myMarker"> Hello from marker! </mgl-popup>
     }
   `,
-  imports: [MarkerComponent, PopupComponent]
+  imports: [MarkerComponent, PopupComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class MarkerPopupTestComponent {
-    show = true;
+  show = signal(true);
 }
 
 describe('PopupComponent', () => {
@@ -43,8 +40,8 @@ describe('PopupComponent', () => {
 
   beforeEach(waitForAsync(() => {
     mapServiceStub = getMapServiceStub();
-    mapServiceStub.createPopup.and.returnValue({ } as any);
-    mapServiceStub.addMarker.and.returnValue({ } as any);
+    mapServiceStub.createPopup.and.returnValue({} as any);
+    mapServiceStub.addMarker.and.returnValue({} as any);
     TestBed.configureTestingModule({
       imports: [MarkerPopupTestComponent],
     })
@@ -64,7 +61,7 @@ describe('PopupComponent', () => {
   describe('Init/Destroy tests', () => {
     it('should remove the popup when marker is removed', () => {
       fixture.detectChanges();
-      component.show = false;
+      component.show.set(false)
       fixture.detectChanges();
       expect(mapServiceStub.removePopupFromMap).toHaveBeenCalled();
     });
