@@ -515,7 +515,7 @@ export class MapService {
   removeSource(sourceId: string) {
     this.zone.runOutsideAngular(() => {
       this.findLayersBySourceId(sourceId).forEach((layer) =>
-        this.mapInstance.removeLayer(layer.id)
+        this.removeLayer(layer.id)
       );
       this.mapInstance.removeSource(sourceId);
     });
