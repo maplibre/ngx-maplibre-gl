@@ -16,8 +16,6 @@ import {
 import { MapService, SetupLayer } from './map.service';
 import { MapEvent, EventData, type LayerEvents } from './map.types';
 import { MockNgZone } from './mock-ng-zone';
-import { firstValueFrom, ReplaySubject } from "rxjs";
-import { tap } from "rxjs/operators";
 
 const countries = require('./countries.geo.json'); // eslint-disable-line @typescript-eslint/no-require-imports
 
@@ -221,7 +219,7 @@ describe('MapService', () => {
   });
 
   describe('layer handling', () => {
-    it('should unsubscribe from events on removeLayer via source', async () => {
+    it('should unsubscribe from events on removeLayer via source', (done: DoneFn) => {
       spyOn(mapService.mapInstance, 'queryRenderedFeatures').and.returnValue([{} as MapGeoJSONFeature]);
 
       const sourceData: SourceSpecification = {
@@ -253,21 +251,17 @@ describe('MapService', () => {
         },
         layerEvents: createLayerEvents(),
       };
-      const mapLoaded = new ReplaySubject(1);
+
       mapEvents.mapLoad.subscribe(() => {
-        mapLoaded.next(true);
+        mapService.addSource("sourceId", sourceData);
+        mapService.addLayer(layer, true);
+        mapService.removeSource("sourceId");
+        mapService.addSource("sourceId", sourceData);
+        mapService.addLayer(layer2, true);
+        click(mapService.mapInstance.getCanvas());
+        expect(layer.layerEvents.layerClick.emit).not.toHaveBeenCalled();
+        done();
       });
-      await firstValueFrom(
-        mapLoaded.pipe(
-          tap(() => {
-            mapService.addSource("sourceId", sourceData);
-            mapService.addLayer(layer, true);
-            mapService.removeSource("sourceId");
-            mapService.addSource("sourceId", sourceData);
-            mapService.addLayer(layer2, true);
-            click(mapService.mapInstance.getCanvas());
-            expect(layer.layerEvents.layerClick.emit).not.toHaveBeenCalled();
-      })));
     });
   });
 });
