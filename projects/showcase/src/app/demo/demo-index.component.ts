@@ -1,7 +1,6 @@
 import {
   Component,
   ElementRef,
-  NgZone,
   OnInit,
   afterNextRender,
   inject,
@@ -20,7 +19,6 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { cloneDeep, groupBy } from 'lodash-es';
-import { first } from 'rxjs/operators';
 import scrollIntoView from 'scroll-into-view-if-needed';
 import { CATEGORIES, DEMO_ROUTES } from './routes';
 import { MatDividerModule } from '@angular/material/divider';
@@ -33,7 +31,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { LayoutToolbarMenuComponent } from '../shared/layout/layout-toolbar-menu.component';
 
-interface RoutesByCategory { [key: string]: Routes }
+interface RoutesByCategory {
+  [key: string]: Routes;
+}
 
 @Component({
   templateUrl: './demo-index.component.html',
@@ -55,7 +55,6 @@ interface RoutesByCategory { [key: string]: Routes }
   ],
 })
 export class DemoIndexComponent implements OnInit {
-  private readonly zone = inject(NgZone);
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
 
@@ -81,7 +80,10 @@ export class DemoIndexComponent implements OnInit {
     this.categories = Object.values(CATEGORIES);
 
     afterNextRender(() => {
-      this.scrollInToActiveExampleLink();
+      // workaround: active class is not applied by the router directly
+      setTimeout(() => {
+        this.scrollInToActiveExampleLink();
+      }, 0);
     });
   }
 
@@ -101,8 +103,6 @@ export class DemoIndexComponent implements OnInit {
       this.router.navigate(['demo', snapshot.params.demoUrl]);
     }
   }
-
-  onSidenavChange() {}
 
   search() {
     // Quick and dirty
@@ -127,16 +127,14 @@ export class DemoIndexComponent implements OnInit {
   }
 
   private scrollInToActiveExampleLink() {
-    this.zone.onStable.pipe(first()).subscribe(() => {
-      const activeLink = this.exampleLinks().find((elm) =>
-        (<HTMLElement>elm.nativeElement).classList.contains('active')
-      );
-      if (activeLink) {
-        scrollIntoView(<HTMLElement>activeLink.nativeElement, {
-          block: 'center',
-          scrollMode: 'if-needed',
-        });
-      }
-    });
+    const activeLink = this.exampleLinks().find((elm) =>
+      (<HTMLElement>elm.nativeElement).classList.contains('active')
+    );
+    if (activeLink) {
+      scrollIntoView(<HTMLElement>activeLink.nativeElement, {
+        block: 'center',
+        scrollMode: 'if-needed',
+      });
+    }
   }
 }

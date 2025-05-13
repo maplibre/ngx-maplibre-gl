@@ -4,6 +4,7 @@ import {
   EnvironmentInjector,
   SimpleChange,
   createComponent,
+  provideExperimentalZonelessChangeDetection,
 } from '@angular/core';
 import {
   ComponentFixture,
@@ -24,7 +25,7 @@ const getMapServiceStub = () =>
       'updateMaxPitch',
       'updateMinPitch',
       'destroyMap',
-      'clearMapElements'
+      'clearMapElements',
     ],
     {
       mapCreated$: of(true),
@@ -42,6 +43,7 @@ describe('MapComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [MapComponent],
+      providers: [provideExperimentalZonelessChangeDetection()],
     })
       .overrideComponent(MapComponent, {
         set: {
@@ -51,9 +53,10 @@ describe('MapComponent', () => {
       .compileComponents();
   }));
 
-  beforeEach(() => {
+  beforeEach(async () => {
     fixture = TestBed.createComponent(MapComponent);
     component = fixture.debugElement.componentInstance;
+    await fixture.whenStable();
     componentRef = fixture.componentRef;
     componentRef.setInput('style', 'style');
     fixture.detectChanges();
