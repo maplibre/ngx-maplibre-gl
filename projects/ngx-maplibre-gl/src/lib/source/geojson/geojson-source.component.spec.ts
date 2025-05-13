@@ -1,39 +1,34 @@
-import { Component, signal } from "@angular/core";
-import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { of } from "rxjs";
-import { MapService } from "../../map/map.service";
-import { GeoJSONSourceComponent } from "./geojson-source.component";
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { of } from 'rxjs';
+import { MapService } from '../../map/map.service';
+import { GeoJSONSourceComponent } from './geojson-source.component';
 
 const getMapServiceStub = () =>
-    jasmine.createSpyObj(
-      [
-        'addSource',
-        'removeSource'
-      ],
-      {
-        mapLoaded$: of(true),
-        mapInstance: new (class {
-          on() {}
-          off() {}
-          getLayer() {}
-        })(),
-      }
-    );
+  jasmine.createSpyObj(['addSource', 'removeSource'], {
+    mapLoaded$: of(true),
+    mapInstance: new (class {
+      on() {}
+      off() {}
+      getLayer() {}
+    })(),
+  });
 
 @Component({
-    template: `
-        @if (show()) {
-            <mgl-geojson-source id="123"></mgl-geojson-source>
-        }
-    `,
-    imports: [GeoJSONSourceComponent]
+  template: `
+    @if (show()) {
+    <mgl-geojson-source id="123"></mgl-geojson-source>
+    }
+  `,
+  imports: [GeoJSONSourceComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class GeoJSONSourceTestComponent {
-    private show = signal<boolean>(true);
+  private show = signal<boolean>(true);
 
-    public toggle() {
-        this.show.set(!this.show());
-    }
+  public toggle() {
+    this.show.set(!this.show());
+  }
 }
 
 describe('GeoJSONSourceComponent', () => {
@@ -67,13 +62,13 @@ describe('GeoJSONSourceComponent', () => {
     });
 
     it('should call add source when init', () => {
-        expect(mapServiceStub.addSource).toHaveBeenCalled();
+      expect(mapServiceStub.addSource).toHaveBeenCalled();
     });
 
     it('should remove source on destroy', () => {
-        component.toggle();
-        fixture.detectChanges();
-        expect(mapServiceStub.removeSource).toHaveBeenCalled();
-      });
+      component.toggle();
+      fixture.detectChanges();
+      expect(mapServiceStub.removeSource).toHaveBeenCalled();
+    });
   });
 });
