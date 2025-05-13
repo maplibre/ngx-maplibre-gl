@@ -93,6 +93,9 @@ export type MovingOptions =
   | (AnimationOptions & CameraOptions)
   | CameraOptions;
 
+/**
+ * @private
+ */
 @Injectable()
 export class MapService {
   private readonly zone = inject(NgZone);
