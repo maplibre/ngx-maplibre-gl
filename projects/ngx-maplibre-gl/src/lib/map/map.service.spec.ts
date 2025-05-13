@@ -11,10 +11,10 @@ import {
   MapStyleDataEvent,
   MapTouchEvent,
   MapWheelEvent,
-  StyleSpecification,
+  StyleSpecification, SourceSpecification, MapGeoJSONFeature,
 } from 'maplibre-gl';
-import { MapService } from './map.service';
-import { MapEvent, EventData } from './map.types';
+import { MapService, SetupLayer } from './map.service';
+import { MapEvent, EventData, type LayerEvents } from './map.types';
 import { MockNgZone } from './mock-ng-zone';
 
 const countries = require('./countries.geo.json'); // eslint-disable-line @typescript-eslint/no-require-imports
@@ -208,8 +208,8 @@ describe('MapService', () => {
       popupOpen: { emit: jasmine.createSpy() },
       popupClose: { emit: jasmine.createSpy() },
     } as any;
-    const popup = mapService.createPopup({ 
-      popupOptions: {}, 
+    const popup = mapService.createPopup({
+      popupOptions: {},
       popupEvents
     }, container);
     mapService.addPopupToMap(popup, [0, 0]);
@@ -217,4 +217,77 @@ describe('MapService', () => {
     popup.fire('close');
     expect(popupEvents.popupClose.emit).not.toHaveBeenCalled();
   });
+
+  describe('layer handling', () => {
+    it('should unsubscribe from events on removeLayer via source', (done: DoneFn) => {
+      spyOn(mapService.mapInstance, 'queryRenderedFeatures').and.returnValue([{} as MapGeoJSONFeature]);
+
+      const sourceData: SourceSpecification = {
+        "type": "geojson",
+        "data": {
+          "type": "FeatureCollection",
+          "features": []
+        }
+      }
+      const layerEventThatShouldNotEmit = {
+        ...createLayerEvents(),
+        layerClick: { emit: jasmine.createSpy() } as any,
+      };
+      const layer: SetupLayer = {
+        layerOptions: {
+          type: 'fill',
+          id: 'layerId',
+          source: "sourceId",
+          paint: {},
+        },
+        layerEvents: layerEventThatShouldNotEmit,
+      };
+      const layer2: SetupLayer = {
+        layerOptions: {
+          type: 'fill',
+          id: 'layerId',
+          source: "sourceId",
+          paint: {},
+        },
+        layerEvents: createLayerEvents(),
+      };
+
+      mapEvents.mapLoad.subscribe(() => {
+        mapService.addSource("sourceId", sourceData);
+        mapService.addLayer(layer, true);
+        mapService.removeSource("sourceId");
+        mapService.addSource("sourceId", sourceData);
+        mapService.addLayer(layer2, true);
+        click(mapService.mapInstance.getCanvas());
+        expect(layer.layerEvents.layerClick.emit).not.toHaveBeenCalled();
+        done();
+      });
+    });
+  });
 });
+
+function click(target: HTMLElement | Window | Element) {
+  const options = {bubbles: true};
+  target.dispatchEvent(new MouseEvent('mousedown', options));
+  target.dispatchEvent(new MouseEvent('mouseup', options));
+  target.dispatchEvent(new MouseEvent('click', options));
+}
+
+function createLayerEvents(): LayerEvents {
+  const mockEmit = { emit: () => {return;}};
+  return  {
+    layerClick: mockEmit as any,
+    layerDblClick: mockEmit as any,
+    layerMouseOver: mockEmit as any,
+    layerMouseOut: mockEmit as any,
+    layerMouseDown: mockEmit as any,
+    layerMouseUp: mockEmit as any,
+    layerMouseEnter: mockEmit as any,
+    layerMouseLeave: mockEmit as any,
+    layerMouseMove: mockEmit as any,
+    layerContextMenu: mockEmit as any,
+    layerTouchStart: mockEmit as any,
+    layerTouchEnd: mockEmit as any,
+    layerTouchCancel: mockEmit as any,
+  };
+}
