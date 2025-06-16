@@ -46,12 +46,12 @@
     "tslib": "^2.6.3"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^20.0.2",
     "@angular-eslint/builder": "^18.3.0",
     "@angular-eslint/eslint-plugin": "^18.3.0",
     "@angular-eslint/eslint-plugin-template": "^18.3.0",
     "@angular-eslint/schematics": "^18.3.0",
     "@angular-eslint/template-parser": "^18.3.0",
+    "@angular/build": "^20.0.2",
     "@angular/cli": "^20.0.2",
     "@angular/compiler-cli": "^20.0.3",
     "@cypress/schematic": "^2.5.2",
