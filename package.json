@@ -38,6 +38,7 @@
     "@angular/router": "^20.0.3",
     "@angular/ssr": "^20.0.2",
     "@stackblitz/sdk": "^1.11.0",
+    "domhandler": "^5.0.3",
     "express": "^4.21.2",
     "lodash-es": "^4.17.21",
     "maplibre-gl": "^5.0.0",
