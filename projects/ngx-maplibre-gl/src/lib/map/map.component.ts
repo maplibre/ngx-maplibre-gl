@@ -5,6 +5,7 @@ import {
   OnChanges,
   OnDestroy,
   SimpleChanges,
+  afterEveryRender,
   afterNextRender,
   inject,
   input,
@@ -369,7 +370,7 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
       }
     });
 
-    afterNextRender(() => {
+    afterEveryRender(() => {
       this.mapService.clearMapElements();
     });
   }
