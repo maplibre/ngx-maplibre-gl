@@ -1,12 +1,8 @@
 import { CdkPortal, DomPortalOutlet, PortalModule } from '@angular/cdk/portal';
 import {
-  ApplicationRef,
   Component,
-  ComponentFactoryResolver,
-  Injector,
   OnDestroy,
   afterNextRender,
-  inject,
   input,
   viewChild,
 } from '@angular/core';
@@ -21,9 +17,6 @@ import {
   imports: [PortalModule],
 })
 export class LayoutToolbarMenuComponent implements OnDestroy {
-  private readonly componentFactoryResolver = inject(ComponentFactoryResolver);
-  private readonly injector = inject(Injector);
-  private readonly appRef = inject(ApplicationRef);
 
   readonly position = input<'left' | 'right'>();
 
@@ -37,10 +30,7 @@ export class LayoutToolbarMenuComponent implements OnDestroy {
           this.position() === 'left'
             ? '#layout-left-custom-items'
             : '#layout-right-custom-items'
-        )!,
-        this.componentFactoryResolver,
-        this.appRef,
-        this.injector
+        )!
       );
       this.portalOutlet.attach(this.portal());
     });
