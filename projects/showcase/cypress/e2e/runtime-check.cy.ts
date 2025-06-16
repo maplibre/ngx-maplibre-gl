@@ -49,7 +49,6 @@ describe('Generic runtime error check', () => {
     'cluster-html',
     'ngx-cluster-html',
     'polygon-popup-on-click',
-    'add-image-missing-generated',
     'custom-attribution',
     'custom-locale',
     'marker-alignment',
@@ -61,6 +60,17 @@ describe('Generic runtime error check', () => {
       when.visitMapPage(`/demo/${route}`);
       then(get.map()).shouldExist();
       then(get.mapObjectLoaded()).shouldExist();
+      when.resetConsoleWarnings();
+    });
+  });
+
+  [
+    'add-image-missing-generated'
+  ].forEach((route: string) => {
+    it(`should not throw an error for /${route} after idle`, () => {
+      when.visitMapPage(`/demo/${route}`);
+      then(get.map()).shouldExist();
+      when.waitForMapToIdle();
       when.resetConsoleWarnings();
     });
   });
