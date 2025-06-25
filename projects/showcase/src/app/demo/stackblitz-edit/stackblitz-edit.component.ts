@@ -64,13 +64,11 @@ export class StackblitzEditComponent implements AfterViewInit, OnDestroy {
     }),
   ]).pipe(shareReplay(1));
 
-  constructor(
-    private zone: NgZone,
-    private activatedRoute: ActivatedRoute,
-    private demoFileLoaderService: DemoFileLoaderService,
-    private http: HttpClient,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+  private zone = inject(NgZone);
+  private activatedRoute = inject(ActivatedRoute);
+  private demoFileLoaderService = inject(DemoFileLoaderService);
+  private http = inject(HttpClient);
+  private changeDetectorRef = inject(ChangeDetectorRef);
 
   ngOnDestroy(): void {
     if (this.sub) {
