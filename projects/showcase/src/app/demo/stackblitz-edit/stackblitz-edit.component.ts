@@ -6,7 +6,7 @@ import {
   Component,
   ElementRef,
   NgZone,
-  OnDestroy, viewChild } from '@angular/core';
+  OnDestroy, viewChild, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import StackBlitzSDK, { VM } from '@stackblitz/sdk';
 import { Subscription, forkJoin, from, of } from 'rxjs';
@@ -53,6 +53,12 @@ export class StackblitzEditComponent implements AfterViewInit, OnDestroy {
 
   loading = true;
 
+  private zone = inject(NgZone);
+  private activatedRoute = inject(ActivatedRoute);
+  private demoFileLoaderService = inject(DemoFileLoaderService);
+  private http = inject(HttpClient);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
   private sub: Subscription;
   private vm: VM;
   private projectbase$ = forkJoin([
@@ -63,14 +69,6 @@ export class StackblitzEditComponent implements AfterViewInit, OnDestroy {
       responseType: 'text',
     }),
   ]).pipe(shareReplay(1));
-
-  constructor(
-    private zone: NgZone,
-    private activatedRoute: ActivatedRoute,
-    private demoFileLoaderService: DemoFileLoaderService,
-    private http: HttpClient,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
 
   ngOnDestroy(): void {
     if (this.sub) {

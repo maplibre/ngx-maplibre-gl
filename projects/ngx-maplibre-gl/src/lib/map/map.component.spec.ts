@@ -4,7 +4,7 @@ import {
   EnvironmentInjector,
   SimpleChange,
   createComponent,
-  provideExperimentalZonelessChangeDetection,
+  provideZonelessChangeDetection,
 } from '@angular/core';
 import {
   ComponentFixture,
@@ -43,7 +43,7 @@ describe('MapComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [MapComponent],
-      providers: [provideExperimentalZonelessChangeDetection()],
+      providers: [provideZonelessChangeDetection()],
     })
       .overrideComponent(MapComponent, {
         set: {

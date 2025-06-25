@@ -32,9 +32,9 @@ mat-form-field.search {
 }
 
 a.active {
-  --mdc-list-list-item-label-text-color: white;
-  --mdc-list-list-item-hover-label-text-color: white;
-  --mdc-list-list-item-focus-label-text-color: white;
+  --mat-list-list-item-label-text-color: white;
+  --mat-list-list-item-hover-label-text-color: white;
+  --mat-list-list-item-focus-label-text-color: white;
   background-color: mat.m2-get-color-from-palette(
     mat.m2-define-palette(mat.$m2-indigo-palette)
   ) !important;

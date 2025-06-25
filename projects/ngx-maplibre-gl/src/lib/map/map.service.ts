@@ -73,6 +73,9 @@ export interface SetupPopup {
   };
 }
 
+/**
+ * @private
+ */
 export interface SetupMarkerOptions extends MarkerOptions {
   element: HTMLElement;
   feature?: GeoJSON.Feature<GeoJSON.Point>;
