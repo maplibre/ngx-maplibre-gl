@@ -16,7 +16,7 @@ import type {
   MapWheelEvent,
 } from 'maplibre-gl';
 
-export type EventData = Record<string, any>;
+export type EventData = Record<string, unknown>;
 
 export type MapEvent = {
   mapResize: OutputEmitterRef<MapLibreEvent & EventData>;
