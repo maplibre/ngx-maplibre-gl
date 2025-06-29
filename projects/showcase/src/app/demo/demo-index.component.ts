@@ -31,9 +31,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { LayoutToolbarMenuComponent } from '../shared/layout/layout-toolbar-menu.component';
 
-interface RoutesByCategory {
-  [key: string]: Routes;
-}
+type RoutesByCategory = Record<string, Routes>;
 
 @Component({
   templateUrl: './demo-index.component.html',

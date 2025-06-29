@@ -16,11 +16,9 @@ import type {
   MapWheelEvent,
 } from 'maplibre-gl';
 
-export interface EventData {
-  [key: string]: any;
-}
+export type EventData = Record<string, any>;
 
-export interface MapEvent {
+export type MapEvent = {
   mapResize: OutputEmitterRef<MapLibreEvent & EventData>;
   mapRemove: OutputEmitterRef<MapLibreEvent & EventData>;
   mapMouseDown: OutputEmitterRef<MapMouseEvent & EventData>;
@@ -99,7 +97,7 @@ export interface MapEvent {
   idle: OutputEmitterRef<MapLibreEvent & EventData>;
 }
 
-export interface LayerEvents {
+export type LayerEvents = {
   layerClick: OutputEmitterRef<MapLayerMouseEvent & EventData>;
   layerDblClick: OutputEmitterRef<MapLayerMouseEvent & EventData>;
   layerMouseDown: OutputEmitterRef<MapLayerMouseEvent & EventData>;
@@ -120,7 +118,7 @@ export interface LayerEvents {
  * to avoid deprecation angular version < 11.0.0 we declared own Coordinates, Position interface
  */
 
-export interface NgxMapLibreGeolocationCoordinates {
+export type NgxMapLibreGeolocationCoordinates = {
   readonly accuracy: number;
   readonly altitude: number | null;
   readonly altitudeAccuracy: number | null;
@@ -130,7 +128,7 @@ export interface NgxMapLibreGeolocationCoordinates {
   readonly speed: number | null;
 }
 
-export interface Position {
+export type Position = {
   coords: NgxMapLibreGeolocationCoordinates;
   target: GeolocateControl;
   timestamp: number;
@@ -144,7 +142,7 @@ export type MapImageData =
   | ImageData
   | ImageBitmap;
 
-export interface MapImageOptions {
+export type MapImageOptions = {
   pixelRatio: number;
   sdf: boolean;
 }
