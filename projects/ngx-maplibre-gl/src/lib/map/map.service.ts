@@ -49,7 +49,7 @@ import type {
 } from './map.types';
 import { keepAvailableObjectValues } from '../shared/utils/functions/object.fn';
 
-export interface SetupMap {
+export type SetupMap = {
   mapOptions: Omit<MapOptions, 'bearing' | 'pitch' | 'zoom'> & {
     bearing?: [number];
     pitch?: [number];
@@ -60,12 +60,12 @@ export interface SetupMap {
   mapEvents: MapEvent;
 }
 
-export interface SetupLayer {
+export type SetupLayer = {
   layerOptions: LayerSpecification;
   layerEvents: LayerEvents;
 }
 
-export interface SetupPopup {
+export type SetupPopup = {
   popupOptions: PopupOptions;
   popupEvents: {
     popupOpen: OutputEmitterRef<void>;
@@ -73,16 +73,13 @@ export interface SetupPopup {
   };
 }
 
-/**
- * @private
- */
-export interface SetupMarkerOptions extends MarkerOptions {
+export type SetupMarkerOptions = {
   element: HTMLElement;
   feature?: GeoJSON.Feature<GeoJSON.Point>;
   lngLat?: LngLatLike;
-}
+} & MarkerOptions
 
-export interface SetupMarker {
+export type SetupMarker = {
   markersOptions: SetupMarkerOptions;
   markersEvents: {
     markerDragStart: OutputEmitterRef<Marker>;
