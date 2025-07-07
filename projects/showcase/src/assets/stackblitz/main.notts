@@ -1,8 +1,11 @@
 
 import { bootstrapApplication } from '@angular/platform-browser';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ### } from './demo';
 
-bootstrapApplication(###)
+bootstrapApplication(###, {
+  providers: [provideZonelessChangeDetection()],
+})
   .then((ref) => {
     if (window['ngRef']) {
       window['ngRef'].destroy();
