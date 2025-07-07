@@ -30,7 +30,6 @@ html, body {
   margin: 0;
 }
 `,
-      'src/polyfills.ts': `import 'zone.js';`,
       ...demoFiles,
     },
     title: '',
