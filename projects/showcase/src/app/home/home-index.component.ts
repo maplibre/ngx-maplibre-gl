@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { AnimationOptions } from 'maplibre-gl';
+import type { AnimationOptions } from 'maplibre-gl';
 import { MatIconModule } from '@angular/material/icon';
 import { MapComponent } from '@maplibre/ngx-maplibre-gl';
 

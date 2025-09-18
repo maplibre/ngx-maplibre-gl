@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { ControlComponent, MapComponent } from '@maplibre/ngx-maplibre-gl';
-import { Map } from 'maplibre-gl';
+import type { Map } from 'maplibre-gl';
 
 @Component({
   selector: 'showcase-demo',

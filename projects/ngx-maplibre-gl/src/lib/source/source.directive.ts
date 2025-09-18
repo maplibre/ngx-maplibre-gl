@@ -11,7 +11,7 @@ import { Subject, fromEvent } from 'rxjs';
 import { filter, switchMap, tap } from 'rxjs/operators';
 import { MapService } from '../map/map.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Source, SourceSpecification } from 'maplibre-gl';
+import type { Source, SourceSpecification } from 'maplibre-gl';
 
 /**
  * @internal

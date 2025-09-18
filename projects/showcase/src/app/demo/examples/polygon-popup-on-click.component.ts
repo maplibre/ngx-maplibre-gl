@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LngLat, MapLayerMouseEvent } from 'maplibre-gl';
+import type { LngLat, MapLayerMouseEvent } from 'maplibre-gl';
 import { GeoJsonProperties } from 'geojson';
 import {
   MapComponent,

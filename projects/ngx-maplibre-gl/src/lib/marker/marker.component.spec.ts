@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { PointLike } from 'maplibre-gl';
+import type { PointLike } from 'maplibre-gl';
 import { of } from 'rxjs';
 import { MapService } from '../map/map.service';
 import { MarkerComponent } from './marker.component';

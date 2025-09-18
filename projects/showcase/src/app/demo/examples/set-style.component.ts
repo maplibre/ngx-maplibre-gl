@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { MapComponent } from '@maplibre/ngx-maplibre-gl';
-import {
+import type {
   RasterLayerSpecification,
   RasterSourceSpecification,
   StyleSpecification,

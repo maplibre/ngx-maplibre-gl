@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Marker } from 'maplibre-gl';
+import type { Marker } from 'maplibre-gl';
 import { MatCardModule } from '@angular/material/card';
 import {
   MapComponent,

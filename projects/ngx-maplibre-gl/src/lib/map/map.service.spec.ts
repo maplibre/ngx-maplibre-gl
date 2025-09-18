@@ -1,6 +1,6 @@
 import { OutputEmitterRef, NgZone } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import {
+import type {
   Map,
   MapLibreEvent,
   MapLibreZoomEvent,

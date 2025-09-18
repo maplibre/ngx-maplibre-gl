@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TerrainSpecification } from 'maplibre-gl';
+import type { TerrainSpecification } from 'maplibre-gl';
 import {
   MapComponent,
   RasterDemSourceComponent,

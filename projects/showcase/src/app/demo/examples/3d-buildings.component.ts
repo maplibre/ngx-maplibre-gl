@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Map, SymbolLayerSpecification } from 'maplibre-gl';
+import type { Map, SymbolLayerSpecification } from 'maplibre-gl';
 import { MapComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Component({

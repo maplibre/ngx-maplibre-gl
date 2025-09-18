@@ -8,7 +8,7 @@ import {
 import {
   type FitBoundsOptions,
   GeolocateControl,
-  GeolocateControlOptions,
+  type GeolocateControlOptions,
 } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';

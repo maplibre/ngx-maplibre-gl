@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MapMouseEvent, Map } from 'maplibre-gl';
+import type { MapMouseEvent, Map } from 'maplibre-gl';
 import {
   MapComponent,
   FeatureComponent,

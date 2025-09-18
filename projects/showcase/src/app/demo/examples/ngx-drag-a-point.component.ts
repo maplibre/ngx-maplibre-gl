@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MapMouseEvent } from 'maplibre-gl';
+import type { MapMouseEvent } from 'maplibre-gl';
 import { MatCardModule } from '@angular/material/card';
 import {
   MapComponent,

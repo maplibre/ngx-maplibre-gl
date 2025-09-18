@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MapLayerMouseEvent } from 'maplibre-gl';
+import type { MapLayerMouseEvent } from 'maplibre-gl';
 import {
   MapComponent,
   PopupComponent,

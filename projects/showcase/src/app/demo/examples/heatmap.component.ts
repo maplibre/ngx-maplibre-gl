@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CircleLayerSpecification } from 'maplibre-gl';
+import type { CircleLayerSpecification } from 'maplibre-gl';
 import {
   MapComponent,
   GeoJSONSourceComponent,
