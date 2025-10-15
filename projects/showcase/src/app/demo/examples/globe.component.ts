@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   MapComponent,
   GlobeControlDirective,
@@ -15,10 +15,11 @@ import {
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
       [projection]="{type: 'globe'}"
     >
-       <mgl-control mglGlobe position="top-right"></mgl-control>
+       <mgl-control mglGlobe position="top-right"/>
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, ControlComponent, GlobeControlDirective],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GlobeComponent {}
+export class GlobeComponent { }

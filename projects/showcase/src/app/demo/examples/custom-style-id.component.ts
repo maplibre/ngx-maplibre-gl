@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MapComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
@@ -16,5 +16,6 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CustomStyleIdComponent {}
+export class CustomStyleIdComponent { }

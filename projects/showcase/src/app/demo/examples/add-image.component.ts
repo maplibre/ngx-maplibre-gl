@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import {
   MapComponent,
   ImageComponent,
@@ -17,10 +17,9 @@ import {
       <mgl-image
         id="cat"
         url="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Cat_silhouette.svg/400px-Cat_silhouette.svg.png"
-        (imageLoaded)="imageLoaded = true"
-      >
-      </mgl-image>
-      @if (imageLoaded) {
+        (imageLoaded)="imageLoaded.set(true)"
+      />
+      @if (imageLoaded()) {
         <mgl-layer
           id="points"
           type="symbol"
@@ -47,7 +46,8 @@ import {
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, ImageComponent, LayerComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddImageComponent {
-  imageLoaded = false;
+  readonly imageLoaded = signal(false);
 }

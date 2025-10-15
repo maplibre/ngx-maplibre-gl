@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
-import { NgStyle } from '@angular/common';
 
 @Component({
   selector: 'showcase-demo',
@@ -18,21 +17,20 @@ import { NgStyle } from '@angular/common';
           <div
             (click)="alert(feature.properties.message)"
             class="marker"
-            [ngStyle]="{
-              'background-image': 'url(/assets/ngx-maplibre-gl-red.svg)',
-              width: feature.properties.iconSize[0] + 'px',
-              height: feature.properties.iconSize[1] + 'px',
-            }"
+            [style.backgroundImage]="'url(/assets/ngx-maplibre-gl-red.svg)'"
+            [style.width]="feature.properties.iconSize[0] + 'px'"
+            [style.height]="feature.properties.iconSize[1] + 'px'"
           ></div>
         </mgl-marker>
       }
     </mgl-map>
   `,
   styleUrls: ['./examples.css', './custom-marker-icons.component.css'],
-  imports: [MapComponent, MarkerComponent, NgStyle],
+  imports: [MapComponent, MarkerComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomMarkerIconsComponent {
-  geojson = {
+  readonly geojson = {
     type: 'FeatureCollection',
     features: [
       {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
   ControlComponent,
@@ -14,7 +14,7 @@ import { LngLatBounds } from 'maplibre-gl';
       [style]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[12]"
       [center]="[-77.0214, 38.897]"
-      [fitBounds]="bounds"
+      [fitBounds]="bounds()"
       [fitBoundsOptions]="{
         padding: 20
       }"
@@ -42,17 +42,18 @@ import { LngLatBounds } from 'maplibre-gl';
           'line-join': 'round',
           'line-cap': 'round'
         }"
-      ></mgl-layer>
+      />
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
   preserveWhitespaces: false,
   imports: [MapComponent, ControlComponent, MatButtonModule, LayerComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ZoomtoLinestringComponent {
-  bounds: LngLatBounds;
+  readonly bounds = signal<LngLatBounds | null>(null);
 
-  source = {
+  readonly source = {
     type: 'geojson',
     data: {
       type: 'FeatureCollection',
@@ -84,11 +85,13 @@ export class ZoomtoLinestringComponent {
   zoomToBounds() {
     const coordinates = this.source.data.features[0].geometry.coordinates;
 
-    this.bounds = coordinates.reduce(
+    const bounds = coordinates.reduce(
       (bounds, coord) => {
         return bounds.extend(coord);
       },
       new LngLatBounds(coordinates[0], coordinates[0]),
     );
+
+    this.bounds.set(bounds);
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { ControlComponent, MapComponent } from '@maplibre/ngx-maplibre-gl';
 import { Map } from 'maplibre-gl';
@@ -54,27 +54,29 @@ import { Map } from 'maplibre-gl';
   styleUrls: ['./examples.css'],
   preserveWhitespaces: false,
   imports: [MapComponent, ControlComponent, MatButtonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LanguageSwitchComponent {
-  map: Map;
+  readonly map = signal<Map | null>(null);
 
   public mapLoaded(map: Map) {
-    this.map = map;
+    this.map.set(map);
   }
 
   changeLangTo(language: string) {
-    if (!this.map) return;
-    this.map.setLayoutProperty(
+    const map = this.map();
+    if (!map) return;
+    map.setLayoutProperty(
       'country_1',
       'text-field',
       '{name:' + language + '}',
     );
-    this.map.setLayoutProperty(
+    map.setLayoutProperty(
       'country_2',
       'text-field',
       '{name:' + language + '}',
     );
-    this.map.setLayoutProperty(
+    map.setLayoutProperty(
       'country_3',
       'text-field',
       '{name:' + language + '}',

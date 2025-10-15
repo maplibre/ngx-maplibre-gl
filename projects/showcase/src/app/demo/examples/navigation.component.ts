@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   MapComponent,
   ControlComponent,
@@ -16,10 +16,11 @@ import {
       [center]="[-74.5, 40]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
-      <mgl-control mglNavigation></mgl-control>
+      <mgl-control mglNavigation/>
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, ControlComponent, NavigationControlDirective],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NavigationComponent {}
+export class NavigationComponent { }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   MapComponent,
   ControlComponent,
@@ -20,10 +20,11 @@ import {
           enableHighAccuracy: true
         }"
         [trackUserLocation]="true"
-      ></mgl-control>
+      />
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, ControlComponent, GeolocateControlDirective],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LocateUserComponent {}
+export class LocateUserComponent { }

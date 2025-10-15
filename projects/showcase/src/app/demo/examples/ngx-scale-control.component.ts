@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   MapComponent,
   ControlComponent,
@@ -14,10 +14,11 @@ import {
       "
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
-      <mgl-control mglScale unit="imperial" position="top-right"></mgl-control>
+      <mgl-control mglScale unit="imperial" position="top-right"/>
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, ControlComponent, ScaleControlDirective],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NgxScaleControlComponent {}
+export class NgxScaleControlComponent { }

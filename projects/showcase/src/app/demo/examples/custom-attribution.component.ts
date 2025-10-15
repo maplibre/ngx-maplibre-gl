@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   MapComponent,
   ControlComponent,
@@ -24,10 +24,11 @@ import {
           '<a href=&quot;https://github.com/Wykks/ngx-mapbox-gl&quot; target=&quot;_blank&quot;>Maps made awesome in Angular</a>',
           'Hello World'
         ]"
-      ></mgl-control>
+      />
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, ControlComponent, AttributionControlDirective],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CustomAttributionComponent {}
+export class CustomAttributionComponent { }

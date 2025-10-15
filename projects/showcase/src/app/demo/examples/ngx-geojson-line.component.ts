@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   MapComponent,
   LayerComponent,
@@ -18,7 +18,7 @@ import {
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       <mgl-geojson-source id="oneline">
-        <mgl-feature [geometry]="geometry"> </mgl-feature>
+        <mgl-feature [geometry]="geometry"/>
       </mgl-geojson-source>
       <mgl-layer
         id="route"
@@ -43,9 +43,10 @@ import {
     FeatureComponent,
     LayerComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgxGeoJSONLineComponent {
-  geometry = {
+  readonly geometry = {
     type: 'LineString',
     coordinates: [
       [-122.48369693756104, 37.83381888486939],

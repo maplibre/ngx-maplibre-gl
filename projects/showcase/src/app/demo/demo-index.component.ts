@@ -1,9 +1,11 @@
 import {
   Component,
   ElementRef,
-  OnInit,
   afterNextRender,
+  computed,
   inject,
+  model,
+  signal,
   viewChildren,
 } from '@angular/core';
 import {
@@ -17,8 +19,8 @@ import {
   RouterLinkActive,
   RouterLink,
   RouterOutlet,
+  Data,
 } from '@angular/router';
-import { cloneDeep, groupBy } from 'lodash-es';
 import scrollIntoView from 'scroll-into-view-if-needed';
 import { CATEGORIES, DEMO_ROUTES } from './routes';
 import { MatDividerModule } from '@angular/material/divider';
@@ -52,31 +54,46 @@ type RoutesByCategory = Record<string, Routes>;
     RouterOutlet,
   ],
 })
-export class DemoIndexComponent implements OnInit {
+export class DemoIndexComponent {
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
 
-  routes: RoutesByCategory;
-  originalRoutes: RoutesByCategory;
-  categories: string[];
-  searchTerm: string;
-  sidenavIsOpen = true;
-  isEditMode = !!this.activatedRoute.snapshot.firstChild!.params.demoUrl;
+  private readonly originalRoutes = <RoutesByCategory>(
+    (
+      Object.groupBy(DEMO_ROUTES[0].children ?? [], ({ data }) =>
+        data ? data.cat : null
+      )
+    )
+  );
+
+  readonly searchedRoutes = computed(() => {
+    const routesByCategory: RoutesByCategory = {};
+    const searchTerm = this.searchTerm().toLocaleLowerCase();
+
+    Object.values(this.originalRoutes).forEach((category) => {
+      category.forEach((route) => {
+        const label = this.getLabelFromData(route.data);
+        const category = route.data?.cat ?? ''
+        if (label.toLocaleLowerCase().includes(searchTerm)) {
+          if (!routesByCategory[category]) { routesByCategory[category] = []; }
+          routesByCategory[category].push(route);
+        };
+
+      });
+    });
+    return routesByCategory;
+  });
+
+  readonly categories = Object.values(CATEGORIES);
+  readonly searchTerm = model('');
+  readonly sidenavIsOpen = signal(true);
+  readonly isEditMode = model(!!this.activatedRoute.snapshot.firstChild!.params.demoUrl);
 
   readonly exampleLinks = viewChildren<string, ElementRef>('exampleLink', {
     read: ElementRef,
   });
 
   constructor() {
-    this.originalRoutes = <RoutesByCategory>(
-      (<any>(
-        groupBy(DEMO_ROUTES[0].children, (route) =>
-          route.data ? route.data.cat : null
-        )
-      ))
-    );
-    this.categories = Object.values(CATEGORIES);
-
     afterNextRender(() => {
       // workaround: active class is not applied by the router directly
       setTimeout(() => {
@@ -85,12 +102,16 @@ export class DemoIndexComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.routes = this.originalRoutes;
+
+  getLabelFromData(data: Data | undefined): string {
+    if (data && typeof data.label === 'string') {
+      return data.label;
+    }
+    return '';
   }
 
   toggleSidenav() {
-    this.sidenavIsOpen = !this.sidenavIsOpen;
+    this.sidenavIsOpen.update((v) => !v);
   }
 
   toggleEdit(change: MatSlideToggleChange) {
@@ -102,26 +123,9 @@ export class DemoIndexComponent implements OnInit {
     }
   }
 
-  search() {
-    // Quick and dirty
-    this.routes = cloneDeep(this.originalRoutes);
-    Object.values(this.routes).forEach((category) => {
-      category.forEach((route, index) => {
-        if (
-          route.data &&
-          !(<string>route.data.label)
-            .toLowerCase()
-            .includes(this.searchTerm.toLowerCase())
-        ) {
-          delete category[index];
-        }
-      });
-    });
-  }
 
   clearSearch() {
-    this.searchTerm = '';
-    this.routes = this.originalRoutes;
+    this.searchTerm.set('');
   }
 
   private scrollInToActiveExampleLink() {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import {
   MapComponent,
   GeoJSONSourceComponent,
@@ -19,8 +19,7 @@ import {
       <mgl-geojson-source
         id="states"
         data="https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_110m_admin_1_states_provinces.geojson"
-      >
-      </mgl-geojson-source>
+      />
       <mgl-layer
         id="state-fills"
         type="fill"
@@ -31,8 +30,7 @@ import {
         }"
         (layerMouseMove)="activateHoverOn($event)"
         (layerMouseLeave)="disableHover()"
-      >
-      </mgl-layer>
+      />
       <mgl-layer
         id="state-borders"
         type="line"
@@ -41,8 +39,7 @@ import {
           'line-color': '#627BC1',
           'line-width': 2
         }"
-      >
-      </mgl-layer>
+      />
       <mgl-layer
         id="state-fills-hover"
         type="fill"
@@ -51,22 +48,22 @@ import {
           'fill-color': '#627BC1',
           'fill-opacity': 1
         }"
-        [filter]="hoverFilter"
-      >
-      </mgl-layer>
+        [filter]="hoverFilter()"
+      />
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, GeoJSONSourceComponent, LayerComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HoverStylesComponent {
-  hoverFilter = ['==', 'name', ''];
+  readonly hoverFilter = signal(['==', 'name', '']);
 
   activateHoverOn(evt: any) {
-    this.hoverFilter = ['==', 'name', evt.features[0].properties.name];
+    this.hoverFilter.set(['==', 'name', evt.features[0].properties.name]);
   }
 
   disableHover() {
-    this.hoverFilter = ['==', 'name', ''];
+    this.hoverFilter.set(['==', 'name', '']);
   }
 }

@@ -14,7 +14,7 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
       [interactive]="false"
       (mapLoad)="moveCenter()"
       (moveEnd)="moveCenter()"
-    ></mgl-map>
+    />
   `,
   styleUrls: ['./home-index.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

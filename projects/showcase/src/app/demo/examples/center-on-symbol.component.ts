@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { MapMouseEvent, Map } from 'maplibre-gl';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { MapMouseEvent } from 'maplibre-gl';
 import {
   MapComponent,
   FeatureComponent,
@@ -15,14 +15,13 @@ import {
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
       "
       [zoom]="[8]"
-      [center]="center"
-      [cursorStyle]="cursorStyle"
-      (mapLoad)="map = $event"
+      [center]="center()"
+      [cursorStyle]="cursorStyle()"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       <mgl-geojson-source id="symbols-source">
         @for (geometry of geometries; track geometry) {
-          <mgl-feature [geometry]="geometry"></mgl-feature>
+          <mgl-feature [geometry]="geometry"/>
         }
       </mgl-geojson-source>
       <mgl-layer
@@ -33,8 +32,8 @@ import {
           'icon-image': 'oneway'
         }"
         (layerClick)="centerMapTo($event)"
-        (layerMouseEnter)="cursorStyle = 'pointer'"
-        (layerMouseLeave)="cursorStyle = ''"
+        (layerMouseEnter)="cursorStyle.set('pointer')"
+        (layerMouseLeave)="cursorStyle.set('')"
       >
       </mgl-layer>
     </mgl-map>
@@ -46,14 +45,14 @@ import {
     FeatureComponent,
     LayerComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CenterOnSymbolComponent {
-  map: Map;
-  cursorStyle: string;
+  readonly cursorStyle = signal('');
 
-  center = [-90.96, -0.47];
+  readonly center = signal([-90.96, -0.47]);
 
-  geometries = [
+  readonly geometries = [
     {
       type: 'Point',
       coordinates: [-91.395263671875, -0.9145729757782163],
@@ -69,6 +68,6 @@ export class CenterOnSymbolComponent {
   ];
 
   centerMapTo(evt: MapMouseEvent) {
-    this.center = (evt as any).features[0].geometry.coordinates;
+    this.center.set((evt as any).features[0].geometry.coordinates);
   }
 }

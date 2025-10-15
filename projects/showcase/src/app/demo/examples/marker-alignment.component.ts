@@ -1,5 +1,7 @@
-import { Component, OnDestroy, afterNextRender } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
+import { interval, scan, startWith } from 'rxjs';
 
 @Component({
   selector: 'showcase-demo',
@@ -10,8 +12,8 @@ import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
       [style]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
       "
-      [pitch]="[pitch]"
-      [bearing]="[bearing]"
+      [pitch]="[pitch()]"
+      [bearing]="[bearing()]"
       [zoom]="[17]"
       [center]="[4.577979, 51.038189]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
@@ -42,30 +44,22 @@ import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
   `,
   styleUrls: ['./examples.css', './marker-alignment.component.css'],
   imports: [MapComponent, MarkerComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MarkerAlignmentComponent implements OnDestroy {
-  pitch = 50;
-  bearing = -97;
-  timer: ReturnType<typeof setInterval>;
+export class MarkerAlignmentComponent {
 
-  constructor() {
-    afterNextRender(() => {
-      let angle = 0;
-      this.timer = setInterval(() => {
-        angle += 0.01;
-        if (angle === 1) {
-          angle = 0;
-        }
-        this.pitch = 45 + 15 * Math.cos(angle);
-        this.bearing = -103 + 20 * Math.sin(angle);
-      }, 20);
-    })
-  }
+  readonly angle = toSignal<number>(
+    interval(20).pipe(
+      scan((a) => {
+        const next = a + 0.01;
+        return next >= 1 ? 0 : next;
+      }, 0),
+      startWith(0)
+    ),
+    { requireSync: true }
+  );
 
-  ngOnDestroy(): void {
-    if (this.timer) {
-      clearInterval(this.timer);
-    }
-  }
+  readonly pitch = computed(() => 45 + 15 * Math.cos(this.angle()));
+  readonly bearing = computed(() => -103 + 20 * Math.sin(this.angle()));
 }
 
