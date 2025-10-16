@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MapComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
@@ -56,11 +56,11 @@ import { MapComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
           'line-color': '#888',
           'line-width': 8
         }"
-      >
-      </mgl-layer>
+      />
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, LayerComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GeoJSONLineComponent {}
+export class GeoJSONLineComponent { }

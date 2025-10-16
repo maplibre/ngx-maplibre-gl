@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { httpResource } from '@angular/common/http';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   MapComponent,
   GeoJSONSourceComponent,
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
+
+
+// import data from "./assets/earthquakes.geo.json" with { type: "json" };
 
 @Component({
   selector: 'showcase-demo',
@@ -16,15 +20,14 @@ import {
       [center]="[-103.59179687498357, 40.66995747013945]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
-      @if (earthquakes) {
+      @if (earthquakes.value(); as earthquakesValue) {
         <mgl-geojson-source
           id="earthquakes"
-          [data]="earthquakes"
+          [data]="earthquakesValue"
           [cluster]="true"
           [clusterMaxZoom]="14"
           [clusterRadius]="50"
-        >
-        </mgl-geojson-source>
+        />
         <mgl-layer
           id="clusters"
           type="circle"
@@ -50,8 +53,7 @@ import {
               ]
             }
           }"
-        >
-        </mgl-layer>
+        />
         <mgl-layer
           id="cluster-count"
           type="symbol"
@@ -62,8 +64,7 @@ import {
             'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
             'text-size': 12
           }"
-        >
-        </mgl-layer>
+        />
         <mgl-layer
           id="unclustered-point"
           type="circle"
@@ -75,18 +76,14 @@ import {
             'circle-stroke-width': 1,
             'circle-stroke-color': '#fff'
           }"
-        >
-        </mgl-layer>
+        />
       }
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, GeoJSONSourceComponent, LayerComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClusterComponent implements OnInit {
-  earthquakes: object;
-
-  async ngOnInit() {
-    this.earthquakes = await import('./earthquakes.geo.json');
-  }
+export class ClusterComponent {
+  readonly earthquakes = httpResource<GeoJSON.FeatureCollection<GeoJSON.Point>>(() => 'assets/data/earthquakes.geo.json');
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   MapComponent,
   ImageComponent,
@@ -21,8 +21,7 @@ import {
           height: 64,
           data: imageData
         }"
-      >
-      </mgl-image>
+      />
       <mgl-layer
         id="points"
         type="symbol"
@@ -48,15 +47,13 @@ import {
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, ImageComponent, LayerComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddImageGeneratedComponent implements OnInit {
-  imageData: Uint8Array;
+export class AddImageGeneratedComponent {
+  readonly imageData = this.generateImage();
 
-  ngOnInit() {
-    this.imageData = this.generateImage();
-  }
 
-  private generateImage() {
+  private generateImage(): Uint8Array {
     const width = 64; // The image will be 64 pixels square
     const bytesPerPixel = 4; // Each pixel is represented by 4 bytes: red, green, blue, and alpha.
     const data = new Uint8Array(width * width * bytesPerPixel);

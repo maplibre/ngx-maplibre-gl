@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { MapMouseEvent } from 'maplibre-gl';
 import { MatCardModule } from '@angular/material/card';
 import {
@@ -32,21 +32,21 @@ import {
           (featureDragStart)="onDragStart($event)"
           (featureDragEnd)="onDragEnd($event)"
           (featureDrag)="onDrag($event)"
-        ></mgl-feature>
+        />
       </mgl-geojson-source>
       <mgl-layer
         #targetLayer
         id="point"
         type="circle"
         source="point"
-        [paint]="layerPaint"
+        [paint]="layerPaint()"
         (layerMouseEnter)="changeColor('#3bb2d0')"
         (layerMouseLeave)="changeColor('#3887be')"
       ></mgl-layer>
       <mgl-control position="bottom-left">
         <mat-card appearance="outlined">
-          <div>Longitude:&nbsp;{{ coordinates[0] }}</div>
-          <div>Latitude:&nbsp;{{ coordinates[1] }}</div>
+          <div>Longitude:&nbsp;{{ coordinates()[0] }}</div>
+          <div>Latitude:&nbsp;{{ coordinates()[1] }}</div>
         </mat-card>
       </mgl-control>
     </mgl-map>
@@ -61,16 +61,17 @@ import {
     ControlComponent,
     MatCardModule,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgxDragAPointComponent {
-  layerPaint = {
+  readonly layerPaint = signal({
     // eslint-disable-next-line @typescript-eslint/naming-convention
     'circle-radius': 10,
     // eslint-disable-next-line @typescript-eslint/naming-convention
     'circle-color': '#3887be',
-  };
+  });
 
-  coordinates = [0, 0];
+  readonly coordinates = signal([0, 0]);
 
   onDragStart(event: MapMouseEvent) {
     console.log('onDragStart', event);
@@ -82,11 +83,11 @@ export class NgxDragAPointComponent {
 
   onDrag(event: MapMouseEvent) {
     console.log('onDrag', event);
-    this.coordinates = event.lngLat.toArray();
+    this.coordinates.set(event.lngLat.toArray());
   }
 
   changeColor(color: string) {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    this.layerPaint = { ...this.layerPaint, 'circle-color': color };
+    this.layerPaint.update((layerPaint) => ({ ...layerPaint, 'circle-color': color }));
   }
 }

@@ -1,10 +1,12 @@
-import { Component, OnDestroy, afterNextRender } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import {
   MapComponent,
   GeoJSONSourceComponent,
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
-import data from './hike.geo.json';
+import { interval, map, shareReplay, startWith, switchMap, take, } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'showcase-demo',
@@ -13,15 +15,15 @@ import data from './hike.geo.json';
       [style]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
       "
-      [zoom]="zoom"
-      [center]="center"
+      [zoom]="[14]"
+      [center]="center() ?? [0, 0]"
       [centerWithPanTo]="true"
-      [pitch]="pitch"
+      [pitch]="30"
       movingMethod="jumpTo"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
-      @if (data) {
-        <mgl-geojson-source id="trace" [data]="data"> </mgl-geojson-source>
+      @if (data(); as dataValue) {
+        <mgl-geojson-source id="trace" [data]="dataValue"/> 
         <mgl-layer
           id="trace"
           type="line"
@@ -39,38 +41,34 @@ import data from './hike.geo.json';
   styleUrls: ['./examples.css'],
   imports: [MapComponent, GeoJSONSourceComponent, LayerComponent],
 })
-export class LiveUpdateFeatureComponent implements OnDestroy {
-  data: GeoJSON.FeatureCollection<GeoJSON.LineString>;
-  center: number[];
-  zoom = [14];
-  pitch: number = 30;
+export class LiveUpdateFeatureComponent {
+  private readonly httpClient = inject(HttpClient);
 
-  private timer?: ReturnType<typeof setTimeout>;
+  private readonly geoJson$ = this.httpClient.get<GeoJSON.FeatureCollection<GeoJSON.LineString>>('assets/data/hike.geo.json').pipe(
+    map(geoJson => {
+      const data = structuredClone(geoJson);
+      const coordinates = data.features[0].geometry.coordinates;
+      data.features[0].geometry.coordinates = [coordinates[0]];
+      return { data, coordinates };
+    }),
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
 
-  constructor() {
-    this.center = data.features[0].geometry!.coordinates[0];
-    this.data = data as GeoJSON.FeatureCollection<GeoJSON.LineString>;
-    afterNextRender(() => {
-      const coordinates = data.features[0].geometry!.coordinates;
-      data.features[0].geometry!.coordinates = [coordinates[0]];
-      this.center = coordinates[0];
-      let i = 0;
-      this.timer = setInterval(() => {
-        if (i < coordinates.length) {
-          this.center = coordinates[i];
-          data.features[0].geometry!.coordinates.push(coordinates[i]);
-          this.data = { ...this.data };
-          i++;
-        } else {
-          clearInterval(this.timer);
-        }
-      }, 10);
-    });
-  }
+  readonly updatedGeoJson$ = this.geoJson$.pipe(
+    switchMap(({ data, coordinates }) => {
+      return interval(200).pipe(
+        startWith(0),
+        map(i => coordinates[i]),
+        map(pt => {
+          data.features[0].geometry.coordinates.push(pt);
+          return { center: pt, data: structuredClone(data) };
+        }),
+        take(coordinates.length),
+      );
+    }),
+  );
 
-  ngOnDestroy(): void {
-    if (this.timer) {
-      clearInterval(this.timer);
-    }
-  }
+  readonly updatedGeoJson = toSignal(this.updatedGeoJson$, { initialValue: null });
+  readonly center = computed(() => this.updatedGeoJson()?.center ?? null);
+  readonly data = computed(() => this.updatedGeoJson()?.data ?? null);
 }

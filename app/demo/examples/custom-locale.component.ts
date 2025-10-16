@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   MapComponent,
   ControlComponent,
@@ -20,10 +20,10 @@ import {
       [locale]="locale"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
-      <mgl-control mglFullscreen position="top-left"></mgl-control>
-      <mgl-control mglGeolocate position="top-left"></mgl-control>
-      <mgl-control mglNavigation position="top-left"></mgl-control>
-      <mgl-control mglScale></mgl-control>
+      <mgl-control mglFullscreen position="top-left"/>
+      <mgl-control mglGeolocate position="top-left"/>
+      <mgl-control mglNavigation position="top-left"/>
+      <mgl-control mglScale/>
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
@@ -35,6 +35,7 @@ import {
     NavigationControlDirective,
     ScaleControlDirective,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomLocaleComponent {
   /* eslint-disable @typescript-eslint/naming-convention */

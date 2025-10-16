@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
@@ -12,10 +12,11 @@ import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
       [center]="[144.946457, -37.840935]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
-      <mgl-marker [lngLat]="[144.946457, -38.440935]" [rotation]="180"></mgl-marker>
+      <mgl-marker [lngLat]="[144.946457, -38.440935]" [rotation]="180"/>
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, MarkerComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NgxMarkerRotateComponent {}
+export class NgxMarkerRotateComponent { }

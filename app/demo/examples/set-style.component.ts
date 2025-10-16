@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { MapComponent } from '@maplibre/ngx-maplibre-gl';
@@ -12,7 +12,7 @@ import {
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [style]="style"
+      [style]="style()"
       [zoom]="[13]"
       [center]="[4.899, 52.372]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
@@ -20,8 +20,7 @@ import {
     >
     </mgl-map>
     <mat-radio-group
-      [ngModel]="layerId"
-      (ngModelChange)="changeStyle($event)"
+      [(ngModel)]="layerId"
       class="radio-group"
       data-cy="radio-group"
     >
@@ -35,18 +34,16 @@ import {
   `,
   styleUrls: ['./examples.css', './set-style.component.css'],
   imports: [MapComponent, MatRadioModule, FormsModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SetStyleComponent implements OnInit {
-  layerId = 'streets';
-  style: string | StyleSpecification;
+export class SetStyleComponent {
+  readonly layerId = model('streets');
 
-  ngOnInit() {
-    this.changeStyle(this.layerId);
-  }
+  readonly style = computed(() => this.changeStyle(this.layerId()));
 
-  changeStyle(layerId: string) {
+  changeStyle(layerId: string): string | StyleSpecification {
     if (layerId === 'streets') {
-      this.style = `https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL`;
+      return `https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL`;
     } else {
       const source = {
         type: 'raster',
@@ -69,7 +66,7 @@ export class SetStyleComponent implements OnInit {
         },
       } as RasterLayerSpecification;
 
-      this.style = {
+      return {
         version: 8,
         sources: {
           raster: source,

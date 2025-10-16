@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   MapComponent,
   ControlComponent,
@@ -23,19 +23,19 @@ import {
         id="terrainSource"
         url="https://demotiles.maplibre.org/terrain-tiles/tiles.json"
         tileSize="256"
-      ></mgl-raster-dem-source>
+      />
       <mgl-control
         mglNavigation
         showCompass="true"
         showZoom="true"
         visualizePitch="true"
-      ></mgl-control>
+      />
       <mgl-control
         mglTerrain
         source="terrainSource"
         exaggeration="5"
         position="top-right"
-      ></mgl-control>
+      />
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
@@ -47,5 +47,6 @@ import {
     NavigationControlDirective,
     TerrainControlDirective,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NgxTerrainSourceComponent {}
+export class NgxTerrainSourceComponent { }

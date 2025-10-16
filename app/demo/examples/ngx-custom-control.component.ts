@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
   AttributionControlDirective,
@@ -20,7 +20,7 @@ import {
       "
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
-      @if (visible) {
+      @if (visible()) {
         <mgl-control>
           <button
             mat-fab
@@ -32,15 +32,15 @@ import {
             Hello
           </button>
         </mgl-control>
-        <mgl-control mglAttribution position="top-right"></mgl-control>
-        <mgl-control mglFullscreen position="top-right"></mgl-control>
+        <mgl-control mglAttribution position="top-right"/>
+        <mgl-control mglFullscreen position="top-right"/>
         <mgl-control
           mglGeolocate
           position="top-right"
           (geolocate)="onGeolocate($event)"
         ></mgl-control>
-        <mgl-control mglNavigation position="top-right"></mgl-control>
-        <mgl-control mglScale position="top-right"></mgl-control>
+        <mgl-control mglNavigation position="top-right"/>
+        <mgl-control mglScale position="top-right"/>
       }
 
       <mgl-control position="bottom-right">
@@ -50,7 +50,7 @@ import {
           (click)="toggleControls()"
           data-cy="toggle-show-controls"
         >
-          {{ visible ? 'Hide Controls' : 'Show Controls' }}
+          {{ visible() ? 'Hide Controls' : 'Show Controls' }}
         </button>
       </mgl-control>
     </mgl-map>
@@ -68,7 +68,7 @@ import {
   ],
 })
 export class NgxCustomControlComponent {
-  visible = true;
+  readonly visible = signal(true);
 
   alert(message: string) {
     alert(message);
@@ -77,6 +77,6 @@ export class NgxCustomControlComponent {
     console.log('geolocate', position);
   }
   toggleControls() {
-    this.visible = !this.visible;
+    this.visible.update((v) => !v);
   }
 }

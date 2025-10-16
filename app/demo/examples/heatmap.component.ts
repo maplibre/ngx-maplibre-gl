@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CircleLayerSpecification } from 'maplibre-gl';
 import {
   MapComponent,
   GeoJSONSourceComponent,
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
+import { httpResource } from '@angular/common/http';
 
 @Component({
   selector: 'showcase-demo',
@@ -17,14 +18,14 @@ import {
       [center]="[-103.59179687498357, 40.66995747013945]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
-      @if (earthquakes) {
+      @if (earthquakesRs.value(); as earthquakes) {
         <mgl-geojson-source
           id="earthquakes"
           [data]="earthquakes"
           [cluster]="true"
           [clusterMaxZoom]="15"
           [clusterRadius]="20"
-        ></mgl-geojson-source>
+        />
         @for (layer of clusterLayers; track layer) {
           <mgl-layer
             [id]="layer.id"
@@ -32,7 +33,7 @@ import {
             source="earthquakes"
             [filter]="layer.filter"
             [paint]="layer.paint"
-          ></mgl-layer>
+          />
         }
         <mgl-layer
           id="unclustered-point"
@@ -44,45 +45,45 @@ import {
             'circle-radius': 20,
             'circle-blur': 1
           }"
-        ></mgl-layer>
+        />
       }
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, GeoJSONSourceComponent, LayerComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeatMapComponent implements OnInit {
-  earthquakes: object;
-  clusterLayers: CircleLayerSpecification[];
+export class HeatMapComponent {
+  readonly earthquakesRs = httpResource<GeoJSON.FeatureCollection<GeoJSON.Point>>(() => 'assets/data/earthquakes.geo.json');
+  readonly clusterLayers = this.getClusterLayers();
 
-  async ngOnInit() {
-    this.earthquakes = await import('./earthquakes.geo.json');
+  getClusterLayers(): CircleLayerSpecification[] {
     const layersData: [number, string][] = [
       [0, 'green'],
       [20, 'orange'],
       [200, 'red'],
     ];
-    this.clusterLayers = layersData.map(
+    return layersData.map(
       (data, index) =>
-        ({
-          type: 'circle',
-          id: `cluster-${index}`,
-          paint: {
-            /* eslint-disable @typescript-eslint/naming-convention */
-            'circle-color': data[1],
-            'circle-radius': 70,
-            'circle-blur': 1,
-            /* eslint-enable @typescript-eslint/naming-convention */
-          },
-          filter:
-            index === layersData.length - 1
-              ? ['>=', 'point_count', data[0]]
-              : [
-                  'all',
-                  ['>=', 'point_count', data[0]],
-                  ['<', 'point_count', layersData[index + 1][0]],
-                ],
-        } as CircleLayerSpecification)
+      ({
+        type: 'circle',
+        id: `cluster-${index}`,
+        paint: {
+          /* eslint-disable @typescript-eslint/naming-convention */
+          'circle-color': data[1],
+          'circle-radius': 70,
+          'circle-blur': 1,
+          /* eslint-enable @typescript-eslint/naming-convention */
+        },
+        filter:
+          index === layersData.length - 1
+            ? ['>=', 'point_count', data[0]]
+            : [
+              'all',
+              ['>=', 'point_count', data[0]],
+              ['<', 'point_count', layersData[index + 1][0]],
+            ],
+      } as CircleLayerSpecification)
     );
   }
 }
