@@ -21,13 +21,11 @@ import type { LayerSpecification } from 'maplibre-gl';
       <mgl-vector-source
         id="countries"
         [tiles]="['https://demotiles.maplibre.org/tiles/{z}/{x}/{y}.pbf']"
-      >
-      </mgl-vector-source>
+      />
       <mgl-vector-source
         id="everything"
         url="https://api.maptiler.com/tiles/v3/tiles.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL"
-      >
-      </mgl-vector-source>
+      />
       <mgl-layer
         id="countries-layer"
         type="line"
@@ -37,16 +35,14 @@ import type { LayerSpecification } from 'maplibre-gl';
           'line-color': 'blue'
         }"
         sourceLayer="countries"
-      >
-      </mgl-layer>
+      />
       <mgl-layer
         id="names"
         type="symbol"
         source="everything"
         [layout]="layouts()['names']"
         sourceLayer="place"
-      >
-      </mgl-layer>
+      />
     </mgl-map>
     <div class="menu">
       <mat-button-toggle

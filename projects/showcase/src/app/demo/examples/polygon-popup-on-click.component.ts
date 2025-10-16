@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { LngLat, MapLayerMouseEvent } from 'maplibre-gl';
 import { GeoJsonProperties } from 'geojson';
 import {
@@ -16,7 +16,7 @@ import {
       "
       [zoom]="[3]"
       [center]="[-100.04, 38.907]"
-      [cursorStyle]="cursorStyle"
+      [cursorStyle]="cursorStyle()"
       (mapClick)="onMapClick()"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
@@ -31,31 +31,36 @@ import {
           'fill-color': 'rgba(200, 100, 240, 0.4)',
           'fill-outline-color': 'rgba(200, 100, 240, 1)'
         }"
-        (layerMouseEnter)="cursorStyle = 'pointer'"
-        (layerMouseLeave)="cursorStyle = ''"
+        (layerMouseEnter)="changeCursorStyle('pointer')"
+        (layerMouseLeave)="changeCursorStyle('')"
         (layerClick)="onClick($event)"
-      ></mgl-layer>
-      @if (selectedElement && selectedLngLat) {
-        <mgl-popup [lngLat]="selectedLngLat" [closeOnClick]="false">
-          <span [innerHTML]="selectedElement?.name"></span>
+      />
+      @if (selectedElement() &&  selectedLngLat()) {
+        <mgl-popup [lngLat]="selectedLngLat()" [closeOnClick]="false">
+          <span [innerHTML]="selectedElement()?.name"></span>
         </mgl-popup>
       }
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, LayerComponent, PopupComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PolygonPopupOnClickComponent {
-  selectedElement: GeoJsonProperties | null;
-  selectedLngLat: LngLat;
-  cursorStyle: string;
+  readonly selectedElement = signal<GeoJsonProperties | null>(null);
+  readonly selectedLngLat = signal<LngLat | null>(null);
+  readonly cursorStyle = signal('');
 
-  onClick(evt: MapLayerMouseEvent) {
-    this.selectedLngLat = evt.lngLat;
-    this.selectedElement = evt.features![0].properties;
+  onClick(evt: MapLayerMouseEvent): void {
+    this.selectedLngLat.set(evt.lngLat);
+    this.selectedElement.set(evt.features![0].properties);
   }
 
-  onMapClick() {
-    this.selectedElement = null;
+  onMapClick(): void {
+    this.selectedElement.set(null);
+  }
+
+  changeCursorStyle(value: string): void {
+    this.cursorStyle.set(value);
   }
 }

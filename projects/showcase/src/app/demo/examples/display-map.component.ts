@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MapComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
@@ -11,9 +11,10 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
       [zoom]="[9]"
       [center]="[-74.5, 40]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
-    ></mgl-map>
+    />
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DisplayMapComponent {}
+export class DisplayMapComponent { }

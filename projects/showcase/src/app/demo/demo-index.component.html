@@ -16,7 +16,7 @@
   <mat-sidenav
     #sidenav
     mode="side"
-    [opened]="sidenavIsOpen"
+    [opened]="sidenavIsOpen()"
   >
     <mat-form-field class="search">
       <input
@@ -24,9 +24,9 @@
         type="text"
         placeholder="Search"
         [(ngModel)]="searchTerm"
-        (ngModelChange)="search()"
+     
       />
-      @if (searchTerm) {
+      @if (searchTerm()) {
         <button
           matSuffix
           mat-icon-button
@@ -40,30 +40,30 @@
     <mat-nav-list>
       @for (cat of categories; track cat) {
         <h3 matSubheader>{{ cat }}</h3>
-        @for (route of $any(routes)[cat]; track route) {
+        @for (route of searchedRoutes()[cat]; track route) {
           @if (route) {
             <a
               mat-list-item
               [routerLink]="
-                '/demo/' + (isEditMode ? '/edit/' : '') + route.path
+                '/demo/' + (isEditMode() ? '/edit/' : '') + route.path
               "
               routerLinkActive="active"
               [routerLinkActiveOptions]="{
-                _routerLinkActiveWakeUpHack_: isEditMode,
+                _routerLinkActiveWakeUpHack_: isEditMode(),
               }"
               #exampleLink
             >
-              {{ route.data.label }}
+              {{ route.data?.label }}
             </a>
           }
         }
-        <mat-divider></mat-divider>
+        <mat-divider />
       }
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
     <section class="content">
-      <router-outlet></router-outlet>
+      <router-outlet/>
     </section>
   </mat-sidenav-content>
 </mat-sidenav-container>

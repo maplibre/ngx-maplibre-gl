@@ -17,10 +17,10 @@ import {
       [attributionControl]="false"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
-      <mgl-control mglAttribution position="top-left"></mgl-control>
+      <mgl-control mglAttribution position="top-left"/>
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, ControlComponent, AttributionControlDirective],
 })
-export class AttributionPositionComponent {}
+export class AttributionPositionComponent { }

@@ -2,11 +2,10 @@ import {
   Component,
   OnChanges,
   SimpleChanges,
-  afterNextRender,
   viewChild,
   input,
   signal,
-  OnDestroy,
+  inject,
 } from '@angular/core';
 import {
   MatPaginator,
@@ -22,6 +21,9 @@ import {
   ClusterPointDirective,
 } from '@maplibre/ngx-maplibre-gl';
 import { MatListModule } from '@angular/material/list';
+import { HttpClient } from '@angular/common/http';
+import { interval, map, scan, shareReplay, startWith, switchMap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'showcase-cluster-popup',
@@ -37,7 +39,7 @@ import { MatListModule } from '@angular/material/list';
       [length]="selectedCluster().properties?.point_count"
       [pageSize]="5"
       (page)="changePage($event)"
-    ></mat-paginator>
+    />
   `,
   imports: [MatListModule, MatPaginatorModule],
 })
@@ -82,7 +84,6 @@ export class ClusterPopupComponent implements OnChanges {
  * Try to draw your point with a mgl-layer before using html markers
  * For a compromise, look at cluster-html example, which use only html markers for cluster points
  */
-
 @Component({
   selector: 'showcase-demo',
   template: `
@@ -102,7 +103,7 @@ export class ClusterPopupComponent implements OnChanges {
         [cluster]="true"
         [clusterRadius]="50"
         [clusterMaxZoom]="14"
-      ></mgl-geojson-source>
+      />
       <mgl-markers-for-clusters source="earthquakes">
         <ng-template mglPoint let-feature>
           <div class="marker" [title]="feature.properties['Secondary ID']">
@@ -136,31 +137,35 @@ export class ClusterPopupComponent implements OnChanges {
     ClusterPopupComponent,
   ],
 })
-export class NgxClusterHtmlComponent implements OnDestroy {
-  private timer: ReturnType<typeof setInterval>;
-  readonly earthquakes = signal<GeoJSON.FeatureCollection | null>(null);
+export class NgxClusterHtmlComponent {
+  private readonly http = inject(HttpClient);
+
+  private readonly earthquakes$ = this.http
+    .get<GeoJSON.FeatureCollection>('assets/data/earthquakes.geo.json')
+    .pipe(shareReplay({ bufferSize: 1, refCount: true }));
+
+  private readonly animated$ = this.earthquakes$.pipe(
+    switchMap((fc) =>
+      interval(500).pipe(
+        startWith(-1),
+        scan((count) => Math.max(0, count - 1), fc.features.length),
+        map((count) => ({
+          ...fc,
+          features: fc.features.slice(0, count)
+        }))
+      )
+    )
+  );
+
+  readonly earthquakes = toSignal(this.animated$, {
+    initialValue: null
+  });
 
   readonly selectedCluster = signal<{
     geometry: GeoJSON.Point;
     properties: any;
   } | null>(null);
 
-  constructor() {
-    afterNextRender(async () => {
-      const earthquakes: GeoJSON.FeatureCollection = (await import(
-        './earthquakes.geo.json'
-      )) as any;
-      this.timer = setInterval(() => {
-        if (earthquakes.features.length) {
-          earthquakes.features.pop();
-        }
-        this.earthquakes.set({ ...earthquakes });
-      }, 500);
-    });
-  }
-  ngOnDestroy(): void {
-    clearInterval(this.timer)
-  }
 
   selectCluster(event: MouseEvent, feature: any) {
     event.stopPropagation(); // This is needed, otherwise the popup will close immediately

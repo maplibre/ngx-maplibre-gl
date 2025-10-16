@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   MapComponent,
   PopupComponent,
   MarkerComponent,
 } from '@maplibre/ngx-maplibre-gl';
-import { NgStyle } from '@angular/common';
 
 @Component({
   selector: 'showcase-demo',
@@ -17,15 +16,12 @@ import { NgStyle } from '@angular/common';
     >
       <mgl-marker #myMarker [lngLat]="[-77.0353, 38.8895]">
         <div
-          [ngStyle]="{
-            'background-image':
-              'url(https://maplibre.org/maplibre-gl-js/docs/assets/washington-monument.jpg)',
-            'background-size': 'cover',
-            width: '50px',
-            height: '50px',
-            'border-radius': '50%',
-            cursor: 'pointer'
-          }"
+        [style.backgroundImage]="'url(https://maplibre.org/maplibre-gl-js/docs/assets/washington-monument.jpg)'"
+        [style.backgroundSize]="'cover'"
+        [style.width]="'50px'"
+        [style.height]="'50px'"
+        [style.borderRadius]="'50%'"
+        [style.cursor]="'pointer'"
         ></div>
       </mgl-marker>
       <mgl-popup [marker]="myMarker">
@@ -34,6 +30,7 @@ import { NgStyle } from '@angular/common';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
-  imports: [MapComponent, MarkerComponent, NgStyle, PopupComponent],
+  imports: [MapComponent, MarkerComponent, PopupComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SetPopupComponent {}
+export class SetPopupComponent { }

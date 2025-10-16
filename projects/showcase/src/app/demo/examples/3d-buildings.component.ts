@@ -46,7 +46,7 @@ import { MapComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
           'fill-extrusion-opacity': 0.6
         }"
         [before]="labelLayerId"
-      ></mgl-layer>
+      />
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
