@@ -17,7 +17,7 @@ import {
       <mgl-image
         id="cat"
         url="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Cat_silhouette.svg/400px-Cat_silhouette.svg.png"
-        (imageLoaded)="imageLoaded.set(true)"
+        (imageLoaded)="imageLoadedHandler()"
       />
       @if (imageLoaded()) {
         <mgl-layer
@@ -50,4 +50,8 @@ import {
 })
 export class AddImageComponent {
   readonly imageLoaded = signal(false);
+
+  imageLoadedHandler(): void {
+    this.imageLoaded.set(true);
+  }
 }

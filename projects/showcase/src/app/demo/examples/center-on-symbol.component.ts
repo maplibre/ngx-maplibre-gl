@@ -32,8 +32,8 @@ import {
           'icon-image': 'oneway'
         }"
         (layerClick)="centerMapTo($event)"
-        (layerMouseEnter)="cursorStyle.set('pointer')"
-        (layerMouseLeave)="cursorStyle.set('')"
+        (layerMouseEnter)="changeCursorStyle('pointer')"
+        (layerMouseLeave)="changeCursorStyle('')"
       >
       </mgl-layer>
     </mgl-map>
@@ -67,7 +67,11 @@ export class CenterOnSymbolComponent {
     },
   ];
 
-  centerMapTo(evt: MapMouseEvent) {
+  centerMapTo(evt: MapMouseEvent): void {
     this.center.set((evt as any).features[0].geometry.coordinates);
+  }
+
+  changeCursorStyle(value: string): void {
+    this.cursorStyle.set(value);
   }
 }

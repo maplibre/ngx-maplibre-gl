@@ -31,8 +31,8 @@ import {
           'fill-color': 'rgba(200, 100, 240, 0.4)',
           'fill-outline-color': 'rgba(200, 100, 240, 1)'
         }"
-        (layerMouseEnter)="cursorStyle.set('pointer')"
-        (layerMouseLeave)="cursorStyle.set('')"
+        (layerMouseEnter)="changeCursorStyle('pointer')"
+        (layerMouseLeave)="changeCursorStyle('')"
         (layerClick)="onClick($event)"
       />
       @if (selectedElement() &&  selectedLngLat()) {
@@ -51,12 +51,16 @@ export class PolygonPopupOnClickComponent {
   readonly selectedLngLat = signal<LngLat | null>(null);
   readonly cursorStyle = signal('');
 
-  onClick(evt: MapLayerMouseEvent) {
+  onClick(evt: MapLayerMouseEvent): void {
     this.selectedLngLat.set(evt.lngLat);
     this.selectedElement.set(evt.features![0].properties);
   }
 
-  onMapClick() {
+  onMapClick(): void {
     this.selectedElement.set(null);
+  }
+
+  changeCursorStyle(value: string): void {
+    this.cursorStyle.set(value);
   }
 }
