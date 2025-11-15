@@ -1,0 +1,266 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Mars Rover Configuration Template",
+  "description": "Configuration template for FSDM Mars Rover specifications",
+  "type": "object",
+  "rover": {
+    "name": "FSDM Mars Rover v1.0",
+    "version": "1.0.0",
+    "specifications": {
+      "weight": {
+        "value": 12,
+        "unit": "kg",
+        "description": "Total rover weight including all components"
+      },
+      "dimensions": {
+        "length": {
+          "value": 600,
+          "unit": "mm"
+        },
+        "width": {
+          "value": 400,
+          "unit": "mm"
+        },
+        "height": {
+          "value": 300,
+          "unit": "mm"
+        }
+      },
+      "wheels": {
+        "diameter": {
+          "value": 150,
+          "unit": "mm"
+        },
+        "width": {
+          "value": 60,
+          "unit": "mm"
+        },
+        "count": 6,
+        "type": "knobby_tread",
+        "material": "rubber"
+      },
+      "chassis": {
+        "material": "aluminum_6061_t6",
+        "suspension": "rocker_bogie",
+        "trackWidth": {
+          "value": 400,
+          "unit": "mm"
+        },
+        "wheelbase": {
+          "value": 500,
+          "unit": "mm"
+        },
+        "groundClearance": {
+          "value": 100,
+          "unit": "mm"
+        }
+      }
+    }
+  },
+  "propulsion": {
+    "driveSystem": "6WD",
+    "motors": {
+      "model": "JGA25-370",
+      "quantity": 6,
+      "specifications": {
+        "voltage": {
+          "value": 12,
+          "unit": "V"
+        },
+        "noLoadSpeed": {
+          "value": 200,
+          "unit": "RPM",
+          "note": "After gearbox"
+        },
+        "stallTorque": {
+          "value": 1.5,
+          "unit": "Nm"
+        },
+        "stallCurrent": {
+          "value": 5,
+          "unit": "A"
+        },
+        "noLoadCurrent": {
+          "value": 0.2,
+          "unit": "A"
+        },
+        "efficiency": 0.7,
+        "gearRatio": "50:1",
+        "gearboxType": "planetary",
+        "gearboxEfficiency": 0.85
+      }
+    },
+    "motorDrivers": {
+      "model": "L298N",
+      "quantity": 3,
+      "specifications": {
+        "channels": 2,
+        "maxVoltage": {
+          "value": 35,
+          "unit": "V"
+        },
+        "maxCurrent": {
+          "value": 2,
+          "unit": "A",
+          "note": "Per channel continuous"
+        },
+        "peakCurrent": {
+          "value": 4,
+          "unit": "A"
+        }
+      }
+    }
+  },
+  "power": {
+    "battery": {
+      "type": "LiPo",
+      "voltage": {
+        "value": 12,
+        "unit": "V",
+        "configuration": "3S"
+      },
+      "capacity": {
+        "value": 20,
+        "unit": "Ah"
+      },
+      "weight": {
+        "value": 2,
+        "unit": "kg"
+      },
+      "dischargeCurrent": {
+        "value": 30,
+        "unit": "C"
+      }
+    },
+    "estimatedRuntime": {
+      "flatTerrain": {
+        "value": 3,
+        "unit": "hours"
+      },
+      "roughTerrain": {
+        "value": 2,
+        "unit": "hours"
+      },
+      "steepSlopes": {
+        "value": 1.5,
+        "unit": "hours"
+      }
+    }
+  },
+  "electronics": {
+    "microcontroller": {
+      "model": "Arduino Mega 2560",
+      "voltage": "5V",
+      "pins": {
+        "digital": 54,
+        "analog": 16,
+        "pwm": 15
+      }
+    },
+    "sensors": {
+      "imu": {
+        "model": "MPU6050",
+        "type": "6-axis gyroscope + accelerometer"
+      },
+      "ultrasonic": {
+        "model": "HC-SR04",
+        "quantity": 4,
+        "range": "2-400cm"
+      },
+      "gps": {
+        "model": "NEO-6M",
+        "accuracy": "2.5m"
+      },
+      "camera": {
+        "model": "Raspberry Pi Camera v2",
+        "resolution": "8MP"
+      }
+    },
+    "communication": {
+      "wireless": {
+        "model": "NRF24L01",
+        "frequency": "2.4GHz",
+        "range": "100m"
+      }
+    }
+  },
+  "performance": {
+    "speed": {
+      "maximum": {
+        "value": 0.6,
+        "unit": "m/s",
+        "note": "On flat terrain"
+      },
+      "typical": {
+        "value": 0.4,
+        "unit": "m/s"
+      }
+    },
+    "climbing": {
+      "maxSlope": {
+        "value": 25,
+        "unit": "degrees"
+      },
+      "maxObstacle": {
+        "value": 50,
+        "unit": "mm"
+      }
+    },
+    "turning": {
+      "type": "differential_steering",
+      "minRadius": {
+        "value": 0,
+        "unit": "mm",
+        "note": "Zero-radius turn capable"
+      }
+    }
+  },
+  "budget": {
+    "currency": "EUR",
+    "breakdown": {
+      "chassis": {
+        "material": 50,
+        "hardware": 20
+      },
+      "propulsion": {
+        "motors": 60,
+        "drivers": 12,
+        "wheels": 48
+      },
+      "power": {
+        "battery": 50,
+        "charger": 25
+      },
+      "electronics": {
+        "microcontroller": 30,
+        "sensors": 40,
+        "communication": 15,
+        "wiring": 15
+      },
+      "miscellaneous": 35
+    },
+    "total": 400
+  },
+  "phases": {
+    "phase1": {
+      "name": "Research and Chassis Design",
+      "status": "completed",
+      "completionDate": "2025-11-15"
+    },
+    "phase2": {
+      "name": "3D Modeling and Printing",
+      "status": "planned",
+      "estimatedDuration": "2 weeks"
+    },
+    "phase3": {
+      "name": "Electronics Integration and PCB",
+      "status": "planned",
+      "estimatedDuration": "3 weeks"
+    },
+    "phase4": {
+      "name": "Programming and Field Testing",
+      "status": "planned",
+      "estimatedDuration": "4 weeks"
+    }
+  }
+}

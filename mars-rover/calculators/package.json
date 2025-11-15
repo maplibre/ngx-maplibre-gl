@@ -1,0 +1,23 @@
+{
+  "name": "mars-rover-calculators",
+  "version": "1.0.0",
+  "description": "Engineering calculation utilities for Mars Rover FSDM project",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "calculate": "npm run build && node dist/index.js",
+    "test": "npm run build && node dist/test.js"
+  },
+  "keywords": [
+    "robotics",
+    "mars-rover",
+    "engineering",
+    "calculations"
+  ],
+  "author": "FSDM Robotics Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}

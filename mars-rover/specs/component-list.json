@@ -1,0 +1,364 @@
+{
+  "title": "Mars Rover FSDM - Component Shopping List",
+  "version": "1.0.0",
+  "lastUpdated": "2025-11-15",
+  "categories": {
+    "chassis_materials": {
+      "items": [
+        {
+          "name": "Aluminum 6061-T6 Sheet",
+          "specification": "3mm thickness, 500mm × 300mm",
+          "quantity": 2,
+          "unitPrice": 25,
+          "totalPrice": 50,
+          "supplier": "Local metal supplier",
+          "notes": "For main chassis frame"
+        },
+        {
+          "name": "M3 Bolts and Nuts Set",
+          "specification": "Assorted lengths (10-30mm)",
+          "quantity": 1,
+          "unitPrice": 10,
+          "totalPrice": 10,
+          "supplier": "Hardware store"
+        },
+        {
+          "name": "M4 Bolts and Nuts Set",
+          "specification": "Assorted lengths (10-40mm)",
+          "quantity": 1,
+          "unitPrice": 10,
+          "totalPrice": 10,
+          "supplier": "Hardware store"
+        }
+      ],
+      "subtotal": 70
+    },
+    "motors_and_drivers": {
+      "items": [
+        {
+          "name": "JGA25-370 DC Motor with Gearbox",
+          "specification": "12V, 200 RPM, 50:1 ratio",
+          "quantity": 6,
+          "unitPrice": 10,
+          "totalPrice": 60,
+          "supplier": "AliExpress, Amazon",
+          "partNumber": "JGA25-370-12V-50",
+          "notes": "Main drive motors"
+        },
+        {
+          "name": "L298N Motor Driver Module",
+          "specification": "Dual H-Bridge, 2A per channel",
+          "quantity": 3,
+          "unitPrice": 4,
+          "totalPrice": 12,
+          "supplier": "AliExpress, Amazon",
+          "notes": "Controls 2 motors each"
+        },
+        {
+          "name": "Motor Mounting Brackets",
+          "specification": "25mm diameter motor mount",
+          "quantity": 6,
+          "unitPrice": 2,
+          "totalPrice": 12,
+          "supplier": "3D printed or purchased",
+          "notes": "Can be 3D printed"
+        }
+      ],
+      "subtotal": 84
+    },
+    "wheels": {
+      "items": [
+        {
+          "name": "Rubber Wheels with Tread",
+          "specification": "150mm diameter, 60mm width, 6mm shaft",
+          "quantity": 6,
+          "unitPrice": 8,
+          "totalPrice": 48,
+          "supplier": "RobotShop, Amazon",
+          "notes": "Knobby tread pattern for traction"
+        },
+        {
+          "name": "Wheel Hubs/Couplers",
+          "specification": "6mm to motor shaft adapter",
+          "quantity": 6,
+          "unitPrice": 2,
+          "totalPrice": 12,
+          "supplier": "Included with wheels or separate"
+        }
+      ],
+      "subtotal": 60
+    },
+    "power_system": {
+      "items": [
+        {
+          "name": "LiPo Battery",
+          "specification": "11.1V 3S, 5000mAh, 30C",
+          "quantity": 2,
+          "unitPrice": 25,
+          "totalPrice": 50,
+          "supplier": "HobbyKing, Amazon",
+          "notes": "Use in parallel for 10Ah capacity"
+        },
+        {
+          "name": "LiPo Battery Charger",
+          "specification": "Balance charger for 2-3S",
+          "quantity": 1,
+          "unitPrice": 25,
+          "totalPrice": 25,
+          "supplier": "HobbyKing, Amazon"
+        },
+        {
+          "name": "Battery Monitor/Alarm",
+          "specification": "Low voltage alarm for LiPo",
+          "quantity": 1,
+          "unitPrice": 3,
+          "totalPrice": 3,
+          "supplier": "AliExpress"
+        },
+        {
+          "name": "Power Distribution Board",
+          "specification": "With fuses and switches",
+          "quantity": 1,
+          "unitPrice": 10,
+          "totalPrice": 10,
+          "supplier": "Custom PCB or purchased"
+        },
+        {
+          "name": "XT60 Connectors",
+          "specification": "Male and female pairs",
+          "quantity": 5,
+          "unitPrice": 1,
+          "totalPrice": 5,
+          "supplier": "AliExpress"
+        }
+      ],
+      "subtotal": 93
+    },
+    "microcontroller": {
+      "items": [
+        {
+          "name": "Arduino Mega 2560",
+          "specification": "ATmega2560, 54 digital I/O",
+          "quantity": 1,
+          "unitPrice": 30,
+          "totalPrice": 30,
+          "supplier": "Arduino.cc, Amazon",
+          "notes": "Main controller"
+        },
+        {
+          "name": "Raspberry Pi 4 (Optional)",
+          "specification": "4GB RAM",
+          "quantity": 1,
+          "unitPrice": 55,
+          "totalPrice": 0,
+          "supplier": "RaspberryPi.com",
+          "notes": "Optional for advanced processing"
+        }
+      ],
+      "subtotal": 30
+    },
+    "sensors": {
+      "items": [
+        {
+          "name": "MPU6050 IMU",
+          "specification": "6-axis gyroscope + accelerometer",
+          "quantity": 1,
+          "unitPrice": 5,
+          "totalPrice": 5,
+          "supplier": "AliExpress, Amazon",
+          "notes": "For orientation and tilt sensing"
+        },
+        {
+          "name": "HC-SR04 Ultrasonic Sensor",
+          "specification": "2-400cm range",
+          "quantity": 4,
+          "unitPrice": 2,
+          "totalPrice": 8,
+          "supplier": "AliExpress, Amazon",
+          "notes": "Obstacle detection (front, back, sides)"
+        },
+        {
+          "name": "NEO-6M GPS Module",
+          "specification": "With antenna",
+          "quantity": 1,
+          "unitPrice": 12,
+          "totalPrice": 12,
+          "supplier": "AliExpress, Amazon",
+          "notes": "For navigation and positioning"
+        },
+        {
+          "name": "Raspberry Pi Camera v2",
+          "specification": "8MP, 1080p video",
+          "quantity": 1,
+          "unitPrice": 25,
+          "totalPrice": 25,
+          "supplier": "RaspberryPi.com",
+          "notes": "Requires Raspberry Pi"
+        },
+        {
+          "name": "Voltage Sensor Module",
+          "specification": "0-25V DC",
+          "quantity": 1,
+          "unitPrice": 2,
+          "totalPrice": 2,
+          "supplier": "AliExpress",
+          "notes": "Battery monitoring"
+        }
+      ],
+      "subtotal": 52
+    },
+    "communication": {
+      "items": [
+        {
+          "name": "NRF24L01+ Wireless Module",
+          "specification": "2.4GHz, with antenna",
+          "quantity": 2,
+          "unitPrice": 3,
+          "totalPrice": 6,
+          "supplier": "AliExpress, Amazon",
+          "notes": "One for rover, one for controller"
+        },
+        {
+          "name": "Bluetooth Module HC-05",
+          "specification": "Serial communication",
+          "quantity": 1,
+          "unitPrice": 5,
+          "totalPrice": 5,
+          "supplier": "AliExpress, Amazon",
+          "notes": "Alternative/backup communication"
+        }
+      ],
+      "subtotal": 11
+    },
+    "wiring_and_connectors": {
+      "items": [
+        {
+          "name": "Jumper Wires",
+          "specification": "Male-to-male, male-to-female, female-to-female",
+          "quantity": 1,
+          "unitPrice": 8,
+          "totalPrice": 8,
+          "supplier": "Amazon, AliExpress"
+        },
+        {
+          "name": "Silicone Wire",
+          "specification": "18 AWG, red and black, 5m each",
+          "quantity": 1,
+          "unitPrice": 10,
+          "totalPrice": 10,
+          "supplier": "Amazon, AliExpress"
+        },
+        {
+          "name": "Heat Shrink Tubing",
+          "specification": "Assorted sizes",
+          "quantity": 1,
+          "unitPrice": 5,
+          "totalPrice": 5,
+          "supplier": "Amazon, Hardware store"
+        },
+        {
+          "name": "JST Connectors",
+          "specification": "2-pin and 3-pin sets",
+          "quantity": 1,
+          "unitPrice": 8,
+          "totalPrice": 8,
+          "supplier": "AliExpress"
+        }
+      ],
+      "subtotal": 31
+    },
+    "tools_and_supplies": {
+      "items": [
+        {
+          "name": "Soldering Iron Kit",
+          "specification": "60W with stand and solder",
+          "quantity": 1,
+          "unitPrice": 20,
+          "totalPrice": 20,
+          "supplier": "Amazon, Hardware store",
+          "notes": "If not already available"
+        },
+        {
+          "name": "Multimeter",
+          "specification": "Digital, voltage/current/resistance",
+          "quantity": 1,
+          "unitPrice": 15,
+          "totalPrice": 15,
+          "supplier": "Amazon, Hardware store",
+          "notes": "Essential for debugging"
+        },
+        {
+          "name": "3D Printer Filament",
+          "specification": "PETG, 1kg spool",
+          "quantity": 2,
+          "unitPrice": 20,
+          "totalPrice": 40,
+          "supplier": "Amazon, local supplier",
+          "notes": "For brackets and non-structural parts"
+        }
+      ],
+      "subtotal": 75
+    }
+  },
+  "summary": {
+    "totalItems": 45,
+    "totalCost": 506,
+    "currency": "EUR",
+    "notes": [
+      "Prices are approximate and may vary by supplier and location",
+      "Consider buying from local suppliers to reduce shipping time",
+      "AliExpress offers lower prices but longer shipping times",
+      "Amazon offers faster shipping but higher prices",
+      "Some items can be 3D printed to reduce costs"
+    ]
+  },
+  "purchasePriority": {
+    "phase1": [
+      "Aluminum sheets",
+      "Bolts and nuts",
+      "Motors",
+      "Motor drivers",
+      "Wheels"
+    ],
+    "phase2": [
+      "3D printer filament",
+      "Motor mounting brackets"
+    ],
+    "phase3": [
+      "Arduino Mega",
+      "Sensors",
+      "Battery",
+      "Charger",
+      "Wiring supplies"
+    ],
+    "phase4": [
+      "Communication modules",
+      "GPS",
+      "Camera (optional)"
+    ]
+  },
+  "alternatives": {
+    "budgetOption": {
+      "description": "Reduce costs by using cheaper components",
+      "changes": [
+        "Use 4WD instead of 6WD (4 motors instead of 6)",
+        "Skip GPS and camera initially",
+        "Use NiMH batteries instead of LiPo",
+        "3D print more components"
+      ],
+      "estimatedSavings": 150,
+      "newTotal": 356
+    },
+    "premiumOption": {
+      "description": "Higher quality components for better performance",
+      "changes": [
+        "Use brushless motors with ESCs",
+        "Add Raspberry Pi 4 for vision processing",
+        "Use higher capacity LiPo batteries",
+        "Add LIDAR sensor for mapping"
+      ],
+      "estimatedAdditionalCost": 200,
+      "newTotal": 706
+    }
+  }
+}
