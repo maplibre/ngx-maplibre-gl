@@ -27,7 +27,7 @@ import { VectorSourceComponent } from './source/vector-source.component';
 import { VideoSourceComponent } from './source/video-source.component';
 import { SourceDirective } from './source/source.directive';
 
-const componentsAndDirectives = [
+export const NgxMapLibreGLImports = [
   MapComponent,
   LayerComponent,
   DraggableDirective,
@@ -52,11 +52,11 @@ const componentsAndDirectives = [
   ClusterPointDirective,
   MarkersForClustersComponent,
   TerrainControlDirective,
-  SourceDirective
+  SourceDirective,
 ];
 
 @NgModule({
-  imports: [...componentsAndDirectives],
-  exports: [...componentsAndDirectives],
+  imports: [...NgxMapLibreGLImports],
+  exports: [...NgxMapLibreGLImports],
 })
 export class NgxMapLibreGLModule {}
