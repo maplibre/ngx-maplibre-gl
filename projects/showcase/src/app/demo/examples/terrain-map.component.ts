@@ -9,7 +9,7 @@ import {
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [style]="mapLibreExampleSource"
+      [mapStyle]="mapLibreExampleSource"
       [zoom]="[12]"
       [center]="[11.39085, 47.27574]"
       [pitch]="52"

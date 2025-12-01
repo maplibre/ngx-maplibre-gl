@@ -6,7 +6,7 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
 @Component({
   template: `
     <mgl-map
-      [style]="'https://demotiles.maplibre.org/style.json'"
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[2]"
       [center]="center()"
       [centerWithPanTo]="true"
