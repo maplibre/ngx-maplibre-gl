@@ -9,7 +9,7 @@ import {
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [style]="'https://demotiles.maplibre.org/style.json'"
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[2]"
       [center]="[0, 0]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"

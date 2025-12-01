@@ -5,7 +5,7 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [style]="{
+      [mapStyle]="{
         version: 8,
         sources: {
           satelliteSource: {
