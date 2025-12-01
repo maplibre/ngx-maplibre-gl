@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, model } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  model,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { MapComponent } from '@maplibre/ngx-maplibre-gl';
@@ -12,10 +17,10 @@ import {
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [style]="style()"
+      [mapStyle]="style()"
       [zoom]="[13]"
       [center]="[4.899, 52.372]"
-      [canvasContextAttributes]="{preserveDrawingBuffer: true}"
+      [canvasContextAttributes]="{ preserveDrawingBuffer: true }"
       data-cy="mgl-map"
     >
     </mgl-map>

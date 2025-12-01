@@ -66,7 +66,7 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
 @NgModule({
   template: `
     <mgl-map
-      [style]="'https://demotiles.maplibre.org/style.json'"
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[9]"
       [center]="[-74.5, 40]"
     >
