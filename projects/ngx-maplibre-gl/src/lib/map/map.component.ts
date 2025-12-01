@@ -171,6 +171,7 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
    * @deprecated Use `mapStyle` input instead
    */
   readonly style = input<MapOptions['style']>();
+  // TODO change to required in next major release
   /** Dynamic input */
   readonly mapStyle = input<MapOptions['style']>();
   /** Dynamic input */
