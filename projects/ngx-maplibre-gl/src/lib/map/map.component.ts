@@ -46,7 +46,7 @@ import { firstValueFrom } from 'rxjs';
  * @Component({
  *   template: `
  *   <mgl-map
- *     [style]="'https://demotiles.maplibre.org/style.json'"
+ *     [mapStyle]="'https://demotiles.maplibre.org/style.json'"
  *     [zoom]="[9]"
  *     [center]="[-74.50, 40]"
  *     (mapLoad)="map = $event"
@@ -165,8 +165,14 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   readonly dragPan = input<MapOptions['dragPan']>();
   /** Dynamic input */
   readonly boxZoom = input<MapOptions['boxZoom']>();
+  /**
+   * Dynamic input
+   *
+   * @deprecated Use `mapStyle` input instead
+   */
+  readonly style = input<MapOptions['style']>();
   /** Dynamic input */
-  readonly style = input.required<MapOptions['style']>();
+  readonly mapStyle = input<MapOptions['style']>();
   /** Dynamic input */
   readonly center = input<MapOptions['center']>();
   /** Dynamic input */
@@ -291,6 +297,12 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
 
   constructor() {
     afterNextRender(() => {
+      if (!this.mapStyle() && !this.style()) {
+        console.error(
+          '[ngx-maplibre-gl] No map style specified. Please provide a valid map style URL or object via the `mapStyle` input (preferred) or the deprecated `style` input.'
+        );
+      }
+
       if (this.canvasContextAttributes()?.preserveDrawingBuffer) {
         // This is to allow better interaction with the map state
         const htmlElement: HTMLElement = this.elementRef.nativeElement;
@@ -315,7 +327,7 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
           maxZoom: this.maxZoom(),
           minPitch: this.minPitch(),
           maxPitch: this.maxPitch(),
-          style: this.style(),
+          style: this.mapStyle() || this.style(),
           hash: this.hash(),
           interactive: this.interactive(),
           bearingSnap: this.bearingSnap(),
@@ -437,8 +449,12 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
     if (changes.boxZoom && !changes.boxZoom.isFirstChange()) {
       this.mapService.updateBoxZoom(changes.boxZoom.currentValue);
     }
+    // TODO remove deprecated style changes
     if (changes.style && !changes.style.isFirstChange()) {
       this.mapService.updateStyle(changes.style.currentValue);
+    }
+    if (changes.mapStyle && !changes.mapStyle.isFirstChange()) {
+      this.mapService.updateStyle(changes.mapStyle.currentValue);
     }
     if (changes.maxBounds && !changes.maxBounds.isFirstChange()) {
       this.mapService.updateMaxBounds(changes.maxBounds.currentValue);
