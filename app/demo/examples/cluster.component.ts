@@ -13,7 +13,7 @@ import {
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [style]="
+      [mapStyle]="
         'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
       "
       [zoom]="[3]"

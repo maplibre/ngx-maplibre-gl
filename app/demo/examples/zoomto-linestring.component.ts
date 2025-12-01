@@ -11,7 +11,7 @@ import { LngLatBounds } from 'maplibre-gl';
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [style]="'https://demotiles.maplibre.org/style.json'"
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[12]"
       [center]="[-77.0214, 38.897]"
       [fitBounds]="bounds()"
