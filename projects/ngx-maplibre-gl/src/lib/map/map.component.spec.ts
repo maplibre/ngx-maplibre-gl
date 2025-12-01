@@ -1,9 +1,9 @@
 import {
-  // ApplicationRef,
+  ApplicationRef,
   ComponentRef,
-  // EnvironmentInjector,
+  EnvironmentInjector,
   SimpleChange,
-  // createComponent,
+  createComponent,
   provideZonelessChangeDetection,
 } from '@angular/core';
 import {
@@ -64,22 +64,22 @@ describe('MapComponent', () => {
 
   // TODO enable when mapStyle input is set to required
   // doesn't work with optional input
-  // describe('Init tests', () => {
-  //   it('should init with custom inputs', () => {
-  //     // Since we don't want to trigger afterNextRender, we need to create the component in a different way
-  //     const componentRef = createComponent(MapComponent, {
-  //       environmentInjector: TestBed.inject(EnvironmentInjector),
-  //     });
-  //     componentRef.setInput('mapStyle', 'mapStyle');
-  //     TestBed.inject(ApplicationRef).attachView(componentRef.hostView);
-  //     expect(mapServiceStub.setup.calls.count()).toBe(0);
-  //     TestBed.inject(ApplicationRef).tick();
-  //     expect(mapServiceStub.setup.calls.count()).toBe(1);
-  //     expect(
-  //       mapServiceStub.setup.calls.first().args[0].mapOptions.style
-  //     ).toEqual('mapStyle');
-  //   });
-  // });
+  describe('Init tests', () => {
+    xit('should init with custom inputs', () => {
+      // Since we don't want to trigger afterNextRender, we need to create the component in a different way
+      const componentRef = createComponent(MapComponent, {
+        environmentInjector: TestBed.inject(EnvironmentInjector),
+      });
+      componentRef.setInput('mapStyle', 'mapStyle');
+      TestBed.inject(ApplicationRef).attachView(componentRef.hostView);
+      expect(mapServiceStub.setup.calls.count()).toBe(0);
+      TestBed.inject(ApplicationRef).tick();
+      expect(mapServiceStub.setup.calls.count()).toBe(1);
+      expect(
+        mapServiceStub.setup.calls.first().args[0].mapOptions.style
+      ).toEqual('mapStyle');
+    });
+  });
 
   describe('Change tests', () => {
     it('should update minzoom', fakeAsync(() => {
