@@ -36,7 +36,7 @@
     "@angular/platform-browser-dynamic": "^20.0.4",
     "@angular/platform-server": "^20.0.4",
     "@angular/router": "^20.0.4",
-    "@angular/ssr": "^20.0.3",
+    "@angular/ssr": "^20.3.12",
     "@stackblitz/sdk": "^1.11.0",
     "express": "^5.1.0",
     "lodash-es": "^4.17.21",
