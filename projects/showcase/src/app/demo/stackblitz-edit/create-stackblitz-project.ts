@@ -40,7 +40,6 @@ html, body {
       'maplibre-gl': '*',
       '@maplibre/maplibre-gl-style-spec': '*',
       '@maplibre/ngx-maplibre-gl': '*',
-      '@angular/animations': '^20',
       '@angular/common': '^20',
       '@angular/compiler': '^20',
       '@angular/core': '^20',
