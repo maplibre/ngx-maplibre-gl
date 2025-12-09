@@ -1,0 +1,2 @@
+import{l as i}from"./chunk-J4BMISU7.js";import{La as n,ga as a,ia as t}from"./chunk-WAGYCGY3.js";var o=new a("MATERIAL_ANIMATIONS");var e=null;function r(){return t(o,{optional:!0})?.animationsDisabled||t(n,{optional:!0})==="NoopAnimations"?"di-disabled":(e??=t(i).matchMedia("(prefers-reduced-motion)").matches,e?"reduced-motion":"enabled")}function x(){return r()!=="enabled"}export{r as a,x as b};
+//# sourceMappingURL=chunk-B4RC56SB.js.map
