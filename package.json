@@ -3,7 +3,7 @@
   "version": "20.1.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/maplibre/ngx-maplibre-gl.git"
+    "url": "https://github.com/maplibre/ngx-maplibre-gl"
   },
   "scripts": {
     "ng": "ng",

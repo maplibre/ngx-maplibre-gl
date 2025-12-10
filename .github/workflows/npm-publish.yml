@@ -1,5 +1,9 @@
 name: Publish to NPM
 
+permissions:
+  id-token: write  # Required for trusted publishing
+  contents: write
+
 on:
   push:
     branches: [main]
@@ -47,8 +51,6 @@ jobs:
           cd dist/ngx-maplibre-gl
           cp ../../README.md ./
           npm publish --access=public
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_ORG_TOKEN}}
       
       - name: Get version
         id: package-version
