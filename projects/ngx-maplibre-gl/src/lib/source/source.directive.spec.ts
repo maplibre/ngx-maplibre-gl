@@ -69,6 +69,7 @@ describe('SourceDirective', () => {
 
     fixture = TestBed.createComponent(TestSourceComponent);
     componentRef = fixture.componentRef;
+    componentRef.setInput('id', 'test-id-1');
     directive = componentRef.instance.sourceDirective;
   }));
 

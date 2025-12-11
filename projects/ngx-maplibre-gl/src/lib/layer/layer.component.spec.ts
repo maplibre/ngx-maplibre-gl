@@ -53,6 +53,8 @@ describe('LayerComponent', () => {
     fixture = TestBed.createComponent(LayerComponent);
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
+    componentRef.setInput('id', 'layerId');
+    componentRef.setInput('type', 'background');
   });
 
   describe('Init/Destroy tests without Source', () => {
