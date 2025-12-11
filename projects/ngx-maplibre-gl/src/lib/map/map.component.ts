@@ -95,7 +95,8 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   /** Init input */
   readonly refreshExpiredTiles = input<MapOptions['refreshExpiredTiles']>();
   /** Init input */
-  readonly canvasContextAttributes = input<MapOptions['canvasContextAttributes']>();
+  readonly canvasContextAttributes =
+    input<MapOptions['canvasContextAttributes']>();
   /** Init input */
   readonly bearingSnap = input<MapOptions['bearingSnap']>();
   /** Init input */
@@ -111,7 +112,8 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   /** Init input */
   readonly maxTileCacheSize = input<MapOptions['maxTileCacheSize']>();
   /** Init input */
-  readonly localIdeographFontFamily = input<MapOptions['localIdeographFontFamily']>();
+  readonly localIdeographFontFamily =
+    input<MapOptions['localIdeographFontFamily']>();
   /** Init input */
   readonly trackResize = input<MapOptions['trackResize']>();
   /** Init input */
@@ -123,7 +125,8 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   /** Init input */
   readonly cooperativeGestures = input<MapOptions['cooperativeGestures']>();
   /** Init input */
-  readonly cancelPendingTileRequestsWhileZooming = input<MapOptions['cancelPendingTileRequestsWhileZooming']>();
+  readonly cancelPendingTileRequestsWhileZooming =
+    input<MapOptions['cancelPendingTileRequestsWhileZooming']>();
   /** Init input */
   readonly centerClampedToGround = input<MapOptions['centerClampedToGround']>();
   /** Init input */
@@ -131,7 +134,8 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   /** Init input */
   readonly maxCanvasSize = input<MapOptions['maxCanvasSize']>();
   /** Init input */
-  readonly maxTileCacheZoomLevels = input<MapOptions['maxTileCacheZoomLevels']>();
+  readonly maxTileCacheZoomLevels =
+    input<MapOptions['maxTileCacheZoomLevels']>();
   /** Init input */
   readonly pixelRatio = input<MapOptions['pixelRatio']>();
   /** Init input */
@@ -165,15 +169,8 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   readonly dragPan = input<MapOptions['dragPan']>();
   /** Dynamic input */
   readonly boxZoom = input<MapOptions['boxZoom']>();
-  /**
-   * Dynamic input
-   *
-   * @deprecated Use `mapStyle` input instead
-   */
-  readonly style = input<MapOptions['style']>();
-  // TODO change to required in next major release
   /** Dynamic input */
-  readonly mapStyle = input<MapOptions['style']>();
+  readonly mapStyle = input.required<MapOptions['style']>();
   /** Dynamic input */
   readonly center = input<MapOptions['center']>();
   /** Dynamic input */
@@ -298,12 +295,6 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
 
   constructor() {
     afterNextRender(() => {
-      if (!this.mapStyle() && !this.style()) {
-        console.error(
-          '[ngx-maplibre-gl] No map style specified. Please provide a valid map style URL or object via the `mapStyle` input (preferred) or the deprecated `style` input.'
-        );
-      }
-
       if (this.canvasContextAttributes()?.preserveDrawingBuffer) {
         // This is to allow better interaction with the map state
         const htmlElement: HTMLElement = this.elementRef.nativeElement;
@@ -328,7 +319,7 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
           maxZoom: this.maxZoom(),
           minPitch: this.minPitch(),
           maxPitch: this.maxPitch(),
-          style: this.mapStyle() || this.style(),
+          style: this.mapStyle(),
           hash: this.hash(),
           interactive: this.interactive(),
           bearingSnap: this.bearingSnap(),
@@ -361,7 +352,8 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
           fitBoundsOptions: this.fitBoundsOptions(),
           locale: this.locale(),
           cooperativeGestures: this.cooperativeGestures(),
-          cancelPendingTileRequestsWhileZooming: this.cancelPendingTileRequestsWhileZooming(),
+          cancelPendingTileRequestsWhileZooming:
+            this.cancelPendingTileRequestsWhileZooming(),
           centerClampedToGround: this.centerClampedToGround(),
           elevation: this.elevation(),
           maplibreLogo: this.maplibreLogo(),
@@ -450,10 +442,6 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
     if (changes.boxZoom && !changes.boxZoom.isFirstChange()) {
       this.mapService.updateBoxZoom(changes.boxZoom.currentValue);
     }
-    // TODO remove deprecated style changes
-    if (changes.style && !changes.style.isFirstChange()) {
-      this.mapService.updateStyle(changes.style.currentValue);
-    }
     if (changes.mapStyle && !changes.mapStyle.isFirstChange()) {
       this.mapService.updateStyle(changes.mapStyle.currentValue);
     }
@@ -501,7 +489,9 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
     } else if (
       (changes.center && !changes.center.isFirstChange()) ||
       (changes.zoom && !changes.zoom.isFirstChange()) ||
-      (changes.bearing && !changes.bearing.isFirstChange() && !changes.fitScreenCoordinates) ||
+      (changes.bearing &&
+        !changes.bearing.isFirstChange() &&
+        !changes.fitScreenCoordinates) ||
       (changes.pitch && !changes.pitch.isFirstChange()) ||
       (changes.roll && !changes.roll.isFirstChange())
     ) {
