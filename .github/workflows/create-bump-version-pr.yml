@@ -20,3 +20,6 @@ jobs:
     uses: maplibre/reusable-workflows/.github/workflows/create-bump-version-pr.yml@main
     with:
       version: ${{ github.event.inputs.release_type }}
+      package-folders: |
+        .
+        projects/ngx-maplibre-gl
