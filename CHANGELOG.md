@@ -1,3 +1,13 @@
+## main
+### ✨ Features and improvements
+- _...Add new stuff here..._
+
+### 🐞 Bug fixes
+- _...Add new stuff here..._
+
+- Use reusable workflows ([#266](https://github.com/maplibre/ngx-maplibre-gl/pull/266)) (by [HarelM](https://github.com/HarelM))
+- Update CHANGELOG to match new workflow sharing convention ([#264](https://github.com/maplibre/ngx-maplibre-gl/pull/264)) (by [HarelM](https://github.com/HarelM))
+- Update npm-publish workflow with permissions ([#262](https://github.com/maplibre/ngx-maplibre-gl/pull/262)) (by [HarelM](https://github.com/HarelM))
 ### Changelog
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
