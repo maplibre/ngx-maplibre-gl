@@ -5,7 +5,7 @@
 ### 🐞 Bug fixes
 - _...Add new stuff here..._
 
-# 20.1.1
+## 20.1.1
 
 - Use reusable workflows ([#266](https://github.com/maplibre/ngx-maplibre-gl/pull/266)) (by [HarelM](https://github.com/HarelM))
 
