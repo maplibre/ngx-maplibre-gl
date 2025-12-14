@@ -3,6 +3,7 @@ name: Publish to NPM
 permissions:
   id-token: write  # Required for trusted publishing
   contents: write
+  attestations: write
 
 on:
   push:
@@ -10,64 +11,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  release-check:
-    name: Check if version changed
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: main
-
-      - name: Use Node.js from nvmrc
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-
-      - name: Check if version changed
-        id: check
-        uses: EndBug/version-check@v2
-
-    outputs:
-      publish: ${{ steps.check.outputs.changed }}
-
-  publish-npm:
-    name: Publish to NPM and GitHub
-    needs: release-check
-    if: ${{ needs.release-check.outputs.publish == 'true' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-          registry-url: https://registry.npmjs.org/
-      - run: npm ci 
-      - run: npm run build
-      - run: |
-          cd dist/ngx-maplibre-gl
-          cp ../../README.md ./
-          npm publish --access=public
-      
-      - name: Get version
-        id: package-version
-        uses: martinbeentjes/npm-get-version-action@v1.3.1
-
-      - name: Tag commit and push
-        id: tag_version
-        uses: mathieudutour/github-tag-action@v6.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          custom_tag: ${{ steps.package-version.outputs.current-version }}
-
-      - name: Create a GitHub Release
-        uses: ncipollo/release-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag: ${{ steps.tag_version.outputs.new_tag }}
-          name: Release ${{ steps.tag_version.outputs.new_tag }}
-          body: ${{ steps.tag_version.outputs.changelog }}
+  release:
+    uses: maplibre/reusable-workflows/.github/workflows/npm-publish.yml@main
+    with:
+      publish-base-dir: dist/ngx-maplibre-gl
+      docs-command: npm ci && npm run build:showcase && npm run docs
+      docs-output-dir: dist/showcase/browser
