@@ -8,7 +8,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve showcase",
-    "build": "ng build --configuration production ngx-maplibre-gl",
+    "build": "ng build --configuration production ngx-maplibre-gl && cp ./README.md ./dist/ngx-maplibre-gl/",
     "build:watch": "ng build --watch ngx-maplibre-gl",
     "build:showcase": "ng build --configuration production showcase --base-href /ngx-maplibre-gl/",
     "build:showcase:local": "ng build --configuration production showcase",
@@ -17,8 +17,7 @@
     "e2e": "ng run showcase:cypress-run",
     "cypress:open": "ng run showcase:cypress-open",
     "docs": "typedoc",
-    "serve:ssr:showcase": "node dist/showcase/server/server.mjs",
-    "changelog": "auto-changelog --unreleased-only"
+    "serve:ssr:showcase": "node dist/showcase/server/server.mjs"
   },
   "private": true,
   "engines": {
@@ -66,7 +65,6 @@
     "@typescript-eslint/eslint-plugin": "^8.49.0",
     "@typescript-eslint/parser": "^8.49.0",
     "angular-cli-ghpages": "^2.0.3",
-    "auto-changelog": "^2.5.0",
     "commitizen": "^4.3.1",
     "cypress": "^14.5.0",
     "eslint": "^9.39.1",
