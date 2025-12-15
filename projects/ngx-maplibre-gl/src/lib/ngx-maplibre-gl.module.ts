@@ -53,7 +53,7 @@ export const NgxMapLibreGLImports = [
   MarkersForClustersComponent,
   TerrainControlDirective,
   SourceDirective,
-];
+] as const;
 
 @NgModule({
   imports: [...NgxMapLibreGLImports],
