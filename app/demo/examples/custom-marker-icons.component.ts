@@ -17,7 +17,7 @@ import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
           <div
             (click)="alert(feature.properties.message)"
             class="marker"
-            [style.backgroundImage]="'url(/assets/ngx-maplibre-gl-red.svg)'"
+            [style.backgroundImage]="'url(assets/ngx-maplibre-gl-red.svg)'"
             [style.width]="feature.properties.iconSize[0] + 'px'"
             [style.height]="feature.properties.iconSize[1] + 'px'"
           ></div>
