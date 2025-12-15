@@ -5,6 +5,10 @@
 ### 🐞 Bug fixes
 - _...Add new stuff here..._
 
+## 20.1.2
+
+- Remove provideAnimations, fix marker url in example and update NgxMapLibreGLImports ([#268](https://github.com/maplibre/ngx-maplibre-gl/pull/268)) (by [marcjulian](https://github.com/marcjulian))
+
 ## 20.1.1
 
 - Use reusable workflows ([#266](https://github.com/maplibre/ngx-maplibre-gl/pull/266)) (by [HarelM](https://github.com/HarelM))
