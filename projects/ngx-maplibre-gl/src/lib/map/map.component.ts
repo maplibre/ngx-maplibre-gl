@@ -359,7 +359,7 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
           transformRequest: this.transformRequest(),
           bounds: this.bounds() ? this.bounds() : this.fitBounds(),
           fitBoundsOptions: this.fitBoundsOptions(),
-          locale: this.locale,
+          locale: this.locale(),
           cooperativeGestures: this.cooperativeGestures(),
           cancelPendingTileRequestsWhileZooming: this.cancelPendingTileRequestsWhileZooming(),
           centerClampedToGround: this.centerClampedToGround(),
