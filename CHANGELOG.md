@@ -5,11 +5,10 @@
 ### 🐞 Bug fixes
 - _...Add new stuff here..._
 
-- feat: angular 21 and set mapStyle to required ([#265](https://github.com/maplibre/ngx-maplibre-gl/pull/265)) (by [marcjulian](https://github.com/marcjulian))
-## 21.0.0
-### ✨ Features and improvements
 
-### 🐞 Bug fixes
+## 21.0.0
+
+- feat: angular 21 and set mapStyle to required ([#265](https://github.com/maplibre/ngx-maplibre-gl/pull/265)) (by [marcjulian](https://github.com/marcjulian))
 
 ## 20.1.2
 
