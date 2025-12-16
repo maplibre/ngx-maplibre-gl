@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["angular:styles/component:css;37331a0864cda46ef21c6b7bfa4cd737705ff2c9fcd4837d84f6db67f84f7147;/home/runner/work/ngx-maplibre-gl/ngx-maplibre-gl/projects/showcase/src/app/shared/layout/layout.component.ts"],
+  "sourcesContent": ["\n      :host {\n        display: flex;\n        flex-direction: column;\n        flex: 1;\n        height: 100vh;\n      }\n\n      mat-toolbar {\n        display: flex;\n        justify-content: space-between;\n        padding: 0 8px 0 0;\n      }\n\n      div {\n        display: flex;\n        height: 100%;\n        align-items: center;\n      }\n\n      .menu-button {\n        height: 100%;\n      }\n\n      .menu-items {\n        display: none;\n      }\n\n      .library-name {\n        display: none;\n      }\n\n      @media (min-width: 640px) {\n        .menu-items {\n          display: flex;\n        }\n\n        .library-name {\n          display: flex;\n        }\n\n        .mobile-menu-button {\n          display: none;\n        }\n      }\n    "],
+  "mappings": "AACM,MACE,QAAS,KACT,eAAgB,OAChB,KAAM,EACN,OAAQ,KACV,CAEA,YACE,QAAS,KACT,gBAAiB,cAVzB,QAWiB,EAAE,IAAI,EAAE,CACnB,CAEA,IACE,QAAS,KACT,OAAQ,KACR,YAAa,MACf,CAEA,CAAC,YACC,OAAQ,IACV,CAEA,CAAC,WAID,CAAC,aAHC,QAAS,IACX,CAMA,OAAO,UAAY,OACjB,CATD,WAaC,CATD,aAMG,QAAS,IACX,CAMA,CAAC,mBACC,QAAS,IACX,CACF",
+  "names": []
+}
