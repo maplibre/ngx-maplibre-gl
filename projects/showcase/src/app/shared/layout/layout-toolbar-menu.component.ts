@@ -1,4 +1,4 @@
-import { CdkPortal, DomPortalOutlet, PortalModule } from '@angular/cdk/portal';
+import { CdkPortal, DomPortalOutlet } from '@angular/cdk/portal';
 import {
   Component,
   OnDestroy,
@@ -10,14 +10,13 @@ import {
 @Component({
   selector: 'showcase-layout-toolbar-menu',
   template: `
-    <ng-template cdk-portal>
-      <ng-content></ng-content>
+    <ng-template cdkPortal>
+      <ng-content />
     </ng-template>
   `,
-  imports: [PortalModule],
+  imports: [CdkPortal],
 })
 export class LayoutToolbarMenuComponent implements OnDestroy {
-
   readonly position = input<'left' | 'right'>();
 
   private portalOutlet: DomPortalOutlet;
@@ -37,6 +36,6 @@ export class LayoutToolbarMenuComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.portalOutlet?.detach()
+    this.portalOutlet?.detach();
   }
 }

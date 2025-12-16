@@ -35,6 +35,7 @@ describe('ImageComponent', () => {
     fixture = TestBed.createComponent(ImageComponent);
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
+    componentRef.setInput('id', 'imageId');
   });
 
   describe('Init/Destroy tests', () => {
@@ -75,7 +76,6 @@ describe('ImageComponent', () => {
 
       fixture.detectChanges();
     });
-
 
     it('should update image', () => {
       component.ngOnChanges({

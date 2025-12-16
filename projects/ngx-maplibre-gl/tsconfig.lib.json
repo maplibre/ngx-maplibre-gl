@@ -12,10 +12,6 @@
     "types": [
       "node",
       "geojson"
-    ],
-    "lib": [
-      "dom",
-      "es2015"
     ]
   },
   "angularCompilerOptions": {

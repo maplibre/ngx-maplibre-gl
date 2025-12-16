@@ -62,10 +62,8 @@ describe('MapComponent', () => {
     fixture.detectChanges();
   });
 
-  // TODO enable when mapStyle input is set to required
-  // doesn't work with optional input
   describe('Init tests', () => {
-    xit('should init with custom inputs', () => {
+    it('should init with custom inputs', () => {
       // Since we don't want to trigger afterNextRender, we need to create the component in a different way
       const componentRef = createComponent(MapComponent, {
         environmentInjector: TestBed.inject(EnvironmentInjector),
