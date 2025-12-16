@@ -5,6 +5,12 @@
 ### 🐞 Bug fixes
 - _...Add new stuff here..._
 
+- feat: angular 21 and set mapStyle to required ([#265](https://github.com/maplibre/ngx-maplibre-gl/pull/265)) (by [marcjulian](https://github.com/marcjulian))
+## 21.0.0
+### ✨ Features and improvements
+
+### 🐞 Bug fixes
+
 ## 20.1.2
 
 - Remove provideAnimations, fix marker url in example and update NgxMapLibreGLImports ([#268](https://github.com/maplibre/ngx-maplibre-gl/pull/268)) (by [marcjulian](https://github.com/marcjulian))

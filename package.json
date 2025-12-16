@@ -1,6 +1,6 @@
 {
   "name": "ngx-maplibre-gl-srcs",
-  "version": "20.1.2",
+  "version": "21.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/maplibre/ngx-maplibre-gl"
