@@ -63,7 +63,7 @@ Then, in your app's main module (or in any other module), import the `MapCompone
 import { Component } from '@angular/core';
 import { MapComponent } from '@maplibre/ngx-maplibre-gl';
 
-@NgModule({
+@Component({
   template: `
     <mgl-map
       [mapStyle]="'https://demotiles.maplibre.org/style.json'"
@@ -84,3 +84,36 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
 })
 export class AppComponent {}
 ```
+
+If you use several components, it will be convenient to import `NgxMapLibreGLModule` instead:
+
+```ts
+import { Component } from '@angular/core';
+import { NgxMapLibreGLModule } from '@maplibre/ngx-maplibre-gl';
+
+@Component({
+  template: `
+    <mgl-map
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
+      [zoom]="[9]"
+      [center]="[-74.5, 40]"
+    >
+      <mgl-control
+        mglNavigation
+        [visualizePitch]="true"
+    />
+    </mgl-map>
+  `,
+  styles: [
+    `
+      mgl-map {
+        height: 100%;
+        width: 100%;
+      }
+    `,
+  ],
+  imports: [NgxMapLibreGLModule]
+})
+export class AppComponent {}
+```
+
