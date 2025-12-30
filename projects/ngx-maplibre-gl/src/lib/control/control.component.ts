@@ -21,7 +21,7 @@ export class CustomControl implements IControl {
 
   /** @inheritdoc */
   onRemove() {
-    return this.container.parentNode!.removeChild(this.container);
+    return this.container.parentNode?.removeChild(this.container);
   }
 
   /** @inheritdoc */
