@@ -2,13 +2,16 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/app",
-    "resolveJsonModule": true,
-    "types": ["geojson", "node"]
+    "types": [
+      "node",
+      "geojson"
+    ]
   },
-  "angularCompilerOptions": {
-    "fullTemplateTypeCheck": true,
-    "preserveWhitespaces": false
-  },
-  "files": ["src/main.ts", "src/main.server.ts", "server.ts"],
-  "include": ["src/**/*.d.ts"]
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "src/**/*.spec.ts"
+  ]
 }
+

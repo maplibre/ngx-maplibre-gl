@@ -1,29 +1,25 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { of } from 'rxjs';
-import { MapService } from '../map/map.service';
-import { MarkerComponent } from '../marker/marker.component';
-import { PopupComponent } from './popup.component';
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { of } from "rxjs";
+import { MapService } from "../map/map.service";
+import { MarkerComponent } from "../marker/marker.component";
+import { PopupComponent } from "./popup.component";
 
-const getMapServiceStub = () =>
-  jasmine.createSpyObj(
-    [
-      'addMarker',
-      'removeMarker',
-      'removePopupFromMap',
-      'createPopup',
-      'addPopupToMarker',
-    ],
-    {
-      mapCreated$: of(true),
-    }
-  );
+export const getMapServiceStub = () => ({
+  addMarker: vi.fn(),
+  removeMarker: vi.fn(),
+  removePopupFromMap: vi.fn(),
+  createPopup: vi.fn(),
+  addPopupToMarker: vi.fn(),
+
+  mapCreated$: of(true),
+});
 
 @Component({
   template: `
     @if (show()) {
-      <mgl-marker [lngLat]="[0, 0]" #myMarker> ... </mgl-marker>
-      <mgl-popup [marker]="myMarker"> Hello from marker! </mgl-popup>
+    <mgl-marker [lngLat]="[0, 0]" #myMarker> ... </mgl-marker>
+    <mgl-popup [marker]="myMarker"> Hello from marker! </mgl-popup>
     }
   `,
   imports: [MarkerComponent, PopupComponent],
@@ -33,35 +29,33 @@ class MarkerPopupTestComponent {
   show = signal(true);
 }
 
-describe('PopupComponent', () => {
-  let mapServiceStub: jasmine.SpyObj<MapService>;
+describe("PopupComponent", () => {
+  let mapServiceStub: ReturnType<typeof getMapServiceStub>;
   let component: MarkerPopupTestComponent;
   let fixture: ComponentFixture<MarkerPopupTestComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     mapServiceStub = getMapServiceStub();
-    mapServiceStub.createPopup.and.returnValue({} as any);
-    mapServiceStub.addMarker.and.returnValue({} as any);
-    TestBed.configureTestingModule({
+    mapServiceStub.createPopup.mockReturnValue({});
+    mapServiceStub.addMarker.mockReturnValue({});
+    await TestBed.configureTestingModule({
       imports: [MarkerPopupTestComponent],
-    })
-      .overrideComponent(MarkerPopupTestComponent, {
-        set: {
-          providers: [{ provide: MapService, useValue: mapServiceStub }],
-        },
-      })
-      .compileComponents();
-  }));
+    }).overrideComponent(MarkerPopupTestComponent, {
+      set: {
+        providers: [{ provide: MapService, useValue: mapServiceStub }],
+      },
+    });
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MarkerPopupTestComponent);
     component = fixture.componentInstance;
   });
 
-  describe('Init/Destroy tests', () => {
-    it('should remove the popup when marker is removed', () => {
+  describe("Init/Destroy tests", () => {
+    it("should remove the popup when marker is removed", () => {
       fixture.detectChanges();
-      component.show.set(false)
+      component.show.set(false);
       fixture.detectChanges();
       expect(mapServiceStub.removePopupFromMap).toHaveBeenCalled();
     });
