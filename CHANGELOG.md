@@ -5,12 +5,16 @@
 ### 🐞 Bug fixes
 - _...Add new stuff here..._
 
-- Replace "!" with "?" in control component ([#273](https://github.com/maplibre/ngx-maplibre-gl/pull/273)) (by [HarelM](https://github.com/HarelM))
-- docs: Add example for module import ([#272](https://github.com/maplibre/ngx-maplibre-gl/pull/272)) (by [mikael-akvifar](https://github.com/mikael-akvifar))
+
 ## 21.0.1
+
 ### ✨ Features and improvements
 
+- docs: Add example for module import ([#272](https://github.com/maplibre/ngx-maplibre-gl/pull/272)) (by [mikael-akvifar](https://github.com/mikael-akvifar))
+
 ### 🐞 Bug fixes
+
+- Replace "!" with "?" in control component ([#273](https://github.com/maplibre/ngx-maplibre-gl/pull/273)) (by [HarelM](https://github.com/HarelM))
 
 
 ## 21.0.0
