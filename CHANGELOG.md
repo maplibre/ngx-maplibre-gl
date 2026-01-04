@@ -6,6 +6,17 @@
 - _...Add new stuff here..._
 
 
+## 21.0.1
+
+### ✨ Features and improvements
+
+- docs: Add example for module import ([#272](https://github.com/maplibre/ngx-maplibre-gl/pull/272)) (by [mikael-akvifar](https://github.com/mikael-akvifar))
+
+### 🐞 Bug fixes
+
+- Replace "!" with "?" in control component ([#273](https://github.com/maplibre/ngx-maplibre-gl/pull/273)) (by [HarelM](https://github.com/HarelM))
+
+
 ## 21.0.0
 
 - feat: angular 21 and set mapStyle to required ([#265](https://github.com/maplibre/ngx-maplibre-gl/pull/265)) (by [marcjulian](https://github.com/marcjulian))
