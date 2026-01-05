@@ -121,7 +121,7 @@
           "builder": "@angular/build:karma",
           "options": {
             "main": "projects/showcase/src/test.ts",
-            "polyfills": "projects/showcase/src/polyfills.ts",
+            "polyfills": ["projects/showcase/src/polyfills.ts"],
             "tsConfig": "projects/showcase/tsconfig.spec.json",
             "karmaConfig": "projects/showcase/karma.conf.js",
             "styles": ["projects/showcase/src/styles.css"],

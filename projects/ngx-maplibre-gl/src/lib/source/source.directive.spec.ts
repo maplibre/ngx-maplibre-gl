@@ -13,6 +13,7 @@ import { of, tap } from 'rxjs';
 import { MapService } from '../map/map.service';
 import { SourceDirective } from './source.directive';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { VectorSourceSpecification } from 'maplibre-gl';
 
 const getMapServiceStub = () =>
   jasmine.createSpyObj(['removeSource', 'addSource', 'getSource'], {
@@ -88,17 +89,14 @@ describe('SourceDirective', () => {
 
     expect(mapServiceStub.removeSource).toHaveBeenCalledOnceWith('test-id-1');
     expect(mapServiceStub.addSource).toHaveBeenCalledTimes(2);
+    const  vector: VectorSourceSpecification = { type: 'vector' };
     expect(mapServiceStub.addSource.calls.argsFor(0)).toEqual([
       'test-id-1',
-      {
-        type: 'vector',
-      },
+      vector,
     ]);
     expect(mapServiceStub.addSource.calls.argsFor(1)).toEqual([
       'test-id-2',
-      {
-        type: 'vector',
-      },
+      vector,
     ]);
   });
 });
