@@ -1,18 +1,20 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { of } from 'rxjs';
-import { MapService } from '../../map/map.service';
-import { GeoJSONSourceComponent } from './geojson-source.component';
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { of } from "rxjs";
+import { MapService } from "../../map/map.service";
+import { GeoJSONSourceComponent } from "./geojson-source.component";
 
-const getMapServiceStub = () =>
-  jasmine.createSpyObj(['addSource', 'removeSource'], {
-    mapLoaded$: of(true),
-    mapInstance: new (class {
-      on() {}
-      off() {}
-      getLayer() {}
-    })(),
-  });
+export const getMapServiceStub = () => ({
+  addSource: vi.fn(),
+  removeSource: vi.fn(),
+
+  mapLoaded$: of(true),
+  mapInstance: {
+    on: vi.fn(),
+    off: vi.fn(),
+    getLayer: vi.fn(),
+  },
+});
 
 @Component({
   template: `
@@ -24,48 +26,46 @@ const getMapServiceStub = () =>
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class GeoJSONSourceTestComponent {
-  private show = signal<boolean>(true);
+  readonly show = signal<boolean>(true);
 
   public toggle() {
     this.show.set(!this.show());
   }
 }
 
-describe('GeoJSONSourceComponent', () => {
-  let mapServiceStub: jasmine.SpyObj<MapService>;
+describe("GeoJSONSourceComponent", () => {
+  let mapServiceStub: ReturnType<typeof getMapServiceStub>;
   let component: GeoJSONSourceTestComponent;
   let fixture: ComponentFixture<GeoJSONSourceTestComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     mapServiceStub = getMapServiceStub();
 
     TestBed.configureTestingModule({
       imports: [GeoJSONSourceTestComponent],
       providers: [{ provide: MapService, useValue: mapServiceStub }],
-    })
-      .overrideComponent(GeoJSONSourceTestComponent, {
-        set: {
-          providers: [{ provide: MapService, useValue: mapServiceStub }],
-        },
-      })
-      .compileComponents();
-  }));
+    }).overrideComponent(GeoJSONSourceTestComponent, {
+      set: {
+        providers: [{ provide: MapService, useValue: mapServiceStub }],
+      },
+    });
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(GeoJSONSourceTestComponent);
     component = fixture.componentInstance;
   });
 
-  describe('Init/Destroy tests', () => {
+  describe("Init/Destroy tests", () => {
     beforeEach(() => {
       fixture.detectChanges();
     });
 
-    it('should call add source when init', () => {
+    it("should call add source when init", () => {
       expect(mapServiceStub.addSource).toHaveBeenCalled();
     });
 
-    it('should remove source on destroy', () => {
+    it("should remove source on destroy", () => {
       component.toggle();
       fixture.detectChanges();
       expect(mapServiceStub.removeSource).toHaveBeenCalled();

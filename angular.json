@@ -11,23 +11,21 @@
       "architect": {
         "build": {
           "builder": "@angular/build:ng-packagr",
-          "options": {
-            "tsConfig": "projects/ngx-maplibre-gl/tsconfig.lib.json",
-            "project": "projects/ngx-maplibre-gl/ng-package.json"
-          },
           "configurations": {
             "production": {
-              "project": "projects/ngx-maplibre-gl/ng-package.prod.json",
               "tsConfig": "projects/ngx-maplibre-gl/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ngx-maplibre-gl/tsconfig.lib.json"
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/ngx-maplibre-gl/src/test.ts",
             "tsConfig": "projects/ngx-maplibre-gl/tsconfig.spec.json",
-            "karmaConfig": "projects/ngx-maplibre-gl/karma.conf.js"
+            "runnerConfig": "projects/ngx-maplibre-gl/vite.config.ts"
           }
         },
         "lint": {
@@ -117,21 +115,7 @@
             "buildTarget": "showcase:build"
           }
         },
-        "test": {
-          "builder": "@angular/build:karma",
-          "options": {
-            "main": "projects/showcase/src/test.ts",
-            "polyfills": "projects/showcase/src/polyfills.ts",
-            "tsConfig": "projects/showcase/tsconfig.spec.json",
-            "karmaConfig": "projects/showcase/karma.conf.js",
-            "styles": ["projects/showcase/src/styles.css"],
-            "scripts": [],
-            "assets": [
-              "projects/showcase/src/favicon.ico",
-              "projects/showcase/src/assets"
-            ]
-          }
-        },
+
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {

@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -11,12 +10,12 @@ import {
   input,
   output,
   signal,
-} from '@angular/core';
-import { fromEvent } from 'rxjs';
-import { filter, startWith, switchMap } from 'rxjs/operators';
-import { MapService } from '../map/map.service';
-import type { MapImageData, MapImageOptions } from '../map/map.types';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+} from "@angular/core";
+import { fromEvent } from "rxjs";
+import { filter, startWith, switchMap } from "rxjs/operators";
+import { MapService } from "../map/map.service";
+import type { MapImageData, MapImageOptions } from "../map/map.types";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 /**
  * `mgl-image` - an image component
@@ -50,15 +49,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
  * ```
  */
 @Component({
-  selector: 'mgl-image',
-  template: '',
+  selector: "mgl-image",
+  template: "",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageComponent implements OnInit, OnChanges, OnDestroy {
   /** Init injection */
   private readonly mapService = inject(MapService);
   private readonly destroyRef = inject(DestroyRef);
-  private readonly zone = inject(NgZone);
 
   /** Init input */
   readonly id = input.required<string>();
@@ -83,7 +81,7 @@ export class ImageComponent implements OnInit, OnChanges, OnDestroy {
     this.mapService.mapLoaded$
       .pipe(
         switchMap(() =>
-          fromEvent(this.mapService.mapInstance, 'styledata').pipe(
+          fromEvent(this.mapService.mapInstance, "styledata").pipe(
             startWith(undefined),
             filter(
               () =>
@@ -109,7 +107,7 @@ export class ImageComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.removeImage()
+    this.removeImage();
   }
 
   removeImage() {
@@ -131,13 +129,9 @@ export class ImageComponent implements OnInit, OnChanges, OnDestroy {
         await this.mapService.loadAndAddImage(this.id(), url, this.options());
         this.isAdded.set(true);
         this.isAdding.set(false);
-        this.zone.run(() => {
-          this.imageLoaded.emit();
-        });
+        this.imageLoaded.emit();
       } catch (error) {
-        this.zone.run(() => {
-          this.imageError.emit(error as any);
-        });
+        this.imageError.emit(error as any);
       }
     }
   }

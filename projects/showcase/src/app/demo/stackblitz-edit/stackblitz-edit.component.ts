@@ -1,28 +1,30 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient } from "@angular/common/http";
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
-  NgZone,
-  OnDestroy, viewChild, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import StackBlitzSDK, { VM } from '@stackblitz/sdk';
-import { Subscription, forkJoin, from, of } from 'rxjs';
-import { finalize, shareReplay, switchMap, tap } from 'rxjs/operators';
-import { createStackblitzProject } from './create-stackblitz-project';
-import { DemoFileLoaderService } from './demo-file-loader.service';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+  OnDestroy,
+  viewChild,
+  inject,
+} from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import StackBlitzSDK, { VM } from "@stackblitz/sdk";
+import { Subscription, forkJoin, from, of } from "rxjs";
+import { finalize, shareReplay, switchMap, tap } from "rxjs/operators";
+import { createStackblitzProject } from "./create-stackblitz-project";
+import { DemoFileLoaderService } from "./demo-file-loader.service";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 @Component({
   template: `
     <div #container></div>
     @if (loading) {
-      <div class="loader">
-        <mat-spinner></mat-spinner>
-        <div></div>
-      </div>
+    <div class="loader">
+      <mat-spinner></mat-spinner>
+      <div></div>
+    </div>
     }
   `,
   styles: [
@@ -49,11 +51,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   imports: [MatProgressSpinnerModule],
 })
 export class StackblitzEditComponent implements AfterViewInit, OnDestroy {
-  stackblitzContainer = viewChild.required<ElementRef<HTMLDivElement>>('container');
+  stackblitzContainer =
+    viewChild.required<ElementRef<HTMLDivElement>>("container");
 
   loading = true;
 
-  private zone = inject(NgZone);
   private activatedRoute = inject(ActivatedRoute);
   private demoFileLoaderService = inject(DemoFileLoaderService);
   private http = inject(HttpClient);
@@ -62,11 +64,11 @@ export class StackblitzEditComponent implements AfterViewInit, OnDestroy {
   private sub: Subscription;
   private vm: VM;
   private projectbase$ = forkJoin([
-    this.http.get('assets/stackblitz/main.notts', {
-      responseType: 'text',
+    this.http.get("assets/stackblitz/main.notts", {
+      responseType: "text",
     }),
-    this.http.get('assets/stackblitz/angular.json', {
-      responseType: 'text',
+    this.http.get("assets/stackblitz/angular.json", {
+      responseType: "text",
     }),
   ]).pipe(shareReplay(1));
 
@@ -119,17 +121,15 @@ export class StackblitzEditComponent implements AfterViewInit, OnDestroy {
       demoFiles,
       exampleName
     );
-    await this.zone.runOutsideAngular(async () => {
-      this.vm = await StackBlitzSDK.embedProject(
-        this.stackblitzContainer().nativeElement,
-        project,
-        {
-          hideExplorer: true,
-          hideNavigation: true,
-          forceEmbedLayout: true,
-          openFile: 'src/demo.ts',
-        }
-      );
-    });
+    this.vm = await StackBlitzSDK.embedProject(
+      this.stackblitzContainer().nativeElement,
+      project,
+      {
+        hideExplorer: true,
+        hideNavigation: true,
+        forceEmbedLayout: true,
+        openFile: "src/demo.ts",
+      }
+    );
   }
 }

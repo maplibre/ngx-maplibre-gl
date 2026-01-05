@@ -1,5 +1,5 @@
-import { OutputEmitterRef, NgZone } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { OutputEmitterRef } from "@angular/core";
+import { TestBed } from "@angular/core/testing";
 import {
   Map,
   MapLibreEvent,
@@ -11,56 +11,47 @@ import {
   MapStyleDataEvent,
   MapTouchEvent,
   MapWheelEvent,
-  StyleSpecification, SourceSpecification, MapGeoJSONFeature,
-} from 'maplibre-gl';
-import { MapService, SetupLayer } from './map.service';
-import { MapEvent, EventData, type LayerEvents } from './map.types';
-import { MockNgZone } from './mock-ng-zone';
+  StyleSpecification,
+  SourceSpecification,
+  MapGeoJSONFeature,
+} from "maplibre-gl";
+import { MapService, SetupLayer } from "./map.service";
+import { MapEvent, EventData, type LayerEvents } from "./map.types";
 
-const countries = require('./countries.geo.json'); // eslint-disable-line @typescript-eslint/no-require-imports
+import countries from "./countries.geo.json" assert { type: "json" };
 
 const geoJSONStyle: StyleSpecification = {
   sources: {
     world: {
-      type: 'geojson',
-      data: countries,
+      type: "geojson",
+      data: countries as any,
     },
   },
   version: 8,
   layers: [
     {
-      id: 'countries',
-      type: 'fill',
-      source: 'world',
+      id: "countries",
+      type: "fill",
+      source: "world",
       layout: {},
       paint: {
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        'fill-color': '#6F788A',
+        "fill-color": "#6F788A",
       },
     },
   ],
 };
 
-describe('MapService', () => {
+describe("MapService", () => {
   let container: HTMLElement;
   let mapEvents: MapEvent;
   let mapService: MapService;
-  let zone: MockNgZone;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        MapService,
-        {
-          provide: NgZone,
-          useFactory: () => {
-            zone = new MockNgZone();
-            return zone;
-          },
-        },
-      ],
+      providers: [MapService],
     });
-    container = document.createElement('div');
+    container = document.createElement("div");
     mapService = TestBed.inject(MapService);
 
     TestBed.runInInjectionContext(() => {
@@ -164,79 +155,79 @@ describe('MapService', () => {
       },
       mapEvents,
     });
-    zone.simulateZoneExit();
   });
 
-  it('should create a map', () => {
+  it("should create a map", () => {
     expect(mapService.mapInstance).toBeTruthy();
   });
 
-  it('should fire mapLoad event', (done: DoneFn) => {
+  it("should fire mapLoad event", () => {
     mapEvents.mapLoad.subscribe(() => {
       expect(true).toBe(true);
-      done();
     });
   });
 
-  it('should update minZoom', (done: DoneFn) => {
+  it("should update minZoom", () => {
     mapEvents.mapLoad.subscribe(() => {
       mapService.updateMinZoom(6);
       expect(mapService.mapInstance.getMinZoom()).toEqual(6);
-      done();
     });
   });
 
-  it('should update minPitch', (done: DoneFn) => {
+  it("should update minPitch", () => {
     mapEvents.mapLoad.subscribe(() => {
       mapService.updateMinPitch(15);
       expect(mapService.mapInstance.getMinPitch()).toEqual(15);
-      done();
     });
   });
 
-  it('should update maxPitch', (done: DoneFn) => {
+  it("should update maxPitch", () => {
     mapEvents.mapLoad.subscribe(() => {
       mapService.updateMaxPitch(25);
       expect(mapService.mapInstance.getMaxPitch()).toEqual(25);
-      done();
     });
   });
 
-  it('should unsubscribe from events on destroy', async () => {
-    const container = document.createElement('div');
+  it("should unsubscribe from events on destroy", async () => {
+    const container = document.createElement("div");
     const popupEvents = {
-      popupOpen: { emit: jasmine.createSpy() },
-      popupClose: { emit: jasmine.createSpy() },
+      popupOpen: { emit: vi.fn() },
+      popupClose: { emit: vi.fn() },
     } as any;
-    const popup = mapService.createPopup({
-      popupOptions: {},
-      popupEvents
-    }, container);
+    const popup = mapService.createPopup(
+      {
+        popupOptions: {},
+        popupEvents,
+      },
+      container
+    );
     mapService.addPopupToMap(popup, [0, 0]);
     mapService.removePopupFromMap(popup);
-    popup.fire('close');
+    popup.fire("close");
     expect(popupEvents.popupClose.emit).not.toHaveBeenCalled();
   });
 
-  describe('layer handling', () => {
-    it('should unsubscribe from events on removeLayer via source', (done: DoneFn) => {
-      spyOn(mapService.mapInstance, 'queryRenderedFeatures').and.returnValue([{} as MapGeoJSONFeature]);
+  describe("layer handling", () => {
+    it("should unsubscribe from events on removeLayer via source", () => {
+      vi.spyOn(mapService.mapInstance, "queryRenderedFeatures").mockReturnValue(
+        [{} as MapGeoJSONFeature]
+      );
 
       const sourceData: SourceSpecification = {
-        "type": "geojson",
-        "data": {
-          "type": "FeatureCollection",
-          "features": []
-        }
-      }
+        type: "geojson",
+        data: {
+          type: "FeatureCollection",
+          features: [],
+        },
+      };
       const layerEventThatShouldNotEmit = {
         ...createLayerEvents(),
-        layerClick: { emit: jasmine.createSpy() } as any,
+        layerClick: { emit: vi.fn() } as any,
       };
       const layer: SetupLayer = {
         layerOptions: {
-          type: 'fill',
-          id: 'layerId',
+          type: "fill",
+          id: "layerId",
           source: "sourceId",
           paint: {},
         },
@@ -244,8 +235,8 @@ describe('MapService', () => {
       };
       const layer2: SetupLayer = {
         layerOptions: {
-          type: 'fill',
-          id: 'layerId',
+          type: "fill",
+          id: "layerId",
           source: "sourceId",
           paint: {},
         },
@@ -260,22 +251,25 @@ describe('MapService', () => {
         mapService.addLayer(layer2, true);
         click(mapService.mapInstance.getCanvas());
         expect(layer.layerEvents.layerClick.emit).not.toHaveBeenCalled();
-        done();
       });
     });
   });
 });
 
 function click(target: HTMLElement | Window | Element) {
-  const options = {bubbles: true};
-  target.dispatchEvent(new MouseEvent('mousedown', options));
-  target.dispatchEvent(new MouseEvent('mouseup', options));
-  target.dispatchEvent(new MouseEvent('click', options));
+  const options = { bubbles: true };
+  target.dispatchEvent(new MouseEvent("mousedown", options));
+  target.dispatchEvent(new MouseEvent("mouseup", options));
+  target.dispatchEvent(new MouseEvent("click", options));
 }
 
 function createLayerEvents(): LayerEvents {
-  const mockEmit = { emit: () => {return;}};
-  return  {
+  const mockEmit = {
+    emit: () => {
+      return;
+    },
+  };
+  return {
     layerClick: mockEmit as any,
     layerDblClick: mockEmit as any,
     layerMouseOver: mockEmit as any,
