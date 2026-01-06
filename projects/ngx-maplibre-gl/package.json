@@ -22,7 +22,7 @@
   "peerDependencies": {
     "@angular/common": ">= 21.0.0",
     "@angular/core": ">= 21.0.0",
-    "maplibre-gl": ">= 5.0.0",
+    "maplibre-gl": ">= 5.15.0",
     "rxjs": ">= 7.8.1"
   }
 }
