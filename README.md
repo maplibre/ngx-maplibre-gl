@@ -21,7 +21,7 @@ This is a fork of [ngx-mapbox-gl](https://github.com/Wykks/ngx-mapbox-gl) and I 
 
 ### API Documentation
 
-[The API documentation can be found here](https://maplibre.org/ngx-maplibre-gl/API/modules.html).
+[The API documentation can be found here](https://maplibre.org/ngx-maplibre-gl/API/).
 
 ## How to start
 
