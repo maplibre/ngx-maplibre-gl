@@ -5,12 +5,11 @@
 ### 🐞 Bug fixes
 - _...Add new stuff here..._
 
-- Update README.md ([#279](https://github.com/maplibre/ngx-maplibre-gl/pull/279)) (by [ricardovg4](https://github.com/ricardovg4))
 ## 21.0.2
+
 ### ✨ Features and improvements
 
-### 🐞 Bug fixes
-
+- Update maplibre-gl dependency ([#278](https://github.com/maplibre/ngx-maplibre-gl/pull/278)) (by [JJKHub](https://github.com/JJKHub))
 
 ## 21.0.1
 
