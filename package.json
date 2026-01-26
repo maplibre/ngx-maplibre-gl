@@ -36,7 +36,7 @@
     "@angular/ssr": "^21.0.3",
     "@stackblitz/sdk": "^1.11.0",
     "express": "^5.2.1",
-    "lodash-es": "^4.17.21",
+    "lodash-es": "^4.17.23",
     "maplibre-gl": "^5.15.0",
     "rxjs": "^7.8.2",
     "scroll-into-view-if-needed": "^3.1.0",
