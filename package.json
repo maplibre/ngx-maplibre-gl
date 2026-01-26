@@ -63,7 +63,7 @@
     "@types/pngjs": "^6.0.5",
     "@typescript-eslint/eslint-plugin": "^8.49.0",
     "@typescript-eslint/parser": "^8.49.0",
-    "angular-cli-ghpages": "^2.0.3",
+    "angular-cli-ghpages": "^3.0.2",
     "commitizen": "^4.3.1",
     "cypress": "^14.5.0",
     "eslint": "^9.39.1",
