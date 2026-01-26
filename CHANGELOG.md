@@ -5,6 +5,11 @@
 ### 🐞 Bug fixes
 - _...Add new stuff here..._
 
+## 21.0.2
+
+### ✨ Features and improvements
+
+- Update maplibre-gl dependency ([#278](https://github.com/maplibre/ngx-maplibre-gl/pull/278)) (by [JJKHub](https://github.com/JJKHub))
 
 ## 21.0.1
 

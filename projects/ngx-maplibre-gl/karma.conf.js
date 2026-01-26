@@ -29,5 +29,15 @@ module.exports = function (config) {
     browsers: ['Chrome'],
     singleRun: false,
     files: ['../../node_modules/maplibre-gl/dist/maplibre-gl.css'],
+    customLaunchers: {
+      ChromeHeadlessCI: {
+        base: "ChromeHeadless",
+        flags: [
+          "--no-sandbox",
+          "--enable-unsafe-swiftshader",
+        ],
+        debug: true,
+      },
+    },
   });
 };
