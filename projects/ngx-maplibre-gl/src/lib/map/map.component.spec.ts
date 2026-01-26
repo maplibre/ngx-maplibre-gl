@@ -55,24 +55,26 @@ describe('MapComponent', () => {
 
   beforeEach(async () => {
     fixture = TestBed.createComponent(MapComponent);
-    component = fixture.debugElement.componentInstance;
-    await fixture.whenStable();
     componentRef = fixture.componentRef;
     componentRef.setInput('mapStyle', 'mapStyle');
+    component = fixture.debugElement.componentInstance;
+    await fixture.whenStable();
     fixture.detectChanges();
   });
 
   describe('Init tests', () => {
     it('should init with custom inputs', () => {
+      const callCount = mapServiceStub.setup.calls.count();
+
       // Since we don't want to trigger afterNextRender, we need to create the component in a different way
       const componentRef = createComponent(MapComponent, {
         environmentInjector: TestBed.inject(EnvironmentInjector),
       });
       componentRef.setInput('mapStyle', 'mapStyle');
       TestBed.inject(ApplicationRef).attachView(componentRef.hostView);
-      expect(mapServiceStub.setup.calls.count()).toBe(0);
+      expect(mapServiceStub.setup.calls.count()).toBe(callCount);
       TestBed.inject(ApplicationRef).tick();
-      expect(mapServiceStub.setup.calls.count()).toBe(1);
+      expect(mapServiceStub.setup.calls.count()).toBe(callCount+1);
       expect(
         mapServiceStub.setup.calls.first().args[0].mapOptions.style
       ).toEqual('mapStyle');
