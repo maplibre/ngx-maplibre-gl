@@ -29,10 +29,12 @@ export function currentUncaughtErrors(): string[] {
 /**
  * Records everything the app logs through `console.error` / `console.warn`.
  *
- * Deliberately a `window.console` spy rather than Playwright's `page.on('console')`:
- * the latter also surfaces browser-internal chatter the app has no control over
- * (GPU driver performance warnings, failed third-party resource loads), which would
- * fail these specs for reasons unrelated to the library.
+ * Playwright's `page.on('console')` is the more idiomatic API, but it reports
+ * browser-emitted messages too - notably Chromium's "GPU stall due to ReadPixels"
+ * warnings, which our own canvas snapshots provoke. Those cannot be filtered out
+ * reliably: `ConsoleMessage.location()` gives them the page URL, exactly like a
+ * message the app logged itself. Spying on `window.console` instead answers the
+ * question these specs actually ask - did the demo log anything?
  */
 function spyOnConsole(page: Page) {
   return page.addInitScript(() => {

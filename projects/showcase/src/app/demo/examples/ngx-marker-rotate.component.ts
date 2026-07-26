@@ -5,9 +5,7 @@ import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [mapStyle]="
-        'https://tiles.openfreemap.org/styles/liberty'
-      "
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[5]"
       [center]="[144.946457, -37.840935]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"

@@ -9,9 +9,7 @@ import {
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [mapStyle]="
-        'https://tiles.openfreemap.org/styles/liberty'
-      "
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[2]"
       [center]="[-100.486052, 37.830348]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"

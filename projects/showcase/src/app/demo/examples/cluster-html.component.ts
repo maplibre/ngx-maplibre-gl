@@ -167,9 +167,7 @@ const MAG5 = ['>=', ['get', 'mag'], 5];
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [mapStyle]="
-        'https://tiles.openfreemap.org/styles/liberty'
-      "
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[0.3]"
       [center]="[0, 20]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"

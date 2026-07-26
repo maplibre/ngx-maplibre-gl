@@ -66,17 +66,17 @@ export class LanguageSwitchComponent {
     const map = this.map();
     if (!map) return;
     map.setLayoutProperty(
-      'country_1',
+      'label_country_1',
       'text-field',
       '{name:' + language + '}',
     );
     map.setLayoutProperty(
-      'country_2',
+      'label_country_2',
       'text-field',
       '{name:' + language + '}',
     );
     map.setLayoutProperty(
-      'country_3',
+      'label_country_3',
       'text-field',
       '{name:' + language + '}',
     );

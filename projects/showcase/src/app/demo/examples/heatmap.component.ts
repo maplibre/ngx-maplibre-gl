@@ -11,9 +11,7 @@ import { httpResource } from '@angular/common/http';
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [mapStyle]="
-        'https://tiles.openfreemap.org/styles/liberty'
-      "
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[3]"
       [center]="[-103.59179687498357, 40.66995747013945]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"

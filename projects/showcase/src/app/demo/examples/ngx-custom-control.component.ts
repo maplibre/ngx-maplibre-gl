@@ -15,9 +15,7 @@ import {
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [mapStyle]="
-        'https://tiles.openfreemap.org/styles/liberty'
-      "
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       @if (visible()) {

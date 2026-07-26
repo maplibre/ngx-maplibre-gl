@@ -11,9 +11,7 @@ import {
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [mapStyle]="
-        'https://tiles.openfreemap.org/styles/liberty'
-      "
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[3]"
       [center]="[-100.04, 38.907]"
       [cursorStyle]="cursorStyle()"
