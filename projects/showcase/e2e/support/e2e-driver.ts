@@ -2,10 +2,16 @@ import { PNG } from 'pngjs';
 import { afterEach } from './fixtures';
 import { PlaywrightHelper } from './playwright-helper';
 import {
+  diffPixels,
   MapLibreAssertable,
   type MapSnapshot,
   type MapSnapshotQuery,
 } from './maplibre-assertable';
+
+/** How long to wait for the canvas to stop changing before giving up. */
+const STABILITY_TIMEOUT_MS = 30_000;
+/** Gap between the two readbacks that have to match for the map to count as settled. */
+const STABILITY_INTERVAL_MS = 500;
 
 /**
  * Console output no demo can do anything about, so it must not fail a test.
@@ -54,6 +60,34 @@ export class E2eDriver {
 
     waitForBasemapSpriteResponse: () =>
       this.helper.when.waitForResponse('basemap-sprite'),
+
+    /**
+     * Captures a baseline the rest of a spec compares against, once the canvas
+     * has actually stopped changing.
+     *
+     * `waitForMapToIdle` is not enough on its own: `data-idle` is left behind by
+     * a *previous* idle, so it can already be set while the map is still
+     * settling. A baseline taken then is transient, and every later comparison
+     * measures against a frame the map will never show again - which is how a
+     * `shouldEqualSnapshot` ends up never converging.
+     */
+    captureStableSnapshot: async (): Promise<MapSnapshot> => {
+      let previous = await this.get.imageSnapshot().get();
+      const deadline = Date.now() + STABILITY_TIMEOUT_MS;
+      while (true) {
+        await this.helper.when.wait(STABILITY_INTERVAL_MS);
+        const current = await this.get.imageSnapshot().get();
+        if (diffPixels(previous, current) === 0) {
+          return current;
+        }
+        if (Date.now() >= deadline) {
+          throw new Error(
+            'The map never stopped changing, so no stable baseline could be captured.'
+          );
+        }
+        previous = current;
+      }
+    },
 
     /** Waits for `mgl-map` to report a completed `load` event. */
     waitForMapLoaded: () => this.then(this.get.mapObjectLoaded()).shouldExist(),

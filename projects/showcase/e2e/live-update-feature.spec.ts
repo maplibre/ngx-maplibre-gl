@@ -8,7 +8,9 @@ describe('Live update feature', () => {
 
   test('keeps redrawing the map as the feature grows', async () => {
     await when.visitMapPage('/demo/live-update-feature');
-    // This demo pans continuously, so it never goes idle - wait for load instead.
+    // This demo pans continuously, so it never goes idle and never settles -
+    // wait for load and take the frame as-is. That the map keeps changing is
+    // exactly what this spec asserts.
     await when.waitForMapLoaded();
     const initialImageSnapshot = await get.imageSnapshot().get();
 

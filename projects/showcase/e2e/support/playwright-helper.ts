@@ -119,6 +119,8 @@ export class PlaywrightHelper {
   public when = {
     visit: (url: string) => this.page.goto(url),
 
+    wait: (ms: number) => this.page.waitForTimeout(ms),
+
     click: (testId: string) => this.testId(testId).click(),
 
     clickBySelector: (selector: string) =>

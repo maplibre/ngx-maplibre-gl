@@ -11,7 +11,7 @@ describe('Toggle layers', () => {
   beforeEach(async () => {
     await when.visitMapPage('/demo/toggle-layers');
     await when.waitForMapToIdle();
-    initialImageSnapshot = await get.imageSnapshot().get();
+    initialImageSnapshot = await when.captureStableSnapshot();
   });
 
   test('changes the map when the "countries names" button is clicked', async () => {

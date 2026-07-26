@@ -11,7 +11,7 @@ describe('Zoom to linestring', () => {
   beforeEach(async () => {
     await when.visitMapPage('/demo/zoomto-linestring');
     await when.waitForMapToIdle();
-    initialImageSnapshot = await get.imageSnapshot().get();
+    initialImageSnapshot = await when.captureStableSnapshot();
   });
 
   test('zooms in when the "zoom to bounds" button is clicked', async () => {

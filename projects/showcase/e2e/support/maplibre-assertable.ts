@@ -13,7 +13,7 @@ export type MapSnapshot = {
 export type MapSnapshotQuery = Query<MapSnapshot>;
 
 /** Number of pixels that differ between two snapshots of the same size. */
-function diffPixels(a: MapSnapshot, b: MapSnapshot): number {
+export function diffPixels(a: MapSnapshot, b: MapSnapshot): number {
   if (a.width !== b.width || a.height !== b.height) {
     throw new Error(
       `snapshots must have the same dimensions to be comparable, got ` +
@@ -22,13 +22,6 @@ function diffPixels(a: MapSnapshot, b: MapSnapshot): number {
   }
   return pixelmatch(a.data, b.data, undefined, a.width, a.height);
 }
-
-/**
- * A style change can pull new glyphs and tiles over the network before the map
- * settles, which on a loaded CI machine takes well past the default assertion
- * timeout. These comparisons get their own, longer budget.
- */
-const SNAPSHOT_TIMEOUT_MS = 60_000;
 
 /**
  * Adds map-image assertions on top of the generic {@link Assertable}.
@@ -42,9 +35,8 @@ export class MapLibreAssertable<T> extends Assertable<T> {
     expected: MapSnapshot,
     assertion: (difference: number) => void
   ) =>
-    this.pollValue(
-      (actual: MapSnapshot) => assertion(diffPixels(expected, actual)),
-      SNAPSHOT_TIMEOUT_MS
+    this.pollValue((actual: MapSnapshot) =>
+      assertion(diffPixels(expected, actual))
     );
 
   public shouldEqualSnapshot = (snapshot: MapSnapshot) =>

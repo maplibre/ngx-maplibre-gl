@@ -15,7 +15,7 @@ describe('Language switch', () => {
     // French is the baseline every case compares against.
     await when.clickLanguageButton('fr');
     await when.waitForMapToIdle();
-    initialImageSnapshot = await get.imageSnapshot().get();
+    initialImageSnapshot = await when.captureStableSnapshot();
   });
 
   test('changes the map when switching to Russian', async () => {

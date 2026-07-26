@@ -11,7 +11,7 @@ describe('Set style', () => {
   beforeEach(async () => {
     await when.visitMapPage('/demo/set-style');
     await when.waitForMapToIdle();
-    initialImageSnapshot = await get.imageSnapshot().get();
+    initialImageSnapshot = await when.captureStableSnapshot();
   });
 
   test('changes the map when the "from code" style is selected', async () => {

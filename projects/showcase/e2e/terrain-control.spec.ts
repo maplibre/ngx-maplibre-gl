@@ -12,7 +12,7 @@ describe('Terrain control', () => {
     await when.visitMapPage('/demo/terrain-control');
     await when.waitForMapToIdle();
     await when.waitForDisabledTerrainButton();
-    initialImageSnapshot = await get.imageSnapshot().get();
+    initialImageSnapshot = await when.captureStableSnapshot();
   });
 
   test('enables terrain on the first click', async () => {
