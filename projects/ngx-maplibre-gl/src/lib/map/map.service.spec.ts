@@ -179,9 +179,6 @@ describe('MapService', () => {
   });
 
   afterEach(() => {
-    // Nothing else tears the map down. Left alone it outlives the test and keeps
-    // firing events at `OutputEmitterRef`s the TestBed has already destroyed
-    // (NG0953), besides leaking a WebGL context and a worker per test.
     mapService.destroyMap();
   });
 
