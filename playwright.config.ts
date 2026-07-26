@@ -14,7 +14,10 @@ export default defineConfig({
   // WebGL rendering is not reliably deterministic when several maps compete for
   // the GPU, so the image-comparison specs run one at a time.
   workers: 1,
-  reporter: process.env.CI ? [['github'], ['list']] : [['list']],
+  reporter: process.env.CI
+    ? // `html` is what writes playwright-report/, which CI uploads as an artifact.
+      [['github'], ['list'], ['html', { open: 'never' }]]
+    : [['list']],
   use: {
     baseURL,
     trace: 'on-first-retry',
