@@ -2,7 +2,7 @@ import { PNG } from 'pngjs';
 import { afterEach } from './fixtures';
 import { PlaywrightHelper } from './playwright-helper';
 import {
-  diffPixels,
+  looksUnchanged,
   MapLibreAssertable,
   type MapSnapshot,
   type MapSnapshotQuery,
@@ -10,7 +10,7 @@ import {
 
 /** How long to wait for the canvas to stop changing before giving up. */
 const STABILITY_TIMEOUT_MS = 30_000;
-/** Gap between the two readbacks that have to match for the map to count as settled. */
+/** Gap between the two readbacks that must match for the map to count as settled. */
 const STABILITY_INTERVAL_MS = 500;
 
 /**
@@ -77,7 +77,7 @@ export class E2eDriver {
       while (true) {
         await this.helper.when.wait(STABILITY_INTERVAL_MS);
         const current = await this.get.imageSnapshot().get();
-        if (diffPixels(previous, current) === 0) {
+        if (looksUnchanged(previous, current)) {
           return current;
         }
         if (Date.now() >= deadline) {
