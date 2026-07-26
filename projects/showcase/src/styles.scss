@@ -1,0 +1,24 @@
+@use '@angular/material' as mat;
+@use 'theme-colors' as maplibre;
+@use 'maplibre-gl/dist/maplibre-gl.css';
+
+// Material 3 theme built from the MapLibre brand blue (#295DAA).
+html {
+  @include mat.theme(
+    (
+      color: (
+        primary: maplibre.$primary-palette,
+        tertiary: maplibre.$tertiary-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+}
+
+body {
+  margin: 0;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}

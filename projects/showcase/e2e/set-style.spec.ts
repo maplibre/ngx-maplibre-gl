@@ -22,14 +22,14 @@ describe('Set style', () => {
   });
 
   test('restores the map when switching back to the "streets" style', async () => {
-    await given.interceptStreetsSprite();
+    await given.interceptBasemapSprite();
     await when.clickFromCodeRadioButton();
     await when.waitForMapToIdle();
     await when.clickStreetsRadioButton();
 
     // Switching back to the streets style refetches its sprite sheet; that response
     // is a reliable marker that the style is in place before we compare snapshots.
-    await when.waitForStreetsSpriteResponse();
+    await when.waitForBasemapSpriteResponse();
     await when.waitForMapToIdle();
 
     await then(get.imageSnapshot()).shouldEqualSnapshot(initialImageSnapshot);

@@ -80,6 +80,10 @@ export class ToggleLayersComponent {
       visibility: 'none',
       // eslint-disable-next-line @typescript-eslint/naming-convention
       'text-field': '{name:latin}',
+      // Without this the layer falls back to the style-spec default font stack,
+      // which the basemap's glyph server does not serve.
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      'text-font': ['Noto Sans Regular'],
       // eslint-disable-next-line @typescript-eslint/naming-convention
       'text-size': 30,
     },

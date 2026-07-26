@@ -14,7 +14,7 @@ import {
     >
       <mgl-image
         id="cat"
-        url="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Cat_silhouette.svg/400px-Cat_silhouette.svg.png"
+        url="https://upload.wikimedia.org/wikipedia/commons/7/7c/201408_cat.png"
         (imageLoaded)="imageLoadedHandler()"
       />
       @if (imageLoaded()) {

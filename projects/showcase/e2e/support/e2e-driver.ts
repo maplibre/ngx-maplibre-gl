@@ -8,6 +8,19 @@ import {
 } from './maplibre-assertable';
 
 /**
+ * Console output no demo can do anything about, so it must not fail a test.
+ * Keep this list short and specific - anything else is a real signal.
+ */
+const IGNORED_CONSOLE_MESSAGES = [
+  // Vector basemap styles build icon names from tile data (a 5-character road
+  // ref wants `us-interstate_5`, an OSM class wants `sports_centre`), and every
+  // style we have tried ships a sprite that does not cover every value present
+  // in the tiles. An upstream style/sprite gap, not something this library or
+  // the demos control.
+  /Image ".*" could not be loaded/,
+];
+
+/**
  * The showcase-specific driver. It builds on the generic {@link PlaywrightHelper}
  * - spreading its `given`/`when`/`get` primitives and adding domain concepts
  * (visiting a demo, waiting for the map to settle, reading the canvas back). All
@@ -23,8 +36,12 @@ export class E2eDriver {
     /** Dismisses the next `alert()` and resolves with its message. */
     alertStub: () => this.helper.given.onDialog(),
 
-    interceptStreetsSprite: () =>
-      this.helper.given.intercept(/\/streets\/sprite.*\.png/, 'streets'),
+    /**
+     * Records the vector basemap's sprite request, which the set-style spec uses
+     * as a marker that the style has actually been swapped back in.
+     */
+    interceptBasemapSprite: () =>
+      this.helper.given.intercept(/\/sprites\/.*\.png/, 'basemap-sprite'),
   };
 
   when = {
@@ -35,8 +52,8 @@ export class E2eDriver {
       await this.then(this.get.map()).shouldBeVisible();
     },
 
-    waitForStreetsSpriteResponse: () =>
-      this.helper.when.waitForResponse('streets'),
+    waitForBasemapSpriteResponse: () =>
+      this.helper.when.waitForResponse('basemap-sprite'),
 
     /** Waits for `mgl-map` to report a completed `load` event. */
     waitForMapLoaded: () => this.then(this.get.mapObjectLoaded()).shouldExist(),
@@ -110,6 +127,16 @@ export class E2eDriver {
     customControlButton: () => this.helper.get.elementByTestId('custom-control'),
     fullscreenControl: () =>
       this.helper.get.element('.maplibregl-ctrl-fullscreen'),
+
+    /** Console errors and warnings the demo itself is responsible for. */
+    relevantConsoleMessages: () =>
+      this.helper.query(async () => {
+        const messages = await this.helper.get.consoleMessages().get();
+        return messages.filter(
+          (message) =>
+            !IGNORED_CONSOLE_MESSAGES.some((pattern) => pattern.test(message))
+        );
+      }),
   };
 
   then = <T>(target: T) => new MapLibreAssertable(target);
@@ -122,7 +149,7 @@ export class E2eDriver {
   beforeAndAfter = () => {
     afterEach(async () => {
       await this.then(this.get.uncaughtErrors()).shouldBeEmpty();
-      await this.then(this.get.consoleMessages()).shouldBeEmpty();
+      await this.then(this.get.relevantConsoleMessages()).shouldBeEmpty();
     });
   };
 }

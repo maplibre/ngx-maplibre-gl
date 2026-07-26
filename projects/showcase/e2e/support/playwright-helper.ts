@@ -2,6 +2,8 @@ import { expect, type Locator, type Page, type Request } from '@playwright/test'
 import { currentPage, currentUncaughtErrors } from './fixtures';
 
 const DATA_ATTRIBUTE = 'data-cy';
+const POLL_TIMEOUT_MS = 30_000;
+const POLL_INTERVAL_MS = 250;
 
 /**
  * A lazily-evaluated value (e.g. a canvas snapshot). Assertions on a Query
@@ -56,24 +58,31 @@ export class Assertable<T> {
     return this.target;
   }
 
-  /** Re-reads a Query until `assertion` passes; asserts once for plain values. */
-  protected pollValue(assertion: (value: any) => void): Promise<void> {
+  /**
+   * Re-reads a Query until `assertion` passes; asserts once for plain values.
+   *
+   * Hand-rolled rather than `expect.poll`, so that a timeout rethrows the real
+   * assertion error (which value differed, and how) instead of an opaque
+   * "expected true, received false".
+   */
+  protected async pollValue(assertion: (value: any) => void): Promise<void> {
     const target = this.target;
     if (!isQuery(target)) {
-      return Promise.resolve(assertion(target));
+      assertion(target);
+      return;
     }
-    let lastError: unknown;
-    return expect
-      .poll(async () => {
-        try {
-          assertion(await target.get());
-          return true;
-        } catch (error) {
-          lastError = error;
-          return false;
+    const deadline = Date.now() + POLL_TIMEOUT_MS;
+    for (;;) {
+      try {
+        assertion(await target.get());
+        return;
+      } catch (error) {
+        if (Date.now() >= deadline) {
+          throw error;
         }
-      }, { message: () => String(lastError) })
-      .toBe(true);
+        await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL_MS));
+      }
+    }
   }
 }
 

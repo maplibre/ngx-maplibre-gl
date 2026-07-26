@@ -85,7 +85,7 @@
               }
             ],
             "styles": [
-              "projects/showcase/src/styles.css"
+              "projects/showcase/src/styles.scss"
             ],
             "scripts": [],
             "server": "projects/showcase/src/main.server.ts",

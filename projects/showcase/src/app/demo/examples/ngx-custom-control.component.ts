@@ -22,7 +22,6 @@ import {
         <mgl-control>
           <button
             mat-fab
-            color="primary"
             class="custom-control"
             data-cy="custom-control"
             (click)="alert('Hello')"
@@ -44,7 +43,6 @@ import {
       <mgl-control position="bottom-right">
         <button
           mat-flat-button
-          color="accent"
           (click)="toggleControls()"
           data-cy="toggle-show-controls"
         >

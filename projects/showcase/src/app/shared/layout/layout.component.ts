@@ -7,7 +7,7 @@ import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   template: `
-    <mat-toolbar color="primary">
+    <mat-toolbar>
       <div>
         <div id="layout-left-custom-items"></div>
         <a mat-icon-button routerLink="/">
@@ -65,6 +65,10 @@ import { MatMenuModule } from '@angular/material/menu';
         display: flex;
         justify-content: space-between;
         padding: 0 8px 0 0;
+        background-color: var(--mat-sys-primary);
+        color: var(--mat-sys-on-primary);
+        --mat-toolbar-container-background-color: var(--mat-sys-primary);
+        --mat-toolbar-container-text-color: var(--mat-sys-on-primary);
       }
 
       div {
