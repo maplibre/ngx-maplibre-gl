@@ -12,7 +12,7 @@ import type { LayerSpecification } from 'maplibre-gl';
   template: `
     <mgl-map
       [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+        'https://tiles.openfreemap.org/styles/liberty'
       "
       [zoom]="[3]"
       [center]="[-71.97722138410576, -13.517379300798098]"
@@ -24,7 +24,7 @@ import type { LayerSpecification } from 'maplibre-gl';
       />
       <mgl-vector-source
         id="everything"
-        url="https://api.maptiler.com/tiles/v3/tiles.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL"
+        url="https://tiles.openfreemap.org/planet"
       />
       <mgl-layer
         id="countries-layer"

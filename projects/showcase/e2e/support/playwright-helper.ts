@@ -18,7 +18,7 @@ export class Query<T> {
   }
 }
 
-export function isQuery(target: unknown): target is Query<unknown> {
+function isQuery(target: unknown): target is Query<unknown> {
   return (
     typeof target === 'object' &&
     target !== null &&
@@ -43,19 +43,8 @@ export class Assertable<T> {
   shouldExist = () => expect(this.asLocator().first()).toBeAttached();
   shouldNotExist = () => expect(this.asLocator()).toHaveCount(0);
   shouldBeVisible = () => expect(this.asLocator().first()).toBeVisible();
-  shouldNotBeVisible = () =>
-    expect(this.asLocator().filter({ visible: true })).toHaveCount(0);
   shouldHaveText = (text: string) =>
     expect(this.asLocator().first()).toHaveText(text);
-  shouldContainText = (text: string) =>
-    expect(this.asLocator().first()).toContainText(text);
-  shouldHaveLength = (length: number) =>
-    expect(this.asLocator()).toHaveCount(length);
-
-  shouldEqual = (value: unknown) =>
-    this.pollValue((actual) => expect(actual).toEqual(value));
-  shouldBeGreaterThan = (value: number) =>
-    this.pollValue((actual) => expect(actual).toBeGreaterThan(value));
   shouldBeEmpty = () => this.pollValue((actual) => expect(actual).toEqual([]));
 
   constructor(protected readonly target: T) {}
@@ -117,8 +106,6 @@ export class PlaywrightHelper {
 
   public when = {
     visit: (url: string) => this.page.goto(url),
-
-    wait: (ms: number) => this.page.waitForTimeout(ms),
 
     click: (testId: string) => this.testId(testId).click(),
 

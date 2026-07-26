@@ -48,7 +48,7 @@ export class SetStyleComponent {
 
   changeStyle(layerId: string): string | StyleSpecification {
     if (layerId === 'streets') {
-      return `https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL`;
+      return `https://tiles.openfreemap.org/styles/liberty`;
     } else {
       const source = {
         type: 'raster',

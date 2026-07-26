@@ -6,7 +6,7 @@ import { MapComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
   template: `
     <mgl-map
       [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+        'https://tiles.openfreemap.org/styles/liberty'
       "
       [zoom]="[15]"
       [center]="[-122.486052, 37.830348]"

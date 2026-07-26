@@ -12,7 +12,7 @@ import {
   template: `
     <mgl-map
       [mapStyle]="
-        'https://api.maptiler.com/maps/hybrid/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+        'https://tiles.openfreemap.org/styles/liberty'
       "
       [zoom]="[12]"
       [center]="[11.39085, 47.27574]"

@@ -59,11 +59,11 @@ Or in the global CSS file (called `styles.css` for example in _angular-cli_):
 
 ### Serve the MapLibre GL JS web worker
 
-MapLibre GL JS v6 is distributed as ESM only and loads its web worker from a
-separate file at runtime. Angular's bundler inlines `maplibre-gl` itself but cannot
-rewrite that worker URL, so **the worker will 404 and no tiles will render** unless
-you copy it into your build output and point MapLibre at it. This is a one-time
-setup per application.
+MapLibre GL JS v6 is ESM-only and loads its web worker from a separate file at
+runtime. Bundlers cannot rewrite that URL, so every bundler-based app needs a
+one-time `setWorkerUrl()` call — see
+[`setWorkerUrl()` is bundler-only](https://maplibre.org/maplibre-gl-js/docs/guides/v5-to-v6-migration-guide/#setworkerurl-is-bundler-only).
+Without it **the worker 404s and no tiles render**. Here is the Angular setup.
 
 Add both files to the `assets` of your `build` target in `angular.json`. The worker
 imports `maplibre-gl-shared.mjs` as a sibling at runtime, so they must be copied
@@ -85,7 +85,7 @@ together, into the same directory:
 ]
 ```
 
-Then tell MapLibre where they live, in your browser entry point (`main.ts`), before
+Then point MapLibre at them in your browser entry point (`main.ts`), before
 bootstrapping. Resolving against `document.baseURI` keeps it correct when your app
 is deployed under a sub-path via `--base-href`:
 
@@ -111,38 +111,33 @@ import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url';
 setWorkerUrl(new URL(workerUrl, document.baseURI).href);
 ```
 
-MapLibre GL JS v6 also requires WebGL2 — the WebGL1 fallback was removed. Headless
-browsers usually need a software renderer flag (for example Chrome's
-`--enable-unsafe-swiftshader`) for map tests to render.
-
 ### Migrating to the Angular 22 / MapLibre GL JS v6 release
 
-Besides the worker setup above:
+For the MapLibre side, follow the
+[v5 to v6 migration guide](https://maplibre.org/maplibre-gl-js/docs/guides/v5-to-v6-migration-guide/).
+What is specific to this library:
 
-- **Supplying missing style images.** `styleimagemissing` is notify-only in MapLibre
-  v6 — a listener can no longer resolve the image for the request that triggered it.
-  The `(styleImageMissing)` output still fires (now typed `MapStyleImageMissingEvent`),
-  but to actually load or generate an image on demand use the new
-  `[missingStyleImageResolver]` input, which MapLibre awaits:
+- **Supplying missing style images.** MapLibre replaced the `styleimagemissing`
+  callback with `Map#setMissingStyleImageResolver`. The equivalent here is the new
+  `[missingStyleImageResolver]` input; the `(styleImageMissing)` output remains, but
+  only as a notification.
 
   ```html
   <mgl-map [mapStyle]="style" [missingStyleImageResolver]="resolveImage" />
   ```
 
-- **Event type renames.** `(boxZoomStart)`, `(boxZoomEnd)` and `(boxZoomCancel)` now
-  emit `MapBoxZoomEvent` (was `MapLibreZoomEvent`). `MapDataEvent` is no longer
-  exported by `maplibre-gl`; this library re-exports it as
-  `MapSourceDataEvent | MapStyleDataEvent`, which is what `(data)` and `(dataLoading)` emit.
+- **`MapDataEvent` is re-exported by this library**, since `maplibre-gl` no longer
+  exports it. It is `MapSourceDataEvent | MapStyleDataEvent`, which is what `(data)`
+  and `(dataLoading)` emit. `(boxZoom*)` outputs now emit `MapBoxZoomEvent`.
 
-- **Stricter style validation.** MapLibre v6 validates style, source and terrain specs
-  more strictly. Numeric options must be bound as numbers — `tileSize="256"` passes the
-  *string* `"256"` and is now rejected, silently leaving the source unadded. Use
-  `[tileSize]="256"`.
+- **Bind numeric inputs as numbers.** v6 validates specs more strictly, so
+  `tileSize="256"` passes the *string* `"256"` and is rejected — silently leaving the
+  source unadded. Use `[tileSize]="256"`.
 
 - **Removed input.** `[customMapboxApiUrl]` on `mgl-map` has been removed; it was a
   leftover from ngx-mapbox-gl and had no effect.
 
-- **New `mgl-map` inputs**, mirroring MapLibre v6's `MapOptions`: `[zoomSnap]`,
+- **New `mgl-map` inputs**, mirroring v6's `MapOptions`: `[zoomSnap]`,
   `[anisotropicFilterPitch]`, `[transformConstrain]`, `[reduceMotion]`,
   `[terrainSkirtLength]`, `[zoomLevelsToOverscale]` and `[aroundCenter]`.
 

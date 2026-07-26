@@ -169,7 +169,7 @@ const MAG5 = ['>=', ['get', 'mag'], 5];
   template: `
     <mgl-map
       [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+        'https://tiles.openfreemap.org/styles/liberty'
       "
       [zoom]="[0.3]"
       [center]="[0, 20]"

@@ -29,7 +29,7 @@ import {
 })
 export class TerrainMapComponent {
   readonly mapLibreExampleSource: string =
-    'https://api.maptiler.com/maps/hybrid/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL';
+    'https://tiles.openfreemap.org/styles/liberty';
 
   readonly terrainSpec: TerrainSpecification = {
     source: 'terrainSource',
