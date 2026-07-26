@@ -24,6 +24,13 @@ function diffPixels(a: MapSnapshot, b: MapSnapshot): number {
 }
 
 /**
+ * A style change can pull new glyphs and tiles over the network before the map
+ * settles, which on a loaded CI machine takes well past the default assertion
+ * timeout. These comparisons get their own, longer budget.
+ */
+const SNAPSHOT_TIMEOUT_MS = 60_000;
+
+/**
  * Adds map-image assertions on top of the generic {@link Assertable}.
  *
  * The snapshot assertions poll: MapLibre can report `idle` before an interaction
@@ -35,8 +42,9 @@ export class MapLibreAssertable<T> extends Assertable<T> {
     expected: MapSnapshot,
     assertion: (difference: number) => void
   ) =>
-    this.pollValue((actual: MapSnapshot) =>
-      assertion(diffPixels(expected, actual))
+    this.pollValue(
+      (actual: MapSnapshot) => assertion(diffPixels(expected, actual)),
+      SNAPSHOT_TIMEOUT_MS
     );
 
   public shouldEqualSnapshot = (snapshot: MapSnapshot) =>

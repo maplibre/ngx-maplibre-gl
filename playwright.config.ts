@@ -5,7 +5,8 @@ const baseURL = process.env.E2E_BASE_URL ?? 'http://localhost:4200';
 export default defineConfig({
   testDir: './projects/showcase/e2e',
   // Map rendering is comparatively slow, and a few demos animate before settling.
-  timeout: 90_000,
+  // Must stay above the snapshot-comparison budget in maplibre-assertable.ts.
+  timeout: 120_000,
   expect: { timeout: 30_000 },
   // The demos depend on third-party tile/sprite services, which occasionally rate-limit
   // or stall. Retry rather than let that flake the suite (matches the previous setup).

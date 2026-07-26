@@ -252,7 +252,7 @@ export class ClusterHtmlComponent {
       { 'min-fraction-digits': 1, 'max-fraction-digits': 1 },
     ],
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+    'text-font': ['Open Sans Semibold'],
     // eslint-disable-next-line @typescript-eslint/naming-convention
     'text-size': 10,
   };

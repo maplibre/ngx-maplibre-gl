@@ -65,13 +65,16 @@ export class Assertable<T> {
    * assertion error (which value differed, and how) instead of an opaque
    * "expected true, received false".
    */
-  protected async pollValue(assertion: (value: any) => void): Promise<void> {
+  protected async pollValue(
+    assertion: (value: any) => void,
+    timeoutMs = POLL_TIMEOUT_MS
+  ): Promise<void> {
     const target = this.target;
     if (!isQuery(target)) {
       assertion(target);
       return;
     }
-    const deadline = Date.now() + POLL_TIMEOUT_MS;
+    const deadline = Date.now() + timeoutMs;
     while (true) {
       try {
         assertion(await target.get());

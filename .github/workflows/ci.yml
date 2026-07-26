@@ -10,10 +10,10 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Use Node.js from .nvmrc file
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
 
@@ -28,10 +28,10 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Use Node.js from .nvmrc file
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
 
@@ -56,9 +56,15 @@ jobs:
       - name: Run e2e tests
         run: npm run e2e
 
-      - name: Upload Playwright report
-        uses: actions/upload-artifact@v4
+      # `test-results` holds the traces, videos and screenshots for failed
+      # attempts; the HTML report on its own only links to them.
+      - name: Upload Playwright artifacts
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
         with:
-          name: playwright-report
-          path: playwright-report
-        if: ${{ failure() }}
+          name: playwright-artifacts
+          path: |
+            playwright-report
+            test-results
+          retention-days: 7
+          if-no-files-found: ignore
