@@ -53,6 +53,9 @@ jobs:
       - name: Run unit tests
         run: npm run test -- ngx-maplibre-gl --watch=false
 
+      - name: Typecheck e2e tests
+        run: npm run e2e:typecheck
+
       - name: Run e2e tests
         run: npm run e2e
 

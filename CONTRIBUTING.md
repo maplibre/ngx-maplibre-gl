@@ -30,6 +30,7 @@ app, which the Playwright config starts for you:
 npx playwright install chromium   # once
 npm run e2e
 npm run e2e:ui                    # interactive mode
+npm run e2e:typecheck             # type-check the suite
 ```
 
 The e2e suite keeps the test implementation separate from the specs, in three

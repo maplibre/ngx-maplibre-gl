@@ -178,6 +178,13 @@ describe('MapService', () => {
     zone.simulateZoneExit();
   });
 
+  afterEach(() => {
+    // Nothing else tears the map down. Left alone it outlives the test and keeps
+    // firing events at `OutputEmitterRef`s the TestBed has already destroyed
+    // (NG0953), besides leaking a WebGL context and a worker per test.
+    mapService.destroyMap();
+  });
+
   /**
    * Resolves once the map created in `beforeEach` has loaded. Backed by an
    * `AsyncSubject`, so it also resolves if the map loaded before this is awaited.
