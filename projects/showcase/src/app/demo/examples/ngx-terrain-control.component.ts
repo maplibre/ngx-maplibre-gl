@@ -22,7 +22,7 @@ import {
       <mgl-raster-dem-source
         id="terrainSource"
         url="https://demotiles.maplibre.org/terrain-tiles/tiles.json"
-        tileSize="256"
+        [tileSize]="256"
       />
       <mgl-control
         mglNavigation
@@ -33,7 +33,7 @@ import {
       <mgl-control
         mglTerrain
         source="terrainSource"
-        exaggeration="5"
+        [exaggeration]="5"
         position="top-right"
       />
     </mgl-map>

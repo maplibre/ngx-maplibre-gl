@@ -1,16 +1,15 @@
+import { createSpyObj, type SpyObj } from '../../testing/spy-obj';
 import { ComponentRef, SimpleChange } from '@angular/core';
 import {
   ComponentFixture,
   TestBed,
-  fakeAsync,
-  waitForAsync,
 } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { MapService } from '../map/map.service';
 import { LayerComponent } from './layer.component';
 
 const getMapServiceStub = () =>
-  jasmine.createSpyObj(
+  createSpyObj<MapService>(
     [
       'addLayer',
       'removeLayer',
@@ -29,15 +28,15 @@ const getMapServiceStub = () =>
   );
 
 describe('LayerComponent', () => {
-  let mapServiceStub: jasmine.SpyObj<MapService>;
+  let mapServiceStub: SpyObj<MapService>;
   let component: LayerComponent;
   let componentRef: ComponentRef<LayerComponent>;
   let fixture: ComponentFixture<LayerComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     mapServiceStub = getMapServiceStub();
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [LayerComponent],
       providers: [{ provide: MapService, useValue: mapServiceStub }],
     })
@@ -47,7 +46,7 @@ describe('LayerComponent', () => {
         },
       })
       .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LayerComponent);
@@ -70,7 +69,7 @@ describe('LayerComponent', () => {
       fixture.detectChanges();
 
       expect(mapServiceStub.addLayer).toHaveBeenCalledWith(
-        jasmine.objectContaining({
+        expect.objectContaining({
           layerOptions: {
             type: 'background',
             id: 'layerId',
@@ -85,7 +84,7 @@ describe('LayerComponent', () => {
             filter: undefined,
             layout: undefined,
           },
-          layerEvents: jasmine.anything(),
+          layerEvents: expect.anything(),
         }),
         true,
         undefined
@@ -105,20 +104,19 @@ describe('LayerComponent', () => {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       componentRef.setInput('paint', { 'background-color': 'green' });
       componentRef.setInput('removeSource', true);
-      mapServiceStub.getSource.and.returnValues(
-        undefined as any,
-        component.id() as any,
-        {} as any
-      );
+      mapServiceStub.getSource
+        .mockReturnValueOnce(undefined as any)
+        .mockReturnValueOnce(component.id() as any)
+        .mockReturnValueOnce({} as any);
       fixture.detectChanges();
     });
 
-    it('should remove layer and source on destroy', fakeAsync(() => {
+    it('should remove layer and source on destroy', () => {
       fixture.detectChanges();
       component.ngOnDestroy();
       expect(mapServiceStub.removeLayer).toHaveBeenCalledWith(component.id());
       expect(mapServiceStub.removeSource).toHaveBeenCalled();
-    }));
+    });
   });
 
   it('should not remove layer on destroy if not added', () => {

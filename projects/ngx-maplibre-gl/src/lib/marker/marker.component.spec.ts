@@ -1,12 +1,13 @@
+import { createSpyObj, type SpyObj } from '../../testing/spy-obj';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PointLike } from 'maplibre-gl';
 import { of } from 'rxjs';
 import { MapService } from '../map/map.service';
 import { MarkerComponent } from './marker.component';
 
 const getMapServiceStub = () =>
-  jasmine.createSpyObj(
+  createSpyObj<MapService>(
     [
       'addMarker',
       'removeMarker',
@@ -32,14 +33,14 @@ class MarkerTestComponent {
 }
 
 describe('MarkerComponent', () => {
-  let mapServiceStub: jasmine.SpyObj<MapService>;
+  let mapServiceStub: SpyObj<MapService>;
   let component: MarkerTestComponent;
   let fixture: ComponentFixture<MarkerTestComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     mapServiceStub = getMapServiceStub();
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [MarkerTestComponent],
     })
       .overrideComponent(MarkerTestComponent, {
@@ -48,7 +49,7 @@ describe('MarkerComponent', () => {
         },
       })
       .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MarkerTestComponent);

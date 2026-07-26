@@ -96,7 +96,7 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
   /** @hidden */
   readonly content = viewChild.required<ElementRef<HTMLDivElement>>('content');
 
-  private popupInstance: maplibregl.Popup | null = null;
+  private popupInstance: Popup | null = null;
 
   constructor() {
     afterNextRender(() => {

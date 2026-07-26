@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "importHelpers": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
@@ -11,10 +10,9 @@
     "moduleResolution": "bundler",
     "experimentalDecorators": true,
     "target": "es2024",
-    "typeRoots": ["node_modules/@types"],
     "lib": ["es2024", "dom"],
     "paths": {
-      "@maplibre/ngx-maplibre-gl": ["projects/ngx-maplibre-gl/src/public_api"]
+      "@maplibre/ngx-maplibre-gl": ["./projects/ngx-maplibre-gl/src/public_api"]
     },
     "strict": true,
     "skipLibCheck": true,

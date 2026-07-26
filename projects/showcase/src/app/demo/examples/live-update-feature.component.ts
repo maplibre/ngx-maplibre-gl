@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   MapComponent,
   GeoJSONSourceComponent,
@@ -39,6 +39,7 @@ import { HttpClient } from '@angular/common/http';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MapComponent, GeoJSONSourceComponent, LayerComponent],
 })
 export class LiveUpdateFeatureComponent {

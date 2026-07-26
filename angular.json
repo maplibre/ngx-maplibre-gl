@@ -23,11 +23,18 @@
           }
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/ngx-maplibre-gl/src/test.ts",
+            "buildTarget": "ngx-maplibre-gl:build",
             "tsConfig": "projects/ngx-maplibre-gl/tsconfig.spec.json",
-            "karmaConfig": "projects/ngx-maplibre-gl/karma.conf.js"
+            "runner": "vitest",
+            "browsers": [
+              "chromium"
+            ],
+            "browserViewport": "1280x720",
+            "setupFiles": [
+              "projects/ngx-maplibre-gl/src/test-setup.ts"
+            ]
           }
         },
         "lint": {
@@ -65,9 +72,21 @@
             "assets": [
               "projects/showcase/src/favicon.ico",
               "projects/showcase/src/assets",
-              "projects/showcase/src/app/demo/examples"
+              "projects/showcase/src/app/demo/examples",
+              {
+                "glob": "maplibre-gl-worker.mjs",
+                "input": "node_modules/maplibre-gl/dist",
+                "output": "/"
+              },
+              {
+                "glob": "maplibre-gl-shared.mjs",
+                "input": "node_modules/maplibre-gl/dist",
+                "output": "/"
+              }
             ],
-            "styles": ["projects/showcase/src/styles.css"],
+            "styles": [
+              "projects/showcase/src/styles.css"
+            ],
             "scripts": [],
             "server": "projects/showcase/src/main.server.ts",
             "prerender": true,
@@ -117,21 +136,6 @@
             "buildTarget": "showcase:build"
           }
         },
-        "test": {
-          "builder": "@angular/build:karma",
-          "options": {
-            "main": "projects/showcase/src/test.ts",
-            "polyfills": ["projects/showcase/src/polyfills.ts"],
-            "tsConfig": "projects/showcase/tsconfig.spec.json",
-            "karmaConfig": "projects/showcase/karma.conf.js",
-            "styles": ["projects/showcase/src/styles.css"],
-            "scripts": [],
-            "assets": [
-              "projects/showcase/src/favicon.ico",
-              "projects/showcase/src/assets"
-            ]
-          }
-        },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
@@ -140,46 +144,15 @@
               "projects/showcase/**/*.html"
             ]
           }
-        },
-        "cypress-run": {
-          "builder": "@cypress/schematic:cypress",
-          "options": {
-            "devServerTarget": "showcase:serve",
-            "configFile": "projects/showcase/cypress.config.ts"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "showcase:serve:production"
-            }
-          }
-        },
-        "cypress-open": {
-          "builder": "@cypress/schematic:cypress",
-          "options": {
-            "watch": true,
-            "headless": false,
-            "configFile": "projects/showcase/cypress.config.ts"
-          }
-        },
-        "e2e": {
-          "builder": "@cypress/schematic:cypress",
-          "options": {
-            "devServerTarget": "showcase:serve",
-            "watch": true,
-            "headless": false
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "showcase:serve:production"
-            }
-          }
         }
       }
     }
   },
   "cli": {
     "analytics": "2b945751-c795-4db1-b8ac-172907057b11",
-    "schematicCollections": ["@angular-eslint/schematics"]
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   },
   "schematics": {
     "@angular-eslint/schematics:application": {

@@ -38,7 +38,9 @@ import {
   type ControlPosition,
   type Subscription,
   type MapLayerEventType,
-  type ProjectionSpecification
+  type MissingStyleImageResolver,
+  type ProjectionSpecification,
+  type TransformConstrainFunction
 } from 'maplibre-gl';
 import { AsyncSubject } from 'rxjs';
 import type {
@@ -160,6 +162,33 @@ export class MapService {
   updateMaxPitch(maxPitch: number) {
     return this.zone.runOutsideAngular(() => {
       this.mapInstance.setMaxPitch(maxPitch);
+    });
+  }
+
+  /**
+   * @see [Map.setMissingStyleImageResolver](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#setmissingstyleimageresolver)
+   */
+  setMissingStyleImageResolver(resolver: MissingStyleImageResolver | null) {
+    return this.zone.runOutsideAngular(() => {
+      this.mapInstance.setMissingStyleImageResolver(resolver);
+    });
+  }
+
+  updateZoomSnap(zoomSnap: number) {
+    return this.zone.runOutsideAngular(() => {
+      this.mapInstance.setZoomSnap(zoomSnap);
+    });
+  }
+
+  updateAnisotropicFilterPitch(anisotropicFilterPitch: number | null) {
+    return this.zone.runOutsideAngular(() => {
+      this.mapInstance.setAnisotropicFilterPitch(anisotropicFilterPitch);
+    });
+  }
+
+  updateTransformConstrain(constrain: TransformConstrainFunction | null) {
+    return this.zone.runOutsideAngular(() => {
+      this.mapInstance.setTransformConstrain(constrain);
     });
   }
 
@@ -538,7 +567,7 @@ export class MapService {
     return this.zone.runOutsideAngular(() => {
       Object.keys(paint as any).forEach((key) => {
         // TODO Check for perf, setPaintProperty only on changed paint props maybe
-        this.mapInstance.setPaintProperty(layerId, key, (paint as any)[key]);
+        this.mapInstance.setPaintProperty(layerId, key as any, (paint as any)[key]);
       });
     });
   }
@@ -557,7 +586,7 @@ export class MapService {
     return this.zone.runOutsideAngular(() => {
       Object.keys(layout as any).forEach((key) => {
         // TODO Check for perf, setPaintProperty only on changed paint props maybe
-        this.mapInstance.setLayoutProperty(layerId, key, (layout as any)[key]);
+        this.mapInstance.setLayoutProperty(layerId, key as any, (layout as any)[key]);
       });
     });
   }

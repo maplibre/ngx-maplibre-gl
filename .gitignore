@@ -33,7 +33,12 @@ node_modules
 npm-debug.log
 testem.log
 /typings
-/cypress
+
+# Playwright
+/test-results
+/playwright-report
+/blob-report
+/playwright/.cache
 
 # System Files
 .DS_Store

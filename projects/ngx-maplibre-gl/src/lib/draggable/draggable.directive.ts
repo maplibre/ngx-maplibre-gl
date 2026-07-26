@@ -34,7 +34,6 @@ export class DraggableDirective implements OnInit, OnDestroy {
     optional: true,
   });
 
-  // eslint-disable-next-line @angular-eslint/no-input-rename
   readonly layer = input<LayerComponent | null>(null, {
     alias: 'mglDraggable',
   });

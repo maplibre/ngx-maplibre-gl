@@ -19,7 +19,7 @@ import {
       <mgl-raster-dem-source
         id="terrainSource"
         url="https://demotiles.maplibre.org/terrain-tiles/tiles.json"
-        tileSize="256"
+        [tileSize]="256"
       />
     </mgl-map>
   `,

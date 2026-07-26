@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
   AttributionControlDirective,
@@ -56,6 +56,7 @@ import {
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MapComponent,
     ControlComponent,

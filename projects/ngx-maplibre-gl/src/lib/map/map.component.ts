@@ -18,20 +18,21 @@ import type {
   Map,
   MapLibreEvent,
   MapOptions,
-  MapLibreZoomEvent,
+  MapBoxZoomEvent,
   MapContextEvent,
-  MapDataEvent,
   MapMouseEvent,
   MapSourceDataEvent,
   MapStyleDataEvent,
+  MapStyleImageMissingEvent,
   MapTouchEvent,
   MapWheelEvent,
+  MissingStyleImageResolver,
   PointLike,
   TerrainSpecification,
   ProjectionSpecification,
 } from 'maplibre-gl';
 import { MapService, type MovingOptions } from './map.service';
-import type { MapEvent, EventData } from './map.types';
+import type { MapEvent, EventData, MapDataEvent } from './map.types';
 import { firstValueFrom } from 'rxjs';
 
 /**
@@ -86,8 +87,6 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   readonly collectResourceTiming = input<MapOptions['collectResourceTiming']>();
   /** Init input */
   readonly crossSourceCollisions = input<MapOptions['crossSourceCollisions']>();
-  /** Init input */
-  readonly customMapboxApiUrl = input<string>();
   /** Init input */
   readonly fadeDuration = input<MapOptions['fadeDuration']>();
   /** Init input */
@@ -144,6 +143,15 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   readonly transformCameraUpdate = input<MapOptions['transformCameraUpdate']>();
   /** Init input */
   readonly validateStyle = input<MapOptions['validateStyle']>();
+  /** Init input */
+  readonly reduceMotion = input<MapOptions['reduceMotion']>();
+  /** Init input */
+  readonly terrainSkirtLength = input<MapOptions['terrainSkirtLength']>();
+  /** Init input */
+  readonly zoomLevelsToOverscale =
+    input<MapOptions['zoomLevelsToOverscale']>();
+  /** Init input */
+  readonly aroundCenter = input<MapOptions['aroundCenter']>();
 
   /** Dynamic input */
   readonly minZoom = input<MapOptions['minZoom']>();
@@ -189,6 +197,13 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   readonly renderWorldCopies = input<MapOptions['renderWorldCopies']>();
   /** Dynamic input */
   readonly elevation = input<MapOptions['elevation']>();
+  /** Dynamic input */
+  readonly zoomSnap = input<MapOptions['zoomSnap']>();
+  /** Dynamic input */
+  readonly anisotropicFilterPitch =
+    input<MapOptions['anisotropicFilterPitch']>();
+  /** Dynamic input */
+  readonly transformConstrain = input<MapOptions['transformConstrain']>();
   /** Dynamic input that is not part of the `MapOptions` object */
   readonly terrain = input<TerrainSpecification>();
   /** Dynamic input that is not part of the `MapOptions` object  */
@@ -204,6 +219,12 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   readonly centerWithPanTo = input<boolean>();
   readonly panToOptions = input<AnimationOptions>();
   readonly cursorStyle = input<string>();
+  /**
+   * Called when an icon or pattern needed by the style is missing, so it can be
+   * loaded or generated on demand and registered with `addImage`.
+   * @see [Map.setMissingStyleImageResolver](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#setmissingstyleimageresolver)
+   */
+  readonly missingStyleImageResolver = input<MissingStyleImageResolver>();
 
   readonly mapResize = output<MapLibreEvent & EventData>();
   readonly mapRemove = output<MapLibreEvent & EventData>();
@@ -265,9 +286,9 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   readonly pitchEnd = output<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >();
-  readonly boxZoomStart = output<MapLibreZoomEvent & EventData>();
-  readonly boxZoomEnd = output<MapLibreZoomEvent & EventData>();
-  readonly boxZoomCancel = output<MapLibreZoomEvent & EventData>();
+  readonly boxZoomStart = output<MapBoxZoomEvent & EventData>();
+  readonly boxZoomEnd = output<MapBoxZoomEvent & EventData>();
+  readonly boxZoomCancel = output<MapBoxZoomEvent & EventData>();
   readonly webGlContextLost = output<MapContextEvent & EventData>();
   readonly webGlContextRestored = output<MapContextEvent & EventData>();
   readonly mapLoad = output<Map>();
@@ -280,11 +301,7 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   readonly dataLoading = output<MapDataEvent & EventData>();
   readonly styleDataLoading = output<MapStyleDataEvent & EventData>();
   readonly sourceDataLoading = output<MapSourceDataEvent & EventData>();
-  readonly styleImageMissing = output<
-    {
-      id: string;
-    } & EventData
-  >();
+  readonly styleImageMissing = output<MapStyleImageMissingEvent & EventData>();
 
   get mapInstance(): Map {
     return this.mapService.mapInstance;
@@ -362,7 +379,14 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
           pixelRatio: this.pixelRatio(),
           rollEnabled: this.rollEnabled(),
           transformCameraUpdate: this.transformCameraUpdate(),
+          transformConstrain: this.transformConstrain(),
           validateStyle: this.validateStyle(),
+          zoomSnap: this.zoomSnap(),
+          anisotropicFilterPitch: this.anisotropicFilterPitch(),
+          reduceMotion: this.reduceMotion(),
+          terrainSkirtLength: this.terrainSkirtLength(),
+          zoomLevelsToOverscale: this.zoomLevelsToOverscale(),
+          aroundCenter: this.aroundCenter(),
 
           terrain: this.terrain(),
           projection: this.projection(),
@@ -372,6 +396,10 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
       const cursorStyle = this.cursorStyle();
       if (cursorStyle) {
         this.mapService.changeCanvasCursor(cursorStyle);
+      }
+      const missingStyleImageResolver = this.missingStyleImageResolver();
+      if (missingStyleImageResolver) {
+        this.mapService.setMissingStyleImageResolver(missingStyleImageResolver);
       }
     });
 
@@ -394,6 +422,14 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
     if (changes.cursorStyle && !changes.cursorStyle.isFirstChange()) {
       this.mapService.changeCanvasCursor(changes.cursorStyle.currentValue);
     }
+    if (
+      changes.missingStyleImageResolver &&
+      !changes.missingStyleImageResolver.isFirstChange()
+    ) {
+      this.mapService.setMissingStyleImageResolver(
+        changes.missingStyleImageResolver.currentValue ?? null
+      );
+    }
     if (changes.minZoom && !changes.minZoom.isFirstChange()) {
       this.mapService.updateMinZoom(changes.minZoom.currentValue);
     }
@@ -405,6 +441,25 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
     }
     if (changes.maxPitch && !changes.maxPitch.isFirstChange()) {
       this.mapService.updateMaxPitch(changes.maxPitch.currentValue);
+    }
+    if (changes.zoomSnap && !changes.zoomSnap.isFirstChange()) {
+      this.mapService.updateZoomSnap(changes.zoomSnap.currentValue);
+    }
+    if (
+      changes.anisotropicFilterPitch &&
+      !changes.anisotropicFilterPitch.isFirstChange()
+    ) {
+      this.mapService.updateAnisotropicFilterPitch(
+        changes.anisotropicFilterPitch.currentValue ?? null
+      );
+    }
+    if (
+      changes.transformConstrain &&
+      !changes.transformConstrain.isFirstChange()
+    ) {
+      this.mapService.updateTransformConstrain(
+        changes.transformConstrain.currentValue ?? null
+      );
     }
     if (
       changes.renderWorldCopies &&

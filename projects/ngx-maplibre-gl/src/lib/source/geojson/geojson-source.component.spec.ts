@@ -1,11 +1,12 @@
+import { createSpyObj, type SpyObj } from '../../../testing/spy-obj';
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { MapService } from '../../map/map.service';
 import { GeoJSONSourceComponent } from './geojson-source.component';
 
 const getMapServiceStub = () =>
-  jasmine.createSpyObj(['addSource', 'removeSource'], {
+  createSpyObj<MapService>(['addSource', 'removeSource'], {
     mapLoaded$: of(true),
     mapInstance: new (class {
       on() {}
@@ -24,7 +25,7 @@ const getMapServiceStub = () =>
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class GeoJSONSourceTestComponent {
-  private show = signal<boolean>(true);
+  readonly show = signal<boolean>(true);
 
   public toggle() {
     this.show.set(!this.show());
@@ -32,14 +33,14 @@ class GeoJSONSourceTestComponent {
 }
 
 describe('GeoJSONSourceComponent', () => {
-  let mapServiceStub: jasmine.SpyObj<MapService>;
+  let mapServiceStub: SpyObj<MapService>;
   let component: GeoJSONSourceTestComponent;
   let fixture: ComponentFixture<GeoJSONSourceTestComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     mapServiceStub = getMapServiceStub();
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [GeoJSONSourceTestComponent],
       providers: [{ provide: MapService, useValue: mapServiceStub }],
     })
@@ -49,7 +50,7 @@ describe('GeoJSONSourceComponent', () => {
         },
       })
       .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(GeoJSONSourceTestComponent);

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
   MapComponent,
   ControlComponent,
@@ -21,6 +21,7 @@ import {
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MapComponent, ControlComponent, AttributionControlDirective],
 })
 export class AttributionPositionComponent { }

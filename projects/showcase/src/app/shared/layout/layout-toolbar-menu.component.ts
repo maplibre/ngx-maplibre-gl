@@ -5,6 +5,7 @@ import {
   afterNextRender,
   input,
   viewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 
 @Component({
@@ -14,6 +15,7 @@ import {
       <ng-content />
     </ng-template>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CdkPortal],
 })
 export class LayoutToolbarMenuComponent implements OnDestroy {

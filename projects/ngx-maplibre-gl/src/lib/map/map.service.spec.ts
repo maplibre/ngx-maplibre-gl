@@ -1,23 +1,32 @@
+import { vi } from 'vitest';
 import { OutputEmitterRef, NgZone } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import {
   Map,
   MapLibreEvent,
-  MapLibreZoomEvent,
+  MapBoxZoomEvent,
   MapContextEvent,
-  MapDataEvent,
   MapMouseEvent,
   MapSourceDataEvent,
   MapStyleDataEvent,
+  MapStyleImageMissingEvent,
   MapTouchEvent,
   MapWheelEvent,
   StyleSpecification, SourceSpecification, MapGeoJSONFeature,
 } from 'maplibre-gl';
 import { MapService, SetupLayer } from './map.service';
-import { MapEvent, EventData, type LayerEvents } from './map.types';
+import {
+  MapEvent,
+  EventData,
+  type LayerEvents,
+  type MapDataEvent,
+} from './map.types';
 import { MockNgZone } from './mock-ng-zone';
+import { firstValueFrom } from 'rxjs';
 
-const countries = require('./countries.geo.json'); // eslint-disable-line @typescript-eslint/no-require-imports
+import countriesJson from './countries.geo.json';
+
+const countries = countriesJson as GeoJSON.FeatureCollection;
 
 const geoJSONStyle: StyleSpecification = {
   sources: {
@@ -131,9 +140,9 @@ describe('MapService', () => {
         pitchEnd: new OutputEmitterRef<
           MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
         >(),
-        boxZoomStart: new OutputEmitterRef<MapLibreZoomEvent & EventData>(),
-        boxZoomEnd: new OutputEmitterRef<MapLibreZoomEvent & EventData>(),
-        boxZoomCancel: new OutputEmitterRef<MapLibreZoomEvent & EventData>(),
+        boxZoomStart: new OutputEmitterRef<MapBoxZoomEvent & EventData>(),
+        boxZoomEnd: new OutputEmitterRef<MapBoxZoomEvent & EventData>(),
+        boxZoomCancel: new OutputEmitterRef<MapBoxZoomEvent & EventData>(),
         webGlContextLost: new OutputEmitterRef<MapContextEvent & EventData>(),
         webGlContextRestored: new OutputEmitterRef<
           MapContextEvent & EventData
@@ -149,7 +158,9 @@ describe('MapService', () => {
         sourceDataLoading: new OutputEmitterRef<
           MapSourceDataEvent & EventData
         >(),
-        styleImageMissing: new OutputEmitterRef<{ id: string } & EventData>(),
+        styleImageMissing: new OutputEmitterRef<
+          MapStyleImageMissingEvent & EventData
+        >(),
         idle: new OutputEmitterRef<MapLibreEvent & EventData>(),
       };
     });
@@ -167,46 +178,46 @@ describe('MapService', () => {
     zone.simulateZoneExit();
   });
 
+  /**
+   * Resolves once the map created in `beforeEach` has loaded. Backed by an
+   * `AsyncSubject`, so it also resolves if the map loaded before this is awaited.
+   */
+  const mapLoaded = () => firstValueFrom(mapService.mapLoaded$);
+
   it('should create a map', () => {
     expect(mapService.mapInstance).toBeTruthy();
   });
 
-  it('should fire mapLoad event', (done: DoneFn) => {
-    mapEvents.mapLoad.subscribe(() => {
-      expect(true).toBe(true);
-      done();
-    });
+  it('should fire mapLoad event', async () => {
+    let loaded = false;
+    mapEvents.mapLoad.subscribe(() => (loaded = true));
+    await mapLoaded();
+    expect(loaded).toBe(true);
   });
 
-  it('should update minZoom', (done: DoneFn) => {
-    mapEvents.mapLoad.subscribe(() => {
-      mapService.updateMinZoom(6);
-      expect(mapService.mapInstance.getMinZoom()).toEqual(6);
-      done();
-    });
+  it('should update minZoom', async () => {
+    await mapLoaded();
+    mapService.updateMinZoom(6);
+    expect(mapService.mapInstance.getMinZoom()).toEqual(6);
   });
 
-  it('should update minPitch', (done: DoneFn) => {
-    mapEvents.mapLoad.subscribe(() => {
-      mapService.updateMinPitch(15);
-      expect(mapService.mapInstance.getMinPitch()).toEqual(15);
-      done();
-    });
+  it('should update minPitch', async () => {
+    await mapLoaded();
+    mapService.updateMinPitch(15);
+    expect(mapService.mapInstance.getMinPitch()).toEqual(15);
   });
 
-  it('should update maxPitch', (done: DoneFn) => {
-    mapEvents.mapLoad.subscribe(() => {
-      mapService.updateMaxPitch(25);
-      expect(mapService.mapInstance.getMaxPitch()).toEqual(25);
-      done();
-    });
+  it('should update maxPitch', async () => {
+    await mapLoaded();
+    mapService.updateMaxPitch(25);
+    expect(mapService.mapInstance.getMaxPitch()).toEqual(25);
   });
 
   it('should unsubscribe from events on destroy', async () => {
     const container = document.createElement('div');
     const popupEvents = {
-      popupOpen: { emit: jasmine.createSpy() },
-      popupClose: { emit: jasmine.createSpy() },
+      popupOpen: { emit: vi.fn() },
+      popupClose: { emit: vi.fn() },
     } as any;
     const popup = mapService.createPopup({
       popupOptions: {},
@@ -219,8 +230,8 @@ describe('MapService', () => {
   });
 
   describe('layer handling', () => {
-    it('should unsubscribe from events on removeLayer via source', (done: DoneFn) => {
-      spyOn(mapService.mapInstance, 'queryRenderedFeatures').and.returnValue([{} as MapGeoJSONFeature]);
+    it('should unsubscribe from events on removeLayer via source', async () => {
+      vi.spyOn(mapService.mapInstance, 'queryRenderedFeatures').mockReturnValue([{} as MapGeoJSONFeature]);
 
       const sourceData: SourceSpecification = {
         "type": "geojson",
@@ -231,7 +242,7 @@ describe('MapService', () => {
       }
       const layerEventThatShouldNotEmit = {
         ...createLayerEvents(),
-        layerClick: { emit: jasmine.createSpy() } as any,
+        layerClick: { emit: vi.fn() } as any,
       };
       const layer: SetupLayer = {
         layerOptions: {
@@ -252,16 +263,14 @@ describe('MapService', () => {
         layerEvents: createLayerEvents(),
       };
 
-      mapEvents.mapLoad.subscribe(() => {
-        mapService.addSource("sourceId", sourceData);
-        mapService.addLayer(layer, true);
-        mapService.removeSource("sourceId");
-        mapService.addSource("sourceId", sourceData);
-        mapService.addLayer(layer2, true);
-        click(mapService.mapInstance.getCanvas());
-        expect(layer.layerEvents.layerClick.emit).not.toHaveBeenCalled();
-        done();
-      });
+      await mapLoaded();
+      mapService.addSource("sourceId", sourceData);
+      mapService.addLayer(layer, true);
+      mapService.removeSource("sourceId");
+      mapService.addSource("sourceId", sourceData);
+      mapService.addLayer(layer2, true);
+      click(mapService.mapInstance.getCanvas());
+      expect(layer.layerEvents.layerClick.emit).not.toHaveBeenCalled();
     });
   });
 });

@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Marker } from 'maplibre-gl';
 import { MatCardModule } from '@angular/material/card';
 import {
@@ -34,6 +34,7 @@ import {
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MapComponent, MarkerComponent, ControlComponent, MatCardModule],
 })
 export class DragAMarkerComponent {

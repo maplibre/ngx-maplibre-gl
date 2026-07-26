@@ -4,19 +4,22 @@ import type {
   GeolocateControl,
   Map,
   MapLibreEvent,
-  MapLibreZoomEvent,
+  MapBoxZoomEvent,
   MapContextEvent,
-  MapDataEvent,
   MapLayerMouseEvent,
   MapLayerTouchEvent,
   MapMouseEvent,
   MapSourceDataEvent,
   MapStyleDataEvent,
+  MapStyleImageMissingEvent,
   MapTouchEvent,
   MapWheelEvent,
 } from 'maplibre-gl';
 
 export type EventData = Record<string, any>;
+
+/** The payload of the `data` and `dataloading` map events. */
+export type MapDataEvent = MapSourceDataEvent | MapStyleDataEvent;
 
 export type MapEvent = {
   mapResize: OutputEmitterRef<MapLibreEvent & EventData>;
@@ -79,9 +82,9 @@ export type MapEvent = {
   pitchEnd: OutputEmitterRef<
     MapLibreEvent<MouseEvent | TouchEvent | undefined> & EventData
   >;
-  boxZoomStart: OutputEmitterRef<MapLibreZoomEvent & EventData>;
-  boxZoomEnd: OutputEmitterRef<MapLibreZoomEvent & EventData>;
-  boxZoomCancel: OutputEmitterRef<MapLibreZoomEvent & EventData>;
+  boxZoomStart: OutputEmitterRef<MapBoxZoomEvent & EventData>;
+  boxZoomEnd: OutputEmitterRef<MapBoxZoomEvent & EventData>;
+  boxZoomCancel: OutputEmitterRef<MapBoxZoomEvent & EventData>;
   webGlContextLost: OutputEmitterRef<MapContextEvent & EventData>;
   webGlContextRestored: OutputEmitterRef<MapContextEvent & EventData>;
   mapLoad: OutputEmitterRef<Map>; // Consider emitting MapLibreEvent for consistency (breaking change).
@@ -93,7 +96,7 @@ export type MapEvent = {
   dataLoading: OutputEmitterRef<MapDataEvent & EventData>;
   styleDataLoading: OutputEmitterRef<MapStyleDataEvent & EventData>;
   sourceDataLoading: OutputEmitterRef<MapSourceDataEvent & EventData>;
-  styleImageMissing: OutputEmitterRef<{ id: string } & EventData>;
+  styleImageMissing: OutputEmitterRef<MapStyleImageMissingEvent & EventData>;
   idle: OutputEmitterRef<MapLibreEvent & EventData>;
 }
 
