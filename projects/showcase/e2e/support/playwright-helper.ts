@@ -72,7 +72,7 @@ export class Assertable<T> {
       return;
     }
     const deadline = Date.now() + POLL_TIMEOUT_MS;
-    for (;;) {
+    while (true) {
       try {
         assertion(await target.get());
         return;
