@@ -20,7 +20,7 @@ function diffPixels(a: MapSnapshot, b: MapSnapshot): number {
         `${a.width}x${a.height} and ${b.width}x${b.height}`
     );
   }
-  return pixelmatch(a.data, b.data, null, a.width, a.height);
+  return pixelmatch(a.data, b.data, undefined, a.width, a.height);
 }
 
 /**
