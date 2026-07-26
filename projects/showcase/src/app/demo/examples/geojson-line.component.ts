@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { MapComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
@@ -61,6 +61,5 @@ import { MapComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, LayerComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GeoJSONLineComponent { }

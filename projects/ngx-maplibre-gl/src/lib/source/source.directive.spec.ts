@@ -1,6 +1,5 @@
 import { createSpyObj, type SpyObj } from '../../testing/spy-obj';
 import {
-  ChangeDetectionStrategy,
   Component,
   ComponentRef,
   DestroyRef,
@@ -25,7 +24,6 @@ const destroyRefStub = () => createSpyObj<DestroyRef>(['onDestroy']);
 
 @Component({
   template: '',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
 })
 export class TestSourceComponent implements OnChanges {

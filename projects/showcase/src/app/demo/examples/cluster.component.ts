@@ -1,5 +1,5 @@
 import { httpResource } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   MapComponent,
   GeoJSONSourceComponent,
@@ -82,7 +82,6 @@ import {
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, GeoJSONSourceComponent, LayerComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClusterComponent {
   readonly earthquakes = httpResource<GeoJSON.FeatureCollection<GeoJSON.Point>>(() => 'assets/data/earthquakes.geo.json');

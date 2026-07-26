@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { Map, SymbolLayerSpecification } from 'maplibre-gl';
 import { MapComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
 
@@ -50,7 +50,6 @@ import { MapComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MapComponent, LayerComponent],
 })
 export class Display3dBuildingsComponent {

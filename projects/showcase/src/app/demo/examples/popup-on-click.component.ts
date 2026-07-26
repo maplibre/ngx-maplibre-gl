@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MapLayerMouseEvent } from 'maplibre-gl';
 import {
   MapComponent,
@@ -48,7 +48,6 @@ import { httpResource } from '@angular/common/http';
     LayerComponent,
     PopupComponent,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PopupOnClickComponent {
   readonly points = httpResource<GeoJSON.FeatureCollection<GeoJSON.Point>>(() => 'assets/data/points.geo.json');

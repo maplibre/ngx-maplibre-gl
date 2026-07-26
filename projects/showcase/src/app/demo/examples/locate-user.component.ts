@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   MapComponent,
   ControlComponent,
@@ -25,6 +25,5 @@ import {
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, ControlComponent, GeolocateControlDirective],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LocateUserComponent { }

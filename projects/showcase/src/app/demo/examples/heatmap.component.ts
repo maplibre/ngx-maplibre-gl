@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { CircleLayerSpecification } from 'maplibre-gl';
 import {
   MapComponent,
@@ -51,7 +51,6 @@ import { httpResource } from '@angular/common/http';
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, GeoJSONSourceComponent, LayerComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeatMapComponent {
   readonly earthquakesRs = httpResource<GeoJSON.FeatureCollection<GeoJSON.Point>>(() => 'assets/data/earthquakes.geo.json');

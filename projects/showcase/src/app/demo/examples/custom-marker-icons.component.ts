@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
 
 @Component({
@@ -27,7 +27,6 @@ import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
   `,
   styleUrls: ['./examples.css', './custom-marker-icons.component.css'],
   imports: [MapComponent, MarkerComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomMarkerIconsComponent {
   readonly geojson = {

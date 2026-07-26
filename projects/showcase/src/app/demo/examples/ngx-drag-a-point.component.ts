@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MapMouseEvent } from 'maplibre-gl';
 import { MatCardModule } from '@angular/material/card';
 import {
@@ -61,7 +61,6 @@ import {
     ControlComponent,
     MatCardModule,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgxDragAPointComponent {
   readonly layerPaint = signal({

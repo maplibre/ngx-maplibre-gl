@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { LngLat, MapLayerMouseEvent } from 'maplibre-gl';
 import { GeoJsonProperties } from 'geojson';
 import {
@@ -44,7 +44,6 @@ import {
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, LayerComponent, PopupComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PolygonPopupOnClickComponent {
   readonly selectedElement = signal<GeoJsonProperties | null>(null);

@@ -6,7 +6,6 @@ import {
   input,
   signal,
   inject,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 import {
   MatPaginator,
@@ -42,7 +41,6 @@ import { toSignal } from '@angular/core/rxjs-interop';
       (page)="changePage($event)"
     />
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatListModule, MatPaginatorModule],
 })
 export class ClusterPopupComponent implements OnChanges {
@@ -129,7 +127,6 @@ export class ClusterPopupComponent implements OnChanges {
     </mgl-map>
   `,
   styleUrls: ['./examples.css', './ngx-cluster-html.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MapComponent,
     GeoJSONSourceComponent,

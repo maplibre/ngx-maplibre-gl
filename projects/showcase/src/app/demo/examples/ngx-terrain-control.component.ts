@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   MapComponent,
   ControlComponent,
@@ -47,6 +47,5 @@ import {
     NavigationControlDirective,
     TerrainControlDirective,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgxTerrainSourceComponent { }

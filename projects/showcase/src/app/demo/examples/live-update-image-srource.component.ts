@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
@@ -42,7 +41,6 @@ import { interval, map, shareReplay, startWith, switchMap } from 'rxjs';
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, ImageSourceComponent, LayerComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LiveUpdateImageSourceComponent {
   private readonly httpClient = inject(HttpClient);

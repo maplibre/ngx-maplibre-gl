@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   MapComponent,
   ControlComponent,
@@ -35,7 +35,6 @@ import {
     NavigationControlDirective,
     ScaleControlDirective,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomLocaleComponent {
   /* eslint-disable @typescript-eslint/naming-convention */

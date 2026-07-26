@@ -111,35 +111,10 @@ import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url';
 setWorkerUrl(new URL(workerUrl, document.baseURI).href);
 ```
 
-### Migrating to the Angular 22 / MapLibre GL JS v6 release
+### Upgrading MapLibre GL JS
 
-For the MapLibre side, follow the
+Upgrading from v5? Follow the
 [v5 to v6 migration guide](https://maplibre.org/maplibre-gl-js/docs/guides/v5-to-v6-migration-guide/).
-What is specific to this library:
-
-- **Supplying missing style images.** MapLibre replaced the `styleimagemissing`
-  callback with `Map#setMissingStyleImageResolver`. The equivalent here is the new
-  `[missingStyleImageResolver]` input; the `(styleImageMissing)` output remains, but
-  only as a notification.
-
-  ```html
-  <mgl-map [mapStyle]="style" [missingStyleImageResolver]="resolveImage" />
-  ```
-
-- **`MapDataEvent` is re-exported by this library**, since `maplibre-gl` no longer
-  exports it. It is `MapSourceDataEvent | MapStyleDataEvent`, which is what `(data)`
-  and `(dataLoading)` emit. `(boxZoom*)` outputs now emit `MapBoxZoomEvent`.
-
-- **Bind numeric inputs as numbers.** v6 validates specs more strictly, so
-  `tileSize="256"` passes the *string* `"256"` and is rejected — silently leaving the
-  source unadded. Use `[tileSize]="256"`.
-
-- **Removed input.** `[customMapboxApiUrl]` on `mgl-map` has been removed; it was a
-  leftover from ngx-mapbox-gl and had no effect.
-
-- **New `mgl-map` inputs**, mirroring v6's `MapOptions`: `[zoomSnap]`,
-  `[anisotropicFilterPitch]`, `[transformConstrain]`, `[reduceMotion]`,
-  `[terrainSkirtLength]`, `[zoomLevelsToOverscale]` and `[aroundCenter]`.
 
 Then, in your app's main module (or in any other module), import the `MapComponent`:
 

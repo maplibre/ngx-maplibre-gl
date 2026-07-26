@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -45,7 +44,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
       }
     `,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatProgressSpinnerModule],
 })
 export class StackblitzEditComponent implements AfterViewInit, OnDestroy {

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   MapComponent,
   PopupComponent as MglPopupComponent,
@@ -29,6 +29,5 @@ import {
   `,
   styleUrls: ['./examples.css', './popup.component.css'],
   imports: [MapComponent, MglPopupComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PopupComponent { }

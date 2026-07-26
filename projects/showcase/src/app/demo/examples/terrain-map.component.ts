@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { TerrainSpecification } from 'maplibre-gl';
 import {
   MapComponent,
@@ -25,7 +25,6 @@ import {
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, RasterDemSourceComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TerrainMapComponent {
   readonly mapLibreExampleSource: string =

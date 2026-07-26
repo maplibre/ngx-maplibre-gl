@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   Directive,
@@ -92,7 +91,6 @@ let uniqId = 0;
         </mgl-marker>
       } 
     }`,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
   imports: [LayerComponent, MarkerComponent, NgTemplateOutlet],
 })

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   MapComponent,
   ImageComponent,
@@ -47,7 +47,6 @@ import {
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, ImageComponent, LayerComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddImageGeneratedComponent {
   readonly imageData = this.generateImage();

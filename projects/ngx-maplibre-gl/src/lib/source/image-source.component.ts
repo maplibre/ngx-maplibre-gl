@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   OnChanges,
@@ -23,7 +22,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'mgl-image-source',
   template: '',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageSourceComponent implements OnInit, OnDestroy, OnChanges {
   /** Init injection */

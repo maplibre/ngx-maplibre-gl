@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   ElementRef,
@@ -41,7 +40,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'mgl-popup',
   template: '<div #content data-cy="mgl-popup"><ng-content></ng-content></div>',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PopupComponent implements OnChanges, OnInit, OnDestroy {
   /** Init injection */

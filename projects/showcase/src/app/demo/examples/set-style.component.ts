@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   model,
@@ -39,7 +38,6 @@ import {
   `,
   styleUrls: ['./examples.css', './set-style.component.css'],
   imports: [MapComponent, MatRadioModule, FormsModule],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SetStyleComponent {
   readonly layerId = model('streets');

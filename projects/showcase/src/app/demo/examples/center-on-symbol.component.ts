@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MapMouseEvent } from 'maplibre-gl';
 import {
   MapComponent,
@@ -45,7 +45,6 @@ import {
     FeatureComponent,
     LayerComponent,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CenterOnSymbolComponent {
   readonly cursorStyle = signal('');

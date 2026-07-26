@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   ElementRef,
   OnChanges,
@@ -77,7 +76,6 @@ import { firstValueFrom } from 'rxjs';
     `,
   ],
   providers: [MapService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   private readonly mapService = inject(MapService);

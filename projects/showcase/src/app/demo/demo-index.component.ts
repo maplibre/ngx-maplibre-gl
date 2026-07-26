@@ -7,7 +7,6 @@ import {
   model,
   signal,
   viewChildren,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 import {
   MatSlideToggleChange,
@@ -39,7 +38,6 @@ type RoutesByCategory = Record<string, Routes>;
 @Component({
   templateUrl: './demo-index.component.html',
   styleUrls: ['./demo-index.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     LayoutToolbarMenuComponent,
     MatButtonModule,

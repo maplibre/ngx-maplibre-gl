@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import {
   MapComponent,
   GeoJSONSourceComponent,
@@ -54,7 +54,6 @@ import {
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, GeoJSONSourceComponent, LayerComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HoverStylesComponent {
   readonly hoverFilter = signal(['==', 'name', '']);

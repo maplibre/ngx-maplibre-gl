@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   MapComponent,
   LayerComponent,
@@ -43,7 +43,6 @@ import {
     FeatureComponent,
     LayerComponent,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgxGeoJSONLineComponent {
   readonly geometry = {

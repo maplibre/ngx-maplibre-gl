@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import type {
   CircleLayerSpecification,
   SymbolLayerSpecification,
@@ -38,7 +38,6 @@ type DonuSegmentData = {
       </text>
     </svg>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClusterPointComponent {
   readonly properties = input<MapGeoJSONFeature['properties']>();
@@ -215,7 +214,6 @@ const MAG5 = ['>=', ['get', 'mag'], 5];
     ClusterPointComponent,
     LayerComponent,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClusterHtmlComponent {
   readonly clusterProperties: GeoJSONSourceSpecification['clusterProperties'] = {

@@ -1,5 +1,5 @@
 import { createSpyObj, type SpyObj } from '../../testing/spy-obj';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PointLike } from 'maplibre-gl';
 import { of } from 'rxjs';
@@ -24,7 +24,6 @@ const getMapServiceStub = () =>
     </mgl-marker>
   `,
   imports: [MarkerComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class MarkerTestComponent {
   offset: PointLike;

@@ -1,6 +1,5 @@
 import {
   ApplicationRef,
-  ChangeDetectionStrategy,
   Component,
   inject,
   signal,
@@ -74,7 +73,6 @@ import {
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MapComponent, ImageComponent, LayerComponent],
 })
 export class AddImageMissingGeneratedComponent {

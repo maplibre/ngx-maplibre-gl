@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import {
   LayerComponent,
@@ -64,7 +64,6 @@ import type { LayerSpecification } from 'maplibre-gl';
     </div>
   `,
   styleUrls: ['./examples.css', './toggle-layers.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MapComponent,
     VectorSourceComponent,

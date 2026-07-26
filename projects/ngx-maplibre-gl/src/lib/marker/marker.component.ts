@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   ElementRef,
@@ -43,7 +42,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     <ng-content></ng-content>
   </div>`,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MarkerComponent implements OnChanges, OnInit, OnDestroy {
   /** Init injection */

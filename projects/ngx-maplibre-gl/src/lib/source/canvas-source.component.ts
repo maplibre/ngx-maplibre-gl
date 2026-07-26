@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   OnChanges,
   SimpleChanges,
@@ -20,7 +19,6 @@ import { tap } from 'rxjs';
 @Component({
   selector: 'mgl-canvas-source',
   template: '',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
 })
 export class CanvasSourceComponent implements OnChanges {

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   MapComponent,
   GlobeControlDirective,
@@ -19,7 +19,6 @@ import {
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
-  imports: [MapComponent, ControlComponent, GlobeControlDirective],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [MapComponent, ControlComponent, GlobeControlDirective]
 })
 export class GlobeComponent { }
