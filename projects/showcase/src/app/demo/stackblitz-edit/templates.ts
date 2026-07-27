@@ -82,12 +82,12 @@ export const INDEX_HTML = `<!doctype html>
 `;
 
 export const MAIN_TS = `import { bootstrapApplication } from '@angular/platform-browser';
-import { setWorkerUrl } from 'maplibre-gl';
+import { provideMaplibreWorker } from '@maplibre/ngx-maplibre-gl';
 import { ### } from './demo';
 
-setWorkerUrl(new URL('maplibre-gl-worker.mjs', document.baseURI).href);
-
-bootstrapApplication(###).catch((err) => console.error(err));
+bootstrapApplication(###, {
+	providers: [provideMaplibreWorker('maplibre-gl-worker.mjs')],
+}).catch((err) => console.error(err));
 `;
 
 /**

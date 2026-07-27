@@ -31,6 +31,7 @@ export * from './lib/control/globe-control.directive';
 // Expose MapService for ngx-maplibre-gl extensions
 export * from './lib/map/map.service';
 export * from './lib/map/map.component';
+export * from './lib/map/maplibre-worker';
 
 // Expose GeoJSONSourceComponent to access cluster functions
 export * from './lib/source/geojson/geojson-source.component';
