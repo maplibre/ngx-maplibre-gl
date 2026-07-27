@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { ControlComponent, MapComponent } from '@maplibre/ngx-maplibre-gl';
 import { Map } from 'maplibre-gl';
@@ -8,7 +8,7 @@ import { Map } from 'maplibre-gl';
   template: `
     <mgl-map
       [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+        'https://tiles.openfreemap.org/styles/liberty'
       "
       [zoom]="[2.9]"
       [center]="[16.05, 48]"
@@ -54,7 +54,6 @@ import { Map } from 'maplibre-gl';
   styleUrls: ['./examples.css'],
   preserveWhitespaces: false,
   imports: [MapComponent, ControlComponent, MatButtonModule],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LanguageSwitchComponent {
   readonly map = signal<Map | null>(null);
@@ -67,17 +66,17 @@ export class LanguageSwitchComponent {
     const map = this.map();
     if (!map) return;
     map.setLayoutProperty(
-      'country_1',
+      'label_country_1',
       'text-field',
       '{name:' + language + '}',
     );
     map.setLayoutProperty(
-      'country_2',
+      'label_country_2',
       'text-field',
       '{name:' + language + '}',
     );
     map.setLayoutProperty(
-      'country_3',
+      'label_country_3',
       'text-field',
       '{name:' + language + '}',
     );

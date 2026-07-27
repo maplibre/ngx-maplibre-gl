@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   NgZone,
@@ -52,7 +51,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'mgl-image',
   template: '',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageComponent implements OnInit, OnChanges, OnDestroy {
   /** Init injection */

@@ -15,16 +15,13 @@ import {
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
-      "
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       @if (visible()) {
         <mgl-control>
           <button
             mat-fab
-            color="primary"
             class="custom-control"
             data-cy="custom-control"
             (click)="alert('Hello')"
@@ -46,7 +43,6 @@ import {
       <mgl-control position="bottom-right">
         <button
           mat-flat-button
-          color="accent"
           (click)="toggleControls()"
           data-cy="toggle-show-controls"
         >

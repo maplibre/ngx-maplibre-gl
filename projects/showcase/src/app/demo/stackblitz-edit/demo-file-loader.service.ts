@@ -39,7 +39,6 @@ export class DemoFileLoaderService {
     let match;
     const files = [];
     const result = {
-      // eslint-disable-next-line @typescript-eslint/naming-convention
       'src/demo.ts': fileContent,
     };
     while ((match = r.exec(fileContent))) {

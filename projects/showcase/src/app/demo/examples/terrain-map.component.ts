@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { TerrainSpecification } from 'maplibre-gl';
 import {
   MapComponent,
@@ -19,17 +19,16 @@ import {
       <mgl-raster-dem-source
         id="terrainSource"
         url="https://demotiles.maplibre.org/terrain-tiles/tiles.json"
-        tileSize="256"
+        [tileSize]="256"
       />
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, RasterDemSourceComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TerrainMapComponent {
   readonly mapLibreExampleSource: string =
-    'https://api.maptiler.com/maps/hybrid/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL';
+    'https://tiles.openfreemap.org/styles/liberty';
 
   readonly terrainSpec: TerrainSpecification = {
     source: 'terrainSource',

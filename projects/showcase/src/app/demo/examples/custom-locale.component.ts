@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   MapComponent,
   ControlComponent,
@@ -13,7 +13,7 @@ import {
   template: `
     <mgl-map
       [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+        'https://tiles.openfreemap.org/styles/liberty'
       "
       [center]="[36.235656, 50.00387]"
       [zoom]="[11.15]"
@@ -35,7 +35,6 @@ import {
     NavigationControlDirective,
     ScaleControlDirective,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomLocaleComponent {
   /* eslint-disable @typescript-eslint/naming-convention */

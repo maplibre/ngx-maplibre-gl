@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   ElementRef,
   OnDestroy,
@@ -61,7 +60,6 @@ export class CustomControl implements IControl {
       <ng-content></ng-content>
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ControlComponent<T extends IControl> implements OnDestroy {
   /** Init injection */

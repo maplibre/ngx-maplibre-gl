@@ -1,17 +1,18 @@
+import { createSpyObj, type SpyObj } from '../../testing/spy-obj';
 import { ComponentRef, SimpleChange } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { MapService } from '../map/map.service';
 import { ImageComponent } from './image.component';
 
 describe('ImageComponent', () => {
-  let mapServiceStub: jasmine.SpyObj<MapService>;
+  let mapServiceStub: SpyObj<MapService>;
   let component: ImageComponent;
   let componentRef: ComponentRef<ImageComponent>;
   let fixture: ComponentFixture<ImageComponent>;
 
-  beforeEach(waitForAsync(() => {
-    mapServiceStub = jasmine.createSpyObj(['addImage', 'removeImage'], {
+  beforeEach(async () => {
+    mapServiceStub = createSpyObj<MapService>(['addImage', 'removeImage'], {
       mapLoaded$: of(true),
       mapInstance: new (class {
         on() {}
@@ -20,7 +21,7 @@ describe('ImageComponent', () => {
       })(),
     });
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [ImageComponent],
     })
       .overrideComponent(ImageComponent, {
@@ -29,7 +30,7 @@ describe('ImageComponent', () => {
         },
       })
       .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ImageComponent);

@@ -3,7 +3,6 @@ import {
   forwardRef,
   OnDestroy,
   OnInit,
-  ChangeDetectionStrategy,
   input,
   model,
   inject,
@@ -19,7 +18,6 @@ import { GeoJSONSourceComponent } from './geojson-source.component';
 @Component({
   selector: 'mgl-feature',
   template: '',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeatureComponent implements OnInit, OnDestroy {
   /** Init injection */

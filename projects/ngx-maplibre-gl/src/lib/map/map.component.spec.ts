@@ -1,3 +1,4 @@
+import { createSpyObj, type SpyObj } from '../../testing/spy-obj';
 import {
   ApplicationRef,
   ComponentRef,
@@ -8,17 +9,14 @@ import {
 } from '@angular/core';
 import {
   ComponentFixture,
-  fakeAsync,
-  flushMicrotasks,
   TestBed,
-  waitForAsync,
 } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { MapComponent } from './map.component';
 import { MapService } from './map.service';
 
 const getMapServiceStub = () =>
-  jasmine.createSpyObj(
+  createSpyObj<MapService>(
     [
       'setup',
       'updateMinZoom',
@@ -33,15 +31,15 @@ const getMapServiceStub = () =>
   );
 
 describe('MapComponent', () => {
-  let mapServiceStub: jasmine.SpyObj<MapService>;
+  let mapServiceStub: SpyObj<MapService>;
   let component: MapComponent;
   let componentRef: ComponentRef<MapComponent>;
   let fixture: ComponentFixture<MapComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     mapServiceStub = getMapServiceStub();
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [MapComponent],
       providers: [provideZonelessChangeDetection()],
     })
@@ -51,7 +49,7 @@ describe('MapComponent', () => {
         },
       })
       .compileComponents();
-  }));
+  });
 
   beforeEach(async () => {
     fixture = TestBed.createComponent(MapComponent);
@@ -64,7 +62,7 @@ describe('MapComponent', () => {
 
   describe('Init tests', () => {
     it('should init with custom inputs', () => {
-      const callCount = mapServiceStub.setup.calls.count();
+      const callCount = mapServiceStub.setup.mock.calls.length;
 
       // Since we don't want to trigger afterNextRender, we need to create the component in a different way
       const componentRef = createComponent(MapComponent, {
@@ -72,48 +70,45 @@ describe('MapComponent', () => {
       });
       componentRef.setInput('mapStyle', 'mapStyle');
       TestBed.inject(ApplicationRef).attachView(componentRef.hostView);
-      expect(mapServiceStub.setup.calls.count()).toBe(callCount);
+      expect(mapServiceStub.setup.mock.calls.length).toBe(callCount);
       TestBed.inject(ApplicationRef).tick();
-      expect(mapServiceStub.setup.calls.count()).toBe(callCount+1);
+      expect(mapServiceStub.setup.mock.calls.length).toBe(callCount+1);
       expect(
-        mapServiceStub.setup.calls.first().args[0].mapOptions.style
+        mapServiceStub.setup.mock.calls[0][0].mapOptions.style
       ).toEqual('mapStyle');
     });
   });
 
   describe('Change tests', () => {
-    it('should update minzoom', fakeAsync(() => {
+    it('should update minzoom', async () => {
       componentRef.setInput('minZoom', 6);
 
       fixture.detectChanges();
 
-      component.ngOnChanges({
+      await component.ngOnChanges({
         minZoom: new SimpleChange(null, component.minZoom(), false),
       });
-      flushMicrotasks();
       expect(mapServiceStub.updateMinZoom).toHaveBeenCalledWith(6);
-    }));
+    });
 
-    it('should update minpitch', fakeAsync(() => {
+    it('should update minpitch', async () => {
       componentRef.setInput('minPitch', 15);
       fixture.detectChanges();
 
-      component.ngOnChanges({
+      await component.ngOnChanges({
         minPitch: new SimpleChange(null, component.minPitch(), false),
       });
-      flushMicrotasks();
       expect(mapServiceStub.updateMinPitch).toHaveBeenCalledWith(15);
-    }));
+    });
 
-    it('should update maxpitch', fakeAsync(() => {
+    it('should update maxpitch', async () => {
       componentRef.setInput('maxPitch', 25);
       fixture.detectChanges();
 
-      component.ngOnChanges({
+      await component.ngOnChanges({
         maxPitch: new SimpleChange(null, component.maxPitch(), false),
       });
-      flushMicrotasks();
       expect(mapServiceStub.updateMaxPitch).toHaveBeenCalledWith(25);
-    }));
+    });
   });
 });

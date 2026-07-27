@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { CircleLayerSpecification } from 'maplibre-gl';
 import {
   MapComponent,
@@ -11,9 +11,7 @@ import { httpResource } from '@angular/common/http';
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
-      "
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[3]"
       [center]="[-103.59179687498357, 40.66995747013945]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
@@ -51,7 +49,6 @@ import { httpResource } from '@angular/common/http';
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, GeoJSONSourceComponent, LayerComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeatMapComponent {
   readonly earthquakesRs = httpResource<GeoJSON.FeatureCollection<GeoJSON.Point>>(() => 'assets/data/earthquakes.geo.json');

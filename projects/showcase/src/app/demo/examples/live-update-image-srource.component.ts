@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
@@ -19,7 +18,7 @@ import { interval, map, shareReplay, startWith, switchMap } from 'rxjs';
   template: `
     <mgl-map
       [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+        'https://tiles.openfreemap.org/styles/liberty'
       "
       [center]="center()"
       [zoom]="[14]"
@@ -42,7 +41,6 @@ import { interval, map, shareReplay, startWith, switchMap } from 'rxjs';
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, ImageSourceComponent, LayerComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LiveUpdateImageSourceComponent {
   private readonly httpClient = inject(HttpClient);

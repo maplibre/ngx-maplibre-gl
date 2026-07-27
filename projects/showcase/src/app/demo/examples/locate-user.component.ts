@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   MapComponent,
   ControlComponent,
@@ -9,9 +9,7 @@ import {
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
-      "
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       <mgl-control
@@ -25,6 +23,5 @@ import {
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, ControlComponent, GeolocateControlDirective],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LocateUserComponent { }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { AnimationOptions } from 'maplibre-gl';
 import { MatIconModule } from '@angular/material/icon';
 import { MapComponent } from '@maplibre/ngx-maplibre-gl';
@@ -17,7 +17,6 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
     />
   `,
   styleUrls: ['./home-index.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MapComponent, MatIconModule],
 })
 export class HomeIndexComponent {

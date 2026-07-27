@@ -1,5 +1,5 @@
+import { createSpyObj, type SpyObj } from '../../testing/spy-obj';
 import {
-  ChangeDetectionStrategy,
   Component,
   ComponentRef,
   DestroyRef,
@@ -8,7 +8,7 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, tap } from 'rxjs';
 import { MapService } from '../map/map.service';
 import { SourceDirective } from './source.directive';
@@ -16,15 +16,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { VectorSourceSpecification } from 'maplibre-gl';
 
 const getMapServiceStub = () =>
-  jasmine.createSpyObj(['removeSource', 'addSource', 'getSource'], {
+  createSpyObj<MapService>(['removeSource', 'addSource', 'getSource'], {
     mapLoaded$: of(true),
     mapInstance: new EventTarget(),
   });
-const destroyRefStub = () => jasmine.createSpyObj(['onDestroy']);
+const destroyRefStub = () => createSpyObj<DestroyRef>(['onDestroy']);
 
 @Component({
   template: '',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: SourceDirective, inputs: ['id'] }],
 })
 export class TestSourceComponent implements OnChanges {
@@ -51,15 +50,15 @@ export class TestSourceComponent implements OnChanges {
 }
 
 describe('SourceDirective', () => {
-  let mapServiceStub: jasmine.SpyObj<MapService>;
+  let mapServiceStub: SpyObj<MapService>;
   let fixture: ComponentFixture<TestSourceComponent>;
   let componentRef: ComponentRef<TestSourceComponent>;
   let directive: SourceDirective;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     mapServiceStub = getMapServiceStub();
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [TestSourceComponent, SourceDirective],
       providers: [
         { provide: MapService, useValue: mapServiceStub },
@@ -72,7 +71,7 @@ describe('SourceDirective', () => {
     componentRef = fixture.componentRef;
     componentRef.setInput('id', 'test-id-1');
     directive = componentRef.instance.sourceDirective;
-  }));
+  });
 
   it('should remove and recreate source on update', () => {
     componentRef.setInput('id', 'test-id-1');
@@ -87,14 +86,14 @@ describe('SourceDirective', () => {
 
     fixture.detectChanges();
 
-    expect(mapServiceStub.removeSource).toHaveBeenCalledOnceWith('test-id-1');
+    expect(mapServiceStub.removeSource).toHaveBeenCalledExactlyOnceWith('test-id-1');
     expect(mapServiceStub.addSource).toHaveBeenCalledTimes(2);
     const  vector: VectorSourceSpecification = { type: 'vector' };
-    expect(mapServiceStub.addSource.calls.argsFor(0)).toEqual([
+    expect(mapServiceStub.addSource.mock.calls[0]).toEqual([
       'test-id-1',
       vector,
     ]);
-    expect(mapServiceStub.addSource.calls.argsFor(1)).toEqual([
+    expect(mapServiceStub.addSource.mock.calls[1]).toEqual([
       'test-id-2',
       vector,
     ]);

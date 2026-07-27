@@ -1,12 +1,13 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { createSpyObj, type SpyObj } from '../../testing/spy-obj';
+import { Component, signal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { MapService } from '../map/map.service';
 import { MarkerComponent } from '../marker/marker.component';
 import { PopupComponent } from './popup.component';
 
 const getMapServiceStub = () =>
-  jasmine.createSpyObj(
+  createSpyObj<MapService>(
     [
       'addMarker',
       'removeMarker',
@@ -27,22 +28,21 @@ const getMapServiceStub = () =>
     }
   `,
   imports: [MarkerComponent, PopupComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class MarkerPopupTestComponent {
   show = signal(true);
 }
 
 describe('PopupComponent', () => {
-  let mapServiceStub: jasmine.SpyObj<MapService>;
+  let mapServiceStub: SpyObj<MapService>;
   let component: MarkerPopupTestComponent;
   let fixture: ComponentFixture<MarkerPopupTestComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     mapServiceStub = getMapServiceStub();
-    mapServiceStub.createPopup.and.returnValue({} as any);
-    mapServiceStub.addMarker.and.returnValue({} as any);
-    TestBed.configureTestingModule({
+    mapServiceStub.createPopup.mockReturnValue({} as any);
+    mapServiceStub.addMarker.mockReturnValue({} as any);
+    await TestBed.configureTestingModule({
       imports: [MarkerPopupTestComponent],
     })
       .overrideComponent(MarkerPopupTestComponent, {
@@ -51,7 +51,7 @@ describe('PopupComponent', () => {
         },
       })
       .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MarkerPopupTestComponent);

@@ -4,21 +4,21 @@ import { EventEmitter, Injectable, NgZone } from '@angular/core';
  * Mock synchronous NgZone implementation that can be used
  * to flush out `onStable` subscriptions in tests.
  *
+ * Deliberately does not extend `NgZone`: constructing a real one requires Zone.js,
+ * which this library does not depend on. It implements only the surface `MapService`
+ * uses, and is registered for the `NgZone` token in tests.
+ *
  * via: https://github.com/angular/angular/blob/master/packages/core/testing/src/ng_zone_mock.ts
  */
 @Injectable()
-export class MockNgZone extends NgZone {
-  onStable: EventEmitter<null> = new EventEmitter(false);
+export class MockNgZone implements Pick<NgZone, 'run' | 'runOutsideAngular'> {
+  readonly onStable = new EventEmitter<null>(false);
 
-  constructor() {
-    super({ enableLongStackTrace: false });
-  }
-
-  run(fn: () => void): any {
+  run<T>(fn: () => T): T {
     return fn();
   }
 
-  runOutsideAngular(fn: () => void): any {
+  runOutsideAngular<T>(fn: () => T): T {
     return fn();
   }
 

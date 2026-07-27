@@ -9,20 +9,18 @@ import {
   viewChildren,
 } from '@angular/core';
 import {
-  MatSlideToggleChange,
-  MatSlideToggleModule,
-} from '@angular/material/slide-toggle';
-import {
   ActivatedRoute,
-  Router,
   Routes,
   RouterLinkActive,
   RouterLink,
   RouterOutlet,
   Data,
 } from '@angular/router';
+import StackBlitzSDK from '@stackblitz/sdk';
 import scrollIntoView from 'scroll-into-view-if-needed';
 import { CATEGORIES, DEMO_ROUTES } from './routes';
+import { DemoFileLoaderService } from './stackblitz-edit/demo-file-loader.service';
+import { createStackblitzProject } from './stackblitz-edit/create-stackblitz-project';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
@@ -42,7 +40,6 @@ type RoutesByCategory = Record<string, Routes>;
     LayoutToolbarMenuComponent,
     MatButtonModule,
     MatIconModule,
-    MatSlideToggleModule,
     FormsModule,
     MatSidenavModule,
     MatFormFieldModule,
@@ -55,8 +52,8 @@ type RoutesByCategory = Record<string, Routes>;
   ],
 })
 export class DemoIndexComponent {
-  private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly demoFileLoaderService = inject(DemoFileLoaderService);
 
   private readonly originalRoutes = <RoutesByCategory>(
     (
@@ -87,7 +84,6 @@ export class DemoIndexComponent {
   readonly categories = Object.values(CATEGORIES);
   readonly searchTerm = model('');
   readonly sidenavIsOpen = signal(true);
-  readonly isEditMode = model(!!this.activatedRoute.snapshot.firstChild!.params.demoUrl);
 
   readonly exampleLinks = viewChildren<string, ElementRef>('exampleLink', {
     read: ElementRef,
@@ -114,13 +110,19 @@ export class DemoIndexComponent {
     this.sidenavIsOpen.update((v) => !v);
   }
 
-  toggleEdit(change: MatSlideToggleChange) {
-    const snapshot = this.activatedRoute.snapshot.firstChild!;
-    if (change.checked) {
-      this.router.navigate(['demo', 'edit', snapshot.url[0].path]);
-    } else {
-      this.router.navigate(['demo', snapshot.params.demoUrl]);
+  openStackblitz() {
+    const child = this.activatedRoute.snapshot.firstChild;
+    if (!child) {
+      return;
     }
+    const exampleName = child.url[0].path;
+    this.demoFileLoaderService.getDemoFiles(exampleName).subscribe((files) => {
+      const project = createStackblitzProject(files, exampleName);
+      StackBlitzSDK.openProject(project, {
+        newWindow: true,
+        openFile: 'src/demo.ts',
+      });
+    });
   }
 
 

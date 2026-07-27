@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   OnChanges,
@@ -48,7 +47,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'mgl-layer',
   template: '',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayerComponent
   implements OnInit, OnDestroy, OnChanges, LayerEvents

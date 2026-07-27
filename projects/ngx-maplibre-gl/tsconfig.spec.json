@@ -2,8 +2,12 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/spec",
-    "types": ["jasmine", "node", "geojson"]
+    "types": ["vitest/globals", "vite/client", "node", "geojson"],
+    "resolveJsonModule": true
   },
-  "files": ["src/test.ts"],
-  "include": ["**/*.spec.ts", "**/*.d.ts"]
+  "files": ["src/test-setup.ts"],
+  "include": ["**/*.spec.ts", "**/*.d.ts", "src/testing/**/*.ts"],
+  "angularCompilerOptions": {
+    "strictTemplates": false
+  }
 }

@@ -5,6 +5,7 @@ import { RouterOutlet } from '@angular/router';
 
 import github from '../assets/github.svg';
 import logo from '../assets/ngx-maplibre-gl.svg';
+import stackblitz from '../assets/stackblitz.svg';
 
 @Component({
   selector: 'showcase-root',
@@ -23,6 +24,10 @@ export class AppComponent {
     this.iconRegistry.addSvgIconLiteral(
       'github',
       this.sanitizer.bypassSecurityTrustHtml(github)
+    );
+    this.iconRegistry.addSvgIconLiteral(
+      'stackblitz',
+      this.sanitizer.bypassSecurityTrustHtml(stackblitz)
     );
   }
 }

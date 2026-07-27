@@ -1,5 +1,3 @@
-@use "@angular/material" as mat;
-
 :host,
 .content {
   display: flex;
@@ -32,10 +30,12 @@ mat-form-field.search {
 }
 
 a.active {
-  --mat-list-list-item-label-text-color: white;
-  --mat-list-list-item-hover-label-text-color: white;
-  --mat-list-list-item-focus-label-text-color: white;
-  background-color: mat.m2-get-color-from-palette(
-    mat.m2-define-palette(mat.$m2-indigo-palette)
-  ) !important;
+  --mat-list-list-item-label-text-color: var(--mat-sys-on-secondary-container);
+  --mat-list-list-item-hover-label-text-color: var(
+    --mat-sys-on-secondary-container
+  );
+  --mat-list-list-item-focus-label-text-color: var(
+    --mat-sys-on-secondary-container
+  );
+  background-color: var(--mat-sys-secondary-container) !important;
 }

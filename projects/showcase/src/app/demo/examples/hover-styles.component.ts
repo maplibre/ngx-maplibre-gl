@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import {
   MapComponent,
   GeoJSONSourceComponent,
@@ -9,9 +9,7 @@ import {
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
-      "
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[2]"
       [center]="[-100.486052, 37.830348]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
@@ -54,7 +52,6 @@ import {
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, GeoJSONSourceComponent, LayerComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HoverStylesComponent {
   readonly hoverFilter = signal(['==', 'name', '']);

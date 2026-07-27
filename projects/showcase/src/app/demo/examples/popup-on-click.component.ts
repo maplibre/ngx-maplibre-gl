@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MapLayerMouseEvent } from 'maplibre-gl';
 import {
   MapComponent,
@@ -13,7 +13,7 @@ import { httpResource } from '@angular/common/http';
   template: `
     <mgl-map
       [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+        'https://tiles.openfreemap.org/styles/liberty'
       "
       [zoom]="[11.15]"
       [center]="[-77.04, 38.907]"
@@ -48,7 +48,6 @@ import { httpResource } from '@angular/common/http';
     LayerComponent,
     PopupComponent,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PopupOnClickComponent {
   readonly points = httpResource<GeoJSON.FeatureCollection<GeoJSON.Point>>(() => 'assets/data/points.geo.json');
