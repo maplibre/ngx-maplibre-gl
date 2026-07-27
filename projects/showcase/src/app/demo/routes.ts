@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { StackblitzEditGuard } from './stackblitz-edit/stackblitz-edit-guard.service';
 
 export const CATEGORIES = {
   styles: 'Styles',
@@ -18,14 +17,6 @@ export const DEMO_ROUTES: Routes = [
     loadComponent: () =>
       import('./demo-index.component').then((m) => m.DemoIndexComponent),
     children: [
-      {
-        path: 'edit/:demoUrl',
-        loadComponent: () =>
-          import('./stackblitz-edit/stackblitz-edit.component').then(
-            (m) => m.StackblitzEditComponent
-          ),
-        canActivate: [StackblitzEditGuard],
-      },
       {
         path: 'display-map',
         loadComponent: () =>
