@@ -5,6 +5,12 @@
 ### 🐞 Bug fixes
 - _...Add new stuff here..._
 
+- Update dependencies - Angular 22, Maplibre 6, Vitest ([#310](https://github.com/maplibre/ngx-maplibre-gl/pull/310)) (by [@HarelM](https://github.com/HarelM))
+## 22.0.0
+### ✨ Features and improvements
+
+### 🐞 Bug fixes
+
 ## 21.0.2
 
 ### ✨ Features and improvements
