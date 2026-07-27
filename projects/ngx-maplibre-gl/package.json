@@ -19,6 +19,7 @@
     "url": "https://github.com/maplibre/ngx-maplibre-gl/issues"
   },
   "homepage": "https://github.com/maplibre/ngx-maplibre-gl#readme",
+  "sideEffects": false,
   "peerDependencies": {
     "@angular/common": ">= 22.0.0",
     "@angular/core": ">= 22.0.0",
