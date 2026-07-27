@@ -58,11 +58,6 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "allowedCommonJsDependencies": [
-              "@mapbox/mapbox-sdk",
-              "suggestions",
-              "maplibre-gl"
-            ],
             "aot": true,
             "outputPath": "dist/showcase",
             "index": "projects/showcase/src/index.html",
