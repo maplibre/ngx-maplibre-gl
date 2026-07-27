@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MapMouseEvent } from 'maplibre-gl';
 import {
   MapComponent,
@@ -12,7 +12,7 @@ import {
   template: `
     <mgl-map
       [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+        'https://tiles.openfreemap.org/styles/liberty'
       "
       [zoom]="[8]"
       [center]="center()"
@@ -45,7 +45,6 @@ import {
     FeatureComponent,
     LayerComponent,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CenterOnSymbolComponent {
   readonly cursorStyle = signal('');

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   MapComponent,
   PopupComponent as MglPopupComponent,
@@ -8,9 +8,7 @@ import {
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
-      "
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[3]"
       [center]="[-96, 37.8]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
@@ -29,6 +27,5 @@ import {
   `,
   styleUrls: ['./examples.css', './popup.component.css'],
   imports: [MapComponent, MglPopupComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PopupComponent { }

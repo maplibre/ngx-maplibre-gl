@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   MapComponent,
   ControlComponent,
@@ -12,7 +12,7 @@ import {
   template: `
     <mgl-map
       [mapStyle]="
-        'https://api.maptiler.com/maps/hybrid/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+        'https://tiles.openfreemap.org/styles/liberty'
       "
       [zoom]="[12]"
       [center]="[11.39085, 47.27574]"
@@ -22,7 +22,7 @@ import {
       <mgl-raster-dem-source
         id="terrainSource"
         url="https://demotiles.maplibre.org/terrain-tiles/tiles.json"
-        tileSize="256"
+        [tileSize]="256"
       />
       <mgl-control
         mglNavigation
@@ -33,7 +33,7 @@ import {
       <mgl-control
         mglTerrain
         source="terrainSource"
-        exaggeration="5"
+        [exaggeration]="5"
         position="top-right"
       />
     </mgl-map>
@@ -47,6 +47,5 @@ import {
     NavigationControlDirective,
     TerrainControlDirective,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgxTerrainSourceComponent { }

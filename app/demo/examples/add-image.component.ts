@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import {
   MapComponent,
   ImageComponent,
@@ -9,14 +9,12 @@ import {
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
-      "
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       <mgl-image
         id="cat"
-        url="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Cat_silhouette.svg/400px-Cat_silhouette.svg.png"
+        url="https://upload.wikimedia.org/wikipedia/commons/7/7c/201408_cat.png"
         (imageLoaded)="imageLoadedHandler()"
       />
       @if (imageLoaded()) {
@@ -46,7 +44,6 @@ import {
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, ImageComponent, LayerComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddImageComponent {
   readonly imageLoaded = signal(false);

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { LngLat, MapLayerMouseEvent } from 'maplibre-gl';
 import { GeoJsonProperties } from 'geojson';
 import {
@@ -11,9 +11,7 @@ import {
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
-      "
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[3]"
       [center]="[-100.04, 38.907]"
       [cursorStyle]="cursorStyle()"
@@ -44,7 +42,6 @@ import {
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, LayerComponent, PopupComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PolygonPopupOnClickComponent {
   readonly selectedElement = signal<GeoJsonProperties | null>(null);

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
 import { interval, scan, startWith } from 'rxjs';
@@ -10,7 +10,7 @@ import { interval, scan, startWith } from 'rxjs';
       [interactive]="false"
       movingMethod="jumpTo"
       [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+        'https://tiles.openfreemap.org/styles/liberty'
       "
       [pitch]="[pitch()]"
       [bearing]="[bearing()]"
@@ -44,7 +44,6 @@ import { interval, scan, startWith } from 'rxjs';
   `,
   styleUrls: ['./examples.css', './marker-alignment.component.css'],
   imports: [MapComponent, MarkerComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MarkerAlignmentComponent {
 

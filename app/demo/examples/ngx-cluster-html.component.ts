@@ -36,7 +36,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
       }
     </mat-list>
     <mat-paginator
-      [length]="selectedCluster().properties?.point_count"
+      [length]="selectedCluster().properties?.point_count ?? 0"
       [pageSize]="5"
       (page)="changePage($event)"
     />
@@ -88,9 +88,7 @@ export class ClusterPopupComponent implements OnChanges {
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
-      "
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[3]"
       [center]="[-103.59179687498357, 40.66995747013945]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"

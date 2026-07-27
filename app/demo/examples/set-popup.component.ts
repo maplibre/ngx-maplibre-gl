@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   MapComponent,
   PopupComponent,
@@ -31,6 +31,5 @@ import {
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, MarkerComponent, PopupComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SetPopupComponent { }

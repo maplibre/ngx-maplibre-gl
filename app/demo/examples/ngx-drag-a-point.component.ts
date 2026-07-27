@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MapMouseEvent } from 'maplibre-gl';
 import { MatCardModule } from '@angular/material/card';
 import {
@@ -14,9 +14,7 @@ import {
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
-      "
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[2]"
       [center]="[0, 0]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
@@ -61,7 +59,6 @@ import {
     ControlComponent,
     MatCardModule,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgxDragAPointComponent {
   readonly layerPaint = signal({

@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import {
+  ApplicationRef,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import {
   MapComponent,
   MapImageData,
@@ -10,10 +15,8 @@ import {
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
-      "
-      (styleImageMissing)="generateImage($event)"
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
+      [missingStyleImageResolver]="generateImage"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       @for (imageData of imagesData(); track imageData.id) {
@@ -68,13 +71,15 @@ import {
     </mgl-map>
   `,
   styleUrls: ['./examples.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MapComponent, ImageComponent, LayerComponent],
 })
 export class AddImageMissingGeneratedComponent {
   readonly imagesData = signal<(MapImageData & { id: string })[]>([]);
 
-  generateImage({ id }: { id: string }) {
+  private readonly appRef = inject(ApplicationRef);
+
+  // Arrow function so it can be passed to the map as a callback.
+  readonly generateImage = async (id: string) => {
     // check if this missing icon is one this function can generate
     const prefix = 'square-rgb-';
     if (id.indexOf(prefix) !== 0) {
@@ -104,5 +109,8 @@ export class AddImageMissingGeneratedComponent {
       data,
     };
     this.imagesData.update((imagesData) => [...imagesData, imageData]);
-  }
+    // MapLibre awaits this callback, so wait for the new <mgl-image> to render
+    // and register the image before telling MapLibre the icon is available.
+    await this.appRef.whenStable();
+  };
 }

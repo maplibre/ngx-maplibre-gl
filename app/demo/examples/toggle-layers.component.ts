@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import {
   LayerComponent,
@@ -12,7 +12,7 @@ import type { LayerSpecification } from 'maplibre-gl';
   template: `
     <mgl-map
       [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+        'https://tiles.openfreemap.org/styles/liberty'
       "
       [zoom]="[3]"
       [center]="[-71.97722138410576, -13.517379300798098]"
@@ -24,7 +24,7 @@ import type { LayerSpecification } from 'maplibre-gl';
       />
       <mgl-vector-source
         id="everything"
-        url="https://api.maptiler.com/tiles/v3/tiles.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL"
+        url="https://tiles.openfreemap.org/planet"
       />
       <mgl-layer
         id="countries-layer"
@@ -64,7 +64,6 @@ import type { LayerSpecification } from 'maplibre-gl';
     </div>
   `,
   styleUrls: ['./examples.css', './toggle-layers.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MapComponent,
     VectorSourceComponent,
@@ -81,6 +80,10 @@ export class ToggleLayersComponent {
       visibility: 'none',
       // eslint-disable-next-line @typescript-eslint/naming-convention
       'text-field': '{name:latin}',
+      // Without this the layer falls back to the style-spec default font stack,
+      // which the basemap's glyph server does not serve.
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      'text-font': ['Noto Sans Regular'],
       // eslint-disable-next-line @typescript-eslint/naming-convention
       'text-size': 30,
     },

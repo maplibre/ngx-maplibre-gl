@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import type {
   CircleLayerSpecification,
   SymbolLayerSpecification,
@@ -38,7 +38,6 @@ type DonuSegmentData = {
       </text>
     </svg>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClusterPointComponent {
   readonly properties = input<MapGeoJSONFeature['properties']>();
@@ -168,9 +167,7 @@ const MAG5 = ['>=', ['get', 'mag'], 5];
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
-      "
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[0.3]"
       [center]="[0, 20]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
@@ -215,7 +212,6 @@ const MAG5 = ['>=', ['get', 'mag'], 5];
     ClusterPointComponent,
     LayerComponent,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClusterHtmlComponent {
   readonly clusterProperties: GeoJSONSourceSpecification['clusterProperties'] = {
@@ -256,7 +252,7 @@ export class ClusterHtmlComponent {
       { 'min-fraction-digits': 1, 'max-fraction-digits': 1 },
     ],
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+    'text-font': ['Open Sans Semibold'],
     // eslint-disable-next-line @typescript-eslint/naming-convention
     'text-size': 10,
   };

@@ -13,7 +13,7 @@ import { HttpClient } from '@angular/common/http';
   template: `
     <mgl-map
       [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+        'https://tiles.openfreemap.org/styles/liberty'
       "
       [zoom]="[14]"
       [center]="center() ?? [0, 0]"

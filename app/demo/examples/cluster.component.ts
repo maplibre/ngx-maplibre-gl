@@ -1,5 +1,5 @@
 import { httpResource } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   MapComponent,
   GeoJSONSourceComponent,
@@ -13,9 +13,7 @@ import {
   selector: 'showcase-demo',
   template: `
     <mgl-map
-      [mapStyle]="
-        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
-      "
+      [mapStyle]="'https://demotiles.maplibre.org/style.json'"
       [zoom]="[3]"
       [center]="[-103.59179687498357, 40.66995747013945]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
@@ -61,7 +59,7 @@ import {
           [filter]="['has', 'point_count']"
           [layout]="{
             'text-field': '{point_count_abbreviated}',
-            'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+            'text-font': ['Open Sans Semibold'],
             'text-size': 12
           }"
         />
@@ -82,7 +80,6 @@ import {
   `,
   styleUrls: ['./examples.css'],
   imports: [MapComponent, GeoJSONSourceComponent, LayerComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClusterComponent {
   readonly earthquakes = httpResource<GeoJSON.FeatureCollection<GeoJSON.Point>>(() => 'assets/data/earthquakes.geo.json');

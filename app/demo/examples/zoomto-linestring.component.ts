@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
   ControlComponent,
@@ -48,7 +48,6 @@ import { LngLatBounds } from 'maplibre-gl';
   styleUrls: ['./examples.css'],
   preserveWhitespaces: false,
   imports: [MapComponent, ControlComponent, MatButtonModule, LayerComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ZoomtoLinestringComponent {
   readonly bounds = signal<LngLatBounds | null>(null);
