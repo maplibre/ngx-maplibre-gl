@@ -117,9 +117,6 @@ export function packageJson(dependencies: Record<string, string>): string {
         start: 'ng serve',
         build: 'ng build',
       },
-      // The Angular CLI toolchain is kept in dependencies (not devDependencies) so the
-      // StackBlitz WebContainer always installs it - some run configs skip devDependencies,
-      // which would leave `ng` unavailable at start.
       dependencies: sorted,
     },
     null,
