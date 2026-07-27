@@ -54,7 +54,7 @@ For example, with _angular-cli_ add this in `angular.json`:
 Or in the global CSS file (called `styles.css` for example in _angular-cli_):
 
 ```css
-@import '~maplibre-gl/dist/maplibre-gl.css';
+@import 'maplibre-gl/dist/maplibre-gl.css';
 ```
 
 ### Serve the MapLibre GL JS web worker

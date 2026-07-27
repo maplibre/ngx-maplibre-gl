@@ -4,13 +4,10 @@
   </button>
 </showcase-layout-toolbar-menu>
 <showcase-layout-toolbar-menu position="right">
-  <mat-slide-toggle
-    color="accent"
-    [(ngModel)]="isEditMode"
-    (change)="toggleEdit($event)"
-  >
-    Edit
-  </mat-slide-toggle>
+  <button mat-button aria-label="Open on StackBlitz" (click)="openStackblitz()">
+    <mat-icon svgIcon="stackblitz"></mat-icon>
+    StackBlitz
+  </button>
 </showcase-layout-toolbar-menu>
 <mat-sidenav-container>
   <mat-sidenav
@@ -44,13 +41,8 @@
           @if (route) {
             <a
               mat-list-item
-              [routerLink]="
-                '/demo/' + (isEditMode() ? '/edit/' : '') + route.path
-              "
+              [routerLink]="'/demo/' + route.path"
               routerLinkActive="active"
-              [routerLinkActiveOptions]="{
-                _routerLinkActiveWakeUpHack_: isEditMode(),
-              }"
               #exampleLink
             >
               {{ route.data?.label }}

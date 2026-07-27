@@ -28,13 +28,9 @@
             "buildTarget": "ngx-maplibre-gl:build",
             "tsConfig": "projects/ngx-maplibre-gl/tsconfig.spec.json",
             "runner": "vitest",
-            "browsers": [
-              "chromium"
-            ],
+            "browsers": ["chromium"],
             "browserViewport": "1280x720",
-            "setupFiles": [
-              "projects/ngx-maplibre-gl/src/test-setup.ts"
-            ]
+            "setupFiles": ["projects/ngx-maplibre-gl/src/test-setup.ts"]
           }
         },
         "lint": {
@@ -58,11 +54,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "aot": true,
-            "outputPath": "dist/showcase",
-            "index": "projects/showcase/src/index.html",
             "browser": "projects/showcase/src/main.ts",
-            "polyfills": [],
             "tsConfig": "projects/showcase/tsconfig.app.json",
             "assets": [
               "projects/showcase/src/favicon.ico",
@@ -79,12 +71,12 @@
                 "output": "/"
               }
             ],
-            "styles": [
-              "projects/showcase/src/styles.scss"
-            ],
-            "scripts": [],
+            "styles": ["projects/showcase/src/styles.scss"],
             "server": "projects/showcase/src/main.server.ts",
-            "prerender": true,
+            "outputMode": "server",
+            "security": {
+              "allowedHosts": []
+            },
             "ssr": {
               "entry": "projects/showcase/server.ts"
             },
@@ -97,33 +89,31 @@
               "budgets": [
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
                 }
               ],
-              "fileReplacements": [
-                {
-                  "replace": "projects/showcase/src/environments/environment.ts",
-                  "with": "projects/showcase/src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": true,
-              "namedChunks": false,
-              "extractLicenses": true
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular/build:dev-server",
-          "options": {
-            "buildTarget": "showcase:build"
-          },
           "configurations": {
             "production": {
               "buildTarget": "showcase:build:production"
+            },
+            "development": {
+              "buildTarget": "showcase:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n",
@@ -145,9 +135,7 @@
   },
   "cli": {
     "analytics": "2b945751-c795-4db1-b8ac-172907057b11",
-    "schematicCollections": [
-      "@angular-eslint/schematics"
-    ]
+    "schematicCollections": ["@angular-eslint/schematics"]
   },
   "schematics": {
     "@angular-eslint/schematics:application": {

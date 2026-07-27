@@ -56,6 +56,17 @@ module.exports = tseslint.config(
     },
   },
   {
+    files: [
+      'projects/showcase/src/app/demo/stackblitz-edit/**',
+    ],
+    rules: {
+      // Object keys in this file are npm package names and file paths
+      // (e.g. "package.json", "@angular/core", "src/main.ts") which
+      // cannot follow camelCase.
+      '@typescript-eslint/naming-convention': 'off',
+    },
+  },
+  {
     files: ['**/*.html'],
     extends: [...angular.configs.templateRecommended],
     rules: {},
