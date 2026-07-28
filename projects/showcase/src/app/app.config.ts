@@ -4,14 +4,19 @@ import {
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { provideHttpClient, withFetch } from '@angular/common/http';
-import { provideClientHydration, withNoIncrementalHydration } from '@angular/platform-browser';
+import { provideHttpClient } from '@angular/common/http';
+import {
+  provideClientHydration,
+  withNoIncrementalHydration,
+} from '@angular/platform-browser';
+import { provideMaplibreWorker } from '@maplibre/ngx-maplibre-gl';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZonelessChangeDetection(),
     provideRouter(routes),
-    provideHttpClient(withFetch()),
+    provideHttpClient(),
     provideClientHydration(withNoIncrementalHydration()),
+    provideMaplibreWorker('maplibre-gl-worker.mjs'),
   ],
 };

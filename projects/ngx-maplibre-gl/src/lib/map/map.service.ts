@@ -1,3 +1,4 @@
+import { DOCUMENT } from '@angular/common';
 import {
   Injectable,
   NgZone,
@@ -40,9 +41,11 @@ import {
   type MapLayerEventType,
   type MissingStyleImageResolver,
   type ProjectionSpecification,
-  type TransformConstrainFunction
+  type TransformConstrainFunction,
+  setWorkerUrl
 } from 'maplibre-gl';
 import { AsyncSubject } from 'rxjs';
+import { MAPLIBRE_WORKER_URL } from './maplibre-worker';
 import type {
   LayerEvents,
   MapEvent,
@@ -101,6 +104,8 @@ export type MovingOptions =
 @Injectable()
 export class MapService {
   private readonly zone = inject(NgZone);
+  private readonly document = inject(DOCUMENT);
+  private readonly workerUrl = inject(MAPLIBRE_WORKER_URL, { optional: true });
 
   mapInstance: MaplibreMap;
   mapEvents: MapEvent;
@@ -116,6 +121,16 @@ export class MapService {
   readonly mapLoaded$ = this.mapLoaded.asObservable();
 
   setup(options: SetupMap) {
+    if (this.workerUrl) {
+      setWorkerUrl(new URL(this.workerUrl, this.document.baseURI).href);
+    } else {
+      console.warn(
+        'ngx-maplibre-gl: MAPLIBRE_WORKER_URL is not provided. ' +
+        'MapLibre GL JS v6 requires a worker URL to function correctly. ' +
+        "Provide it via provideMaplibreWorker('maplibre-gl-worker.mjs') " +
+        'in your application config or component providers.'
+      );
+    }
     // Workaround rollup issue
     this.createMap(options.mapOptions as MapOptions);
     this.hookEvents(options.mapEvents);

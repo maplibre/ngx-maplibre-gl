@@ -60,8 +60,8 @@ Or in the global CSS file (called `styles.css` for example in _angular-cli_):
 ### Serve the MapLibre GL JS web worker
 
 MapLibre GL JS v6 is ESM-only and loads its web worker from a separate file at
-runtime. Bundlers cannot rewrite that URL, so every bundler-based app needs a
-one-time `setWorkerUrl()` call — see
+runtime. Bundlers cannot rewrite that URL, so every bundler-based app must point
+MapLibre at it before the first map is created — see
 [`setWorkerUrl()` is bundler-only](https://maplibre.org/maplibre-gl-js/docs/guides/v5-to-v6-migration-guide/#setworkerurl-is-bundler-only).
 Without it **the worker 404s and no tiles render**. Here is the Angular setup.
 
@@ -85,19 +85,30 @@ together, into the same directory:
 ]
 ```
 
-Then point MapLibre at them in your browser entry point (`main.ts`), before
-bootstrapping. Resolving against `document.baseURI` keeps it correct when your app
-is deployed under a sub-path via `--base-href`:
+Then provide the worker URL with `provideMaplibreWorker` in your application config:
 
 ```ts
-import { bootstrapApplication } from '@angular/platform-browser';
+import { ApplicationConfig } from '@angular/core';
+import { provideMaplibreWorker } from '@maplibre/ngx-maplibre-gl';
+
+export const appConfig: ApplicationConfig = {
+  providers: [provideMaplibreWorker('maplibre-gl-worker.mjs')],
+};
+```
+
+The URL is resolved against `document.baseURI`, so it stays correct when your app
+is deployed under a sub-path via `--base-href`. It can also be provided in a
+component's `providers` to scope it to a subtree. The URL is applied lazily, right
+before the first map is created — unlike calling `setWorkerUrl()` in `main.ts`,
+this keeps `maplibre-gl` out of your initial bundle.
+
+If you cannot use the provider, call `setWorkerUrl()` once yourself before the
+first map is created instead:
+
+```ts
 import { setWorkerUrl } from 'maplibre-gl';
-import { appConfig } from './app/app.config';
-import { AppComponent } from './app/app.component';
 
 setWorkerUrl(new URL('maplibre-gl-worker.mjs', document.baseURI).href);
-
-bootstrapApplication(AppComponent, appConfig).catch((err) => console.error(err));
 ```
 
 If you also run browser-based unit tests, do the same in your test setup file. When
