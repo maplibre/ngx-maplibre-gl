@@ -45,7 +45,7 @@ import {
   setWorkerUrl
 } from 'maplibre-gl';
 import { AsyncSubject } from 'rxjs';
-import { MAPLIBRE_WORKER_URL } from './maplibre-worker';
+import { MAPLIBRE_WORKER_URL } from '@maplibre/ngx-maplibre-gl/config';
 import type {
   LayerEvents,
   MapEvent,

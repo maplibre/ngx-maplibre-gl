@@ -9,7 +9,7 @@ import {
   provideClientHydration,
   withNoIncrementalHydration,
 } from '@angular/platform-browser';
-import { provideMaplibreWorker } from '@maplibre/ngx-maplibre-gl';
+import { provideMaplibreWorker } from '@maplibre/ngx-maplibre-gl/config';
 
 export const appConfig: ApplicationConfig = {
   providers: [

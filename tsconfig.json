@@ -12,7 +12,8 @@
     "target": "es2024",
     "lib": ["es2024", "dom"],
     "paths": {
-      "@maplibre/ngx-maplibre-gl": ["./projects/ngx-maplibre-gl/src/public_api"]
+      "@maplibre/ngx-maplibre-gl": ["./projects/ngx-maplibre-gl/src/public_api"],
+      "@maplibre/ngx-maplibre-gl/config": ["./projects/ngx-maplibre-gl/config/src/public_api"]
     },
     "strict": true,
     "skipLibCheck": true,

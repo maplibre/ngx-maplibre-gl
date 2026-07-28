@@ -89,7 +89,7 @@ Then provide the worker URL with `provideMaplibreWorker` in your application con
 
 ```ts
 import { ApplicationConfig } from '@angular/core';
-import { provideMaplibreWorker } from '@maplibre/ngx-maplibre-gl';
+import { provideMaplibreWorker } from '@maplibre/ngx-maplibre-gl/config';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideMaplibreWorker('maplibre-gl-worker.mjs')],
