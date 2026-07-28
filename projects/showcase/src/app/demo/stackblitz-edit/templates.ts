@@ -82,7 +82,7 @@ export const INDEX_HTML = `<!doctype html>
 `;
 
 export const MAIN_TS = `import { bootstrapApplication } from '@angular/platform-browser';
-import { provideMaplibreWorker } from '@maplibre/ngx-maplibre-gl';
+import { provideMaplibreWorker } from '@maplibre/ngx-maplibre-gl/config';
 import { ### } from './demo';
 
 bootstrapApplication(###, {
