@@ -5,13 +5,13 @@
 ### 🐞 Bug fixes
 - _...Add new stuff here..._
 
-- fix: move provideMaplibreWorker into config entrypoint ([#317](https://github.com/maplibre/ngx-maplibre-gl/pull/317)) (by [@marcjulian](https://github.com/marcjulian))
-- fix changelog formatting ([#316](https://github.com/maplibre/ngx-maplibre-gl/pull/316)) (by [@marcjulian](https://github.com/marcjulian))
+
 ## 22.0.2
-### ✨ Features and improvements
 
 ### 🐞 Bug fixes
 
+- fix: move provideMaplibreWorker into config entrypoint ([#317](https://github.com/maplibre/ngx-maplibre-gl/pull/317)) (by [@marcjulian](https://github.com/marcjulian))
+- fix changelog formatting ([#316](https://github.com/maplibre/ngx-maplibre-gl/pull/316)) (by [@marcjulian](https://github.com/marcjulian))
 
 ## 22.0.1
 
