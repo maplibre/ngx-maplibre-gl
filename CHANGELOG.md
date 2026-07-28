@@ -5,11 +5,12 @@
 ### 🐞 Bug fixes
 - _...Add new stuff here..._
 
-- fix: improve set worker url ([#313](https://github.com/maplibre/ngx-maplibre-gl/pull/313)) (by [@marcjulian](https://github.com/marcjulian))
+
 ## 22.0.1
-### ✨ Features and improvements
 
 ### 🐞 Bug fixes
+
+- fix: improve set worker url ([#313](https://github.com/maplibre/ngx-maplibre-gl/pull/313)) (by [@marcjulian](https://github.com/marcjulian))
 
 ## 22.0.0
 
