@@ -1,11 +1,9 @@
 import { InjectionToken, type Provider } from '@angular/core';
 
 /**
- * Injection token holding the URL of the MapLibre GL JS web worker script
- * (`maplibre-gl-worker.mjs`). It is applied with `setWorkerUrl()` right before
- * a map is created.
- *
- * Prefer {@link provideMaplibreWorker} over providing this token directly.
+ * Injection token for the MapLibre GL JS worker URL, applied via `setWorkerUrl()`
+ * before a map is created. Prefer {@link provideMaplibreWorker} over using this
+ * token directly.
  *
  * @category Map Component
  */
@@ -14,23 +12,13 @@ export const MAPLIBRE_WORKER_URL = new InjectionToken<string>(
 );
 
 /**
- * Provides the URL of the MapLibre GL JS web worker script.
+ * Provides the URL of the MapLibre GL JS web worker script
+ * (`maplibre-gl-worker.mjs`). This defers the `setWorkerUrl()` call until the
+ * first `mgl-map` is set up, keeping `maplibre-gl` out of the initial bundle.
  *
- * MapLibre GL JS v6 loads its worker from a separate file at runtime and
- * bundlers cannot rewrite that URL, so it must be set with `setWorkerUrl()`
- * before the first map is created — see
- * [`setWorkerUrl()` is bundler-only](https://maplibre.org/maplibre-gl-js/docs/guides/v5-to-v6-migration-guide/#setworkerurl-is-bundler-only).
- * Calling `setWorkerUrl()` in `main.ts` statically imports `maplibre-gl` into
- * the initial bundle; using this provider instead defers the call to the moment
- * the first `mgl-map` is set up, keeping `maplibre-gl` out of the initial
- * bundle.
- *
- * The worker file (and the `maplibre-gl-shared.mjs` sibling it imports) must be
- * served at the provided location, e.g. via `assets` in `angular.json`.
- * Relative URLs are resolved against `document.baseURI`, so deployments under a
- * sub-path (`--base-href`) keep working.
- *
- * Can be used in the application config or in a component's `providers`:
+ * Relative URLs are resolved against `document.baseURI` so sub-path deployments
+ * (`--base-href`) work. The worker file and `maplibre-gl-shared.mjs` must be
+ * served at that location (typically via `angular.json` `assets`).
  *
  * @example
  * ```typescript
@@ -39,6 +27,8 @@ export const MAPLIBRE_WORKER_URL = new InjectionToken<string>(
  *   providers: [provideMaplibreWorker('maplibre-gl-worker.mjs')],
  * };
  * ```
+ *
+ * @see [setWorkerUrl is bundler-only](https://maplibre.org/maplibre-gl-js/docs/guides/v5-to-v6-migration-guide/#setworkerurl-is-bundler-only)
  *
  * @category Map Component
  */

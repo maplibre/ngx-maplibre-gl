@@ -17,11 +17,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     provideClientHydration(withNoIncrementalHydration()),
-    // MapLibre GL JS v6 loads its worker from a separate file. The worker (and
-    // the `maplibre-gl-shared.mjs` sibling it imports) are copied into the
-    // output via the `assets` entries in angular.json and pointed at here.
-    // Providing the URL instead of calling `setWorkerUrl()` in main.ts keeps
-    // `maplibre-gl` out of the initial bundle.
     provideMaplibreWorker('maplibre-gl-worker.mjs'),
   ],
 };

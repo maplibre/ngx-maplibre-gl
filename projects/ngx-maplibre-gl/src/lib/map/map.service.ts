@@ -122,11 +122,6 @@ export class MapService {
 
   setup(options: SetupMap) {
     if (this.workerUrl) {
-      // MapLibre GL JS v6 loads its worker from a separate file whose URL cannot
-      // be rewritten by bundlers, so it must be set before the map is created.
-      // This runs in the browser only (setup is called from afterNextRender),
-      // so resolving relative URLs against document.baseURI is safe and keeps
-      // deployments under a sub-path (--base-href) working.
       setWorkerUrl(new URL(this.workerUrl, this.document.baseURI).href);
     } else {
       console.warn(
