@@ -62,8 +62,6 @@ describe('MapService', () => {
     TestBed.configureTestingModule({
       providers: [
         MapService,
-        // The service configures MapLibre's worker from this token, and warns
-        // when it is missing - so provide it here just as an application would.
         provideMaplibreWorker(workerUrl),
         {
           provide: NgZone,
