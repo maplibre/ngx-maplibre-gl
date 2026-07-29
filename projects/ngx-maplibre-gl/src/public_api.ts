@@ -28,6 +28,9 @@ export * from './lib/markers-for-clusters/markers-for-clusters.component';
 export * from './lib/control/terrain-control.directive';
 export * from './lib/control/globe-control.directive';
 
+// Expose types referenced by public API
+export * from './lib/shared/utils/types';
+
 // Expose MapService for ngx-maplibre-gl extensions
 export * from './lib/map/map.service';
 export * from './lib/map/map.component';
