@@ -15,7 +15,7 @@ import { httpResource } from '@angular/common/http';
       [mapStyle]="
         'https://tiles.openfreemap.org/styles/liberty'
       "
-      [zoom]="[11.15]"
+      [zoom]="11.15"
       [center]="[-77.04, 38.907]"
       [cursorStyle]="cursorStyle()"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"

@@ -21,6 +21,8 @@ import {
   type LayerEvents,
   type MapDataEvent,
 } from './map.types';
+import { provideMaplibreWorker } from '@maplibre/ngx-maplibre-gl/config';
+import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url';
 import { MockNgZone } from './mock-ng-zone';
 import { firstValueFrom } from 'rxjs';
 
@@ -60,6 +62,7 @@ describe('MapService', () => {
     TestBed.configureTestingModule({
       providers: [
         MapService,
+        provideMaplibreWorker(workerUrl),
         {
           provide: NgZone,
           useFactory: () => {

@@ -8,7 +8,7 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
       [mapStyle]="
         'https://tiles.openfreemap.org/styles/liberty'
       "
-      [zoom]="[3]"
+      [zoom]="3"
       [center]="[-77.38, 39]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >

@@ -9,6 +9,7 @@ import {
   booleanAttribute,
   inject,
   input,
+  model,
   output,
   viewChild,
 } from '@angular/core';
@@ -54,7 +55,7 @@ import { BooleanInput } from '../shared/utils/types';
  *   template: `
  *   <mgl-map
  *     [mapStyle]="'https://demotiles.maplibre.org/style.json'"
- *     [zoom]="[9]"
+ *     [zoom]="9"
  *     [center]="[-74.50, 40]"
  *     (mapLoad)="map = $event"
  *   ></mgl-map>
@@ -185,17 +186,18 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   /** Dynamic input */
   readonly mapStyle = input.required<MapOptions['style']>();
   /** Dynamic input */
-  readonly center = input<LngLatLikeOrPosition>();
-  /** Dynamic input */
   readonly maxBounds = input<MapOptions['maxBounds']>();
-  /** Dynamic input */
-  readonly zoom = input<[number]>();
-  /** Dynamic input */
-  readonly bearing = input<[number]>();
-  /** Dynamic input */
-  readonly pitch = input<[number]>();
-  /** Dynamic input */
-  readonly roll = input<MapOptions['roll']>();
+
+  /** Dynamic two-way input */
+  readonly center = model<LngLatLikeOrPosition | undefined>(undefined);
+  /** Dynamic two-way input */
+  readonly zoom = model<number | undefined>(undefined);
+  /** Dynamic two-way input */
+  readonly bearing = model<number | undefined>(undefined);
+  /** Dynamic two-way input */
+  readonly pitch = model<number | undefined>(undefined);
+  /** Dynamic two-way input */
+  readonly roll = model<number | undefined>(undefined);
   /** Dynamic input */
   readonly fitBoundsOptions = input<MapOptions['fitBoundsOptions']>(); // First value goes to options.fitBoundsOptions. Subsequents changes are passed to fitBounds
   /** Dynamic input */
@@ -364,9 +366,9 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
           touchZoomRotate: this.touchZoomRotate(),
           trackResize: this.trackResize(),
           center: this.center(),
-          zoom: this.zoom()?.[0],
-          bearing: this.bearing()?.[0],
-          pitch: this.pitch()?.[0],
+          zoom: this.zoom(),
+          bearing: this.bearing(),
+          pitch: this.pitch(),
           roll: this.roll(),
           renderWorldCopies: this.renderWorldCopies(),
           maxTileCacheSize: this.maxTileCacheSize(),
@@ -400,6 +402,7 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
         },
         mapEvents: this,
       });
+      this.trackCameraOnMap();
       const cursorStyle = this.cursorStyle();
       if (cursorStyle) {
         this.mapService.changeCanvasCursor(cursorStyle);
@@ -419,12 +422,33 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
     this.mapService.destroyMap();
   }
 
+  /**
+   * Mirrors the map's camera back into the models once it settles, so a
+   * two-way binding keeps following the user's pans, rotations and zooms.
+   *
+   * This cannot feed back into `ngOnChanges`: that only runs for bindings the
+   * parent updates, not for a model written from inside the component.
+   */
+  private trackCameraOnMap(): void {
+    this.mapService.mapCreated$.subscribe(() => {
+      this.mapService.mapInstance.on('moveend', () => {
+        const map = this.mapService.mapInstance;
+        this.center.set(map.getCenter().toArray());
+        this.zoom.set(map.getZoom());
+        this.bearing.set(map.getBearing());
+        this.pitch.set(map.getPitch());
+        this.roll.set(map.getRoll());
+      });
+    });
+  }
+
   async ngOnChanges(changes: SimpleChanges) {
     await firstValueFrom(this.mapService.mapCreated$);
     const zoom = this.zoom();
     const bearing = this.bearing();
     const pitch = this.pitch();
     const center = this.center();
+    const roll = this.roll();
 
     if (changes.cursorStyle && !changes.cursorStyle.isFirstChange()) {
       this.mapService.changeCanvasCursor(changes.cursorStyle.currentValue);
@@ -534,7 +558,7 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
       }
       this.mapService.fitScreenCoordinates(
         changes.fitScreenCoordinates.currentValue,
-        bearing ? bearing[0] : 0,
+        bearing ?? 0,
         this.movingOptions()
       );
     }
@@ -560,11 +584,11 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
       this.mapService.move(
         this.movingMethod(),
         this.movingOptions(),
-        changes.zoom && zoom ? zoom[0] : undefined,
+        changes.zoom ? zoom : undefined,
         changes.center ? center : undefined,
-        changes.bearing && bearing ? bearing[0] : undefined,
-        changes.pitch && pitch ? pitch[0] : undefined,
-        changes.roll ? changes.roll.currentValue : undefined
+        changes.bearing ? bearing : undefined,
+        changes.pitch ? pitch : undefined,
+        changes.roll ? roll : undefined
       );
     }
     if (changes.terrain && !changes.terrain.isFirstChange()) {
