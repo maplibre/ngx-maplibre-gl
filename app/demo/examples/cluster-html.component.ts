@@ -168,7 +168,7 @@ const MAG5 = ['>=', ['get', 'mag'], 5];
   template: `
     <mgl-map
       [mapStyle]="'https://demotiles.maplibre.org/style.json'"
-      [zoom]="[0.3]"
+      [zoom]="0.3"
       [center]="[0, 20]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >

@@ -5,6 +5,7 @@ import {
   inject,
   linkedSignal,
 } from '@angular/core';
+import { Coordinates } from 'maplibre-gl';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
   MapComponent,
@@ -21,7 +22,7 @@ import { interval, map, shareReplay, startWith, switchMap } from 'rxjs';
         'https://tiles.openfreemap.org/styles/liberty'
       "
       [center]="center()"
-      [zoom]="[14]"
+      [zoom]="14"
       movingMethod="jumpTo"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
@@ -77,17 +78,14 @@ export class LiveUpdateImageSourceComponent {
     return d.coordinates;
   });
 
-  readonly center = computed(() => {
-    const d = this.dataSig();
-    return d.center;
-  });
+  readonly center = computed(() => this.dataSig().center);
 
   readonly url = linkedSignal({
     source: this.dataSig,
     computation: () => (Math.random() < 0.5 ? 'assets/red.png' : 'assets/blue.png'),
   });
 
-  private makeRectangle([long, lat]: number[]): number[][] {
+  private makeRectangle([long, lat]: number[]): Coordinates {
     return [
       [long, lat],
       [long + this.size, lat],

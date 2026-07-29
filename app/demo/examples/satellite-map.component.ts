@@ -24,13 +24,12 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
             paint: {
               'raster-opacity': 1
             },
-            'raster-opacity': 1,
             source: 'satellite',
             type: 'raster'
           }
         ]
       }"
-      [zoom]="[9]"
+      [zoom]="9"
       [center]="[137.9150899566626, 36.25956997955441]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >

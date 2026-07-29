@@ -1,4 +1,5 @@
 import { Component, signal } from '@angular/core';
+import { FilterSpecification } from 'maplibre-gl';
 import {
   MapComponent,
   GeoJSONSourceComponent,
@@ -10,7 +11,7 @@ import {
   template: `
     <mgl-map
       [mapStyle]="'https://demotiles.maplibre.org/style.json'"
-      [zoom]="[2]"
+      [zoom]="2"
       [center]="[-100.486052, 37.830348]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
@@ -54,7 +55,7 @@ import {
   imports: [MapComponent, GeoJSONSourceComponent, LayerComponent],
 })
 export class HoverStylesComponent {
-  readonly hoverFilter = signal(['==', 'name', '']);
+  readonly hoverFilter = signal<FilterSpecification>(['==', 'name', '']);
 
   activateHoverOn(evt: any) {
     this.hoverFilter.set(['==', 'name', evt.features[0].properties.name]);

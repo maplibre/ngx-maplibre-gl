@@ -15,7 +15,7 @@ import { HttpClient } from '@angular/common/http';
       [mapStyle]="
         'https://tiles.openfreemap.org/styles/liberty'
       "
-      [zoom]="[14]"
+      [zoom]="14"
       [center]="center() ?? [0, 0]"
       [centerWithPanTo]="true"
       [pitch]="30"
@@ -69,6 +69,6 @@ export class LiveUpdateFeatureComponent {
   );
 
   readonly updatedGeoJson = toSignal(this.updatedGeoJson$, { initialValue: null });
-  readonly center = computed(() => this.updatedGeoJson()?.center ?? null);
-  readonly data = computed(() => this.updatedGeoJson()?.data ?? null);
+  readonly center = computed(() => this.updatedGeoJson()?.center);
+  readonly data = computed(() => this.updatedGeoJson()?.data);
 }

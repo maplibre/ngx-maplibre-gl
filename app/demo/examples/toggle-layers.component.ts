@@ -14,7 +14,7 @@ import type { LayerSpecification } from 'maplibre-gl';
       [mapStyle]="
         'https://tiles.openfreemap.org/styles/liberty'
       "
-      [zoom]="[3]"
+      [zoom]="3"
       [center]="[-71.97722138410576, -13.517379300798098]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >

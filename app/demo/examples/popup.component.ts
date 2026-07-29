@@ -9,7 +9,7 @@ import {
   template: `
     <mgl-map
       [mapStyle]="'https://demotiles.maplibre.org/style.json'"
-      [zoom]="[3]"
+      [zoom]="3"
       [center]="[-96, 37.8]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
       data-cy="mgl-map"

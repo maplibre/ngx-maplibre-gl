@@ -13,7 +13,7 @@ import {
       [mapStyle]="
         'https://tiles.openfreemap.org/styles/liberty'
       "
-      [zoom]="[15]"
+      [zoom]="15"
       [center]="[-122.486052, 37.830348]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
@@ -45,7 +45,7 @@ import {
   ],
 })
 export class NgxGeoJSONLineComponent {
-  readonly geometry = {
+  readonly geometry: GeoJSON.LineString = {
     type: 'LineString',
     coordinates: [
       [-122.48369693756104, 37.83381888486939],

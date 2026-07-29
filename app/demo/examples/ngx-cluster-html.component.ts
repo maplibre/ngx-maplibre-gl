@@ -89,7 +89,7 @@ export class ClusterPopupComponent implements OnChanges {
   template: `
     <mgl-map
       [mapStyle]="'https://demotiles.maplibre.org/style.json'"
-      [zoom]="[3]"
+      [zoom]="3"
       [center]="[-103.59179687498357, 40.66995747013945]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
@@ -159,16 +159,14 @@ export class NgxClusterHtmlComponent {
     initialValue: null
   });
 
-  readonly selectedCluster = signal<{
-    geometry: GeoJSON.Point;
-    properties: any;
-  } | null>(null);
+  readonly selectedCluster = signal<GeoJSON.Feature<GeoJSON.Point> | null>(null);
 
 
   selectCluster(event: MouseEvent, feature: any) {
     event.stopPropagation(); // This is needed, otherwise the popup will close immediately
     // Change the ref, to trigger mgl-popup onChanges (when the user click on the same cluster)
     this.selectedCluster.set({
+      type: 'Feature',
       geometry: feature.geometry,
       properties: feature.properties,
     });

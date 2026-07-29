@@ -12,7 +12,7 @@ import {
   template: `
     <mgl-map
       [mapStyle]="'https://demotiles.maplibre.org/style.json'"
-      [zoom]="[3]"
+      [zoom]="3"
       [center]="[-100.04, 38.907]"
       [cursorStyle]="cursorStyle()"
       (mapClick)="onMapClick()"
@@ -45,7 +45,7 @@ import {
 })
 export class PolygonPopupOnClickComponent {
   readonly selectedElement = signal<GeoJsonProperties | null>(null);
-  readonly selectedLngLat = signal<LngLat | null>(null);
+  readonly selectedLngLat = signal<LngLat | undefined>(undefined);
   readonly cursorStyle = signal('');
 
   onClick(evt: MapLayerMouseEvent): void {

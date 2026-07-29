@@ -31,7 +31,7 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
           exaggeration: 1
         }
       }"
-      [zoom]="[12]"
+      [zoom]="12"
       [center]="[11.39085, 47.27574]"
       [pitch]="52"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
