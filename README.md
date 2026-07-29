@@ -127,6 +127,29 @@ setWorkerUrl(new URL(workerUrl, document.baseURI).href);
 Upgrading from v5? Follow the
 [v5 to v6 migration guide](https://maplibre.org/maplibre-gl-js/docs/guides/v5-to-v6-migration-guide/).
 
+### Breaking change: camera inputs are plain values
+
+`[zoom]`, `[bearing]`, `[pitch]` and `[roll]` took a single-element array, so that
+re-assigning the same number still counted as a change. They are now plain numbers,
+and two-way capable:
+
+```diff
+- <mgl-map [zoom]="[9]" [pitch]="[45]" [bearing]="[-17.6]" />
++ <mgl-map [zoom]="9" [pitch]="45" [bearing]="-17.6" />
+```
+
+Updating one axis has never dragged the others back with it - that is handled by
+only sending the axes that actually changed - so nothing else changes for one-way
+bindings.
+
+If you relied on the array to return the map to a position the user had since
+moved away from, bind two-way instead. The camera models follow the map, so the
+earlier value is a real change again:
+
+```html
+<mgl-map [(zoom)]="zoom" [(center)]="center" />
+```
+
 Then, in your app's main module (or in any other module), import the `MapComponent`:
 
 ```ts
@@ -137,7 +160,7 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
   template: `
     <mgl-map
       [mapStyle]="'https://demotiles.maplibre.org/style.json'"
-      [zoom]="[9]"
+      [zoom]="9"
       [center]="[-74.5, 40]"
     >
     </mgl-map>
@@ -165,7 +188,7 @@ import { NgxMapLibreGLModule } from '@maplibre/ngx-maplibre-gl';
   template: `
     <mgl-map
       [mapStyle]="'https://demotiles.maplibre.org/style.json'"
-      [zoom]="[9]"
+      [zoom]="9"
       [center]="[-74.5, 40]"
     >
       <mgl-control

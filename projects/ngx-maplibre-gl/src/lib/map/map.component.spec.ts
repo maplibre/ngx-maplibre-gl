@@ -24,6 +24,8 @@ const getMapServiceStub = () =>
       'updateMinPitch',
       'destroyMap',
       'clearMapElements',
+      'move',
+      'panTo',
     ],
     {
       mapCreated$: of(true),
@@ -99,6 +101,81 @@ describe('MapComponent', () => {
         minPitch: new SimpleChange(null, component.minPitch(), false),
       });
       expect(mapServiceStub.updateMinPitch).toHaveBeenCalledWith(15);
+    });
+
+    /**
+     * `move` is only handed the axes that actually changed, so updating one axis
+     * cannot drag the others back to their bound values - see ngx-mapbox-gl#2,
+     * "Dynamically changing this.center [...] resets the zoom to initial value".
+     */
+    describe('camera inputs', () => {
+      /** `move(movingMethod, movingOptions, zoom, center, bearing, pitch, roll)` */
+      const movedWith = () => mapServiceStub.move.mock.calls.at(-1)!;
+
+      it('should not reset zoom when only center changes', async () => {
+        componentRef.setInput('zoom', 9);
+        componentRef.setInput('center', [1, 2]);
+        fixture.detectChanges();
+
+        await component.ngOnChanges({
+          center: new SimpleChange([0, 0], component.center(), false),
+        });
+
+        expect(mapServiceStub.move).toHaveBeenCalled();
+        const [, , zoom, center] = movedWith();
+        expect(center).toEqual([1, 2]);
+        expect(zoom).toBeUndefined();
+      });
+
+      it('should not reset center when only zoom changes', async () => {
+        componentRef.setInput('zoom', 9);
+        componentRef.setInput('center', [1, 2]);
+        fixture.detectChanges();
+
+        await component.ngOnChanges({
+          zoom: new SimpleChange(4, component.zoom(), false),
+        });
+
+        const [, , zoom, center] = movedWith();
+        expect(zoom).toBe(9);
+        expect(center).toBeUndefined();
+      });
+
+      it('should pass the zoom through as a plain number', async () => {
+        componentRef.setInput('zoom', 9);
+        fixture.detectChanges();
+
+        await component.ngOnChanges({
+          zoom: new SimpleChange(4, component.zoom(), false),
+        });
+
+        expect(movedWith()[2]).toBe(9);
+      });
+
+      it('should let a two-way binding follow the map, so a previous position can be restored', () => {
+        // What the tuple used to buy us: after the user has moved the map, the
+        // model holds the map's position rather than the last bound one, so
+        // assigning the earlier value is a real change and does move the map.
+        componentRef.setInput('zoom', 9);
+        fixture.detectChanges();
+
+        component.zoom.set(12);
+
+        expect(component.zoom()).toBe(12);
+      });
+
+      it('should pan instead of move when only center changes and centerWithPanTo is set', async () => {
+        componentRef.setInput('centerWithPanTo', true);
+        componentRef.setInput('center', [1, 2]);
+        fixture.detectChanges();
+
+        await component.ngOnChanges({
+          center: new SimpleChange([0, 0], component.center(), false),
+        });
+
+        expect(mapServiceStub.panTo).toHaveBeenCalled();
+        expect(mapServiceStub.move).not.toHaveBeenCalled();
+      });
     });
 
     it('should update maxpitch', async () => {

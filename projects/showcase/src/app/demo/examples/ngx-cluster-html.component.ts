@@ -89,7 +89,7 @@ export class ClusterPopupComponent implements OnChanges {
   template: `
     <mgl-map
       [mapStyle]="'https://demotiles.maplibre.org/style.json'"
-      [zoom]="[3]"
+      [zoom]="3"
       [center]="[-103.59179687498357, 40.66995747013945]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >

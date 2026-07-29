@@ -17,7 +17,7 @@ import {
   template: `
     <mgl-map
       [mapStyle]="style()"
-      [zoom]="[13]"
+      [zoom]="13"
       [center]="[4.899, 52.372]"
       [canvasContextAttributes]="{ preserveDrawingBuffer: true }"
       data-cy="mgl-map"

@@ -22,7 +22,7 @@ import { interval, map, shareReplay, startWith, switchMap } from 'rxjs';
         'https://tiles.openfreemap.org/styles/liberty'
       "
       [center]="center()"
-      [zoom]="[14]"
+      [zoom]="14"
       movingMethod="jumpTo"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >

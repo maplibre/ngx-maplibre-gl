@@ -6,7 +6,7 @@ import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
   template: `
     <mgl-map
       [mapStyle]="'https://demotiles.maplibre.org/style.json'"
-      [zoom]="[5]"
+      [zoom]="5"
       [center]="[144.946457, -37.840935]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
