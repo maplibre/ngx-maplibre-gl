@@ -12,7 +12,7 @@ import {
       [mapStyle]="
         'https://tiles.openfreemap.org/styles/liberty'
       "
-      [zoom]="[13]"
+      [zoom]="13"
       [center]="[11.255, 43.77]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >

@@ -11,7 +11,7 @@ import {
   template: `
     <mgl-map
       [mapStyle]="'https://demotiles.maplibre.org/style.json'"
-      [zoom]="[2]"
+      [zoom]="2"
       [center]="[-100.486052, 37.830348]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >

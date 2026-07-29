@@ -12,9 +12,9 @@ import { interval, scan, startWith } from 'rxjs';
       [mapStyle]="
         'https://tiles.openfreemap.org/styles/liberty'
       "
-      [pitch]="[pitch()]"
-      [bearing]="[bearing()]"
-      [zoom]="[17]"
+      [pitch]="pitch()"
+      [bearing]="bearing()"
+      [zoom]="17"
       [center]="[4.577979, 51.038189]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >

@@ -15,8 +15,29 @@ import { of } from 'rxjs';
 import { MapComponent } from './map.component';
 import { MapService } from './map.service';
 
-const getMapServiceStub = () =>
-  createSpyObj<MapService>(
+/**
+ * Stands in for the MapLibre map. `mapCreated$` only emits once the real service
+ * has assigned `mapInstance`, so the stub has to provide one too - the component
+ * subscribes to that pair to follow the camera.
+ */
+const createFakeMapInstance = () => {
+  const handlers = new Map<string, () => void>();
+  return {
+    on: (event: string, handler: () => void) => handlers.set(event, handler),
+    emit: (event: string) => handlers.get(event)?.(),
+    getCenter: () => ({ toArray: () => [10, 20] }),
+    getZoom: () => 11,
+    getBearing: () => 22,
+    getPitch: () => 33,
+    getRoll: () => 44,
+  };
+};
+
+let fakeMapInstance: ReturnType<typeof createFakeMapInstance>;
+
+const getMapServiceStub = () => {
+  fakeMapInstance = createFakeMapInstance();
+  return createSpyObj<MapService>(
     [
       'setup',
       'updateMinZoom',
@@ -24,11 +45,15 @@ const getMapServiceStub = () =>
       'updateMinPitch',
       'destroyMap',
       'clearMapElements',
+      'move',
+      'panTo',
     ],
     {
       mapCreated$: of(true),
+      mapInstance: fakeMapInstance,
     }
   );
+};
 
 describe('MapComponent', () => {
   let mapServiceStub: SpyObj<MapService>;
@@ -99,6 +124,85 @@ describe('MapComponent', () => {
         minPitch: new SimpleChange(null, component.minPitch(), false),
       });
       expect(mapServiceStub.updateMinPitch).toHaveBeenCalledWith(15);
+    });
+
+    /**
+     * `move` is only handed the axes that actually changed, so updating one axis
+     * cannot drag the others back to their bound values - see ngx-mapbox-gl#2,
+     * "Dynamically changing this.center [...] resets the zoom to initial value".
+     */
+    describe('camera inputs', () => {
+      /** `move(movingMethod, movingOptions, zoom, center, bearing, pitch, roll)` */
+      const movedWith = () => mapServiceStub.move.mock.calls.at(-1)!;
+
+      it('should not reset zoom when only center changes', async () => {
+        componentRef.setInput('zoom', 9);
+        componentRef.setInput('center', [1, 2]);
+        fixture.detectChanges();
+
+        await component.ngOnChanges({
+          center: new SimpleChange([0, 0], component.center(), false),
+        });
+
+        expect(mapServiceStub.move).toHaveBeenCalled();
+        const [, , zoom, center] = movedWith();
+        expect(center).toEqual([1, 2]);
+        expect(zoom).toBeUndefined();
+      });
+
+      it('should not reset center when only zoom changes', async () => {
+        componentRef.setInput('zoom', 9);
+        componentRef.setInput('center', [1, 2]);
+        fixture.detectChanges();
+
+        await component.ngOnChanges({
+          zoom: new SimpleChange(4, component.zoom(), false),
+        });
+
+        const [, , zoom, center] = movedWith();
+        expect(zoom).toBe(9);
+        expect(center).toBeUndefined();
+      });
+
+      it('should pass the zoom through as a plain number', async () => {
+        componentRef.setInput('zoom', 9);
+        fixture.detectChanges();
+
+        await component.ngOnChanges({
+          zoom: new SimpleChange(4, component.zoom(), false),
+        });
+
+        expect(movedWith()[2]).toBe(9);
+      });
+
+      it('should follow the map once it settles, so a previous position can be restored', () => {
+        // What the tuple used to buy us: after the user has moved the map, the
+        // models hold the map's position rather than the last bound one, so
+        // assigning the earlier value is a real change and does move the map.
+        componentRef.setInput('zoom', 9);
+        fixture.detectChanges();
+
+        fakeMapInstance.emit('moveend');
+
+        expect(component.zoom()).toBe(11);
+        expect(component.center()).toEqual([10, 20]);
+        expect(component.bearing()).toBe(22);
+        expect(component.pitch()).toBe(33);
+        expect(component.roll()).toBe(44);
+      });
+
+      it('should pan instead of move when only center changes and centerWithPanTo is set', async () => {
+        componentRef.setInput('centerWithPanTo', true);
+        componentRef.setInput('center', [1, 2]);
+        fixture.detectChanges();
+
+        await component.ngOnChanges({
+          center: new SimpleChange([0, 0], component.center(), false),
+        });
+
+        expect(mapServiceStub.panTo).toHaveBeenCalled();
+        expect(mapServiceStub.move).not.toHaveBeenCalled();
+      });
     });
 
     it('should update maxpitch', async () => {

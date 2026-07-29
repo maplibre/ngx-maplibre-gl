@@ -12,7 +12,7 @@ import { GeoJSONSourceSpecification, LngLatBounds } from 'maplibre-gl';
   template: `
     <mgl-map
       [mapStyle]="'https://demotiles.maplibre.org/style.json'"
-      [zoom]="[12]"
+      [zoom]="12"
       [center]="[-77.0214, 38.897]"
       [fitBounds]="bounds()"
       [fitBoundsOptions]="{

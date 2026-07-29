@@ -5,6 +5,5 @@
     "types": ["vitest/globals", "vite/client", "node", "geojson"],
     "resolveJsonModule": true
   },
-  "files": ["src/test-setup.ts"],
   "include": ["**/*.spec.ts", "**/*.d.ts", "src/testing/**/*.ts"]
 }

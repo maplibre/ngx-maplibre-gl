@@ -12,7 +12,7 @@ import {
   template: `
     <mgl-map
       [mapStyle]="'https://demotiles.maplibre.org/style.json'"
-      [zoom]="[3]"
+      [zoom]="3"
       [center]="[-100.04, 38.907]"
       [cursorStyle]="cursorStyle()"
       (mapClick)="onMapClick()"
