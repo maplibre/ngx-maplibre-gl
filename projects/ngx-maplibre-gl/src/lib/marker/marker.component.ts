@@ -8,6 +8,7 @@ import {
   SimpleChanges,
   ViewEncapsulation,
   afterNextRender,
+  booleanAttribute,
   inject,
   input,
   output,
@@ -18,6 +19,7 @@ import type { Marker, MarkerOptions } from 'maplibre-gl';
 import type { LngLatLikeOrPosition } from '../map/map.types';
 import { MapService } from '../map/map.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BooleanInput } from '../shared/utils/types';
 
 /**
  * `mgl-marker` - a marker component
@@ -62,7 +64,9 @@ export class MarkerComponent implements OnChanges, OnInit, OnDestroy {
   readonly feature = input<GeoJSON.Feature<GeoJSON.Point>>();
   readonly lngLat = input<LngLatLikeOrPosition>();
   readonly draggable = input<MarkerOptions['draggable']>();
-  readonly popupShown = input<boolean>();
+  readonly popupShown = input<boolean, BooleanInput>(undefined, {
+    transform: booleanAttribute,
+  });
   readonly className = input<string>();
   readonly pitchAlignment = input<MarkerOptions['pitchAlignment']>();
   readonly rotationAlignment = input<MarkerOptions['rotationAlignment']>();

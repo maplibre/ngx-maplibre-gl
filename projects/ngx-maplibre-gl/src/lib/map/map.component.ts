@@ -6,6 +6,7 @@ import {
   SimpleChanges,
   afterEveryRender,
   afterNextRender,
+  booleanAttribute,
   inject,
   input,
   model,
@@ -39,6 +40,7 @@ import type {
   MapDataEvent,
 } from './map.types';
 import { firstValueFrom } from 'rxjs';
+import { BooleanInput } from '../shared/utils/types';
 
 /**
  * `mgl-map` - The main map component
@@ -221,7 +223,9 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   // => First value is a alias to bounds input (since mapbox 0.53.0). Subsequents changes are passed to fitBounds
   readonly fitBounds = input<LngLatBoundsLike>();
   readonly fitScreenCoordinates = input<[PointLike, PointLike]>();
-  readonly centerWithPanTo = input<boolean>();
+  readonly centerWithPanTo = input<boolean, BooleanInput>(undefined, {
+    transform: booleanAttribute,
+  });
   readonly panToOptions = input<AnimationOptions>();
   readonly cursorStyle = input<string>();
   /**

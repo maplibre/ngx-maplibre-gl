@@ -1,6 +1,7 @@
 import {
   Directive,
   afterNextRender,
+  booleanAttribute,
   inject,
   input,
   output,
@@ -14,6 +15,7 @@ import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
 import type { Position } from '../map/map.types';
 import { keepAvailableObjectValues } from '../shared/utils/functions/object.fn';
+import { BooleanInput } from '../shared/utils/types';
 
 /**
  * `mglGeolocate` - a geolocate control directive
@@ -38,9 +40,13 @@ export class GeolocateControlDirective {
   /* Init inputs */
   readonly fitBoundsOptions = input<FitBoundsOptions>();
   /* Init inputs */
-  readonly trackUserLocation = input<boolean>();
+  readonly trackUserLocation = input<boolean, BooleanInput>(undefined, {
+    transform: booleanAttribute,
+  });
   /* Init inputs */
-  readonly showUserLocation = input<boolean>();
+  readonly showUserLocation = input<boolean, BooleanInput>(undefined, {
+    transform: booleanAttribute,
+  });
 
   readonly geolocate = output<Position>();
 

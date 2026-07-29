@@ -1,4 +1,4 @@
-import { Directive, afterNextRender, inject, input } from '@angular/core';
+import { Directive, afterNextRender, booleanAttribute, inject, input } from '@angular/core';
 import {
   AttributionControl,
   type AttributionControlOptions,
@@ -6,6 +6,7 @@ import {
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
 import { keepAvailableObjectValues } from '../shared/utils/functions/object.fn';
+import { BooleanInput } from '../shared/utils/types';
 
 /**
  * `mglAttribution` - an attribution control directive
@@ -26,7 +27,9 @@ export class AttributionControlDirective {
   >(ControlComponent, { host: true });
 
   /** Init input */
-  readonly compact = input<boolean>();
+  readonly compact = input<boolean, BooleanInput>(undefined, {
+    transform: booleanAttribute,
+  });
   /** Init input */
   readonly customAttribution = input<string | string[]>();
 
