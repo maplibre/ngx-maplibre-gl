@@ -16,7 +16,7 @@ import {
       "
       [zoom]="[12]"
       [center]="[11.39085, 47.27574]"
-      [pitch]="52"
+      [pitch]="[52]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
       <mgl-raster-dem-source
@@ -26,9 +26,9 @@ import {
       />
       <mgl-control
         mglNavigation
-        showCompass="true"
-        showZoom="true"
-        visualizePitch="true"
+        [showCompass]="true"
+        [showZoom]="true"
+        [visualizePitch]="true"
       />
       <mgl-control
         mglTerrain

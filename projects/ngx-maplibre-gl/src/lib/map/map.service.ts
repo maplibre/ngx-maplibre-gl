@@ -48,6 +48,7 @@ import { AsyncSubject } from 'rxjs';
 import { MAPLIBRE_WORKER_URL } from '@maplibre/ngx-maplibre-gl/config';
 import type {
   LayerEvents,
+  LngLatLikeOrPosition,
   MapEvent,
   MapImageData,
   MapImageOptions,
@@ -55,10 +56,8 @@ import type {
 import { keepAvailableObjectValues } from '../shared/utils/functions/object.fn';
 
 export type SetupMap = {
-  mapOptions: Omit<MapOptions, 'bearing' | 'pitch' | 'zoom'> & {
-    bearing?: [number];
-    pitch?: [number];
-    zoom?: [number];
+  mapOptions: Omit<MapOptions, 'center'> & {
+    center?: LngLatLikeOrPosition;
     terrain?: TerrainSpecification;
     projection?: ProjectionSpecification;
   };
@@ -81,7 +80,7 @@ export type SetupPopup = {
 export type SetupMarkerOptions = {
   element: HTMLElement;
   feature?: GeoJSON.Feature<GeoJSON.Point>;
-  lngLat?: LngLatLike;
+  lngLat?: LngLatLikeOrPosition;
 } & MarkerOptions
 
 export type SetupMarker = {
@@ -91,6 +90,15 @@ export type SetupMarker = {
     markerDrag: OutputEmitterRef<Marker>;
     markerDragEnd: OutputEmitterRef<Marker>;
   };
+}
+
+/**
+ * MapLibre's `LngLat.convert` accepts any two- or three-element array, but its
+ * `LngLatLike` type only admits a `[number, number]` tuple. This is the single
+ * place that gap is bridged, so callers can pass a `GeoJSON.Position`.
+ */
+function toLngLatLike(value: LngLatLikeOrPosition): LngLatLike {
+  return value as LngLatLike;
 }
 
 export type MovingOptions =
@@ -328,9 +336,9 @@ export class MapService {
     return this.mapInstance.queryRenderedFeatures(pointOrBox, parameters);
   }
 
-  panTo(center: LngLatLike, options?: AnimationOptions) {
+  panTo(center: LngLatLikeOrPosition, options?: AnimationOptions) {
     return this.zone.runOutsideAngular(() => {
-      this.mapInstance.panTo(center, options);
+      this.mapInstance.panTo(toLngLatLike(center), options);
     });
   }
 
@@ -338,7 +346,7 @@ export class MapService {
     movingMethod: 'jumpTo' | 'easeTo' | 'flyTo',
     movingOptions?: MovingOptions,
     zoom?: number,
-    center?: LngLatLike,
+    center?: LngLatLikeOrPosition,
     bearing?: number,
     pitch?: number,
     roll?: number
@@ -347,7 +355,8 @@ export class MapService {
       (this.mapInstance[movingMethod] as any)({
         ...movingOptions,
         zoom: zoom != null ? zoom : this.mapInstance.getZoom(),
-        center: center != null ? center : this.mapInstance.getCenter(),
+        center:
+          center != null ? toLngLatLike(center) : this.mapInstance.getCenter(),
         bearing: bearing != null ? bearing : this.mapInstance.getBearing(),
         pitch: pitch != null ? pitch : this.mapInstance.getPitch(),
         roll: roll != null ? roll : this.mapInstance.getRoll(),
@@ -447,10 +456,10 @@ export class MapService {
         this.zone.run(() => marker.markersEvents.markerDragEnd.emit(target));
       }
     });
-    const lngLat: LngLatLike = marker.markersOptions.feature
-      ? <[number, number]>marker.markersOptions.feature.geometry!.coordinates
+    const lngLat: LngLatLikeOrPosition = marker.markersOptions.feature
+      ? marker.markersOptions.feature.geometry!.coordinates
       : marker.markersOptions.lngLat!;
-    markerInstance.setLngLat(lngLat);
+    markerInstance.setLngLat(toLngLatLike(lngLat));
     return this.zone.runOutsideAngular(() => {
       markerInstance.addTo(this.mapInstance);
       return markerInstance;
@@ -474,9 +483,9 @@ export class MapService {
     });
   }
 
-  addPopupToMap(popup: Popup, lngLat: LngLatLike) {
+  addPopupToMap(popup: Popup, lngLat: LngLatLikeOrPosition) {
     return this.zone.runOutsideAngular(() => {
-      popup.setLngLat(lngLat);
+      popup.setLngLat(toLngLatLike(lngLat));
       popup.addTo(this.mapInstance);
     });
   }

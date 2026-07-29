@@ -12,7 +12,8 @@ import {
   output,
   viewChild,
 } from '@angular/core';
-import type { LngLatLike, Offset, Popup, PopupOptions } from 'maplibre-gl';
+import type { Offset, Popup, PopupOptions } from 'maplibre-gl';
+import type { LngLatLikeOrPosition } from '../map/map.types';
 import { MapService } from '../map/map.service';
 import { MarkerComponent } from '../marker/marker.component';
 import { tap } from 'rxjs';
@@ -77,7 +78,7 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
   readonly feature = input<GeoJSON.Feature<GeoJSON.Point>>();
 
   /** Dynamic input */
-  readonly lngLat = input<LngLatLike>();
+  readonly lngLat = input<LngLatLikeOrPosition>();
 
   /**
    * Dynamic input [ngx]
@@ -214,13 +215,13 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   getLngLat(
-    lngLat: LngLatLike | undefined,
+    lngLat: LngLatLikeOrPosition | undefined,
     feature: GeoJSON.Feature<GeoJSON.Point> | undefined
-  ) {
+  ): LngLatLikeOrPosition {
     if (lngLat) {
       return lngLat;
     } else if (feature) {
-      return feature.geometry.coordinates as [number, number];
+      return feature.geometry.coordinates;
     }
     throw new Error('lngLat or feature value is required');
   }

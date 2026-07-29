@@ -2,6 +2,7 @@
 import { OutputEmitterRef } from '@angular/core';
 import type {
   GeolocateControl,
+  LngLatLike,
   Map,
   MapLibreEvent,
   MapBoxZoomEvent,
@@ -17,6 +18,17 @@ import type {
 } from 'maplibre-gl';
 
 export type EventData = Record<string, any>;
+
+/**
+ * Anything MapLibre accepts as a coordinate.
+ *
+ * MapLibre's own `LngLatLike` only permits a `[number, number]` tuple, but
+ * `LngLat.convert` accepts any two- or three-element array at runtime - which is
+ * exactly the shape of a `GeoJSON.Position`. Accepting it here means a
+ * `feature.geometry.coordinates` can be bound straight to an input, without the
+ * cast that the narrower type would otherwise force on every caller.
+ */
+export type LngLatLikeOrPosition = LngLatLike | GeoJSON.Position;
 
 /** The payload of the `data` and `dataloading` map events. */
 export type MapDataEvent = MapSourceDataEvent | MapStyleDataEvent;
