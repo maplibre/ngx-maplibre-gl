@@ -28,9 +28,10 @@
             "buildTarget": "ngx-maplibre-gl:build",
             "tsConfig": "projects/ngx-maplibre-gl/tsconfig.spec.json",
             "runner": "vitest",
-            "browsers": ["chromium"],
-            "browserViewport": "1280x720",
-            "setupFiles": ["projects/ngx-maplibre-gl/src/test-setup.ts"]
+            "browsers": [
+              "chromium"
+            ],
+            "browserViewport": "1280x720"
           }
         },
         "lint": {
@@ -71,7 +72,9 @@
                 "output": "/"
               }
             ],
-            "styles": ["projects/showcase/src/styles.scss"],
+            "styles": [
+              "projects/showcase/src/styles.scss"
+            ],
             "server": "projects/showcase/src/main.server.ts",
             "outputMode": "server",
             "security": {
@@ -140,7 +143,9 @@
   },
   "cli": {
     "analytics": "2b945751-c795-4db1-b8ac-172907057b11",
-    "schematicCollections": ["@angular-eslint/schematics"]
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   },
   "schematics": {
     "@angular-eslint/schematics:application": {
