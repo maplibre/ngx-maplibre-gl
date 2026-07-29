@@ -6,6 +6,14 @@
 - _...Add new stuff here..._
 
 
+## 22.1.0
+
+### ✨ Features and improvements
+
+- add BooleanInput and booleanAttribute transform to boolean inputs ([#322](https://github.com/maplibre/ngx-maplibre-gl/pull/322)) (by [@marcjulian](https://github.com/marcjulian))
+- Changes `zoom`, `pitch` and `bearing` to be `model` of type number instead of array ([#320](https://github.com/maplibre/ngx-maplibre-gl/pull/320)) (by [@HarelM](https://github.com/HarelM))
+- Use strict templates ([#319](https://github.com/maplibre/ngx-maplibre-gl/pull/319)) (by [@HarelM](https://github.com/HarelM))
+
 ## 22.0.2
 
 ### 🐞 Bug fixes
