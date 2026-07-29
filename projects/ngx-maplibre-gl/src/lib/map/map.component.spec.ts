@@ -15,8 +15,29 @@ import { of } from 'rxjs';
 import { MapComponent } from './map.component';
 import { MapService } from './map.service';
 
-const getMapServiceStub = () =>
-  createSpyObj<MapService>(
+/**
+ * Stands in for the MapLibre map. `mapCreated$` only emits once the real service
+ * has assigned `mapInstance`, so the stub has to provide one too - the component
+ * subscribes to that pair to follow the camera.
+ */
+const createFakeMapInstance = () => {
+  const handlers = new Map<string, () => void>();
+  return {
+    on: (event: string, handler: () => void) => handlers.set(event, handler),
+    emit: (event: string) => handlers.get(event)?.(),
+    getCenter: () => ({ toArray: () => [10, 20] }),
+    getZoom: () => 11,
+    getBearing: () => 22,
+    getPitch: () => 33,
+    getRoll: () => 44,
+  };
+};
+
+let fakeMapInstance: ReturnType<typeof createFakeMapInstance>;
+
+const getMapServiceStub = () => {
+  fakeMapInstance = createFakeMapInstance();
+  return createSpyObj<MapService>(
     [
       'setup',
       'updateMinZoom',
@@ -29,8 +50,10 @@ const getMapServiceStub = () =>
     ],
     {
       mapCreated$: of(true),
+      mapInstance: fakeMapInstance,
     }
   );
+};
 
 describe('MapComponent', () => {
   let mapServiceStub: SpyObj<MapService>;
@@ -152,16 +175,20 @@ describe('MapComponent', () => {
         expect(movedWith()[2]).toBe(9);
       });
 
-      it('should let a two-way binding follow the map, so a previous position can be restored', () => {
+      it('should follow the map once it settles, so a previous position can be restored', () => {
         // What the tuple used to buy us: after the user has moved the map, the
-        // model holds the map's position rather than the last bound one, so
+        // models hold the map's position rather than the last bound one, so
         // assigning the earlier value is a real change and does move the map.
         componentRef.setInput('zoom', 9);
         fixture.detectChanges();
 
-        component.zoom.set(12);
+        fakeMapInstance.emit('moveend');
 
-        expect(component.zoom()).toBe(12);
+        expect(component.zoom()).toBe(11);
+        expect(component.center()).toEqual([10, 20]);
+        expect(component.bearing()).toBe(22);
+        expect(component.pitch()).toBe(33);
+        expect(component.roll()).toBe(44);
       });
 
       it('should pan instead of move when only center changes and centerWithPanTo is set', async () => {
