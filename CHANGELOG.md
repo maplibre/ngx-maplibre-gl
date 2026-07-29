@@ -5,6 +5,13 @@
 ### 🐞 Bug fixes
 - _...Add new stuff here..._
 
+- Changes zoom pitch and bearing to be "model" instead of array ([#320](https://github.com/maplibre/ngx-maplibre-gl/pull/320)) (by [@HarelM](https://github.com/HarelM))
+- Moves to use strict templates ([#319](https://github.com/maplibre/ngx-maplibre-gl/pull/319)) (by [@HarelM](https://github.com/HarelM))
+## 22.1.0
+### ✨ Features and improvements
+
+### 🐞 Bug fixes
+
 
 ## 22.0.2
 
