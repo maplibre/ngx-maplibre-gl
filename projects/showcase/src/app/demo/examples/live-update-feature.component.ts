@@ -18,7 +18,7 @@ import { HttpClient } from '@angular/common/http';
       [zoom]="14"
       [center]="center() ?? [0, 0]"
       [centerWithPanTo]="true"
-      [pitch]="[30]"
+      [pitch]="30"
       movingMethod="jumpTo"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
