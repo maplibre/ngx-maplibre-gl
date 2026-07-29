@@ -1,8 +1,15 @@
-import { Directive, afterNextRender, inject, input } from '@angular/core';
+import {
+  Directive,
+  afterNextRender,
+  booleanAttribute,
+  inject,
+  input,
+} from '@angular/core';
 import { NavigationControl, type NavigationControlOptions } from 'maplibre-gl';
 import { MapService } from '../map/map.service';
 import { ControlComponent } from './control.component';
 import { keepAvailableObjectValues } from '../shared/utils/functions/object.fn';
+import { BooleanInput } from '../shared/utils/types';
 
 /**
  * `mglNavigation` - a navigation control directive
@@ -23,13 +30,21 @@ export class NavigationControlDirective {
   >(ControlComponent, { host: true });
 
   /* Init inputs */
-  readonly showCompass = input<boolean>();
+  readonly showCompass = input<boolean, BooleanInput>(undefined, {
+    transform: booleanAttribute,
+  });
   /* Init inputs */
-  readonly showZoom = input<boolean>();
+  readonly showZoom = input<boolean, BooleanInput>(undefined, {
+    transform: booleanAttribute,
+  });
   /* Init inputs */
-  readonly visualizePitch = input<boolean>();
+  readonly visualizePitch = input<boolean, BooleanInput>(undefined, {
+    transform: booleanAttribute,
+  });
   /* Init inputs */
-  readonly visualizeRoll = input<boolean>();
+  readonly visualizeRoll = input<boolean, BooleanInput>(undefined, {
+    transform: booleanAttribute,
+  });
 
   constructor() {
     afterNextRender(() => {
@@ -46,7 +61,7 @@ export class NavigationControlDirective {
         this.controlComponent.control = new NavigationControl(options);
         this.mapService.addControl(
           this.controlComponent.control,
-          this.controlComponent.position()
+          this.controlComponent.position(),
         );
       });
     });

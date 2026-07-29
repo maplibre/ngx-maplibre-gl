@@ -5,6 +5,7 @@ import {
   OnDestroy,
   OnInit,
   SimpleChanges,
+  booleanAttribute,
   inject,
   input,
   output,
@@ -22,6 +23,7 @@ import { filter, map, startWith, switchMap } from 'rxjs/operators';
 import { MapService, type SetupLayer } from '../map/map.service';
 import type { EventData, LayerEvents } from '../map/map.types';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BooleanInput } from '../shared/utils/types';
 
 /**
  * `mgl-layer` - a layer component
@@ -72,7 +74,9 @@ export class LayerComponent
    *
    * Init input
    */
-  readonly removeSource = input<boolean>();
+  readonly removeSource = input<boolean, BooleanInput>(undefined, {
+    transform: booleanAttribute,
+  });
 
   readonly filter = input<FilterSpecification>();
   readonly layout = input<LayerSpecification['layout']>();
