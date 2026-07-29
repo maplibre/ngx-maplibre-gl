@@ -3,6 +3,7 @@ import {
   OnChanges,
   SimpleChanges,
   NgZone,
+  computed,
   inject,
   input,
   signal,
@@ -53,11 +54,22 @@ export class GeoJSONSourceComponent implements OnChanges {
   /** Init injection */
   private readonly ngZone = inject(NgZone);
 
-  /** Dynamic input */
-  readonly data = input<GeoJSONSourceSpecification['data']>({
+  /**
+   * Dynamic input
+   *
+   * Accepts `undefined` so an async value - a `resource` that has not resolved,
+   * or an `async` pipe before its first emission - can be bound directly. Until
+   * it arrives the source holds an empty feature collection.
+   */
+  readonly data = input<GeoJSONSourceSpecification['data'] | undefined>({
     type: 'FeatureCollection',
     features: [],
   });
+
+  /** The bound data, or an empty collection while an async value is pending. */
+  private readonly resolvedData = computed<GeoJSONSourceSpecification['data']>(
+    () => this.data() ?? { type: 'FeatureCollection', features: [] }
+  );
 
   /** Dynamic input */
   readonly maxzoom = input<GeoJSONSourceSpecification['maxzoom']>();
@@ -185,7 +197,7 @@ export class GeoJSONSourceComponent implements OnChanges {
 
   _addFeature(feature: GeoJSON.Feature<GeoJSON.GeometryObject>) {
     const collection = <GeoJSON.FeatureCollection<GeoJSON.GeometryObject>>(
-      this.data()
+      this.resolvedData()
     );
     collection.features.push(feature);
     this.updateFeatureDataSubject.next();
@@ -193,7 +205,7 @@ export class GeoJSONSourceComponent implements OnChanges {
 
   _removeFeature(feature: GeoJSON.Feature<GeoJSON.GeometryObject>) {
     const collection = <GeoJSON.FeatureCollection<GeoJSON.GeometryObject>>(
-      this.data()
+      this.resolvedData()
     );
     const index = collection.features.indexOf(feature);
     if (index > -1) {
@@ -214,7 +226,7 @@ export class GeoJSONSourceComponent implements OnChanges {
   private getGeoJSONSourceSpecification(): GeoJSONSourceSpecification {
     return {
       type: 'geojson',
-      data: this.data(),
+      data: this.resolvedData(),
       maxzoom: this.maxzoom(),
       attribution: this.attribution(),
       buffer: this.buffer(),
@@ -238,7 +250,7 @@ export class GeoJSONSourceComponent implements OnChanges {
         if (source === undefined) {
           return;
         }
-        source.setData(this.data()! as string | GeoJSON.GeoJSON);
+        source.setData(this.resolvedData());
       })
     );
   }
