@@ -11,7 +11,6 @@ import {
   signal,
 } from '@angular/core';
 import type {
-  MapGeoJSONFeature,
   MapSourceDataEvent,
   QueryRenderedFeaturesOptions,
 } from 'maplibre-gl';
@@ -77,7 +76,7 @@ let uniqId = 0;
       [paint]="{ 'circle-radius': 0 }"
     ></mgl-layer>
     @for (feature of clusterPoints(); track $index) { 
-      @if (feature.properties.cluster) {
+      @if (feature.properties?.cluster) {
         <mgl-marker [feature]="feature">
           <ng-container
             *ngTemplateOutlet="clusterPointTpl(); context: { $implicit: feature }"
@@ -118,7 +117,7 @@ export class MarkersForClustersComponent {
   });
 
   /** @hidden */
-  readonly clusterPoints = signal<MapGeoJSONFeature[]>([]);
+  readonly clusterPoints = signal<GeoJSON.Feature<GeoJSON.Point>[]>([]);
   /** @hidden */
   readonly layerId = `mgl-markers-for-clusters-${uniqId++}`;
 
@@ -154,9 +153,7 @@ export class MarkersForClustersComponent {
 
   private updateCluster() {
     const params = this.getClusterParams(this.pointTpl());
-    this.clusterPoints.set(
-      this.mapService.mapInstance.queryRenderedFeatures(params)
-    );
+    this.clusterPoints.set(this.mapService.mapInstance.queryRenderedFeatures(params) as GeoJSON.Feature<GeoJSON.Point>[]);
   }
 
   getClusterParams(

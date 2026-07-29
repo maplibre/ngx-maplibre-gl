@@ -51,11 +51,13 @@ import { httpResource } from '@angular/common/http';
 })
 export class PopupOnClickComponent {
   readonly points = httpResource<GeoJSON.FeatureCollection<GeoJSON.Point>>(() => 'assets/data/points.geo.json');
-  readonly selectedPoint = signal<GeoJSON.Feature | null>(null);
+  readonly selectedPoint = signal<GeoJSON.Feature<GeoJSON.Point> | null>(null);
   readonly cursorStyle = signal('');
 
   onClick(evt: MapLayerMouseEvent): void {
-    this.selectedPoint.set(evt.features![0]);
+    this.selectedPoint.set(
+      evt.features![0] as GeoJSON.Feature<GeoJSON.Point>
+    );
   }
 
   changeCursorStyle(value: string): void {

@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
-import { MapMouseEvent } from 'maplibre-gl';
+import { MapLayerMouseEvent } from 'maplibre-gl';
+import { LngLatLikeOrPosition } from '@maplibre/ngx-maplibre-gl';
 import {
   MapComponent,
   FeatureComponent,
@@ -49,9 +50,9 @@ import {
 export class CenterOnSymbolComponent {
   readonly cursorStyle = signal('');
 
-  readonly center = signal([-90.96, -0.47]);
+  readonly center = signal<LngLatLikeOrPosition>([-90.96, -0.47]);
 
-  readonly geometries = [
+  readonly geometries: GeoJSON.Point[] = [
     {
       type: 'Point',
       coordinates: [-91.395263671875, -0.9145729757782163],
@@ -66,8 +67,11 @@ export class CenterOnSymbolComponent {
     },
   ];
 
-  centerMapTo(evt: MapMouseEvent): void {
-    this.center.set((evt as any).features[0].geometry.coordinates);
+  centerMapTo(evt: MapLayerMouseEvent): void {
+    const geometry = evt.features?.[0]?.geometry;
+    if (geometry?.type === 'Point') {
+      this.center.set(geometry.coordinates);
+    }
   }
 
   changeCursorStyle(value: string): void {

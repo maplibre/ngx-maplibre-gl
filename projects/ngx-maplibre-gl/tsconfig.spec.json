@@ -6,8 +6,5 @@
     "resolveJsonModule": true
   },
   "files": ["src/test-setup.ts"],
-  "include": ["**/*.spec.ts", "**/*.d.ts", "src/testing/**/*.ts"],
-  "angularCompilerOptions": {
-    "strictTemplates": false
-  }
+  "include": ["**/*.spec.ts", "**/*.d.ts", "src/testing/**/*.ts"]
 }

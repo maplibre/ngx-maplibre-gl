@@ -24,7 +24,6 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
             paint: {
               'raster-opacity': 1
             },
-            'raster-opacity': 1,
             source: 'satellite',
             type: 'raster'
           }

@@ -45,7 +45,7 @@ import {
   ],
 })
 export class NgxGeoJSONLineComponent {
-  readonly geometry = {
+  readonly geometry: GeoJSON.LineString = {
     type: 'LineString',
     coordinates: [
       [-122.48369693756104, 37.83381888486939],

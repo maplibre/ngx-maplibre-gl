@@ -15,6 +15,7 @@ import type {
   FilterSpecification,
   MapLayerMouseEvent,
   MapLayerTouchEvent,
+  SourceSpecification,
 } from 'maplibre-gl';
 import { fromEvent } from 'rxjs';
 import { filter, map, startWith, switchMap } from 'rxjs/operators';
@@ -58,7 +59,11 @@ export class LayerComponent
   /** Init input */
   readonly id = input.required<LayerSpecification['id']>();
   readonly type = input.required<LayerSpecification['type']>();
-  readonly source = input<string>();
+  /**
+   * Either the id of an existing source, or an inline source specification that
+   * MapLibre adds under this layer's id.
+   */
+  readonly source = input<string | SourceSpecification>();
   readonly metadata = input<LayerSpecification['metadata']>();
   readonly sourceLayer = input<string>();
 
@@ -161,7 +166,7 @@ export class LayerComponent
       layerOptions: {
         id: this.id(),
         type: this.type(),
-        source: this.source() as string,
+        source: this.source(),
         metadata: this.metadata(),
         // eslint-disable-next-line @typescript-eslint/naming-convention
         'source-layer': this.sourceLayer(),

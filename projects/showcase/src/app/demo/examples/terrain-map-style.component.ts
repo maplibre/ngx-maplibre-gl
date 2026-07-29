@@ -33,7 +33,7 @@ import { MapComponent } from '@maplibre/ngx-maplibre-gl';
       }"
       [zoom]="[12]"
       [center]="[11.39085, 47.27574]"
-      [pitch]="52"
+      [pitch]="[52]"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
     </mgl-map>

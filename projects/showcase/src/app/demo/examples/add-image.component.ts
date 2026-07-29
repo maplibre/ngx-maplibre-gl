@@ -28,6 +28,7 @@ import {
               features: [
                 {
                   type: 'Feature',
+                  properties: {},
                   geometry: {
                     type: 'Point',
                     coordinates: [0, 0],

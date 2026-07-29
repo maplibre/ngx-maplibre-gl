@@ -159,16 +159,14 @@ export class NgxClusterHtmlComponent {
     initialValue: null
   });
 
-  readonly selectedCluster = signal<{
-    geometry: GeoJSON.Point;
-    properties: any;
-  } | null>(null);
+  readonly selectedCluster = signal<GeoJSON.Feature<GeoJSON.Point> | null>(null);
 
 
   selectCluster(event: MouseEvent, feature: any) {
     event.stopPropagation(); // This is needed, otherwise the popup will close immediately
     // Change the ref, to trigger mgl-popup onChanges (when the user click on the same cluster)
     this.selectedCluster.set({
+      type: 'Feature',
       geometry: feature.geometry,
       properties: feature.properties,
     });

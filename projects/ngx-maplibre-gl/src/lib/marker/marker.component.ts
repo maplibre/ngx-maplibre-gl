@@ -14,7 +14,8 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import type { LngLatLike, Marker, MarkerOptions } from 'maplibre-gl';
+import type { Marker, MarkerOptions } from 'maplibre-gl';
+import type { LngLatLikeOrPosition } from '../map/map.types';
 import { MapService } from '../map/map.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -59,7 +60,7 @@ export class MarkerComponent implements OnChanges, OnInit, OnDestroy {
   readonly subpixelPositioning = input<MarkerOptions['subpixelPositioning']>();
   /** Dynamic input */
   readonly feature = input<GeoJSON.Feature<GeoJSON.Point>>();
-  readonly lngLat = input<LngLatLike>();
+  readonly lngLat = input<LngLatLikeOrPosition>();
   readonly draggable = input<MarkerOptions['draggable']>();
   readonly popupShown = input<boolean>();
   readonly className = input<string>();

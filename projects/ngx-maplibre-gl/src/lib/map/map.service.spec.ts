@@ -171,7 +171,7 @@ describe('MapService', () => {
       mapOptions: {
         container,
         style: geoJSONStyle,
-        zoom: [0],
+        zoom: 0,
       },
       mapEvents,
     });

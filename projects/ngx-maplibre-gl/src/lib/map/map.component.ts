@@ -31,7 +31,12 @@ import type {
   ProjectionSpecification,
 } from 'maplibre-gl';
 import { MapService, type MovingOptions } from './map.service';
-import type { MapEvent, EventData, MapDataEvent } from './map.types';
+import type {
+  MapEvent,
+  EventData,
+  LngLatLikeOrPosition,
+  MapDataEvent,
+} from './map.types';
 import { firstValueFrom } from 'rxjs';
 
 /**
@@ -178,7 +183,7 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
   /** Dynamic input */
   readonly mapStyle = input.required<MapOptions['style']>();
   /** Dynamic input */
-  readonly center = input<MapOptions['center']>();
+  readonly center = input<LngLatLikeOrPosition>();
   /** Dynamic input */
   readonly maxBounds = input<MapOptions['maxBounds']>();
   /** Dynamic input */
@@ -355,9 +360,9 @@ export class MapComponent implements OnChanges, OnDestroy, MapEvent {
           touchZoomRotate: this.touchZoomRotate(),
           trackResize: this.trackResize(),
           center: this.center(),
-          zoom: this.zoom(),
-          bearing: this.bearing(),
-          pitch: this.pitch(),
+          zoom: this.zoom()?.[0],
+          bearing: this.bearing()?.[0],
+          pitch: this.pitch()?.[0],
           roll: this.roll(),
           renderWorldCopies: this.renderWorldCopies(),
           maxTileCacheSize: this.maxTileCacheSize(),

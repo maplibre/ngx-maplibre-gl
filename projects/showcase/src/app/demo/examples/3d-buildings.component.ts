@@ -9,10 +9,10 @@ import { MapComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
       [mapStyle]="
         'https://tiles.openfreemap.org/styles/liberty'
       "
-      [zoom]="15.5"
+      [zoom]="[15.5]"
       [center]="[-74.0066, 40.7135]"
-      [pitch]="45"
-      [bearing]="-17.6"
+      [pitch]="[45]"
+      [bearing]="[-17.6]"
       (mapLoad)="onLoad($event)"
       [canvasContextAttributes]="{preserveDrawingBuffer: true}"
     >
