@@ -70,6 +70,9 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
 
   /** Init input */
   readonly subpixelPositioning = input<PopupOptions['subpixelPositioning']>();
+  readonly locationOccludedOpacity = input<
+    PopupOptions['locationOccludedOpacity']
+  >();
 
   /**
    * Dynamic input [ngx]
@@ -88,6 +91,9 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
 
   /** Dynamic input */
   readonly offset = input<Offset>();
+
+  /** Dynamic input */
+  readonly padding = input<PopupOptions['padding']>();
 
   readonly popupClose = output<void>();
   readonly popupOpen = output<void>();
@@ -171,6 +177,8 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
           className: this.className(),
           maxWidth: this.maxWidth(),
           subpixelPositioning: this.subpixelPositioning(),
+          locationOccludedOpacity: this.locationOccludedOpacity(),
+          padding: this.padding(),
         },
         popupEvents: {
           popupOpen: this.popupOpen,
