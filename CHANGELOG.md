@@ -5,12 +5,12 @@
 ### 🐞 Bug fixes
 - _...Add new stuff here..._
 
-- feat: add popup options and make some dynamic ([#344](https://github.com/maplibre/ngx-maplibre-gl/pull/344)) (by [@marcjulian](https://github.com/marcjulian))
+
 ## 22.2.0
+
 ### ✨ Features and improvements
 
-### 🐞 Bug fixes
-
+- feat: add popup options and make some dynamic ([#344](https://github.com/maplibre/ngx-maplibre-gl/pull/344)) (by [@marcjulian](https://github.com/marcjulian))
 
 ## 22.1.0
 
