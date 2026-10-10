@@ -66,10 +66,6 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
   readonly className = input<PopupOptions['className']>();
 
   /** Init input */
-  readonly maxWidth = input<PopupOptions['maxWidth']>();
-
-  /** Init input */
-  readonly subpixelPositioning = input<PopupOptions['subpixelPositioning']>();
   readonly locationOccludedOpacity = input<
     PopupOptions['locationOccludedOpacity']
   >();
@@ -91,6 +87,12 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
 
   /** Dynamic input */
   readonly offset = input<Offset>();
+
+  /** Dynamic input */
+  readonly maxWidth = input<PopupOptions['maxWidth']>();
+
+  /** Dynamic input */
+  readonly subpixelPositioning = input<PopupOptions['subpixelPositioning']>();
 
   /** Dynamic input */
   readonly padding = input<PopupOptions['padding']>();
@@ -157,6 +159,32 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
       this.popupInstance
     ) {
       this.popupInstance.setOffset(changes.offset.currentValue);
+    }
+
+    if (
+      changes.maxWidth &&
+      !changes.maxWidth.isFirstChange() &&
+      this.popupInstance
+    ) {
+      this.popupInstance.setMaxWidth(changes.maxWidth.currentValue);
+    }
+
+    if (
+      changes.subpixelPositioning &&
+      !changes.subpixelPositioning.isFirstChange() &&
+      this.popupInstance
+    ) {
+      this.popupInstance.setSubpixelPositioning(
+        changes.subpixelPositioning.currentValue
+      );
+    }
+
+    if (
+      changes.padding &&
+      !changes.padding.isFirstChange() &&
+      this.popupInstance
+    ) {
+      this.popupInstance.setPadding(changes.padding.currentValue);
     }
   }
 
