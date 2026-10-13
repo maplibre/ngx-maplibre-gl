@@ -24,13 +24,16 @@ const getMapServiceStub = () =>
   template: `
     @if (show()) {
       <mgl-marker [lngLat]="[0, 0]" #myMarker> ... </mgl-marker>
-      <mgl-popup [marker]="myMarker"> Hello from marker! </mgl-popup>
+      <mgl-popup [marker]="myMarker" [contentStyle]="contentStyle">
+        Hello from marker!
+      </mgl-popup>
     }
   `,
   imports: [MarkerComponent, PopupComponent],
 })
 class MarkerPopupTestComponent {
   show = signal(true);
+  contentStyle: string | Record<string, string | number | null | undefined>;
 }
 
 describe('PopupComponent', () => {
@@ -64,6 +67,33 @@ describe('PopupComponent', () => {
       component.show.set(false)
       fixture.detectChanges();
       expect(mapServiceStub.removePopupFromMap).toHaveBeenCalled();
+    });
+
+    it('should apply content styles to the popup content element', () => {
+      const popupLevelProperty = '--popup-level';
+      component.contentStyle = {
+        zIndex: 3,
+        [popupLevelProperty]: 7,
+        color: 'red',
+      };
+      fixture.detectChanges();
+      const wrapper = (fixture.nativeElement as HTMLElement).querySelector(
+        'mgl-popup > div'
+      ) as HTMLElement;
+      expect(wrapper.style.zIndex).toBe('3');
+      expect(wrapper.style.getPropertyValue('--popup-level')).toBe('7');
+      expect(wrapper.style.color).toBe('red');
+    });
+
+    it('should apply content styles given as a css string', () => {
+      component.contentStyle = '--popup-level: 8; z-index: 4; color: blue;';
+      fixture.detectChanges();
+      const wrapper = (fixture.nativeElement as HTMLElement).querySelector(
+        'mgl-popup > div'
+      ) as HTMLElement;
+      expect(wrapper.style.getPropertyValue('--popup-level')).toBe('8');
+      expect(wrapper.style.zIndex).toBe('4');
+      expect(wrapper.style.color).toBe('blue');
     });
   });
 });

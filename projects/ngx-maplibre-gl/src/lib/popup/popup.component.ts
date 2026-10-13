@@ -40,7 +40,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
  */
 @Component({
   selector: 'mgl-popup',
-  template: '<div #content data-cy="mgl-popup"><ng-content></ng-content></div>',
+  template: `
+    <div #content data-cy="mgl-popup" [style]="contentStyle()">
+      <ng-content />
+    </div>
+  `,
 })
 export class PopupComponent implements OnChanges, OnInit, OnDestroy {
   /** Init injection */
@@ -66,9 +70,13 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
   readonly className = input<PopupOptions['className']>();
 
   /** Init input */
-  readonly locationOccludedOpacity = input<
-    PopupOptions['locationOccludedOpacity']
+  readonly contentStyle = input<
+    string | Record<string, string | number | null | undefined>
   >();
+
+  /** Init input */
+  readonly locationOccludedOpacity =
+    input<PopupOptions['locationOccludedOpacity']>();
 
   /**
    * Dynamic input [ngx]
@@ -129,10 +137,7 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
       const newlngLat = this.getLngLat(this.lngLat(), this.feature());
       this.mapService.removePopupFromMap(this.popupInstance!);
       const popupInstanceTmp = this.createPopup();
-      this.mapService.addPopupToMap(
-        popupInstanceTmp,
-        newlngLat
-      );
+      this.mapService.addPopupToMap(popupInstanceTmp, newlngLat);
       this.popupInstance = popupInstanceTmp;
     }
 
