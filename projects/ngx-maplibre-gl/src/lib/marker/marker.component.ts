@@ -41,9 +41,11 @@ import { BooleanInput } from '../shared/utils/types';
  */
 @Component({
   selector: 'mgl-marker',
-  template: `<div [class]="className()" #content>
-    <ng-content></ng-content>
-  </div>`,
+  template: `
+    <div [class]="className()" [style]="contentStyle()" #content>
+      <ng-content />
+    </div>
+  `,
   encapsulation: ViewEncapsulation.None,
 })
 export class MarkerComponent implements OnChanges, OnInit, OnDestroy {
@@ -68,6 +70,9 @@ export class MarkerComponent implements OnChanges, OnInit, OnDestroy {
     transform: booleanAttribute,
   });
   readonly className = input<string>();
+  readonly contentStyle = input<
+    string | Record<string, string | number | null | undefined>
+  >();
   readonly pitchAlignment = input<MarkerOptions['pitchAlignment']>();
   readonly rotationAlignment = input<MarkerOptions['rotationAlignment']>();
   readonly rotation = input<MarkerOptions['rotation']>();
@@ -132,7 +137,7 @@ export class MarkerComponent implements OnChanges, OnInit, OnDestroy {
 
     if (changes.feature && !changes.feature.isFirstChange()) {
       markerInstance.setLngLat(
-        changes.feature.currentValue.geometry.coordinates
+        changes.feature.currentValue.geometry.coordinates,
       );
     }
     if (changes.draggable && !changes.draggable.isFirstChange()) {
@@ -151,7 +156,7 @@ export class MarkerComponent implements OnChanges, OnInit, OnDestroy {
       !changes.rotationAlignment.isFirstChange()
     ) {
       markerInstance.setRotationAlignment(
-        changes.rotationAlignment.currentValue
+        changes.rotationAlignment.currentValue,
       );
     }
     if (changes.rotation && !changes.rotation.isFirstChange()) {

@@ -19,7 +19,12 @@ const getMapServiceStub = () =>
 
 @Component({
   template: `
-    <mgl-marker [offset]="offset" [lngLat]="lngLat" [className]="className">
+    <mgl-marker
+      [offset]="offset"
+      [lngLat]="lngLat"
+      [className]="className"
+      [contentStyle]="contentStyle"
+    >
       ...
     </mgl-marker>
   `,
@@ -29,6 +34,7 @@ class MarkerTestComponent {
   offset: PointLike;
   lngLat: [number, number];
   className: string;
+  contentStyle: string | Record<string, string | number | null | undefined>;
 }
 
 describe('MarkerComponent', () => {
@@ -75,6 +81,34 @@ describe('MarkerComponent', () => {
       )!.classList;
       expect(classes).toContain('my-class1');
       expect(classes).toContain('my-class2');
+    });
+
+    it('should apply content styles to the wrapper element', () => {
+      const markerLevelProperty = '--marker-level';
+      component.contentStyle = {
+        zIndex: 3,
+        [markerLevelProperty]: 7,
+        color: 'red',
+      };
+      fixture.detectChanges();
+      const wrapper = (fixture.nativeElement as HTMLElement).querySelector(
+        'mgl-marker > div'
+      ) as HTMLElement;
+      expect(wrapper.style.zIndex).toBe('3');
+      expect(wrapper.style.getPropertyValue('--marker-level')).toBe('7');
+      expect(wrapper.style.color).toBe('red');
+    });
+
+    it('should apply content styles given as a css string', () => {
+      component.contentStyle =
+        '--marker-level: 8; z-index: 4; color: blue;';
+      fixture.detectChanges();
+      const wrapper = (fixture.nativeElement as HTMLElement).querySelector(
+        'mgl-marker > div'
+      ) as HTMLElement;
+      expect(wrapper.style.getPropertyValue('--marker-level')).toBe('8');
+      expect(wrapper.style.zIndex).toBe('4');
+      expect(wrapper.style.color).toBe('blue');
     });
   });
 });
