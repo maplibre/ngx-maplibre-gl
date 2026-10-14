@@ -19,7 +19,8 @@ import type { Marker, MarkerOptions } from 'maplibre-gl';
 import type { LngLatLikeOrPosition } from '../map/map.types';
 import { MapService } from '../map/map.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { BooleanInput } from '../shared/utils/types';
+import { BooleanInput, ContentStyle } from '../shared/utils/types';
+import { injectMglMarkerConfig } from './marker.config';
 
 /**
  * `mgl-marker` - a marker component
@@ -52,30 +53,41 @@ export class MarkerComponent implements OnChanges, OnInit, OnDestroy {
   /** Init injection */
   private readonly mapService = inject(MapService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly config = injectMglMarkerConfig();
 
   /** Init inputs */
-  readonly offset = input<MarkerOptions['offset']>();
-  readonly anchor = input<MarkerOptions['anchor']>();
-  readonly clickTolerance = input<MarkerOptions['clickTolerance']>();
-  readonly color = input<MarkerOptions['color']>();
-  readonly scale = input<MarkerOptions['scale']>();
-  readonly opacity = input<MarkerOptions['opacity']>();
-  readonly opacityWhenCovered = input<MarkerOptions['opacityWhenCovered']>();
-  readonly subpixelPositioning = input<MarkerOptions['subpixelPositioning']>();
+  readonly offset = input<MarkerOptions['offset']>(this.config.offset);
+  readonly anchor = input<MarkerOptions['anchor']>(this.config.anchor);
+  readonly clickTolerance = input<MarkerOptions['clickTolerance']>(
+    this.config.clickTolerance,
+  );
+  readonly color = input<MarkerOptions['color']>(this.config.color);
+  readonly scale = input<MarkerOptions['scale']>(this.config.scale);
+  readonly opacity = input<MarkerOptions['opacity']>(this.config.opacity);
+  readonly opacityWhenCovered = input<MarkerOptions['opacityWhenCovered']>(
+    this.config.opacityWhenCovered,
+  );
+  readonly subpixelPositioning = input<MarkerOptions['subpixelPositioning']>(
+    this.config.subpixelPositioning,
+  );
   /** Dynamic input */
   readonly feature = input<GeoJSON.Feature<GeoJSON.Point>>();
   readonly lngLat = input<LngLatLikeOrPosition>();
-  readonly draggable = input<MarkerOptions['draggable']>();
+  readonly draggable = input<MarkerOptions['draggable']>(this.config.draggable);
   readonly popupShown = input<boolean, BooleanInput>(undefined, {
     transform: booleanAttribute,
   });
-  readonly className = input<string>();
-  readonly contentStyle = input<
-    string | Record<string, string | number | null | undefined>
-  >();
-  readonly pitchAlignment = input<MarkerOptions['pitchAlignment']>();
-  readonly rotationAlignment = input<MarkerOptions['rotationAlignment']>();
-  readonly rotation = input<MarkerOptions['rotation']>();
+  readonly className = input<MarkerOptions['className']>(this.config.className);
+  readonly contentStyle = input<ContentStyle | undefined>(
+    this.config.contentStyle,
+  );
+  readonly pitchAlignment = input<MarkerOptions['pitchAlignment']>(
+    this.config.pitchAlignment,
+  );
+  readonly rotationAlignment = input<MarkerOptions['rotationAlignment']>(
+    this.config.rotationAlignment,
+  );
+  readonly rotation = input<MarkerOptions['rotation']>(this.config.rotation);
 
   readonly markerDragStart = output<Marker>();
   readonly markerDragEnd = output<Marker>();

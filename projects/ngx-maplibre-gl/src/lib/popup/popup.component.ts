@@ -18,6 +18,7 @@ import { MapService } from '../map/map.service';
 import { MarkerComponent } from '../marker/marker.component';
 import { tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ContentStyle } from '../shared/utils/types';
 
 /**
  * `mgl-popup` - a popup component
@@ -70,9 +71,7 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
   readonly className = input<PopupOptions['className']>();
 
   /** Init input */
-  readonly contentStyle = input<
-    string | Record<string, string | number | null | undefined>
-  >();
+  readonly contentStyle = input<ContentStyle>();
 
   /** Init input */
   readonly locationOccludedOpacity =
