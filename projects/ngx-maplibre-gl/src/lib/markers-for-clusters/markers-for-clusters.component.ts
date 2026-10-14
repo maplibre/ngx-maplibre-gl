@@ -136,7 +136,7 @@ export class MarkersForClustersComponent {
     PointDirective,
     {
       read: TemplateRef,
-    }
+    },
   );
   /** @hidden */
   readonly clusterPointTpl = contentChild<
@@ -172,8 +172,8 @@ export class MarkersForClustersComponent {
             (e) =>
               e.sourceId === this.source() &&
               e.sourceDataType !== 'metadata' &&
-              this.mapService.mapInstance.isSourceLoaded(this.source())
-          )
+              this.mapService.mapInstance.isSourceLoaded(this.source()),
+          ),
         );
       this.mapService.mapCreated$
         .pipe(
@@ -181,9 +181,9 @@ export class MarkersForClustersComponent {
           switchMap(() =>
             merge(
               fromEvent(this.mapService.mapInstance, 'move'),
-              fromEvent(this.mapService.mapInstance, 'moveend')
-            ).pipe(startWith(undefined))
-          )
+              fromEvent(this.mapService.mapInstance, 'moveend'),
+            ).pipe(startWith(undefined)),
+          ),
         )
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
@@ -196,11 +196,15 @@ export class MarkersForClustersComponent {
 
   private updateCluster() {
     const params = this.getClusterParams(this.pointTpl());
-    this.clusterPoints.set(this.mapService.mapInstance.queryRenderedFeatures(params) as GeoJSON.Feature<GeoJSON.Point>[]);
+    this.clusterPoints.set(
+      this.mapService.mapInstance.queryRenderedFeatures(
+        params,
+      ) as GeoJSON.Feature<GeoJSON.Point>[],
+    );
   }
 
   getClusterParams(
-    pointTpl: TemplateRef<PointDirective> | undefined
+    pointTpl: TemplateRef<PointDirective> | undefined,
   ): QueryRenderedFeaturesOptions {
     if (!pointTpl) {
       return { layers: [this.layerId], filter: ['==', 'cluster', true] };

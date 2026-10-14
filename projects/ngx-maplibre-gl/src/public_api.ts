@@ -20,6 +20,7 @@ export * from './lib/source/geojson/feature.component';
 export * from './lib/marker/marker.component';
 export * from './lib/marker/marker.config';
 export * from './lib/popup/popup.component';
+export * from './lib/popup/popup.config';
 export * from './lib/control/fullscreen-control.directive';
 export * from './lib/control/geolocate-control.directive';
 export * from './lib/control/navigation-control.directive';

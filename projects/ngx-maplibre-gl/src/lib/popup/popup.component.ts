@@ -12,13 +12,14 @@ import {
   output,
   viewChild,
 } from '@angular/core';
-import type { Offset, Popup, PopupOptions } from 'maplibre-gl';
+import type { Popup, PopupOptions } from 'maplibre-gl';
 import type { LngLatLikeOrPosition } from '../map/map.types';
 import { MapService } from '../map/map.service';
 import { MarkerComponent } from '../marker/marker.component';
 import { tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ContentStyle } from '../shared/utils/types';
+import { injectMglPopupConfig } from './popup.config';
 
 /**
  * `mgl-popup` - a popup component
@@ -51,31 +52,43 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
   /** Init injection */
   private readonly destroyRef = inject(DestroyRef);
   private readonly mapService = inject(MapService);
+  private readonly config = injectMglPopupConfig();
 
   /** Init input */
-  readonly closeButton = input<PopupOptions['closeButton']>();
+  readonly closeButton = input<PopupOptions['closeButton']>(
+    this.config.closeButton,
+  );
 
   /** Init input */
-  readonly closeOnClick = input<PopupOptions['closeOnClick']>();
+  readonly closeOnClick = input<PopupOptions['closeOnClick']>(
+    this.config.closeOnClick,
+  );
 
   /** Init input */
-  readonly closeOnMove = input<PopupOptions['closeOnMove']>();
+  readonly closeOnMove = input<PopupOptions['closeOnMove']>(
+    this.config.closeOnMove,
+  );
 
   /** Init input */
-  readonly focusAfterOpen = input<PopupOptions['focusAfterOpen']>();
+  readonly focusAfterOpen = input<PopupOptions['focusAfterOpen']>(
+    this.config.focusAfterOpen,
+  );
 
   /** Init input */
-  readonly anchor = input<PopupOptions['anchor']>();
+  readonly anchor = input<PopupOptions['anchor']>(this.config.anchor);
 
   /** Init input */
-  readonly className = input<PopupOptions['className']>();
+  readonly className = input<PopupOptions['className']>(this.config.className);
 
   /** Init input */
-  readonly contentStyle = input<ContentStyle>();
+  readonly contentStyle = input<ContentStyle | undefined>(
+    this.config.contentStyle,
+  );
 
   /** Init input */
-  readonly locationOccludedOpacity =
-    input<PopupOptions['locationOccludedOpacity']>();
+  readonly locationOccludedOpacity = input<
+    PopupOptions['locationOccludedOpacity']
+  >(this.config.locationOccludedOpacity);
 
   /**
    * Dynamic input [ngx]
@@ -93,16 +106,18 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
   readonly marker = input<MarkerComponent>();
 
   /** Dynamic input */
-  readonly offset = input<Offset>();
+  readonly offset = input<PopupOptions['offset']>(this.config.offset);
 
   /** Dynamic input */
-  readonly maxWidth = input<PopupOptions['maxWidth']>();
+  readonly maxWidth = input<PopupOptions['maxWidth']>(this.config.maxWidth);
 
   /** Dynamic input */
-  readonly subpixelPositioning = input<PopupOptions['subpixelPositioning']>();
+  readonly subpixelPositioning = input<PopupOptions['subpixelPositioning']>(
+    this.config.subpixelPositioning,
+  );
 
   /** Dynamic input */
-  readonly padding = input<PopupOptions['padding']>();
+  readonly padding = input<PopupOptions['padding']>(this.config.padding);
 
   readonly popupClose = output<void>();
   readonly popupOpen = output<void>();
@@ -179,7 +194,7 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
       this.popupInstance
     ) {
       this.popupInstance.setSubpixelPositioning(
-        changes.subpixelPositioning.currentValue
+        changes.subpixelPositioning.currentValue,
       );
     }
 
@@ -217,7 +232,7 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
           popupClose: this.popupClose,
         },
       },
-      this.content().nativeElement
+      this.content().nativeElement,
     );
   }
 
@@ -233,10 +248,10 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
           this.mapService.addPopupToMarker(markerInstance, popup);
         } else {
           throw new Error(
-            'mgl-popup need either lngLat/marker/feature to be set'
+            'mgl-popup need either lngLat/marker/feature to be set',
           );
         }
-      })
+      }),
     );
   }
 
@@ -256,7 +271,7 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
 
   getLngLat(
     lngLat: LngLatLikeOrPosition | undefined,
-    feature: GeoJSON.Feature<GeoJSON.Point> | undefined
+    feature: GeoJSON.Feature<GeoJSON.Point> | undefined,
   ): LngLatLikeOrPosition {
     if (lngLat) {
       return lngLat;
