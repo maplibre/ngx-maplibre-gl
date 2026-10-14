@@ -5,6 +5,7 @@ import {
   NgZone,
   TemplateRef,
   afterNextRender,
+  computed,
   contentChild,
   inject,
   input,
@@ -18,6 +19,10 @@ import { fromEvent, merge } from 'rxjs';
 import { filter, startWith, switchMap } from 'rxjs/operators';
 import { MapService } from '../map/map.service';
 import { MarkerComponent } from '../marker/marker.component';
+import {
+  injectMglMarkerConfig,
+  MglMarkerConfig,
+} from '../marker/marker.config';
 import { NgTemplateOutlet } from '@angular/common';
 import { LayerComponent } from '../layer/layer.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -75,21 +80,41 @@ let uniqId = 0;
       type="circle"
       [paint]="{ 'circle-radius': 0 }"
     ></mgl-layer>
-    @for (feature of clusterPoints(); track $index) { 
-      @if (feature.properties?.cluster) {
-        <mgl-marker [feature]="feature">
+    @for (feature of clusterPoints(); track $index) {
+      @let options =
+        feature.properties?.cluster ? clusterOptions() : pointOptions();
+      <mgl-marker
+        [feature]="feature"
+        [className]="options.className"
+        [offset]="options.offset"
+        [anchor]="options.anchor"
+        [color]="options.color"
+        [scale]="options.scale"
+        [draggable]="options.draggable"
+        [clickTolerance]="options.clickTolerance"
+        [rotation]="options.rotation"
+        [rotationAlignment]="options.rotationAlignment"
+        [pitchAlignment]="options.pitchAlignment"
+        [opacity]="options.opacity"
+        [opacityWhenCovered]="options.opacityWhenCovered"
+        [subpixelPositioning]="options.subpixelPositioning"
+        [contentStyle]="options.contentStyle"
+      >
+        @if (feature.properties?.cluster) {
           <ng-container
-            *ngTemplateOutlet="clusterPointTpl(); context: { $implicit: feature }"
+            *ngTemplateOutlet="
+              clusterPointTpl();
+              context: { $implicit: feature }
+            "
           ></ng-container>
-        </mgl-marker>
-      } @else {
-        <mgl-marker [feature]="feature">
+        } @else {
           <ng-container
             *ngTemplateOutlet="pointTpl(); context: { $implicit: feature }"
           ></ng-container>
-        </mgl-marker>
-      } 
-    }`,
+        }
+      </mgl-marker>
+    }
+  `,
   preserveWhitespaces: false,
   imports: [LayerComponent, MarkerComponent, NgTemplateOutlet],
 })
@@ -97,9 +122,14 @@ export class MarkersForClustersComponent {
   private readonly destroyRef = inject(DestroyRef);
   private readonly mapService = inject(MapService);
   private readonly ngZone = inject(NgZone);
+  private readonly config = injectMglMarkerConfig();
 
   /** Init input */
   readonly source = input.required<string>();
+
+  /** Init input */
+  readonly markerOptions = input<MglMarkerConfig>({});
+  readonly clusterMarkerOptions = input<MglMarkerConfig>({});
 
   /** @hidden */
   readonly pointTpl = contentChild<PointDirective, TemplateRef<PointDirective>>(
@@ -115,6 +145,19 @@ export class MarkersForClustersComponent {
   >(ClusterPointDirective, {
     read: TemplateRef,
   });
+
+  /** @hidden */
+  readonly pointOptions = computed<MglMarkerConfig>(() => ({
+    ...this.config,
+    ...this.markerOptions(),
+  }));
+
+  /** @hidden */
+  readonly clusterOptions = computed<MglMarkerConfig>(() => ({
+    ...this.config,
+    ...this.markerOptions(),
+    ...this.clusterMarkerOptions(),
+  }));
 
   /** @hidden */
   readonly clusterPoints = signal<GeoJSON.Feature<GeoJSON.Point>[]>([]);
