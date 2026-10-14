@@ -106,11 +106,11 @@ let uniqId = 0;
               clusterPointTpl();
               context: { $implicit: feature }
             "
-          ></ng-container>
+          />
         } @else {
           <ng-container
             *ngTemplateOutlet="pointTpl(); context: { $implicit: feature }"
-          ></ng-container>
+          />
         }
       </mgl-marker>
     }
