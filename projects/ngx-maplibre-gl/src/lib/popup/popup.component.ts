@@ -5,7 +5,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  SimpleChanges,
+  type SimpleChanges,
   afterNextRender,
   inject,
   input,
@@ -18,6 +18,7 @@ import { MapService } from '../map/map.service';
 import { MarkerComponent } from '../marker/marker.component';
 import { tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import type { ContentStyle } from '../shared/utils/types';
 
 /**
  * `mgl-popup` - a popup component
@@ -70,9 +71,7 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
   readonly className = input<PopupOptions['className']>();
 
   /** Init input */
-  readonly contentStyle = input<
-    string | Record<string, string | number | null | undefined>
-  >();
+  readonly contentStyle = input<ContentStyle>();
 
   /** Init input */
   readonly locationOccludedOpacity =
@@ -180,7 +179,7 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
       this.popupInstance
     ) {
       this.popupInstance.setSubpixelPositioning(
-        changes.subpixelPositioning.currentValue
+        changes.subpixelPositioning.currentValue,
       );
     }
 
@@ -218,7 +217,7 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
           popupClose: this.popupClose,
         },
       },
-      this.content().nativeElement
+      this.content().nativeElement,
     );
   }
 
@@ -234,10 +233,10 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
           this.mapService.addPopupToMarker(markerInstance, popup);
         } else {
           throw new Error(
-            'mgl-popup need either lngLat/marker/feature to be set'
+            'mgl-popup need either lngLat/marker/feature to be set',
           );
         }
-      })
+      }),
     );
   }
 
@@ -257,7 +256,7 @@ export class PopupComponent implements OnChanges, OnInit, OnDestroy {
 
   getLngLat(
     lngLat: LngLatLikeOrPosition | undefined,
-    feature: GeoJSON.Feature<GeoJSON.Point> | undefined
+    feature: GeoJSON.Feature<GeoJSON.Point> | undefined,
   ): LngLatLikeOrPosition {
     if (lngLat) {
       return lngLat;
