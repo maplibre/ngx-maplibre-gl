@@ -25,7 +25,13 @@ import { LayerComponent } from '../layer/layer.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import type { ContentStyle } from '../shared/utils/types';
 
-type MglMarkerOptions = Omit<MarkerOptions, 'element'> & {
+/**
+ * Options accepted by {@link MarkersForClustersComponent} for styling its
+ * markers, based on maplibre-gl's `MarkerOptions` without the `element` option.
+ *
+ * @category Components
+ */
+export type MglMarkerOptions = Omit<MarkerOptions, 'element'> & {
   contentStyle?: ContentStyle;
 };
 
