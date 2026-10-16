@@ -5,7 +5,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  SimpleChanges,
+  type SimpleChanges,
   ViewEncapsulation,
   afterNextRender,
   booleanAttribute,
@@ -19,7 +19,7 @@ import type { Marker, MarkerOptions } from 'maplibre-gl';
 import type { LngLatLikeOrPosition } from '../map/map.types';
 import { MapService } from '../map/map.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { BooleanInput } from '../shared/utils/types';
+import type { BooleanInput, ContentStyle } from '../shared/utils/types';
 
 /**
  * `mgl-marker` - a marker component
@@ -70,9 +70,7 @@ export class MarkerComponent implements OnChanges, OnInit, OnDestroy {
     transform: booleanAttribute,
   });
   readonly className = input<string>();
-  readonly contentStyle = input<
-    string | Record<string, string | number | null | undefined>
-  >();
+  readonly contentStyle = input<ContentStyle>();
   readonly pitchAlignment = input<MarkerOptions['pitchAlignment']>();
   readonly rotationAlignment = input<MarkerOptions['rotationAlignment']>();
   readonly rotation = input<MarkerOptions['rotation']>();
