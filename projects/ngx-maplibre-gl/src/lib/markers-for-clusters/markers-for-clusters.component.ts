@@ -67,15 +67,24 @@ let uniqId = 0;
  * ```html
  * ...
  * <mgl-map ...>
- *   <mgl-markers-for-cluster [source]="myGeoJsonclusteredSource">
+ *   <mgl-markers-for-clusters
+ *     [source]="myGeoJsonclusteredSource"
+ *     [markerOptions]="{ anchor: 'bottom' }"
+ *     [clusterMarkerOptions]="{ anchor: 'center' }"
+ *   >
  *     <ng-template mglPoint let-feature> Marker! </ng-template>
  *     <ng-template mglClusterPoint let-feature>
  *       ClusterId: {{feature.properties?.cluster_id}}, Points:
  *       {{feature.properties?.point_count}}
  *     </ng-template>
- *   </mgl-markers-for-cluster>
+ *   </mgl-markers-for-clusters>
  * </mgl-map>
  * ```
+ *
+ * `markerOptions` are applied to every marker this component renders.
+ * `clusterMarkerOptions` are merged on top of `markerOptions` and applied to
+ * cluster markers only, so they only need to contain the differences from
+ * `markerOptions`.
  *
  * Note: Only use this if you **really** need to use HTML/Angular component to render your symbols. This is **slower** than rendering symbols in WebGL.
  */
@@ -134,8 +143,19 @@ export class MarkersForClustersComponent {
   /** Init input */
   readonly source = input.required<string>();
 
-  /** Init input */
+  /**
+   * Marker options applied to **every** marker rendered by this component,
+   * both single points and clusters. See {@link MglMarkerOptions}.
+   */
   readonly markerOptions = input<MglMarkerOptions>({});
+
+  /**
+   * Marker options merged on top of
+   * {@link MarkersForClustersComponent.markerOptions} and applied to cluster
+   * markers only. Only the differences from
+   * {@link MarkersForClustersComponent.markerOptions} need to be specified.
+   * See {@link MglMarkerOptions}.
+   */
   readonly clusterMarkerOptions = input<MglMarkerOptions>({});
 
   /** @hidden */
