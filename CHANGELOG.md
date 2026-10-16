@@ -6,6 +6,13 @@
 - _...Add new stuff here..._
 
 
+## 22.3.0
+
+### ✨ Features and improvements
+
+- feat: pass marker options marker cluster ([#352](https://github.com/maplibre/ngx-maplibre-gl/pull/352)) (by [@marcjulian](https://github.com/marcjulian))
+- feat: pass content styles for marker and popup ([#350](https://github.com/maplibre/ngx-maplibre-gl/pull/350)) (by [@marcjulian](https://github.com/marcjulian))
+
 ## 22.2.0
 
 ### ✨ Features and improvements
