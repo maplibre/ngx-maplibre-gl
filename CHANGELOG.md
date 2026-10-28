@@ -3,6 +3,7 @@
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
+- fix: skip removeSource when the source is no longer on the map, e.g. while a new style loads ([#TBD](https://github.com/maplibre/ngx-maplibre-gl/pull/TBD)) (by [@AlenRedek](https://github.com/AlenRedek))
 - _...Add new stuff here..._
 
 

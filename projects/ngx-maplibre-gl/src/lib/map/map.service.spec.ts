@@ -279,6 +279,13 @@ describe('MapService', () => {
       click(mapService.mapInstance.getCanvas());
       expect(layer.layerEvents.layerClick.emit).not.toHaveBeenCalled();
     });
+
+    it('should not throw on removeSource while a new style is loading', async () => {
+      await mapLoaded();
+      mapService.addSource("sourceId", { type: 'geojson', data: countries });
+      mapService.mapInstance.setStyle(geoJSONStyle, { diff: false });
+      expect(() => mapService.removeSource("sourceId")).not.toThrow();
+    });
   });
 });
 
