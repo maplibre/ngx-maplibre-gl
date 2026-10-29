@@ -1,6 +1,6 @@
 {
   "name": "@maplibre/ngx-maplibre-gl",
-  "version": "22.3.0",
+  "version": "22.3.1",
   "description": "An Angular binding for maplibre-gl",
   "license": "MIT",
   "repository": {

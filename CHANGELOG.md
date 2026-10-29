@@ -3,9 +3,14 @@
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
+- _...Add new stuff here..._
+
+## 22.3.1
+### ✨ Features and improvements
+
+### 🐞 Bug fixes
 - fix: skip removeSource when the source is no longer on the map, e.g. while a new style loads ([#363](https://github.com/maplibre/ngx-maplibre-gl/pull/363)) (by [@AlenRedek](https://github.com/AlenRedek))
 - fix: unsubscribe layer events on removeLayer after a style swap ([#364](https://github.com/maplibre/ngx-maplibre-gl/pull/364)) (by [@AlenRedek](https://github.com/AlenRedek))
-- _...Add new stuff here..._
 
 
 ## 22.3.0
