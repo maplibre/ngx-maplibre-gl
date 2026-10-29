@@ -12,7 +12,10 @@ import {
   MapStyleImageMissingEvent,
   MapTouchEvent,
   MapWheelEvent,
-  StyleSpecification, SourceSpecification, MapGeoJSONFeature,
+  StyleSpecification,
+  SourceSpecification,
+  MapGeoJSONFeature,
+  MapLayerMouseEvent,
 } from 'maplibre-gl';
 import { MapService, SetupLayer } from './map.service';
 import {
@@ -285,6 +288,30 @@ describe('MapService', () => {
       mapService.addSource("sourceId", { type: 'geojson', data: countries });
       mapService.mapInstance.setStyle(geoJSONStyle, { diff: false });
       expect(() => mapService.removeSource("sourceId")).not.toThrow();
+    });
+
+    it('should unsubscribe from events on removeLayer after a style swap', async () => {
+      vi.spyOn(mapService.mapInstance, 'queryRenderedFeatures').mockReturnValue([{} as MapGeoJSONFeature]);
+
+      const layerClick = TestBed.runInInjectionContext(() => new OutputEmitterRef<MapLayerMouseEvent & EventData>());
+      const layerClickEmit = vi.spyOn(layerClick, 'emit');
+      const layer: SetupLayer = {
+        layerOptions: { type: 'fill', id: 'layerId', source: 'world' },
+        layerEvents: { ...createLayerEvents(), layerClick },
+      };
+      const layer2: SetupLayer = { ...layer, layerEvents: createLayerEvents() };
+
+      await mapLoaded();
+      mapService.addLayer(layer, true);
+      const styleLoaded = mapService.mapInstance.once('style.load');
+      mapService.mapInstance.setStyle(geoJSONStyle, { diff: false });
+      await styleLoaded;
+      // mgl-layer re-adds itself on styledata without binding again
+      mapService.addLayer(layer, false);
+      mapService.removeLayer('layerId');
+      mapService.addLayer(layer2, true);
+      click(mapService.mapInstance.getCanvas());
+      expect(layerClickEmit).not.toHaveBeenCalled();
     });
   });
 });
