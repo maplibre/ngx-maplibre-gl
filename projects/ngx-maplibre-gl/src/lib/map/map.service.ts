@@ -118,6 +118,7 @@ export class MapService {
   mapInstance: MaplibreMap;
   mapEvents: MapEvent;
   private readonly subscriptionsPerInstance = new Map<Evented, Subscription[]>();
+  private readonly subscriptionsPerLayerId = new Map<string, Subscription[]>();
 
   private readonly mapCreated = new AsyncSubject<void>();
   private readonly mapLoaded = new AsyncSubject<void>();
@@ -393,22 +394,18 @@ export class MapService {
       subscriptions.push(this.createSubscriptionForLayer(layer.layerOptions.id, 'touchstart', layer.layerEvents.layerTouchStart));
       subscriptions.push(this.createSubscriptionForLayer(layer.layerOptions.id, 'touchend', layer.layerEvents.layerTouchEnd));
       subscriptions.push(this.createSubscriptionForLayer(layer.layerOptions.id, 'touchcancel', layer.layerEvents.layerTouchCancel));
-      const layerInstance = this.mapInstance.getLayer(layer.layerOptions.id);
-      if (layerInstance) {
-        this.subscriptionsPerInstance.set(layerInstance, subscriptions);
-      }
+      this.subscriptionsPerLayerId.set(layer.layerOptions.id, subscriptions);
     });
   }
 
   removeLayer(layerId: string) {
     this.zone.runOutsideAngular(() => {
-      const layerInstance = this.mapInstance.getLayer(layerId);
-      if (layerInstance != null) {
-        const subscriptions = this.subscriptionsPerInstance.get(layerInstance) || [];
-        for (const subscription of subscriptions) {
-          subscription.unsubscribe();
-        }
-        this.subscriptionsPerInstance.delete(layerInstance);
+      const subscriptions = this.subscriptionsPerLayerId.get(layerId) || [];
+      for (const subscription of subscriptions) {
+        subscription.unsubscribe();
+      }
+      this.subscriptionsPerLayerId.delete(layerId);
+      if (this.mapInstance.getLayer(layerId) != null) {
         this.mapInstance.removeLayer(layerId);
       }
     });
